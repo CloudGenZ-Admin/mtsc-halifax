@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "cloudgenz-client-demo"
+  },
+  "targets": {
+    "cloudgenz-client-demo": {
+      "hosting": {
+        "dev-site": [
+          "mtsc-halifax-dev"
+        ],
+        "stage-site": [
+          "mtsc-halifax-stage"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
