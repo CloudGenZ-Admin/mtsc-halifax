@@ -31,7 +31,7 @@ jobs:
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_NEWLIFE_CLOUDGENZ }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CLOUDGENZ_CLIENT_DEMO }}'
           target: dev-site
           channelId: live
           projectId: cloudgenz-client-demo
@@ -41,7 +41,7 @@ jobs:
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_NEWLIFE_CLOUDGENZ }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CLOUDGENZ_CLIENT_DEMO }}'
           target: stage-site
           channelId: live
           projectId: cloudgenz-client-demo
