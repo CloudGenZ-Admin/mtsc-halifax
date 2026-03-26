@@ -16,20 +16,7 @@ export default function Navbar() {
   const navLinks = [
     { 
       name: 'Events', 
-      path: '/events',
-      dropdown: [
-        { name: 'Day of the Seafarer', path: '/events/day-of-the-seafarer' },
-        { name: 'Sea Sunday', path: '/events/sea-sunday' },
-        { name: 'Take-out Luncheon', path: '/events/take-out-luncheon' },
-        { name: 'Toast to Spring', path: '/events/toast-to-spring' },
-        { name: 'MtS Golf Tournament', path: '/events/golf-tournament' },
-        { name: 'Car Rally', path: '/events/car-rally' },
-        { name: 'Christmas Shoebox Campaign', path: '/events/shoebox-campaign' },
-        { name: 'Annual Christmas Luncheon', path: '/events/annual-christmas-luncheon' },
-        { name: 'International Women’s Day', path: '/events/international-womens-day' },
-        { name: 'Annual Volunteer Appreciation', path: '/events/volunteer-appreciation' },
-        { name: 'Seafarers COVID-19 Vaccination Initiative', path: '/events/covid-19-vaccination' }
-      ]
+      path: '/events'
     },
     { 
       name: 'Sponsors', 
