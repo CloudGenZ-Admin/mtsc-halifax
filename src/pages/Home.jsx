@@ -4,11 +4,29 @@ import Footer from '../components/layout/Footer';
 import Hero from '../components/sections/Hero';
 import Stats from '../components/sections/Stats';
 import Reveal from '../components/common/Reveal';
-import { 
-  FaHandsHelping, FaBrain, FaPrayingHands, FaBalanceScale, FaPeopleArrows,
-  FaDollarSign, FaCalendarAlt, FaHandPaper, FaCheck, FaEye,
-  FaMapMarkerAlt, FaAnchor, FaNewspaper, FaCalendarCheck 
-} from 'react-icons/fa';
+
+// Import local images for the "Join Our Community" section
+import findPortImg from '../assets/img/footer-find-port_1.png';
+import prayerWallImg from '../assets/img/footer-prayer-wall.png';
+import happySeaImg from '../assets/img/footer-happy-sea.png';
+import newsletterImg from '../assets/img/footer-newsletter.png';
+import eventCalendarImg from '../assets/img/footer-event-calendar.png';
+
+// Import local SVGs for "How We Support the World's Seafarers in Canada" section
+import practicalSupportIcon from '../assets/img/Seafarers/practical-support_1.svg';
+import mentalEmotionalIcon from '../assets/img/Seafarers/mental-emotional-help.svg';
+import spiritualCareIcon from '../assets/img/Seafarers/spiritual-care.svg';
+import advocacyRightsIcon from '../assets/img/Seafarers/advocacy-rights.svg';
+import communityConnectionIcon from '../assets/img/Seafarers/community-connection.svg';
+
+// Import local SVGs for "Ways to Get Involved" section
+import iconGiveNow from '../assets/img/Donate/icon-give-now.svg';
+import iconApplyVolunteer from '../assets/img/Donate/icon-apply-volunteer.svg';
+import iconSubscribeNews from '../assets/img/Donate/icon-subscribe-news.svg';
+import findPortBgIcon from '../assets/img/Donate/find-port-bg.svg';
+
+// Import local image for "Find a Station" section
+import operatingShipsImg from '../assets/img/Seafarers/infgrph-operating-ships.png';
 
 export default function Home() {
   return (
@@ -61,27 +79,27 @@ export default function Home() {
             
             <Reveal className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
               <div className="bg-coral border border-coral rounded-2xl p-7 text-center hover:-translate-y-1.5 transition-transform shadow-lg">
-                <FaHandsHelping className="text-[40px] text-white mx-auto mb-3.5" />
+                <img src={practicalSupportIcon} alt="Practical Support" className="w-10 h-10 object-contain mx-auto mb-3.5" />
                 <h3 className="text-sm font-extrabold text-white mb-2.5">Practical Support</h3>
                 <p className="text-xs text-white/80 leading-relaxed mb-4">SIM cards, Wi-Fi, transportation, healthcare and legal assistance</p>
               </div>
               <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-7 text-center hover:bg-white/20 hover:-translate-y-1.5 transition-all">
-                <FaBrain className="text-[32px] text-coral mx-auto mb-3" />
+                <img src={mentalEmotionalIcon} alt="Mental & Emotional Health" className="w-9 h-9 object-contain mx-auto mb-3" />
                 <h3 className="text-sm font-extrabold text-white mb-2.5">Mental & Emotional Health</h3>
                 <p className="text-xs text-white/80 leading-relaxed">Crisis support and professional care</p>
               </div>
               <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-7 text-center hover:bg-white/20 hover:-translate-y-1.5 transition-all">
-                <FaPrayingHands className="text-[32px] text-coral mx-auto mb-3" />
+                <img src={spiritualCareIcon} alt="Spiritual Care" className="w-9 h-9 object-contain mx-auto mb-3" />
                 <h3 className="text-sm font-extrabold text-white mb-2.5">Spiritual Care</h3>
                 <p className="text-xs text-white/80 leading-relaxed">Open to all faiths and beliefs</p>
               </div>
               <div className="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-7 text-center hover:bg-white/20 hover:-translate-y-1.5 transition-all">
-                <FaBalanceScale className="text-[32px] text-coral mx-auto mb-3" />
+                <img src={advocacyRightsIcon} alt="Advocacy & Rights" className="w-9 h-9 object-contain mx-auto mb-3" />
                 <h3 className="text-sm font-extrabold text-white mb-2.5">Advocacy & Rights</h3>
                 <p className="text-xs text-white/80 leading-relaxed">Protecting seafarer rights</p>
               </div>
               <div className="bg-navy-dark/60 border border-white/20 rounded-2xl p-7 text-center hover:-translate-y-1.5 transition-transform">
-                <FaPeopleArrows className="text-[40px] text-white mx-auto mb-3.5" />
+                <img src={communityConnectionIcon} alt="Community Connection" className="w-10 h-10 object-contain mx-auto mb-3.5" />
                 <h3 className="text-sm font-extrabold text-white mb-2.5">Community Connection</h3>
                 <p className="text-xs text-white/80 leading-relaxed mb-4">Centres, shared meals, and local partners creating belonging at ports.</p>
               </div>
@@ -116,15 +134,15 @@ export default function Home() {
             </Reveal>
             <Reveal className="flex flex-wrap justify-center gap-6 md:gap-10">
               {[
-                { icon: FaDollarSign, text: 'Give Now' },
-                { icon: FaCalendarAlt, text: 'View Events' },
-                { icon: FaHandPaper, text: 'Apply to Volunteer' },
-                { icon: FaCheck, text: 'Subscribe to Newsletter' },
-                { icon: FaEye, text: 'Explore Campaigns' },
+                { img: iconGiveNow, text: 'Give Now' },
+                { img: findPortBgIcon, text: 'View Events' },
+                { img: iconApplyVolunteer, text: 'Apply to Volunteer' },
+                { img: iconSubscribeNews, text: 'Subscribe to Newsletter' },
+                { img: findPortBgIcon, text: 'Explore Campaigns' },
               ].map((item, i) => (
                 <a key={i} href="#" className="flex flex-col items-center gap-3.5 group hover:-translate-y-2 transition-transform">
-                  <div className="w-24 h-24 border-2 border-white/50 rounded-full flex items-center justify-center text-white text-[32px] group-hover:bg-white/15 group-hover:border-white transition-all">
-                    <item.icon />
+                  <div className="w-24 h-24 border-2 border-white/50 rounded-full flex items-center justify-center group-hover:bg-white/15 group-hover:border-white transition-all">
+                    <img src={item.img} alt={item.text} className="w-10 h-10 object-contain brightness-0 invert" />
                   </div>
                   <span className="text-white font-bold text-[13px] text-center max-w-[90px]">{item.text}</span>
                 </a>
@@ -145,9 +163,8 @@ export default function Home() {
                   FIND A STATION
                 </a>
               </div>
-              <div className="bg-gradient-to-br from-coral-pale to-coral/5 border-2 border-coral/20 rounded-[20px] aspect-[4/3] flex flex-col items-center justify-center gap-3.5 shadow-sm">
-                <FaMapMarkerAlt className="text-[52px] text-coral" />
-                <span className="text-base font-bold text-navy">Find Stations Across Canada</span>
+              <div className="bg-gradient-to-br from-coral-pale to-coral/5 border-2 border-coral/20 rounded-[20px] aspect-[4/3] flex items-center justify-center p-6 shadow-sm hover:shadow-md transition-shadow">
+                <img src={operatingShipsImg} alt="Find Stations Across Canada Infographic" className="w-full h-full object-contain" />
               </div>
             </Reveal>
           </div>
@@ -160,17 +177,20 @@ export default function Home() {
               <h2 className="text-[34px] font-black text-navy text-center mb-10">Join Our Community</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 {[
-                  { icon: FaAnchor, title: 'Find a Station', desc: "Rest, recharge, connect with loved ones, and explore while you're ashore." },
-                  { icon: FaHandsHelping, title: 'Prayer Wall', desc: "Share a prayer, read messages, and find strength and connection." },
-                  { icon: FaAnchor, brand: 'Happy@Sea', title: 'Get 24/7 Help', desc: "Chat 24/7, book rides, get essentials, explore well-being resources.", accent: true },
-                  { icon: FaNewspaper, title: 'Newsletter', desc: "Get local port news, seafarer support, and more." },
-                  { icon: FaCalendarCheck, title: 'Host an Event', desc: "Honour a loved one by creating a fundraising page." }
+                  { image: findPortImg, title: 'Find a Station', desc: "Rest, recharge, connect with loved ones, and explore while you're ashore." },
+                  { image: prayerWallImg, title: 'Prayer Wall', desc: "Share a prayer, read messages, and find strength and connection." },
+                  { image: happySeaImg, brand: 'Happy@Sea', title: 'Get 24/7 Help', desc: "Chat 24/7, book rides, get essentials, explore well-being resources.", accent: true },
+                  { image: newsletterImg, title: 'Newsletter', desc: "Get local port news, seafarer support, and more." },
+                  { image: eventCalendarImg, title: 'Host an Event', desc: "Honour a loved one by creating a fundraising page." }
                 ].map((card, i) => (
-                  <div key={i} className={`rounded-[18px] p-7 text-center transition-all hover:-translate-y-1.5 border-2 ${card.accent ? 'bg-navy border-navy shadow-lg' : 'bg-white border-transparent shadow-card hover:shadow-card-hover hover:border-coral/20'}`}>
+                  <div key={i} className={`rounded-[18px] p-7 text-center transition-all hover:-translate-y-1.5 border-2 flex flex-col items-center justify-start ${card.accent ? 'bg-navy border-navy shadow-lg' : 'bg-white border-transparent shadow-card hover:shadow-card-hover hover:border-coral/20'}`}>
                     {card.brand ? (
-                      <div className="text-[13px] font-extrabold text-teal mb-3 flex items-center justify-center gap-1.5"><card.icon/> {card.brand}</div>
+                      <div className="text-[13px] font-extrabold text-teal mb-3 flex flex-col items-center justify-center gap-1.5 w-full">
+                        <img src={card.image} alt={card.brand} className="h-10 w-auto object-contain" />
+                        <span>{card.brand}</span>
+                      </div>
                     ) : (
-                      <card.icon className="text-[34px] text-coral mx-auto mb-3" />
+                      <img src={card.image} alt={card.title} className="h-10 w-auto object-contain mx-auto mb-3" />
                     )}
                     <h3 className={`text-[15px] font-extrabold mb-2 ${card.accent ? 'text-white' : 'text-navy'}`}>{card.title}</h3>
                     <p className={`text-[12.5px] leading-relaxed ${card.accent ? 'text-white/80' : 'text-text-mid'}`}>{card.desc}</p>

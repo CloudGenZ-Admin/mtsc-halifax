@@ -1,12 +1,22 @@
 import React from 'react';
-import { FaAnchor, FaLinkedinIn, FaYoutube, FaInstagram, FaFacebookF, FaTiktok } from 'react-icons/fa';
+import { FaLinkedinIn, FaYoutube, FaInstagram, FaFacebookF, FaTiktok } from 'react-icons/fa';
+
+// Import the local logo image
+import seafarerLogoImg from '../../assets/seafarers-logo.png';
 
 export default function Footer() {
   return (
     <footer className="bg-navy-dark">
       <div className="max-w-[1200px] mx-auto px-7 pt-14 pb-10 grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-white/10">
         <div className="md:col-span-2">
-          <div className="text-2xl text-coral mb-3"><FaAnchor /></div>
+          {/* Replaced FaAnchor with the imported logo image */}
+          <div className="mb-4">
+            <img 
+              src={seafarerLogoImg} 
+              alt="Mission to Seafarers Logo" 
+              className="h-12 w-auto object-contain " 
+            />
+          </div>
           <p className="font-extrabold text-white text-sm mb-2.5">✦ Mission to Seafarers Canada ✦</p>
           <p className="text-white/55 text-[13px] leading-relaxed max-w-sm">
             Serving seafarers with compassion, friendship, and vital support throughout Canada.

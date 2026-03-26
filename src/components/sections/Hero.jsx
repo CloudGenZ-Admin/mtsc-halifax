@@ -1,6 +1,9 @@
 import React from 'react';
 import { FaHeart } from 'react-icons/fa';
 
+// Import the local image
+import seafarerImg from '../../assets/seafarer-findport-min-1-197x300.webp';
+
 export default function Hero() {
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 min-h-[88vh] bg-coral-pale relative overflow-hidden">
@@ -40,8 +43,9 @@ export default function Hero() {
 
       <div className="hidden md:flex items-center justify-center p-10 relative">
         <div className="relative w-full max-w-[480px]">
-          <div className="rounded-[24px] overflow-hidden aspect-[4/5] shadow-[0_20px_60px_rgba(45,53,128,.15)]">
-            <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=700&q=85" alt="Halifax Port" className="w-full h-full object-cover" />
+          <div className="rounded-[24px] overflow-hidden aspect-[4/5] shadow-[0_20px_60px_rgba(45,53,128,.15)] bg-white">
+            {/* Replaced Unsplash URL with the imported local image */}
+            <img src={seafarerImg} alt="Halifax Port" className="w-full h-full object-cover" />
           </div>
           <div className="absolute -bottom-6 -left-5 bg-white rounded-2xl p-5 flex flex-col gap-1 shadow-[0_8px_32px_rgba(45,53,128,.12)] min-w-[180px]">
             <FaHeart className="text-[22px] text-coral mb-1" />

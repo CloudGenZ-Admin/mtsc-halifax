@@ -12,7 +12,8 @@ import AdminDashboard from './pages/event/AdminDashboard';
 import EventForm from './pages/event/EventForm';
 import EventList from './pages/event/EventList';
 import EventDetail from './pages/event/EventDetail';
-
+import Publication from './pages/Publication'
+import Donate from './pages/Donate';
 function App() {
   return (
     <Router>
@@ -32,6 +33,8 @@ function App() {
         {/* Public Event Routes */}
         <Route path="/events" element={<EventList />} />
         <Route path="/events/:url" element={<EventDetail />} />
+        <Route path='/publication' element={<Publication />} />
+         <Route path='/donate' element={<Donate />} />
       </Routes>
     </Router>
   );
