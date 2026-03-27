@@ -6,6 +6,9 @@ import {
   FaPrayingHands, FaWater, FaCompass, FaGlobe, FaPaperPlane 
 } from 'react-icons/fa';
 
+// Import the local image provided (matching your exact spelling)
+import prayerImg from '../assets/paryer.jpg';
+
 export default function Prayer() {
   return (
     <div className="min-h-screen flex flex-col">
@@ -32,6 +35,13 @@ export default function Prayer() {
         <section className="py-20 bg-white">
           <div className="max-w-[900px] mx-auto px-7 text-center">
             <Reveal>
+              {/* --- ADDED RESPONSIVE IMAGE --- */}
+              <img 
+                src={prayerImg} 
+                alt="Prayer and Spiritual Care for Seafarers" 
+                className="w-full h-auto max-h-[500px] object-cover rounded-3xl shadow-lg mb-12 border border-navy/5"
+              />
+
               <h2 className="text-3xl font-black text-navy mb-6">A Source of Comfort in Challenging Moments</h2>
               <div className="space-y-6 text-text-mid text-[17px] leading-relaxed">
                 <p>

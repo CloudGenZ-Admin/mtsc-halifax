@@ -145,7 +145,7 @@ export default function Sponsors() {
                   <p className="text-[13px] text-white/90 mb-6 leading-relaxed">
                     Join an elite group of recurring sponsors dedicated to seafarer welfare.
                   </p>
-                  <a href="#contact" className="text-navy-dark font-extrabold text-[13px] hover:text-white transition-colors underline underline-offset-4">Join the Club</a>
+                  {/* <a href="#contact" className="text-navy-dark font-extrabold text-[13px] hover:text-white transition-colors underline underline-offset-4">Join the Club</a> */}
                 </div>
 
                 <div className="bg-navy border-2 border-navy rounded-[24px] p-8 text-center hover:-translate-y-2 transition-transform shadow-card group">
@@ -156,7 +156,7 @@ export default function Sponsors() {
                   <p className="text-[13px] text-white/70 mb-6 leading-relaxed">
                     Customized sponsorship packages designed for maximum CSR impact.
                   </p>
-                  <a href="#contact" className="text-coral-light font-extrabold text-[13px] hover:text-white transition-colors underline underline-offset-4">Request Info</a>
+                  {/* <a href="#contact" className="text-coral-light font-extrabold text-[13px] hover:text-white transition-colors underline underline-offset-4">Request Info</a> */}
                 </div>
               </Reveal>
             </div>
@@ -191,7 +191,7 @@ export default function Sponsors() {
         </section>
 
         {/* Call to Action */}
-        <section id="contact" className="py-20 bg-coral">
+        {/* <section id="contact" className="py-20 bg-coral">
           <div className="max-w-[800px] mx-auto px-7 text-center">
             <Reveal>
               <FaEnvelopeOpenText className="text-5xl text-white/50 mx-auto mb-6" />
@@ -209,7 +209,7 @@ export default function Sponsors() {
               </a>
             </Reveal>
           </div>
-        </section>
+        </section> */}
 
       </main>
       <Footer />

@@ -19,9 +19,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/whoweare" element={<About />} />
         <Route path="/prayer" element={<Prayer />} />
-        <Route path="/awards" element={<Awards />} /> {/* <-- 2. Add route */}
+        <Route path="/volunteer" element={<Awards />} /> {/* <-- 2. Add route */}
         <Route path="/sponsors" element={<Sponsors />} />
         
         {/* Event Management Routes */}

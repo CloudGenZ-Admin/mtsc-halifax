@@ -130,7 +130,7 @@ export default function Home() {
           <div className="max-w-[1200px] mx-auto px-7">
             <Reveal className="flex flex-wrap items-center justify-center gap-6 mb-12">
               <h2 className="text-[38px] font-black text-white leading-none">Ways to Get Involved</h2>
-              <a href="#" className="bg-navy-dark text-white px-7 py-3 rounded-full font-extrabold text-[13px] hover:bg-[#0f1c4a] transition-colors">DONATE</a>
+              <a href="/donate" className="bg-navy-dark text-white px-7 py-3 rounded-full font-extrabold text-[13px] hover:bg-[#0f1c4a] transition-colors">DONATE</a>
             </Reveal>
             <Reveal className="flex flex-wrap justify-center gap-6 md:gap-10">
               {[

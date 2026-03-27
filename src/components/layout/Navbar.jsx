@@ -46,13 +46,13 @@ export default function Navbar() {
         { name: 'Corporate Sponsorship', path: '/sponsors#corporate-sponsorship' }
       ]
     },
-    { name: 'Who We Are', path: '/about' }, 
+    { name: 'Who We Are', path: '/whoweare' }, 
     { 
-      name: 'Awards', 
-      path: '/awards',
+      name: 'Volunteer', 
+      path: '/volunteer',
       dropdown: [
-        { name: 'Volunteer Awardees', path: '/awards#volunteer-awards' },
-        { name: 'Staff Awardees', path: '/awards#staff-awards' }
+        { name: 'Volunteer Awardees', path: '/volunteer#volunteer-awards' },
+        { name: 'Staff Awardees', path: '/volunteer#staff-awards' }
       ]
     }, 
     {

@@ -4,7 +4,8 @@ import Footer from '../components/layout/Footer';
 import Reveal from '../components/common/Reveal';
 import { 
   FaAnchor, FaHeart, FaHandsHelping, FaUsers, 
-  FaCheckCircle, FaPrayingHands, FaShip, FaUserTie 
+  FaCheckCircle, FaPrayingHands, FaShip, FaUserTie,
+  FaExternalLinkAlt
 } from 'react-icons/fa';
 
 export default function About() {
@@ -236,6 +237,46 @@ export default function About() {
               </div>
             </Reveal>
 
+          </div>
+        </section>
+
+        {/* ------------------------------------------- */}
+        {/* RELATED LINKS SECTION (NEW)                 */}
+        {/* ------------------------------------------- */}
+        <section className="py-20 bg-warm-gray border-t border-navy/5">
+          <div className="max-w-[1000px] mx-auto px-7">
+            <Reveal className="text-center mb-12">
+              <h2 className="text-[32px] font-black text-navy mb-4">Related Links</h2>
+              <p className="text-text-mid max-w-2xl mx-auto">
+                Explore resources, guidelines, and our global maritime partners dedicated to the welfare of seafarers.
+              </p>
+            </Reveal>
+
+            <Reveal className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                { name: 'International Transport Workers’ Federation (ITF)', url: 'https://www.itfglobal.org/' },
+                { name: 'Mission to Seafarers (Organization website)', url: 'https://www.missiontoseafarers.org/' },
+                { name: 'Mission to Seafarers Canada', url: 'https://www.missiontoseafarers.ca/' },
+                { name: 'North American Maritime Ministry Association (NAMMA)', url: 'https://namma.org/' },
+                { name: 'Mission to Seafarers – Happy at Sea (Digital Seafarers’ Centre)', url: 'https://www.missiontoseafarers.org/happy-at-sea/' },
+                { name: 'International Labour Organization – Maritime Labour Convention, 2006', url: 'https://www.ilo.org/global/standards/maritime-labour-convention/lang--en/index.htm' }
+              ].map((link, idx) => (
+                <a 
+                  key={idx} 
+                  href={link.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="group bg-white p-6 rounded-2xl shadow-sm hover:shadow-card hover:-translate-y-1 transition-all border-2 border-transparent hover:border-coral/30 flex items-center justify-between gap-4"
+                >
+                  <span className="font-bold text-navy text-[15px] group-hover:text-coral transition-colors leading-snug pr-4">
+                    {link.name}
+                  </span>
+                  <div className="w-10 h-10 shrink-0 bg-coral-pale rounded-full flex items-center justify-center group-hover:bg-coral transition-colors">
+                    <FaExternalLinkAlt className="text-coral group-hover:text-white transition-colors text-[14px]" />
+                  </div>
+                </a>
+              ))}
+            </Reveal>
           </div>
         </section>
 
