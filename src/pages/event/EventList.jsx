@@ -51,7 +51,8 @@ const EventList = () => {
   const fetchEventsByDate = async (date) => {
     try {
       const events = await eventService.getEventsByDate(date.toISOString());
-      setFilteredEvents(events);
+      // Exclude featured-only events (no date) from calendar results
+      setFilteredEvents(events.filter(event => event.eventDate));
     } catch (error) {
       console.error('Error fetching events by date:', error);
     }

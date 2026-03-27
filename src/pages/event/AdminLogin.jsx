@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../../services/authService';
-import toast, { Toaster } from 'react-hot-toast';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,15 +17,18 @@ const AdminLogin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    e.stopPropagation();
+    if (!email || !password) {
+      setError('Please enter your email and password.');
+      return;
+    }
     setLoading(true);
-
-    const loadingToast = toast.loading('Logging in...');
+    setError('');
     try {
       await authService.login(email, password);
-      toast.success('Login successful', { id: loadingToast });
       navigate('/admin/events');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Login failed', { id: loadingToast });
+      setError('Email or password is incorrect. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -33,7 +36,6 @@ const AdminLogin = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-navy via-periwinkle to-navy flex items-center justify-center px-4">
-      <Toaster position="top-right" />
       <div className="max-w-md w-full">
         {/* Logo/Brand */}
         <div className="text-center mb-8">
@@ -48,7 +50,7 @@ const AdminLogin = () => {
         <div className="bg-white rounded-2xl shadow-card p-8">
           <h2 className="text-2xl font-bold text-navy mb-6 text-center">Sign In</h2>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} noValidate className="space-y-5">
             <div>
               <label className="block text-sm font-bold text-navy mb-2">
                 Email Address
@@ -59,7 +61,6 @@ const AdminLogin = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-coral focus:border-transparent transition-all"
                 placeholder="admin@example.com"
-                required
               />
             </div>
 
@@ -73,9 +74,14 @@ const AdminLogin = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-coral focus:border-transparent transition-all"
                 placeholder="Enter your password"
-                required
               />
             </div>
+
+            {error && (
+              <div className="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded-xl text-sm font-medium">
+                {error}
+              </div>
+            )}
 
             <button
               type="submit"

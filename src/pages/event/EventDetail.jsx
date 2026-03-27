@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { eventService } from '../../services/eventService';
-import ImageGallery from '../../components/event/ImageGallery';
+import {  } from '../../utils/renderEditorContent';
 import { FiArrowLeft, FiCalendar } from 'react-icons/fi';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
@@ -208,7 +208,7 @@ const EventDetail = () => {
 
             {/* Content with inline images */}
             <div className="prose prose-lg max-w-none event-content">
-              {renderContent(event.content)}
+              {renderEditorContent(event.content)}
             </div>
           </article>
         </div>
