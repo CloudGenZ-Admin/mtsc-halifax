@@ -144,7 +144,7 @@ const EventList = () => {
             <Reveal>
               <div className="bg-white rounded-2xl shadow-card p-6">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                  <div className="flex items-center gap-4 flex-wrap">
+                  <div className="flex items-center gap-4 flex-wrap relative z-20">
                     <FiCalendar className="text-coral text-2xl" />
                     <label className="text-lg font-semibold text-navy">Filter by Date:</label>
                     <DatePicker
@@ -154,6 +154,7 @@ const EventList = () => {
                       className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-coral focus:border-transparent"
                       placeholderText="Select a date"
                       isClearable
+                      popperClassName="z-50"
                     />
                   </div>
 
