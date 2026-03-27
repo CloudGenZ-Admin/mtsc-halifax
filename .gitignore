@@ -34,3 +34,4 @@ backend/.env
 backend/uploads
 
 *.md
+console-errors.txt

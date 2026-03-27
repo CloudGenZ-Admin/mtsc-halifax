@@ -1,164 +1,192 @@
-import { useMemo, useEffect, useRef } from 'react';
-import { createRoot } from 'react-dom/client';
+import { useMemo } from 'react';
 import ImageGallery from './ImageGallery';
 
-
 const TiptapRender = ({ content }) => {
-  const containerRef = useRef(null);
-  const rootsRef = useRef([]);
+  const renderedContent = useMemo(() => {
+    if (!content) return null;
 
-  const processedContent = useMemo(() => {
-    if (!content) return '';
-
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(content, 'text/html');
-    
-    // Function to group consecutive images in any container
-    const groupImages = (container, isInsideColumn = false) => {
-      const children = Array.from(container.childNodes);
-      let i = 0;
+    try {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(content, 'text/html');
       
-      while (i < children.length) {
-        const node = children[i];
-        
-        // Recursively process nested containers (like columns)
-        if (node.nodeType === 1 && node.hasAttribute('data-column')) {
-          groupImages(node, true); // Mark as inside column
-          i++;
-          continue;
-        }
-        
-        if (node.nodeType === 1 && node.hasAttribute('data-columns')) {
-          groupImages(node, false);
-          i++;
-          continue;
-        }
-        
-        // Check if this is an image node
-        const isImg = node.nodeName === 'IMG';
-        const isPWithImg = node.nodeName === 'P' && 
-          node.childNodes.length === 1 && 
-          node.childNodes[0].nodeName === 'IMG';
-        
-        if (isImg || isPWithImg) {
-          // Collect consecutive images
-          const images = [];
-          const nodesToRemove = [];
-          let j = i;
-          
-          // Get fresh reference to children for each iteration
-          const currentChildren = Array.from(container.childNodes);
-          
-          while (j < currentChildren.length) {
-            const current = currentChildren[j];
-            const currentIsImg = current.nodeName === 'IMG';
-            const currentIsPWithImg = current.nodeName === 'P' && 
-              current.childNodes.length === 1 && 
-              current.childNodes[0].nodeName === 'IMG';
-            
-            if (!currentIsImg && !currentIsPWithImg) break;
-            
-            const src = currentIsImg 
-              ? current.getAttribute('src')
-              : current.childNodes[0].getAttribute('src');
-            
-            if (src) {
-              images.push(src);
-              nodesToRemove.push(current);
-            }
-            j++;
+      const renderNode = (node, index) => {
+        try {
+          // Text nodes
+          if (node.nodeType === 3) {
+            return node.textContent;
           }
-          
-          // If we have multiple images, create a gallery wrapper
-          if (images.length > 1) {
-            const galleryDiv = doc.createElement('div');
-            const galleryId = `gallery-${Math.random().toString(36).substr(2, 9)}`;
-            galleryDiv.setAttribute('data-image-gallery', galleryId);
-            galleryDiv.setAttribute('data-gallery-images', JSON.stringify(images));
-            // Mark if inside column for compact variant
-            if (isInsideColumn) {
-              galleryDiv.setAttribute('data-gallery-variant', 'compact');
-            }
-            
-            // Get the first node to remove (it should still be in the container)
-            const firstNode = nodesToRemove[0];
-            
-            // Verify the first node is still a child of container
-            if (firstNode && firstNode.parentNode === container) {
-              // Insert gallery div before the first image
-              container.insertBefore(galleryDiv, firstNode);
-              
-              // Remove the original image nodes
-              nodesToRemove.forEach(nodeToRemove => {
-                if (nodeToRemove.parentNode === container) {
-                  container.removeChild(nodeToRemove);
+
+          // Element nodes
+          if (node.nodeType === 1) {
+            const tagName = node.tagName.toLowerCase();
+            const children = Array.from(node.childNodes).map((child, i) => renderNode(child, i));
+            const props = {};
+
+            // Copy attributes safely
+            try {
+              Array.from(node.attributes || []).forEach(attr => {
+                if (!attr || !attr.name) return;
+                
+                if (attr.name === 'class') {
+                  props.className = attr.value;
+                } else if (attr.name === 'style') {
+                  // Parse inline styles
+                  const styleObj = {};
+                  (attr.value || '').split(';').forEach(rule => {
+                    const [key, value] = rule.split(':').map(s => s.trim());
+                    if (key && value) {
+                      const camelKey = key.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+                      styleObj[camelKey] = value;
+                    }
+                  });
+                  if (Object.keys(styleObj).length > 0) {
+                    props.style = styleObj;
+                  }
+                } else if (attr.name.startsWith('data-')) {
+                  props[attr.name] = attr.value;
+                } else if (['href', 'src', 'alt', 'target', 'rel'].includes(attr.name)) {
+                  props[attr.name] = attr.value;
                 }
               });
+            } catch (e) {
+              console.warn('Error parsing attributes:', e);
             }
+
+            // Void elements (self-closing tags)
+            const voidElements = ['img', 'br', 'hr', 'input', 'meta', 'link'];
             
-            // Move to next node after the gallery
-            i++;
-          } else {
-            i++;
+            if (voidElements.includes(tagName)) {
+              const Element = tagName;
+              return <Element key={index} {...props} />;
+            }
+
+            // Handle special elements
+            if (tagName === 'a') {
+              return <a key={index} {...props}>{children}</a>;
+            }
+
+            if (tagName === 'iframe') {
+              return <iframe key={index} {...props} />;
+            }
+
+            // Standard HTML elements
+            const Element = tagName;
+            return <Element key={index} {...props}>{children}</Element>;
           }
-        } else {
-          i++;
-        }
-      }
-    };
-    
-    groupImages(doc.body);
-    return doc.body.innerHTML;
-  }, [content]);
 
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    // Clean up previous roots
-    rootsRef.current.forEach(root => {
-      try {
-        root.unmount();
-      } catch (e) {
-        // Ignore unmount errors
-      }
-    });
-    rootsRef.current = [];
-
-    // Find all gallery placeholders and render ImageGallery components
-    const galleries = containerRef.current.querySelectorAll('[data-image-gallery]');
-    
-    galleries.forEach((galleryDiv) => {
-      const images = JSON.parse(galleryDiv.getAttribute('data-gallery-images'));
-      const variant = galleryDiv.getAttribute('data-gallery-variant') || 'default';
-      
-      // Clear the div and render the gallery
-      galleryDiv.innerHTML = '';
-      const root = createRoot(galleryDiv);
-      root.render(<ImageGallery images={images} variant={variant} />);
-      rootsRef.current.push(root);
-    });
-
-    // Cleanup function
-    return () => {
-      rootsRef.current.forEach(root => {
-        try {
-          root.unmount();
+          return null;
         } catch (e) {
-          // Ignore unmount errors
+          console.warn('Error rendering node:', e);
+          return null;
         }
-      });
-      rootsRef.current = [];
-    };
-  }, [processedContent]);
+      };
+
+      // Group consecutive images and render - with column detection
+      const processChildren = (nodes, isInsideColumn = false) => {
+        const result = [];
+        let imageBuffer = [];
+        let i = 0;
+
+        const flushImages = () => {
+          if (imageBuffer.length > 1) {
+            result.push(
+              <ImageGallery 
+                key={`gallery-${result.length}`} 
+                images={imageBuffer} 
+                variant={isInsideColumn ? 'compact' : 'default'}
+              />
+            );
+          } else if (imageBuffer.length === 1) {
+            result.push(
+              <div key={`img-${result.length}`} className="my-6">
+                <img src={imageBuffer[0]} alt="Event" className="w-full rounded-lg shadow-lg" />
+              </div>
+            );
+          }
+          imageBuffer = [];
+        };
+
+        try {
+          nodes.forEach((node) => {
+            try {
+              // Check if it's a column container
+              const isColumn = node.nodeType === 1 && node.hasAttribute && node.hasAttribute('data-column');
+              const isColumns = node.nodeType === 1 && node.hasAttribute && node.hasAttribute('data-columns');
+
+              if (isColumn || isColumns) {
+                flushImages();
+                // Process column children with column flag
+                const columnChildren = processChildren(Array.from(node.childNodes || []), true);
+                const props = {};
+                
+                try {
+                  if (node.hasAttribute('data-column')) props['data-column'] = node.getAttribute('data-column');
+                  if (node.hasAttribute('data-columns')) props['data-columns'] = node.getAttribute('data-columns');
+                  if (node.hasAttribute('style')) {
+                    const styleObj = {};
+                    (node.getAttribute('style') || '').split(';').forEach(rule => {
+                      const [key, value] = rule.split(':').map(s => s.trim());
+                      if (key && value) {
+                        const camelKey = key.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+                        styleObj[camelKey] = value;
+                      }
+                    });
+                    if (Object.keys(styleObj).length > 0) {
+                      props.style = styleObj;
+                    }
+                  }
+                } catch (e) {
+                  console.warn('Error parsing column attributes:', e);
+                }
+                
+                result.push(<div key={i++} {...props}>{columnChildren}</div>);
+                return;
+              }
+
+              // Check if it's an image
+              const isImg = node.nodeType === 1 && node.tagName === 'IMG';
+              const isPWithImg = node.nodeType === 1 && node.tagName === 'P' && 
+                node.childNodes && node.childNodes.length === 1 && 
+                node.childNodes[0] && node.childNodes[0].tagName === 'IMG';
+
+              if (isImg || isPWithImg) {
+                const src = isImg 
+                  ? node.getAttribute('src') 
+                  : (node.childNodes[0] && node.childNodes[0].getAttribute('src'));
+                if (src) {
+                  imageBuffer.push(src);
+                }
+              } else {
+                flushImages();
+                result.push(renderNode(node, i++));
+              }
+            } catch (e) {
+              console.warn('Error processing node:', e);
+            }
+          });
+
+          flushImages();
+        } catch (e) {
+          console.error('Error processing children:', e);
+        }
+
+        return result;
+      };
+
+      return processChildren(Array.from(doc.body.childNodes || []));
+    } catch (e) {
+      console.error('Error rendering content:', e);
+      // Fallback: render as plain text
+      return <div className="text-gray-600">{content}</div>;
+    }
+  }, [content]);
 
   if (!content) return null;
 
   return (
-    <div 
-      ref={containerRef}
-      className="tiptap-render max-w-none"
-      dangerouslySetInnerHTML={{ __html: processedContent }}
-    />
+    <div className="tiptap-render max-w-none">
+      {renderedContent}
+    </div>
   );
 };
 
