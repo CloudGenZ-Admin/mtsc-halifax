@@ -7,23 +7,50 @@ import 'swiper/css/pagination';
 import 'swiper/css/thumbs';
 import 'swiper/css/free-mode';
 
-const ImageGallery = ({ images }) => {
+const ImageGallery = ({ images, variant = 'default' }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   if (!images || images.length === 0) return null;
 
   if (images.length === 1) {
     return (
-      <div className="my-6">
+      <div className="my-6 flex justify-center">
         <img
           src={images[0]}
           alt="Event"
-          className="w-full rounded-lg shadow-lg"
+          className="max-w-full h-auto rounded-lg shadow-lg"
         />
       </div>
     );
   }
 
+  // Compact variant for columns - smaller carousel that fits within column
+  if (variant === 'compact') {
+    return (
+      <div className="my-4 w-full">
+        <Swiper
+          modules={[Navigation, Pagination]}
+          spaceBetween={10}
+          navigation
+          pagination={{ clickable: true }}
+          className="rounded-lg shadow-md w-full"
+          style={{ maxWidth: '100%' }}
+        >
+          {images.map((img, idx) => (
+            <SwiperSlide key={idx}>
+              <img
+                src={img}
+                alt={`Gallery ${idx + 1}`}
+                className="w-full h-auto max-h-[300px] object-contain rounded-lg bg-gray-100"
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    );
+  }
+
+  // Default variant - full carousel with thumbnails
   return (
     <div className="my-8">
       {/* Main Swiper */}
@@ -40,7 +67,7 @@ const ImageGallery = ({ images }) => {
             <img
               src={img}
               alt={`Gallery ${idx + 1}`}
-              className="w-full h-[400px] md:h-[500px] object-cover rounded-lg"
+              className="w-full h-auto max-h-[600px] object-contain rounded-lg bg-gray-100"
             />
           </SwiperSlide>
         ))}

@@ -4,8 +4,8 @@ import { eventService } from '../../services/eventService';
 import { authService } from '../../services/authService';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import BlockNoteEditor from '../../components/event/EditorJSComponent';
-import { renderEditorContent } from '../../utils/renderEditorContent';
+import TiptapEditor from '../../components/event/TiptapEditor';
+import TiptapRender from '../../components/event/TiptapRender';
 import toast, { Toaster } from 'react-hot-toast';
 
 // Handle ESM/CommonJS interop
@@ -107,13 +107,23 @@ const EventForm = () => {
                 </p>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() => setShowPreview(!showPreview)}
-              className="bg-periwinkle hover:bg-navy text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl font-semibold transition-colors text-sm shrink-0"
-            >
-              {showPreview ? 'Edit' : 'Preview'}
-            </button>
+            <div className="flex gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => setShowPreview(!showPreview)}
+                className="bg-periwinkle hover:bg-navy text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl font-semibold transition-colors text-sm"
+              >
+                {showPreview ? 'Edit' : 'Preview'}
+              </button>
+              <button
+                type="submit"
+                form="event-form"
+                disabled={loading}
+                className="bg-coral hover:bg-coral-light text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl font-semibold transition-all shadow-warm hover:shadow-warm-hover disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+              >
+                {loading ? 'Saving...' : isEdit ? 'Update' : 'Create'}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -135,14 +145,10 @@ const EventForm = () => {
               </div>
             )}
 
-            <div className="prose prose-lg max-w-none event-content">
-              {formData.content ? renderEditorContent(formData.content) : (
-                <p className="text-text-mid italic">No content yet</p>
-              )}
-            </div>
+            <TiptapRender content={formData.content} />
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form id="event-form" onSubmit={handleSubmit} className="space-y-6">
             {/* Basic Info Card */}
             <div className="bg-white rounded-2xl shadow-card p-6">
               <h3 className="text-xl font-bold text-navy mb-4">Basic Information</h3>
@@ -217,30 +223,11 @@ const EventForm = () => {
             {/* Content Card */}
             <div className="bg-white rounded-2xl shadow-card p-6">
               <h3 className="text-xl font-bold text-navy mb-4">Event Content</h3>
-              {(!isEdit || contentLoaded) && (
-                <BlockNoteEditor
-                  key={isEdit ? `edit-${id}-${contentLoaded}` : 'new'}
-                  initialContent={formData.content}
-                  onChange={(content) => setFormData({ ...formData, content })}
-                />
-              )}
-            </div>
-
-            {/* Actions */}
-            <div className="flex gap-4">
-              <button
-                type="submit"
-                disabled={loading}
-                className="flex-1 bg-coral hover:bg-coral-light text-white font-bold py-4 rounded-xl transition-all shadow-warm hover:shadow-warm-hover disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? 'Saving...' : isEdit ? 'Update Event' : 'Create Event'}
-              </button>
-              <Link
-                to="/admin/events"
-                className="px-8 py-4 border-2 border-navy text-navy hover:bg-navy hover:text-white font-bold rounded-xl transition-all text-center"
-              >
-                Cancel
-              </Link>
+              <TiptapEditor
+                key={isEdit ? `edit-${id}` : 'new'}
+                initialContent={formData.content}
+                onChange={(content) => setFormData({ ...formData, content })}
+              />
             </div>
           </form>
         )}

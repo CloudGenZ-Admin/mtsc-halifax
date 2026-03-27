@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { eventService } from '../../services/eventService';
-import {  } from '../../utils/renderEditorContent';
+import TiptapRender from '../../components/event/TiptapRender';
 import { FiArrowLeft, FiCalendar } from 'react-icons/fi';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
@@ -18,6 +18,7 @@ const EventDetail = () => {
 
   const fetchEvent = async () => {
     try {
+      
       const data = await eventService.getEventByUrl(url);
       setEvent(data);
     } catch (error) {
@@ -154,7 +155,7 @@ const EventDetail = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Navbar />
-        <main className="flex-grow bg-warm-gray flex items-center justify-center">
+        <main className="flex-grow bg-warm-gray flex items-center justify-center min-h-[60vh]">
           <div className="text-navy text-xl">Loading event...</div>
         </main>
         <Footer />
@@ -186,7 +187,7 @@ const EventDetail = () => {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow bg-warm-gray">
-        <div className="max-w-4xl mx-auto px-4 py-12">
+        <div className="max-w-7xl mx-auto px-4 py-12">
           <Link
             to="/events"
             className="inline-flex items-center gap-2 text-navy hover:text-coral transition-colors mb-8 font-semibold"
@@ -206,10 +207,8 @@ const EventDetail = () => {
               </div>
             )}
 
-            {/* Content with inline images */}
-            <div className="prose prose-lg max-w-none event-content">
-              {renderEditorContent(event.content)}
-            </div>
+            {/* Content */}
+            <TiptapRender content={event.content} />
           </article>
         </div>
       </main>
