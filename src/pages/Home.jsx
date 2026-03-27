@@ -53,7 +53,7 @@ export default function Home() {
               <p className="text-[15px] font-semibold text-text-mid mb-1">I am a</p>
               <h2 className="text-[40px] font-black text-coral mb-3 leading-none">Seafarer,</h2>
               <p className="text-[17px] font-semibold text-navy max-w-[280px] mb-6 leading-tight">how do I find a port.. or just a helping hand?</p>
-              <a href="#" className="bg-coral text-white self-start px-6 py-2.5 rounded-full font-bold text-[13px] hover:bg-coral-light shadow-warm transition-all">FIND RESOURCES</a>
+              <a href="/contact" className="bg-coral text-white self-start px-6 py-2.5 rounded-full font-bold text-[13px] hover:bg-coral-light shadow-warm transition-all">FIND RESOURCES</a>
             </div>
           </Reveal>
           <Reveal className="relative overflow-hidden flex group cursor-pointer">
@@ -62,7 +62,7 @@ export default function Home() {
               <p className="text-[15px] font-semibold text-white/70 mb-1">I am a</p>
               <h2 className="text-[40px] font-black text-white mb-3 leading-none">Volunteer,</h2>
               <p className="text-[17px] font-semibold text-white/90 max-w-[280px] mb-6 leading-tight">how do I donate, volunteer, or get involved?</p>
-              <a href="#" className="bg-white text-navy self-end px-6 py-2.5 rounded-full font-bold text-[13px] hover:bg-warm-gray transition-colors">GET INVOLVED</a>
+              <a href="/volunteer" className="bg-white text-navy self-end px-6 py-2.5 rounded-full font-bold text-[13px] hover:bg-warm-gray transition-colors">GET INVOLVED</a>
             </div>
           </Reveal>
         </section>
@@ -109,22 +109,6 @@ export default function Home() {
 
         <Stats />
 
-        {/* Supporters */}
-        <section className="bg-white py-20">
-          <div className="max-w-[1200px] mx-auto px-7">
-            <Reveal>
-              <h2 className="text-[34px] font-black text-navy text-center mb-9">Our Supporters</h2>
-              <div className="flex flex-wrap gap-3 justify-center">
-                {['NAMMA', 'Prince Rupert Port Authority', 'Helm', 'Ontario Shipyards', 'TK', 'Ports Toronto'].map(sup => (
-                  <div key={sup} className="bg-coral-pale border-2 border-coral/15 rounded-xl px-7 py-3.5 font-extrabold text-[13.5px] text-navy text-center hover:border-coral hover:bg-white transition-all cursor-pointer">
-                    {sup}
-                  </div>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
         {/* Get Involved */}
         <section className="bg-coral py-20">
           <div className="max-w-[1200px] mx-auto px-7">
@@ -151,39 +135,47 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Find Station */}
-        <section className="bg-white py-24">
-          <div className="max-w-[1200px] mx-auto px-7">
-            <Reveal className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-              <div>
-                <span className="inline-block bg-coral-pale text-coral text-xs font-extrabold px-3.5 py-1.5 rounded-full mb-4">✦ Locations</span>
-                <h2 className="text-4xl font-black text-navy mb-4 leading-tight">Find a Mission to Seafarers<br/>Station in Canada</h2>
-                <p className="text-base text-text-mid leading-relaxed mb-7 max-w-lg">Find a seafarer's centre in Canada. Grab a cup of coffee, connect to Wi-Fi, arrange a lift to town, get the practical and emotional support you need.</p>
-                <a href="#" className="inline-flex items-center gap-2 bg-coral text-white px-8 py-3.5 rounded-full font-extrabold text-sm hover:bg-coral-light hover:-translate-y-0.5 shadow-warm hover:shadow-warm-hover transition-all">
-                  FIND A STATION
-                </a>
-              </div>
-              <div className="bg-gradient-to-br from-coral-pale to-coral/5 border-2 border-coral/20 rounded-[20px] aspect-[4/3] flex items-center justify-center p-6 shadow-sm hover:shadow-md transition-shadow">
-                <img src={operatingShipsImg} alt="Find Stations Across Canada Infographic" className="w-full h-full object-contain" />
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
         {/* Community */}
         <section className="bg-warm-gray py-20">
           <div className="max-w-[1200px] mx-auto px-7">
             <Reveal>
               <h2 className="text-[34px] font-black text-navy text-center mb-10">Join Our Community</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
-                  { image: findPortImg, title: 'Find a Station', desc: "Rest, recharge, connect with loved ones, and explore while you're ashore." },
-                  { image: prayerWallImg, title: 'Prayer Wall', desc: "Share a prayer, read messages, and find strength and connection." },
-                  { image: happySeaImg, brand: 'Happy@Sea', title: 'Get 24/7 Help', desc: "Chat 24/7, book rides, get essentials, explore well-being resources.", accent: true },
-                  { image: newsletterImg, title: 'Newsletter', desc: "Get local port news, seafarer support, and more." },
-                  { image: eventCalendarImg, title: 'Host an Event', desc: "Honour a loved one by creating a fundraising page." }
+                  { 
+                    image: prayerWallImg, 
+                    title: 'Prayer Wall', 
+                    desc: "Share a prayer, read messages, and find strength and connection.",
+                    link: '/prayer' // Added link here
+                  },
+                  { 
+                    image: happySeaImg, 
+                    brand: 'Happy@Sea', 
+                    title: 'Get 24/7 Help', 
+                    desc: "Chat 24/7, book rides, get essentials, explore well-being resources.", 
+                    accent: true,
+                    link: '/contact' // Added link here
+                  },
+                  { 
+                    image: newsletterImg, 
+                    title: 'Newsletter', 
+                    desc: "Get local port news, seafarer support, and more.",
+                    link: '/publication' // Added link here
+                  },
+                  { 
+                    image: eventCalendarImg, 
+                    title: 'Host an Event', 
+                    desc: "Honour a loved one by creating a fundraising page.",
+                    link: '/events' // Added link here
+                  }
                 ].map((card, i) => (
-                  <div key={i} className={`rounded-[18px] p-7 text-center transition-all hover:-translate-y-1.5 border-2 flex flex-col items-center justify-start ${card.accent ? 'bg-navy border-navy shadow-lg' : 'bg-white border-transparent shadow-card hover:shadow-card-hover hover:border-coral/20'}`}>
+                  // Switched <div to <a and added href and cursor-pointer to make it clickable
+                  <a 
+                    key={i} 
+                    href={card.link}
+                    className={`block cursor-pointer no-underline rounded-[18px] p-7 text-center transition-all hover:-translate-y-1.5 border-2 flex flex-col items-center justify-start ${card.accent ? 'bg-navy border-navy shadow-lg' : 'bg-white border-transparent shadow-card hover:shadow-card-hover hover:border-coral/20'}`}
+                  >
                     {card.brand ? (
                       <div className="text-[13px] font-extrabold text-teal mb-3 flex flex-col items-center justify-center gap-1.5 w-full">
                         <img src={card.image} alt={card.brand} className="h-10 w-auto object-contain" />
@@ -194,9 +186,10 @@ export default function Home() {
                     )}
                     <h3 className={`text-[15px] font-extrabold mb-2 ${card.accent ? 'text-white' : 'text-navy'}`}>{card.title}</h3>
                     <p className={`text-[12.5px] leading-relaxed ${card.accent ? 'text-white/80' : 'text-text-mid'}`}>{card.desc}</p>
-                  </div>
+                  </a>
                 ))}
               </div>
+
             </Reveal>
           </div>
         </section>

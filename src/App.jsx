@@ -5,6 +5,7 @@ import About from './pages/About';
 import Prayer from './pages/Prayer';
 import Awards from './pages/Awards';
 import Sponsors from './pages/Sponsors';
+import Contact from './pages/Contact'
 
 // Event Management System
 import AdminLogin from './pages/event/AdminLogin';
@@ -34,7 +35,8 @@ function App() {
         <Route path="/events" element={<EventList />} />
         <Route path="/events/:url" element={<EventDetail />} />
         <Route path='/publication' element={<Publication />} />
-         <Route path='/donate' element={<Donate />} />
+        <Route path='/donate' element={<Donate />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
     </Router>
   );

@@ -8,6 +8,10 @@ import {
   FaExternalLinkAlt
 } from 'react-icons/fa';
 
+// Import the local images
+import unseenWorkforceImg from '../assets/Awards/life-sea-chaplain-messages.webp';
+import volunteersImg from '../assets/Awards/seafarers-ondeck-working-min.webp';
+
 export default function About() {
   return (
     <div className="min-h-screen flex flex-col">
@@ -52,7 +56,8 @@ export default function About() {
               </div>
               <div className="relative">
                 <div className="rounded-[24px] overflow-hidden aspect-square md:aspect-[4/5] shadow-warm">
-                  <img src="https://images.unsplash.com/photo-1518081461904-9d8f136351c2?w=800&q=80" alt="Halifax Port at Sunset" className="w-full h-full object-cover" />
+                  {/* Replaced with local image */}
+                  <img src={unseenWorkforceImg} alt="Life at Sea Chaplain Messages" className="w-full h-full object-cover" />
                 </div>
                 <div className="absolute -bottom-6 -left-6 bg-coral text-white rounded-2xl p-6 shadow-card min-w-[200px]">
                   <FaAnchor className="text-3xl mb-2" />
@@ -228,7 +233,8 @@ export default function About() {
               </div>
               <div className="lg:col-span-5 relative">
                 <div className="rounded-3xl overflow-hidden shadow-card aspect-square">
-                  <img src="https://images.unsplash.com/photo-1593113585090-348df8ee712b?w=800&q=80" alt="Volunteers" className="w-full h-full object-cover" />
+                  {/* Replaced with local image */}
+                  <img src={volunteersImg} alt="Seafarers on deck working" className="w-full h-full object-cover" />
                 </div>
                 <div className="absolute -bottom-6 -left-6 bg-coral text-white p-5 rounded-2xl shadow-warm">
                   <FaHandsHelping className="text-3xl mb-2" />

@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
-import Reveal from '../components/common/Reveal'; 
-import { 
-  FaFilePdf, FaExternalLinkAlt, FaBookOpen, FaChartBar, 
-  FaSmile, FaLeaf, FaShip, FaShieldAlt, FaBrain, FaEnvelopeOpenText 
+import Reveal from '../components/common/Reveal';
+import {
+  FaFilePdf, FaExternalLinkAlt, FaBookOpen, FaChartBar,
+  FaSmile, FaLeaf, FaShip, FaShieldAlt, FaBrain, FaEnvelopeOpenText
 } from 'react-icons/fa';
 
+// Happiness, Foghorn, etc. PDF Imports
 import shiQ1_2024 from '../assets/pdf/Happyness/Seafarers_Happiness_Index_Q1_2024.pdf';
 import shiQ2_2024 from '../assets/pdf/Happyness/Seafarers_Happiness_Index_Q2_2024.pdf';
 import shiQ3_2024 from '../assets/pdf/Happyness/Seafarers_Happiness_Index_Q3_2024-1.pdf';
@@ -19,7 +20,24 @@ import esgStrategy from '../assets/pdf/MtS-ESG-Report-2023_29112024 (1).pdf';
 import foghornJuly2025 from '../assets/pdf/Foghorn/July-2025-Foghorn.pdf';
 import foghornFeb2025 from '../assets/pdf/Foghorn/February-2025-Foghorn-.pdf';
 import marineSafetyHandbook from '../assets/pdf/PORT-OF-HALIFAX-MARINE-SAFETY-HANDBOOK-2nd-ed.pdf';
-import mtsHalifaxStats from '../assets/pdf/MtS-ESG-Report-2023_29112024 (1).pdf'; 
+import mtsHalifaxStats from '../assets/pdf/MtS-ESG-Report-2023_29112024 (1).pdf';
+
+// Flying Angel PDF Imports
+import faFall2021 from '../assets/pdf/FlyingAngel/Mission-Newsletter-Fall-2021.pdf';
+import faFall2022 from '../assets/pdf/FlyingAngel/Mission-Newsletter-Fall-2022.pdf';
+import faSpring2021 from '../assets/pdf/FlyingAngel/Mission-Newsletter-Spring-2021.pdf';
+import faSummer2021 from '../assets/pdf/FlyingAngel/Mission-Newsletter-Summer-2021.pdf';
+import faSummer2022 from '../assets/pdf/FlyingAngel/Mission-Newsletter-Summer-2022.pdf';
+import faSummer2023 from '../assets/pdf/FlyingAngel/Mission-Newsletter-Summer-2023.pdf';
+import faSpring2022_alt from '../assets/pdf/FlyingAngel/Mission-to-Seafarers-Spring-Newsletter-2022 (1).pdf';
+import faSpring2022 from '../assets/pdf/FlyingAngel/Mission-to-Seafarers-Spring-Newsletter-2022.pdf';
+import faFall2023 from '../assets/pdf/FlyingAngel/MtS-2023-FALL-Newsletter.pdf';
+import faFall2024 from '../assets/pdf/FlyingAngel/MtS-Fall-2024-Newsletter-DIGITAL.pdf';
+import faFall2025 from '../assets/pdf/FlyingAngel/MtS-Fall-2025-Newsletter-Digital.pdf';
+import faSpring2024 from '../assets/pdf/FlyingAngel/MtS-Spring-2024-Newsletter.pdf';
+import faSpring2025 from '../assets/pdf/FlyingAngel/MtS-Spring-2025-Newsletter_Digital.pdf';
+import faSummer2024 from '../assets/pdf/FlyingAngel/MtS-Summer-2024-Newsletter-DIGITAL.pdf';
+import faSummer2025 from '../assets/pdf/FlyingAngel/MtS-Summer-2025-Newsletter_Digital.pdf';
 
 export default function Publication() {
   const location = useLocation();
@@ -37,13 +55,24 @@ export default function Publication() {
     }
   }, [location]);
 
-  // Data Arrays
-  const halifaxNewsletters = [
-    "Fall 2025", "Summer 2025", "Spring 2025", 
-    "Fall 2024", "Summer 2024", "Spring 2024", 
-    "Fall 2023", "Summer 2023", "Spring 2023", 
-    "Fall 2022", "Summer 2022", "Spring 2022", 
-    "Fall 2021", "Summer 2021", "Spring 2021"
+  // Mapped to actual imported PDF files for Halifax Newsletters
+  const halifaxNewslettersData = [
+    { title: "Fall 2025", href: faFall2025 },
+    { title: "Summer 2025", href: faSummer2025 },
+    { title: "Spring 2025", href: faSpring2025 },
+    { title: "Fall 2024", href: faFall2024 },
+    { title: "Summer 2024", href: faSummer2024 },
+    { title: "Spring 2024", href: faSpring2024 },
+    { title: "Fall 2023", href: faFall2023 },
+    { title: "Summer 2023", href: faSummer2023 },
+    { title: "Spring 2023", href: null }, // Retained for visual list accuracy 
+    { title: "Fall 2022", href: faFall2022 },
+    { title: "Summer 2022", href: faSummer2022 },
+    { title: "Spring 2022", href: faSpring2022 },
+    { title: "Spring 2022 (Alt)", href: faSpring2022_alt },
+    { title: "Fall 2021", href: faFall2021 },
+    { title: "Summer 2021", href: faSummer2021 },
+    { title: "Spring 2021", href: faSpring2021 }
   ];
 
   // Mapped to actual imported PDF files
@@ -65,9 +94,9 @@ export default function Publication() {
 
   // Updated PdfCard to accept 'href'
   const PdfCard = ({ title, href }) => (
-    <a 
-      href={href || "#"} 
-      target="_blank" 
+    <a
+      href={href || "#"}
+      target="_blank"
       rel="noopener noreferrer"
       className="bg-white border border-[#112A46]/10 rounded-xl px-5 py-4 flex items-center justify-between shadow-sm hover:shadow-lg hover:border-[#E05A2B] hover:-translate-y-1 transition-all group w-full"
     >
@@ -81,7 +110,7 @@ export default function Publication() {
   return (
     <div className="min-h-screen flex flex-col ">
       <Navbar />
-      
+
       <main className="flex-grow">
         {/* HERO SECTION */}
         <section className="relative pt-24 pb-32 bg-[#0B1A30]">
@@ -103,11 +132,11 @@ export default function Publication() {
                 <h2 className="text-[32px] font-black text-[#112A46] mb-2">
                   Mission to Seafarers Halifax Flying Angel Newsletters
                 </h2>
-                <p className="text-gray-600 font-medium">All pdfs</p>
+
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {halifaxNewsletters.map((newsletter, index) => (
-                  <PdfCard key={index} title={newsletter} />
+                {halifaxNewslettersData.map((newsletter, index) => (
+                  <PdfCard key={index} title={newsletter.title} href={newsletter.href} />
                 ))}
               </div>
             </Reveal>
@@ -129,17 +158,17 @@ export default function Publication() {
                 </p>
               </div>
               <div className="relative z-10 flex flex-col gap-3 w-full md:w-auto shrink-0">
-                <a 
-                  href="https://www.missiontoseafarers.org/the-sea" 
-                  target="_blank" 
+                <a
+                  href="https://www.missiontoseafarers.org/the-sea"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 bg-[#E05A2B] text-white px-8 py-4 rounded-xl font-bold hover:bg-[#112A46] transition-colors shadow-md"
                 >
                   <FaEnvelopeOpenText /> Sign Up
                 </a>
-                <a 
-                  href="https://www.missiontoseafarers.org/the-sea-archive" 
-                  target="_blank" 
+                <a
+                  href="https://www.missiontoseafarers.org/the-sea-archive"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 bg-white text-[#112A46] border border-[#112A46]/20 px-8 py-4 rounded-xl font-bold hover:border-[#112A46] transition-colors"
                 >
@@ -163,9 +192,9 @@ export default function Publication() {
               <p className="text-gray-300 text-[18px] mb-8">
                 To receive a free copy of the FAN, sign up here.
               </p>
-              <a 
-                href="https://www.missiontoseafarers.org/fan" 
-                target="_blank" 
+              <a
+                href="https://www.missiontoseafarers.org/fan"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-white text-[#112A46] px-8 py-4 rounded-xl font-black text-[15px] hover:bg-[#E05A2B] hover:text-white transition-all shadow-lg"
               >
@@ -187,9 +216,9 @@ export default function Publication() {
               <p className="text-gray-700 text-[17px] leading-relaxed font-medium mb-6">
                 Statistics include the frequency count of three categories: (1) seafarers visiting the Mission Centre; (2) volunteer and staff visits to ships; and, (3) seafarers provided with transport to and from the port and desired destination in Halifax and Dartmouth. Data are presented in actual counts and tables. Also, the data presentation shows a comparison of the monthly and annual counts.
               </p>
-              <a 
-                href={mtsHalifaxStats} 
-                target="_blank" 
+              <a
+                href={mtsHalifaxStats}
+                target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-[#E05A2B] font-bold text-[16px] hover:text-[#112A46] transition-colors group"
               >
@@ -207,9 +236,9 @@ export default function Publication() {
                 <h2 className="text-[32px] font-black text-[#112A46] mb-2 flex items-center gap-3">
                   Seafarers Happiness Index <FaSmile className="text-[#E05A2B]" />
                 </h2>
-                <p className="text-gray-600 font-medium">All pdfs</p>
+
               </div>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
                 {happinessReportsData.map((report, index) => (
                   <PdfCard key={index} title={report.title} href={report.href} />
@@ -218,7 +247,12 @@ export default function Publication() {
 
               <div className="bg-[#112A46] text-white p-6 rounded-xl flex items-center gap-4 hover:shadow-lg transition-shadow">
                 <div className="bg-[#E05A2B] p-3 rounded-lg"><FaExternalLinkAlt /></div>
-                <a href="#" className="font-bold text-[15px] hover:text-[#E05A2B] transition-colors">
+                <a
+                  href="https://www.seafarershappinessindex.org/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold text-[15px] hover:text-[#E05A2B] transition-colors"
+                >
                   Read link to the survey and archive of Reports here
                 </a>
               </div>
@@ -247,7 +281,7 @@ export default function Publication() {
                 <h2 className="text-[32px] font-black text-[#112A46] mb-2">
                   The Foghorn – Master Mariners of Canada, Maritimes Division
                 </h2>
-                <p className="text-[#E05A2B] font-bold">All pdfs</p>
+
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {foghornReportsData.map((report, idx) => (
@@ -271,20 +305,6 @@ export default function Publication() {
           </div>
         </section>
 
-        {/* 9. MENTAL HEALTH */}
-        <section id="mental-health" className="py-20 bg-gray-50 scroll-mt-[90px]">
-          <div className="max-w-[1000px] mx-auto px-7">
-            <Reveal className="bg-[#112A46] text-white rounded-[32px] p-10 md:p-14 relative overflow-hidden shadow-xl">
-              <FaBrain className="absolute -bottom-10 -right-10 text-[200px] text-white/5 transform rotate-12" />
-              <h2 className="text-[32px] md:text-[40px] font-black mb-10 relative z-10 leading-tight max-w-2xl">
-                The Mental Health of Seafarers in Canada During Covid 19 Pandemic
-              </h2>
-              <div className="relative z-10 md:w-1/2">
-                <PdfCard title="Read the Research Report" />
-              </div>
-            </Reveal>
-          </div>
-        </section>
 
       </main>
       <Footer />

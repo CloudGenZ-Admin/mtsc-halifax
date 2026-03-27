@@ -203,11 +203,11 @@ export default function Awards() {
         {/* ------------------------------------------- */}
         {/* STAFF AWARDS SECTION */}
         {/* ------------------------------------------- */}
-        <section id="staff-awards" className="py-24 bg-navy-dark border-t-4 border-coral scroll-mt-20">
+        <section id="staff-awards" className="py-24 bg-[#fbf8f5]  scroll-mt-20">
           <div className="max-w-[1000px] mx-auto px-7">
             <Reveal className="text-center mb-16">
-              <h2 className="text-[36px] font-black text-white mb-4">Staff Awards</h2>
-              <p className="text-white/70 max-w-2xl mx-auto text-[17px]">
+              <h2 className="text-[36px] font-black text-[#2D3580] mb-4">Staff Awards</h2>
+              <p className="text-[#2D3580] max-w-2xl mx-auto text-[17px]">
                 Honouring the extraordinary dedication and leadership of our Mission staff.
               </p>
             </Reveal>

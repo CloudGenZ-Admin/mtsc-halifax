@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FaChevronDown, FaHandsHelping, FaBars, FaTimes } from 'react-icons/fa';
 import { FaLinkedinIn, FaYoutube, FaInstagram, FaFacebookF, FaTiktok } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -9,14 +9,55 @@ import seafarerLogoImg from '../../assets/seafarers-logo.png';
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // State to track which mobile dropdowns are currently expanded
+  const [expandedMenus, setExpandedMenus] = useState({});
+  
   const location = useLocation();
   const navigate = useNavigate();
+  const navRef = useRef(null); // Reference to the entire navbar for outside click detection
 
+  // Handle scroll shadow
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Handle click outside to close mobile menu
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (navRef.current && !navRef.current.contains(event.target)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside); // Added for mobile support
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isMobileMenuOpen]);
+
+  // Close all mobile submenus when the main mobile menu is closed
+  useEffect(() => {
+    if (!isMobileMenuOpen) {
+      setExpandedMenus({});
+    }
+  }, [isMobileMenuOpen]);
+
+  // Toggle specific mobile submenu
+  const toggleMobileSubmenu = (index, e) => {
+    e.preventDefault(); // Prevent accidental navigation
+    setExpandedMenus((prev) => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
 
   // Bulletproof click handler for hash links
   const handleNavClick = (e, fullPath) => {
@@ -33,6 +74,7 @@ export default function Navbar() {
         }
       }, 50);
     }
+    // Close the mobile menu upon successful navigation
     setIsMobileMenuOpen(false);
   };
 
@@ -71,6 +113,7 @@ export default function Navbar() {
       ]
     },
     { name: 'Prayer', path: '/prayer' },
+    { name: 'Contact Us', path: '/contact' },
   ];
 
   return (
@@ -91,11 +134,14 @@ export default function Navbar() {
         </div>
       </div>
 
-      <nav className={`bg-white border-b-4 border-[#E05A2B] sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'shadow-[0_4px_20px_rgba(224,90,43,.12)]' : ''}`}>
+      <nav 
+        ref={navRef} 
+        className={`bg-white border-b-4 border-[#E05A2B] sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'shadow-[0_4px_20px_rgba(224,90,43,.12)]' : ''}`}
+      >
         <div className="max-w-[1200px] mx-auto px-7 flex items-center justify-between h-[75px] gap-5">
           
           <Link to="/" onClick={() => window.scrollTo(0,0)} className="flex items-center gap-3 no-underline group shrink-0">
-            <div className="w-24 h-18  flex items-center justify-center   overflow-hidden border-2 border-[#ffffff] group-hover:border-[#faf9f8] transition-colors">
+            <div className="w-24 h-18 flex items-center justify-center overflow-hidden border-2 border-[#ffffff] group-hover:border-[#faf9f8] transition-colors">
               <img src={seafarerLogoImg} alt="Mission to Seafarers" className="w-full h-full object-contain" />
             </div>
           </Link>
@@ -135,7 +181,6 @@ export default function Navbar() {
             ))}
           </ul>
 
-          {/* UPDATED: Changed `to="#"` to `to="/donate"` */}
           <Link to="/donate" className="hidden xl:inline-flex bg-[#E05A2B] text-white px-7 py-2.5 rounded-full font-black text-[13px] tracking-wide hover:bg-[#112A46] hover:shadow-lg transition-all transform hover:-translate-y-0.5 shrink-0">
             DONATE
           </Link>
@@ -148,45 +193,71 @@ export default function Navbar() {
           </button>
         </div>
 
+        {/* MOBILE MENU */}
         {isMobileMenuOpen && (
-          <div className="xl:hidden absolute top-full left-0 w-full bg-white shadow-[0_8px_24px_rgba(0,0,0,.15)] border-t border-gray-100 flex flex-col max-h-[80vh] overflow-y-auto z-50">
+          <div className="xl:hidden absolute top-full left-0 w-full bg-white shadow-[0_8px_24px_rgba(0,0,0,.15)] border-t border-gray-100 flex flex-col max-h-[85vh] overflow-y-auto z-50">
             <ul className="flex flex-col list-none m-0 p-4">
               {navLinks.map((item, index) => (
                 <li key={index} className="border-b border-gray-100 last:border-0">
                   <div className="flex flex-col">
-                    <Link 
-                      to={item.path} 
-                      className="py-3.5 px-2 font-black text-[#112A46] hover:text-[#E05A2B] flex justify-between items-center text-[15px]"
-                      onClick={(e) => !item.dropdown && handleNavClick(e, item.path)}
-                    >
-                      {item.name}
-                    </Link>
                     
+                    {/* Top Row: Link + Optional Toggle Button */}
+                    <div className="flex justify-between items-center w-full">
+                      <Link 
+                        to={item.path} 
+                        className="py-4 px-2 font-black text-[#112A46] hover:text-[#E05A2B] text-[15px] flex-grow"
+                        onClick={(e) => handleNavClick(e, item.path)}
+                      >
+                        {item.name}
+                      </Link>
+                      
+                      {item.dropdown && (
+                        <button 
+                          onClick={(e) => toggleMobileSubmenu(index, e)}
+                          className="p-4 text-[#112A46] hover:text-[#E05A2B] transition-colors focus:outline-none"
+                          aria-expanded={expandedMenus[index]}
+                        >
+                          <FaChevronDown 
+                            className={`text-[14px] transition-transform duration-300 ease-in-out ${expandedMenus[index] ? 'rotate-180 text-[#E05A2B]' : ''}`} 
+                          />
+                        </button>
+                      )}
+                    </div>
+                    
+                    {/* Submenu: Animated Accordion */}
                     {item.dropdown && (
-                      <ul className="pl-4 pb-3 border-l-2 border-[#E05A2B]/20 flex flex-col gap-1 mt-1 bg-gray-50/50 rounded-r-lg">
-                        {item.dropdown.map((dropItem, idx) => (
-                          <li key={idx}>
-                            <Link 
-                              to={dropItem.path} 
-                              className="block py-2.5 px-3 text-[14px] font-bold text-gray-600 hover:text-[#E05A2B] hover:bg-white rounded-md transition-colors leading-tight"
-                              onClick={(e) => handleNavClick(e, dropItem.path)}
-                            >
-                              {dropItem.name}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
+                      <div 
+                        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                          expandedMenus[index] 
+                            ? 'max-h-[1000px] opacity-100 mb-2' 
+                            : 'max-h-0 opacity-0'
+                        }`}
+                      >
+                        <ul className="pl-4 pb-2 border-l-2 border-[#E05A2B]/30 flex flex-col gap-1 mt-1 bg-gray-50/50 rounded-r-lg mx-2">
+                          {item.dropdown.map((dropItem, idx) => (
+                            <li key={idx}>
+                              <Link 
+                                to={dropItem.path} 
+                                className="block py-3 px-3 text-[14px] font-bold text-gray-600 hover:text-[#E05A2B] hover:bg-white rounded-md transition-colors leading-tight"
+                                onClick={(e) => handleNavClick(e, dropItem.path)}
+                              >
+                                {dropItem.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     )}
+
                   </div>
                 </li>
               ))}
             </ul>
-            <div className="p-5 bg-gray-50 border-t border-gray-100">
-              {/* UPDATED: Changed `to="#"` to `to="/donate"` and closed menu on click */}
+            <div className="p-5 bg-gray-50 border-t border-gray-100 mt-auto">
               <Link 
                 to="/donate" 
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="flex justify-center bg-[#E05A2B] text-white px-6 py-3.5 rounded-xl font-black text-[15px] hover:bg-[#112A46] transition-all shadow-md"
+                className="flex justify-center bg-[#E05A2B] text-white px-6 py-4 rounded-xl font-black text-[15px] hover:bg-[#112A46] transition-all shadow-md"
               >
                 DONATE NOW
               </Link>
