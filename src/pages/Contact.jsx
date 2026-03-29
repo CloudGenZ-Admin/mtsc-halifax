@@ -6,7 +6,7 @@ import { FaMapMarkerAlt, FaPhoneAlt, FaFax, FaClock, FaShip } from 'react-icons/
 
 export default function Contact() {
   return (
-    <div className="min-h-screen flex flex-col font-sans">
+    <div className="min-h-screen flex flex-col ">
       <Navbar />
       
       <main className="flex-grow">

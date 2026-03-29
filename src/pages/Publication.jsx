@@ -65,7 +65,7 @@ export default function Publication() {
     { title: "Spring 2024", href: faSpring2024 },
     { title: "Fall 2023", href: faFall2023 },
     { title: "Summer 2023", href: faSummer2023 },
-    { title: "Spring 2023", href: null }, // Retained for visual list accuracy 
+    // { title: "Spring 2023", href: null }, // Retained for visual list accuracy 
     { title: "Fall 2022", href: faFall2022 },
     { title: "Summer 2022", href: faSummer2022 },
     { title: "Spring 2022", href: faSpring2022 },
