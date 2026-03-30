@@ -1,20 +1,64 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { Link } from 'react-router-dom'; // <-- ADDED FOR PROPER ROUTING
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/common/Reveal';
 import { 
   FaAnchor, FaHeart, FaHandsHelping, FaUsers, 
   FaCheckCircle, FaPrayingHands, FaShip, FaUserTie,
-  FaExternalLinkAlt
+  FaExternalLinkAlt, FaChevronLeft, FaChevronRight,
+  FaDonate, FaCalendarAlt, FaUserPlus, FaEnvelope 
 } from 'react-icons/fa';
 
-// Import the local images
+// Import existing images
 import unseenWorkforceImg from '../assets/Awards/life-sea-chaplain-messages.webp';
 import volunteersImg from '../assets/Awards/seafarers-ondeck-working-min.webp';
 
+// ==========================================
+// IMPORT GALLERY IMAGES (AMENITIES)
+// ==========================================
+import bicyclesImg from '../assets/Amenities - Bicycles for Loan.jpg';
+import canteenImg from '../assets/Amenities - Canteen-Souvenir Shop.jpg';
+import chapelImg from '../assets/Amenities - Chapel-Prayer Room.jpg';
+import transportImg from '../assets/Amenities - Complimentary Transport Service.jpg';
+import conferenceImg from '../assets/Amenities - Conference Space.jpg';
+import freeRoomImg from '../assets/Amenities - Free Room.jpg';
+import basketballImg from '../assets/Amenities - Half Court Basketball 2.jpg';
+import loungeImg from '../assets/Amenities - Lounge.jpg';
+import sunDeckImg from '../assets/Amenities - Sun Deck.jpg';
+
 export default function About() {
+
+  // Gallery Data Array
+  const amenitiesGallery = [
+    { id: 1, img: loungeImg, title: 'Comfortable Lounge' },
+    { id: 2, img: canteenImg, title: 'Canteen & Souvenir Shop' },
+    { id: 3, img: freeRoomImg, title: 'Free Wi-Fi & Computers Room' },
+    { id: 4, img: chapelImg, title: 'Chapel & Prayer Room' },
+    { id: 5, img: transportImg, title: 'Complimentary Transport' },
+    { id: 6, img: bicyclesImg, title: 'Bicycles for Loan' },
+    { id: 7, img: basketballImg, title: 'Half Court Basketball' },
+    { id: 8, img: sunDeckImg, title: 'Outdoor Sun Deck' },
+    { id: 9, img: conferenceImg, title: 'Conference Space' },
+  ];
+
+  // Carousel Scroll Reference & Functions
+  const carouselRef = useRef(null);
+
+  const scrollPrev = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: -carouselRef.current.offsetWidth, behavior: 'smooth' });
+    }
+  };
+
+  const scrollNext = () => {
+    if (carouselRef.current) {
+      carouselRef.current.scrollBy({ left: carouselRef.current.offsetWidth, behavior: 'smooth' });
+    }
+  };
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col relative">
       <Navbar />
       
       <main className="flex-grow">
@@ -56,7 +100,6 @@ export default function About() {
               </div>
               <div className="relative">
                 <div className="rounded-[24px] overflow-hidden aspect-square md:aspect-[4/5] shadow-warm">
-                  {/* Replaced with local image */}
                   <img src={unseenWorkforceImg} alt="Life at Sea Chaplain Messages" className="w-full h-full object-cover" />
                 </div>
                 <div className="absolute -bottom-6 -left-6 bg-coral text-white rounded-2xl p-6 shadow-card min-w-[200px]">
@@ -69,7 +112,7 @@ export default function About() {
           </div>
         </section>
 
-        {/* Mission & Vision (Split Style) */}
+        {/* Mission & Vision */}
         <section className="py-12 bg-warm-gray">
           <div className="max-w-[1200px] mx-auto px-7">
             <Reveal className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -122,61 +165,91 @@ export default function About() {
           </div>
         </section>
 
-        {/* Team Section */}
-        <section className="py-24 bg-coral-pale border-y border-coral/10">
-          <div className="max-w-[1000px] mx-auto px-7">
-            <Reveal className="text-center mb-16">
-              <h2 className="text-[36px] font-black text-navy">Meet Our Team</h2>
+        {/* ------------------------------------------- */}
+        {/* CAROUSEL SECTION (AMENITIES)                */}
+        {/* ------------------------------------------- */}
+        <section className="py-24 bg-navy-dark text-white border-y border-white/10 overflow-hidden">
+          <div className="max-w-[1200px] mx-auto px-7">
+            
+            {/* Header */}
+            <Reveal className="mb-12 text-center md:text-left">
+              <div className="max-w-2xl mx-auto md:mx-0">
+                <span className="inline-block bg-white/10 text-coral-light text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-4">
+                  OUR FACILITIES
+                </span>
+                <h2 className="text-[36px] font-black mb-4 leading-tight">Comfort & Care for Seafarers</h2>
+                <p className="text-white/70 text-[16px] leading-relaxed">
+                  We offer a variety of amenities designed to provide a relaxing and welcoming environment for seafarers arriving in the Port of Halifax.
+                </p>
+              </div>
             </Reveal>
 
-            <div className="space-y-12">
-              {/* Helen */}
-              <Reveal className="bg-white rounded-3xl p-8 md:p-12 shadow-card flex flex-col md:flex-row gap-8 md:gap-12 items-center md:items-start border-b-4 border-coral">
-                <div className="w-40 h-40 shrink-0 rounded-full overflow-hidden border-4 border-coral-pale shadow-inner">
-                  <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80" alt="Helen Glenn" className="w-full h-full object-cover" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-black text-navy">Helen Glenn</h3>
-                  <p className="text-coral font-bold text-sm mb-4 uppercase tracking-wide">Station Manager</p>
-                  <p className="text-text-mid text-[15px] leading-relaxed mb-4">
-                    Helen Glenn has served as Station Manager of the Mission to Seafarers Halifax for more than 13 years, working closely with local maritime partners and international seafarers visiting the Port of Halifax. Through ship visits, transportation service, and the seafarers’ station, she helps ensure that crews arriving from around the world find a place of welcome, support, and connection while in port.
-                  </p>
-                  <p className="text-text-mid text-[15px] leading-relaxed mb-5">
-                    Helen works closely with volunteers, port authorities, and maritime organizations to strengthen welfare services for seafarers and advocate for their wellbeing within the Canadian and international maritime community.
-                  </p>
-                  <div className="bg-warm-gray p-4 rounded-xl border border-coral/15 flex items-start gap-3">
-                    <FaCheckCircle className="text-coral text-xl shrink-0 mt-0.5" />
-                    <p className="text-sm text-navy font-semibold italic">
-                      In recognition of her dedication to social service and seafarer welfare, Helen was awarded the Queen’s Platinum Jubilee Medal in 2022 by the Lieutenant Governor of Nova Scotia.
-                    </p>
-                  </div>
-                </div>
-              </Reveal>
+            {/* Carousel Container */}
+            <Reveal delay={100}>
+              <div className="relative group">
+                
+                {/* Left Arrow Button */}
+                <button 
+                  onClick={scrollPrev}
+                  className="absolute left-2 md:-left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-coral text-white shadow-xl flex items-center justify-center hover:bg-white hover:text-navy transition-all hover:scale-110 active:scale-95"
+                  aria-label="Previous Facility"
+                >
+                  <FaChevronLeft className="text-lg pr-1" />
+                </button>
 
-              {/* Joseph */}
-              <Reveal className="bg-white rounded-3xl p-8 md:p-12 shadow-card flex flex-col md:flex-row gap-8 md:gap-12 items-center md:items-start border-b-4 border-navy">
-                <div className="w-40 h-40 shrink-0 rounded-full overflow-hidden border-4 border-warm-gray shadow-inner">
-                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Joseph Loot" className="w-full h-full object-cover" />
+                {/* Right Arrow Button */}
+                <button 
+                  onClick={scrollNext}
+                  className="absolute right-2 md:-right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-coral text-white shadow-xl flex items-center justify-center hover:bg-white hover:text-navy transition-all hover:scale-110 active:scale-95"
+                  aria-label="Next Facility"
+                >
+                  <FaChevronRight className="text-lg pl-1" />
+                </button>
+
+                {/* Carousel Track */}
+                <div 
+                  ref={carouselRef}
+                  className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4 pt-4 px-2"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} 
+                >
+                  <style dangerouslySetInnerHTML={{__html: `
+                    div::-webkit-scrollbar { display: none; }
+                  `}} />
+
+                  {amenitiesGallery.map((item) => (
+                    <div 
+                      key={item.id} 
+                      className="relative flex flex-col overflow-hidden rounded-2xl bg-navy border border-white/10 shadow-lg shrink-0 snap-center sm:snap-start
+                                 w-[85%] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
+                    >
+                      {/* The Image (No dark filter) */}
+                      <div className="aspect-[4/3] w-full overflow-hidden">
+                        <img 
+                          src={item.img} 
+                          alt={item.title} 
+                          className="w-full h-full object-cover"
+                          draggable="false" 
+                        />
+                      </div>
+                      
+                      {/* Card Content (Title placed below the image) */}
+                      <div className="p-5 text-center flex-grow flex items-center justify-center">
+                        <h3 className="text-white font-bold text-[18px] leading-tight">
+                          {item.title}
+                        </h3>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div>
-                  <h3 className="text-2xl font-black text-navy">Joseph Loot</h3>
-                  <p className="text-coral font-bold text-sm mb-4 uppercase tracking-wide">Assistant Manager</p>
-                  <p className="text-text-mid text-[15px] leading-relaxed mb-4">
-                    Joseph Loot serves as the Assistant Manager at the Mission to Seafarers Halifax, supporting the day-to-day operations of the centre and helping ensure that seafarers visiting the Port of Halifax receive a warm welcome and meaningful support during their time ashore.
-                  </p>
-                  <p className="text-text-mid text-[15px] leading-relaxed">
-                    Working closely with the Station Manager, volunteers, and maritime partners, Joseph assists with seafarer transportation, ship visits, and centre activities, helping create a space where crews from around the world can rest, connect with loved ones, and access practical assistance while in port. Through his work, Joseph contributes to strengthening the Mission’s commitment to caring for the global maritime community that passes through Halifax.
-                  </p>
-                </div>
-              </Reveal>
-            </div>
+              </div>
+            </Reveal>
+
           </div>
         </section>
 
-        {/* Board & Volunteers (Split layout) */}
+        {/* Board & Volunteers */}
         <section className="py-24 bg-white">
           <div className="max-w-[1200px] mx-auto px-7 space-y-20">
-            
             {/* Board of Directors */}
             <Reveal className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
               <div className="lg:col-span-5 order-2 lg:order-1 relative">
@@ -233,7 +306,6 @@ export default function About() {
               </div>
               <div className="lg:col-span-5 relative">
                 <div className="rounded-3xl overflow-hidden shadow-card aspect-square">
-                  {/* Replaced with local image */}
                   <img src={volunteersImg} alt="Seafarers on deck working" className="w-full h-full object-cover" />
                 </div>
                 <div className="absolute -bottom-6 -left-6 bg-coral text-white p-5 rounded-2xl shadow-warm">
@@ -242,13 +314,10 @@ export default function About() {
                 </div>
               </div>
             </Reveal>
-
           </div>
         </section>
 
-        {/* ------------------------------------------- */}
-        {/* RELATED LINKS SECTION (NEW)                 */}
-        {/* ------------------------------------------- */}
+        {/* RELATED LINKS SECTION */}
         <section className="py-20 bg-warm-gray border-t border-navy/5">
           <div className="max-w-[1000px] mx-auto px-7">
             <Reveal className="text-center mb-12">
@@ -264,8 +333,8 @@ export default function About() {
                 { name: 'Mission to Seafarers (Organization website)', url: 'https://www.missiontoseafarers.org/' },
                 { name: 'Mission to Seafarers Canada', url: 'https://www.missiontoseafarers.ca/' },
                 { name: 'North American Maritime Ministry Association (NAMMA)', url: 'https://namma.org/' },
-                { name: 'Mission to Seafarers – Happy at Sea (Digital Seafarers’ Centre)', url: 'https://www.missiontoseafarers.org/happy-at-sea/' },
-                { name: 'International Labour Organization – Maritime Labour Convention, 2006', url: 'https://www.ilo.org/global/standards/maritime-labour-convention/lang--en/index.htm' }
+                { name: 'Mission to Seafarers – Happy at Sea', url: 'https://www.missiontoseafarers.org/happy-at-sea/' },
+                { name: 'International Labour Organization – MLC 2006', url: 'https://www.ilo.org/global/standards/maritime-labour-convention/lang--en/index.htm' }
               ].map((link, idx) => (
                 <a 
                   key={idx} 
@@ -285,6 +354,8 @@ export default function About() {
             </Reveal>
           </div>
         </section>
+
+      
 
       </main>
       <Footer />

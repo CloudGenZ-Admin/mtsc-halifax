@@ -8,7 +8,7 @@ import seafarerLogoImg from '../../assets/seafarers-logo.png';
 export default function Footer() {
   // Links extracted directly from your Navbar content
   const footerLinks = [
-    { name: 'Who We Are', path: '/about' },
+    { name: 'Who We Are', path: '/whoweare' },
     { name: 'Events', path: '/events' },
     { name: 'Sponsors', path: '/sponsors' },
     { name: 'Volunteer', path: '/volunteer' },

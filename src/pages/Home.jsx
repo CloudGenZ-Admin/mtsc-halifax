@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Hero from '../components/sections/Hero';
@@ -109,27 +110,28 @@ export default function Home() {
 
         <Stats />
 
-        {/* Get Involved */}
+       {/* Get Involved */}
         <section className="bg-coral py-20">
           <div className="max-w-[1200px] mx-auto px-7">
             <Reveal className="flex flex-wrap items-center justify-center gap-6 mb-12">
               <h2 className="text-[38px] font-black text-white leading-none">Ways to Get Involved</h2>
-              <a href="/donate" className="bg-navy-dark text-white px-7 py-3 rounded-full font-extrabold text-[13px] hover:bg-[#0f1c4a] transition-colors">DONATE</a>
+              <Link to="/donate" className="bg-navy-dark text-white px-7 py-3 rounded-full font-extrabold text-[13px] hover:bg-[#0f1c4a] transition-colors">
+                DONATE
+              </Link>
             </Reveal>
             <Reveal className="flex flex-wrap justify-center gap-6 md:gap-10">
               {[
-                { img: iconGiveNow, text: 'Give Now' },
-                { img: findPortBgIcon, text: 'View Events' },
-                { img: iconApplyVolunteer, text: 'Apply to Volunteer' },
-                { img: iconSubscribeNews, text: 'Subscribe to Newsletter' },
-                { img: findPortBgIcon, text: 'Explore Campaigns' },
+                { img: iconGiveNow, text: 'Give Now', link: '/donate' },
+                { img: findPortBgIcon, text: 'View Events', link: '/events' },
+                { img: iconApplyVolunteer, text: 'Apply to Volunteer', link: '/contact' },
+                { img: iconSubscribeNews, text: 'Subscribe to Newsletter', link: '/publication' },
               ].map((item, i) => (
-                <a key={i} href="#" className="flex flex-col items-center gap-3.5 group hover:-translate-y-2 transition-transform">
-                  <div className="w-24 h-24 border-2 border-white/50 rounded-full flex items-center justify-center group-hover:bg-white/15 group-hover:border-white transition-all">
+                <Link key={i} to={item.link} className="flex flex-col items-center gap-3.5 group hover:-translate-y-2 transition-transform">
+                  <div className="w-32 h-32 border-2 border-white/50 rounded-full flex items-center justify-center group-hover:bg-white/15 group-hover:border-white transition-all">
                     <img src={item.img} alt={item.text} className="w-10 h-10 object-contain brightness-0 invert" />
                   </div>
                   <span className="text-white font-bold text-[13px] text-center max-w-[90px]">{item.text}</span>
-                </a>
+                </Link>
               ))}
             </Reveal>
           </div>
