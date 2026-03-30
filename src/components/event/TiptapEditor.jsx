@@ -429,7 +429,8 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
           editor.isActive('heading', { level: 1 }) ? '1' :
           editor.isActive('heading', { level: 2 }) ? '2' :
           editor.isActive('heading', { level: 3 }) ? '3' :
-          editor.isActive('heading', { level: 4 }) ? '4' : '0'
+          editor.isActive('heading', { level: 4 }) ? '4' :
+          editor.isActive('heading', { level: 5 }) ? '5' : '0'
         }
         onChange={(e) => {
           const v = parseInt(e.target.value);
@@ -438,10 +439,11 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
         }}
       >
         <option value="0">Paragraph</option>
+        <option value="2">Section Header</option>
         <option value="1">H1</option>
-        <option value="2">H2</option>
-        <option value="3">H3</option>
-        <option value="4">H4</option>
+        <option value="3">H2</option>
+        <option value="4">H3</option>
+        <option value="5">H4</option>
       </select>
 
       <Sep />
@@ -703,7 +705,7 @@ const TiptapEditor = ({ initialContent, onChange, editable = true }) => {
 
   const editor = useEditor({
     extensions: [
-      StarterKit.configure({ heading: { levels: [1, 2, 3, 4] } }),
+      StarterKit.configure({ heading: { levels: [1, 2, 3, 4, 5] } }),
       TextStyle,
       Color,
       Highlight.configure({ multicolor: true }),

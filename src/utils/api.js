@@ -31,7 +31,10 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    // Check for 401 or "Invalid or expired token" message
+    if (error.response?.status === 401 || 
+        error.response?.data?.message?.toLowerCase().includes('invalid') ||
+        error.response?.data?.message?.toLowerCase().includes('expired')) {
       localStorage.removeItem('adminToken');
       // Only redirect if not already on the login page
       if (!window.location.pathname.includes('/admin/login')) {
