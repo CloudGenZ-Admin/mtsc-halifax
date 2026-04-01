@@ -39,6 +39,15 @@ const EventList = () => {
     }
   };
 
+  const formatDate = (date) => {
+    if (!date) return null;
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
   const filteredEvents = useMemo(() => {
     let filtered = allEvents;
 
@@ -77,15 +86,6 @@ const EventList = () => {
     if (!content) return null;
     const match = content.match(/<img[^>]+src=["']([^"']+)["']/i);
     return match ? match[1] : null;
-  };
-
-  const formatDate = (date) => {
-    if (!date) return null;
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
   };
 
   if (loading) {
@@ -154,7 +154,7 @@ const EventList = () => {
                       className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-coral focus:border-transparent"
                       placeholderText="Select a date"
                       isClearable
-                      popperClassName="z-50"
+                      portalId="root"
                     />
                   </div>
 
