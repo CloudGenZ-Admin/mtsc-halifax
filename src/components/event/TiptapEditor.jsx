@@ -507,7 +507,7 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
   const highlightVal = editor.getAttributes('highlight').color || '#FFEB3B';
 
   return (
-    <div className="border border-gray-200 rounded-t-lg bg-gray-50 p-2 flex flex-wrap gap-2 items-center sticky top-0 z-10">
+    <div className="border border-gray-200 rounded-t-lg bg-gray-50 p-2 flex flex-wrap gap-2 items-center sticky top-0 z-50 shadow-md">
 
       {/* Heading */}
       <select
@@ -890,7 +890,7 @@ const TiptapEditor = ({ initialContent, onChange, editable = true }) => {
   };
 
   return (
-    <div className="tiptap-wrapper rounded-lg border border-gray-300 overflow-hidden">
+    <div className="tiptap-wrapper rounded-lg border border-gray-300 overflow-visible">
       {editable && (
         <>
           <Toolbar editor={editor} onImageUpload={handleImageUpload} onAudioUpload={handleAudioUpload} />
