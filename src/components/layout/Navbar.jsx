@@ -1,30 +1,44 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FaChevronDown, FaHandsHelping, FaBars, FaTimes } from 'react-icons/fa';
+import { FaChevronDown, FaHandsHelping, FaBars, FaTimes, FaStar } from 'react-icons/fa';
 import { FaLinkedinIn, FaYoutube, FaInstagram, FaFacebookF, FaTiktok } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-// Import the local image
+import { eventService } from '../../services/eventService';
 import seafarerLogoImg from '../../assets/seafarers-logo.png';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [featuredEvents, setFeaturedEvents] = useState([]);
   
-  // State to track which mobile dropdowns are currently expanded
   const [expandedMenus, setExpandedMenus] = useState({});
   
   const location = useLocation();
   const navigate = useNavigate();
-  const navRef = useRef(null); // Reference to the entire navbar for outside click detection
+  const navRef = useRef(null); 
 
-  // Handle scroll shadow
+  useEffect(() => {
+    const fetchFeaturedEvents = async () => {
+      try {
+        const events = await eventService.getFeaturedEvents();
+        
+        // Reverse the array so the last items (like Sea Sunday) appear first
+        const reversedEvents = [...events].reverse();
+     
+        setFeaturedEvents(reversedEvents.slice(0, 10));
+      } catch (error) {
+        console.error('Error fetching featured events for Navbar:', error);
+      }
+    };
+    fetchFeaturedEvents();
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Handle click outside to close mobile menu
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
@@ -34,7 +48,7 @@ export default function Navbar() {
 
     if (isMobileMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
-      document.addEventListener('touchstart', handleClickOutside); // Added for mobile support
+      document.addEventListener('touchstart', handleClickOutside); 
     }
 
     return () => {
@@ -43,23 +57,20 @@ export default function Navbar() {
     };
   }, [isMobileMenuOpen]);
 
-  // Close all mobile submenus when the main mobile menu is closed
   useEffect(() => {
     if (!isMobileMenuOpen) {
       setExpandedMenus({});
     }
   }, [isMobileMenuOpen]);
 
-  // Toggle specific mobile submenu
   const toggleMobileSubmenu = (index, e) => {
-    e.preventDefault(); // Prevent accidental navigation
+    e.preventDefault(); 
     setExpandedMenus((prev) => ({
       ...prev,
       [index]: !prev[index]
     }));
   };
 
-  // Bulletproof click handler for hash links
   const handleNavClick = (e, fullPath) => {
     const [path, hash] = fullPath.split('#');
     
@@ -74,12 +85,24 @@ export default function Navbar() {
         }
       }, 50);
     }
-    // Close the mobile menu upon successful navigation
     setIsMobileMenuOpen(false);
   };
 
   const navLinks = [
-    { name: 'Events', path: '/events' },
+    { 
+      name: 'Events', 
+      path: '/events',
+     
+      ...(featuredEvents.length > 0 && {
+        dropdown: [
+          { name: 'View All Events', path: '/events' },
+          ...featuredEvents.map(event => ({
+            name: `${event.title}`,
+            path: `/events/${event.url}`
+          }))
+        ]
+      })
+    },
     { 
       name: 'Sponsors', 
       path: '/sponsors',
@@ -167,7 +190,7 @@ export default function Navbar() {
                             <Link 
                               to={dropItem.path} 
                               onClick={(e) => handleNavClick(e, dropItem.path)}
-                              className="block px-5 py-3 text-[13px] font-bold text-[#112A46] hover:bg-[#FDF0EC] hover:text-[#E05A2B] hover:pl-6 transition-all border-b border-gray-50 last:border-0 whitespace-normal leading-tight"
+                              className={`block px-5 py-3 text-[13px] font-bold text-[#112A46] hover:bg-[#FDF0EC] hover:text-[#E05A2B] hover:pl-6 transition-all border-b border-gray-50 last:border-0 whitespace-normal leading-tight ${dropItem.name.includes('✦') ? 'text-[#E05A2B]' : ''}`}
                             >
                               {dropItem.name}
                             </Link>
@@ -238,7 +261,7 @@ export default function Navbar() {
                             <li key={idx}>
                               <Link 
                                 to={dropItem.path} 
-                                className="block py-3 px-3 text-[14px] font-bold text-gray-600 hover:text-[#E05A2B] hover:bg-white rounded-md transition-colors leading-tight"
+                                className={`block py-3 px-3 text-[14px] font-bold text-gray-600 hover:text-[#E05A2B] hover:bg-white rounded-md transition-colors leading-tight ${dropItem.name.includes('✦') ? 'text-[#E05A2B]' : ''}`}
                                 onClick={(e) => handleNavClick(e, dropItem.path)}
                               >
                                 {dropItem.name}
