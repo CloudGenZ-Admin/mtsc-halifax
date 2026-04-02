@@ -270,6 +270,61 @@ const ImageWithCaption = Node.create({
   },
 });
 
+// ── Custom: Raw HTML Block ───────────────────────────────────────────────────
+const HtmlBlock = Node.create({
+  name: 'htmlBlock',
+  group: 'block',
+  atom: true,
+  addAttributes() {
+    return {
+      html: { default: '' },
+    };
+  },
+  parseHTML() {
+    return [{ 
+      tag: 'div[data-html-block]', 
+      getAttrs: (dom) => {
+        const htmlContent = dom.getAttribute('data-html-content') || dom.innerHTML;
+        return { html: htmlContent };
+      }
+    }];
+  },
+  renderHTML({ node }) {
+    return ['div', { 
+      'data-html-block': 'true', 
+      'data-html-content': node.attrs.html,
+      style: 'margin:1.5rem 0;' 
+    }];
+  },
+  addNodeView() {
+    return ({ node, editor }) => {
+      const dom = document.createElement('div');
+      dom.setAttribute('data-html-block', 'true');
+      dom.setAttribute('data-html-content', node.attrs.html);
+      dom.style.cssText = 'margin:1.5rem 0;border:1px dashed #ccc;padding:1rem;border-radius:8px;position:relative;cursor:pointer;';
+      
+      const label = document.createElement('div');
+      label.textContent = 'HTML Block (click to edit)';
+      label.style.cssText = 'position:absolute;top:4px;right:8px;font-size:10px;color:#999;background:#f9f9f9;padding:1px 6px;border-radius:4px;';
+      dom.appendChild(label);
+      
+      const content = document.createElement('div');
+      content.innerHTML = node.attrs.html;
+      content.style.cssText = 'pointer-events:none;'; // Prevent clicking inside from interfering
+      dom.appendChild(content);
+      
+      // Add click handler to edit
+      dom.addEventListener('click', () => {
+        // This will be handled by the Toolbar component
+        const event = new CustomEvent('editHtmlBlock', { detail: { html: node.attrs.html } });
+        window.dispatchEvent(event);
+      });
+      
+      return { dom };
+    };
+  },
+});
+
 // ── Toolbar helpers ──────────────────────────────────────────────────────────
 const Btn = ({ onClick, active, disabled, title, children, className = '' }) => (
   <button
@@ -322,6 +377,19 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
   const [embedModal, setEmbedModal] = useState(false);
   const [embedData, setEmbedData] = useState({ src: '', height: '400' });
   const [columnsModal, setColumnsModal] = useState(false);
+  const [htmlModal, setHtmlModal] = useState(false);
+  const [htmlCode, setHtmlCode] = useState('');
+
+  // Listen for edit HTML block events
+  useEffect(() => {
+    const handleEditHtmlBlock = (e) => {
+      setHtmlCode(e.detail.html);
+      setHtmlModal(true);
+    };
+    
+    window.addEventListener('editHtmlBlock', handleEditHtmlBlock);
+    return () => window.removeEventListener('editHtmlBlock', handleEditHtmlBlock);
+  }, []);
 
   if (!editor) return null;
 
@@ -414,6 +482,25 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
         { type: 'column', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Right column content...' }] }] },
       ],
     }).run();
+  };
+
+  const openHtmlModal = () => {
+    setHtmlCode('');
+    setHtmlModal(true);
+  };
+
+  const applyHtml = () => {
+    if (htmlCode.trim()) {
+      setHtmlModal(false);
+      setHtmlCode('');
+      // Use setTimeout to ensure modal closes before inserting
+      setTimeout(() => {
+        editor.chain().focus().insertContent({
+          type: 'htmlBlock',
+          attrs: { html: htmlCode },
+        }).run();
+      }, 100);
+    }
   };
 
   const textColorVal = editor.getAttributes('textStyle').color || '#000000';
@@ -555,6 +642,7 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
       <ToolGroup>
         <Btn onClick={insertColumns} active={false} title="2-Column Layout">⚏ Columns</Btn>
         <Btn onClick={openEmbedModal} active={false} title="Embed iFrame">🔲 Embed</Btn>
+        <Btn onClick={openHtmlModal} active={false} title="Raw HTML Block">&lt;/&gt; HTML</Btn>
       </ToolGroup>
 
       <Sep />
@@ -694,6 +782,26 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
         </div>
       </Modal>
 
+      <Modal isOpen={htmlModal} onClose={() => setHtmlModal(false)} title="Insert Raw HTML">
+        <div className="space-y-3">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Paste your HTML code</label>
+            <textarea
+              value={htmlCode}
+              onChange={(e) => setHtmlCode(e.target.value)}
+              placeholder="<div>Your HTML here...</div>"
+              rows={8}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-coral font-mono text-sm"
+            />
+          </div>
+          <p className="text-xs text-gray-500">You can paste any HTML: iframes, divs, scripts, etc.</p>
+        </div>
+        <div className="flex gap-2 mt-4">
+          <button type="button" onClick={applyHtml} className="flex-1 bg-coral text-white px-4 py-2 rounded-lg hover:bg-coral-dark transition-colors">Insert</button>
+          <button type="button" onClick={() => setHtmlModal(false)} className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
+        </div>
+      </Modal>
+
     </div>
   );
 };
@@ -729,6 +837,7 @@ const TiptapEditor = ({ initialContent, onChange, editable = true }) => {
       Column,
       Embed,
       ImageWithCaption,
+      HtmlBlock,
     ],
     content: initialContent || '',
     editable,

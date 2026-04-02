@@ -112,6 +112,20 @@ const TiptapRender = ({ content }) => {
               // Check if it's a column container
               const isColumn = node.nodeType === 1 && node.hasAttribute && node.hasAttribute('data-column');
               const isColumns = node.nodeType === 1 && node.hasAttribute && node.hasAttribute('data-columns');
+              const isHtmlBlock = node.nodeType === 1 && node.hasAttribute && node.hasAttribute('data-html-block');
+
+              if (isHtmlBlock) {
+                flushImages();
+                const htmlContent = node.getAttribute('data-html-content') || node.innerHTML;
+                result.push(
+                  <div
+                    key={i++}
+                    dangerouslySetInnerHTML={{ __html: htmlContent }}
+                    style={{ margin: '1.5rem 0' }}
+                  />
+                );
+                return;
+              }
 
               if (isColumn || isColumns) {
                 flushImages();
