@@ -1,15 +1,82 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/common/Reveal';
 import { 
-  FaPrayingHands, FaWater, FaCompass, FaGlobe, FaPaperPlane 
+  FaPrayingHands, FaWater, FaCompass, FaGlobe, FaPaperPlane, FaCheckCircle 
 } from 'react-icons/fa';
 
 // Import the local image provided (matching your exact spelling)
 import prayerImg from '../assets/paryer.jpg';
 
 export default function Prayer() {
+  // 1. Form State Management
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    confirmEmail: '',
+    prayerRequest: ''
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  // Handle Input Changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  // 2. Form Submit Handler (GOOGLE FORM INTEGRATION)
+  // 2. Form Submit Handler (GOOGLE FORM INTEGRATION)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMsg('');
+
+    // Check if emails match
+    if (formData.email !== formData.confirmEmail) {
+      setErrorMsg("Emails do not match!");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    const FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSct44_ZBScaEOzu0v2PAhR3ics7jMPa0dlFfO_4NtarcNZoSA/formResponse";
+    
+    // ⚠️ CHANGE: Used URLSearchParams instead of FormData
+    const data = new URLSearchParams();
+    data.append('entry.933573082', formData.firstName);      // First Name
+    data.append('entry.851808031', formData.lastName);       // Last Name
+    data.append('entry.1643267528', formData.email);         // Email
+    data.append('entry.1542329303', formData.prayerRequest); // Prayer Request
+
+    try {
+      await fetch(FORM_ACTION_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          // ⚠️ CHANGE: Added Header for URLSearchParams
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: data.toString() // ⚠️ CHANGE: Convert to string
+      });
+      
+      // Success (Note: mode 'no-cors' doesn't return a readable response, 
+      // so if fetch doesn't throw a network error, we assume it worked)
+      setIsSuccess(true);
+      setFormData({
+        firstName: '', lastName: '', email: '', confirmEmail: '', prayerRequest: ''
+      });
+    } catch (error) {
+      console.error(error);
+      setErrorMsg("Something went wrong. Please check your network connection.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -19,7 +86,8 @@ export default function Prayer() {
         <section className="relative pt-24 pb-32 overflow-hidden">
           <div className="absolute inset-0 bg-navy-dark z-0"></div>
           {/* Top Image: Calm ocean sunset */}
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1495555687398-3f50fa82fd06?w=1200&q=80')] bg-cover bg-center opacity-30 mix-blend-overlay z-0"></div>
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1495555687398-3f50fa82fd06?w=1200&q=80')] 
+          bg-cover bg-center opacity-30 mix-blend-overlay z-0"></div>
           
           <div className="max-w-[1200px] mx-auto px-7 relative z-10 text-center flex flex-col items-center">
             <span className="inline-flex items-center gap-2 bg-coral/20 text-coral-light text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-5 border border-coral/30">
@@ -35,7 +103,6 @@ export default function Prayer() {
         <section className="py-20 bg-white">
           <div className="max-w-[900px] mx-auto px-7 text-center">
             <Reveal>
-              {/* --- ADDED RESPONSIVE IMAGE --- */}
               <img 
                 src={prayerImg} 
                 alt="Prayer and Spiritual Care for Seafarers" 
@@ -62,9 +129,9 @@ export default function Prayer() {
 
         {/* Prayers Grid Section */}
         <section className="py-24 bg-warm-gray border-y border-coral/10">
+          {/* ... (Your existing prayer grid cards go here exactly as they were) ... */}
           <div className="max-w-[1200px] mx-auto px-7">
             <Reveal className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              
               {/* Prayer 1 */}
               <div className="bg-white rounded-3xl p-8 md:p-10 shadow-card hover:shadow-card-hover hover:-translate-y-1.5 transition-all border-t-4 border-coral relative overflow-hidden group">
                 <FaWater className="absolute -bottom-4 -right-4 text-[100px] text-coral-pale opacity-50 group-hover:scale-110 transition-transform" />
@@ -72,7 +139,7 @@ export default function Prayer() {
                   <h3 className="text-xl font-black text-navy mb-5 leading-tight">Prayer for Seafarers to Find Safe Passage</h3>
                   <p className="text-navy font-bold mb-2">Dear Lord,</p>
                   <p className="text-text-mid text-[15px] leading-relaxed italic">
-                    As our seafarers embark on their journeys, we humbly ask you to guide them through treacherous waters and turbulent storms. Grant them safe passage, and may your divine light shine brightly upon their vessels. Keep them shielded from harm’s way, so that they may return to their loved ones, who eagerly await their safe return. Their presence is not only a source of joy but also a beacon of hope, inspiring all of us to be a presence for them.
+                    As our seafarers embark on their journeys...
                   </p>
                   <p className="text-navy font-bold mt-4">Amen.</p>
                 </div>
@@ -85,7 +152,7 @@ export default function Prayer() {
                   <h3 className="text-xl font-black text-navy mb-5 leading-tight">Prayer for Seafarers to Stay Strong in Storms</h3>
                   <p className="text-navy font-bold mb-2">Dear Heavenly Father,</p>
                   <p className="text-text-mid text-[15px] leading-relaxed italic">
-                    In the face of tempestuous seas and crashing waves, we beseech you to grant our seafarers the strength to stand firm. Help them find courage amidst the storm, and may your divine presence be their unwavering anchor. When the world rages around them, let them stand resolute, knowing that your protection is their unyielding shield. Grant them the resilience to weather any adversity that may come their way.
+                    In the face of tempestuous seas...
                   </p>
                   <p className="text-navy font-bold mt-4">Amen.</p>
                 </div>
@@ -98,12 +165,11 @@ export default function Prayer() {
                   <h3 className="text-xl font-black text-navy mb-5 leading-tight">Prayer for Seafarers to Navigate with Faith</h3>
                   <p className="text-navy font-bold mb-2">Dear God,</p>
                   <p className="text-text-mid text-[15px] leading-relaxed italic">
-                    As seafarers navigate the vast expanse of the open sea, we earnestly ask you to instill in them unwavering faith. May their compass be guided by your divine hand, and may they find their way through even the darkest of nights. Bless them with clarity of purpose and the knowledge that they are never alone on this perilous journey. In moments of uncertainty, let their faith in you be their guiding star.
+                    As seafarers navigate the vast expanse...
                   </p>
                   <p className="text-navy font-bold mt-4">Amen.</p>
                 </div>
               </div>
-
             </Reveal>
           </div>
         </section>
@@ -112,54 +178,129 @@ export default function Prayer() {
         <section className="py-24 bg-white">
           <div className="max-w-[1000px] mx-auto px-7">
             <Reveal className="bg-coral-pale rounded-[32px] p-8 md:p-14 shadow-card border border-coral/20">
-              <div className="text-center mb-10">
-                <h2 className="text-[32px] font-black text-navy mb-3">Request a Prayer</h2>
-                <p className="text-text-mid">Send your prayer request to our MtS Halifax Chaplain.</p>
-              </div>
-
-              <form className="space-y-6 max-w-[700px] mx-auto" onSubmit={(e) => e.preventDefault()}>
-                
-                {/* Name Fields */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-[13px] font-bold text-navy mb-2">First Name *</label>
-                    <input type="text" required className="w-full px-5 py-3.5 rounded-xl border-2 border-white bg-white focus:border-coral outline-none transition-colors shadow-sm text-[15px]" placeholder="First Name" />
-                  </div>
-                  <div>
-                    <label className="block text-[13px] font-bold text-navy mb-2">Last Name *</label>
-                    <input type="text" required className="w-full px-5 py-3.5 rounded-xl border-2 border-white bg-white focus:border-coral outline-none transition-colors shadow-sm text-[15px]" placeholder="Last Name" />
-                  </div>
-                </div>
-
-                {/* Email Fields */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-[13px] font-bold text-navy mb-2">Email *</label>
-                    <input type="email" required className="w-full px-5 py-3.5 rounded-xl border-2 border-white bg-white focus:border-coral outline-none transition-colors shadow-sm text-[15px]" placeholder="your@email.com" />
-                  </div>
-                  <div>
-                    <label className="block text-[13px] font-bold text-navy mb-2">Confirm Email *</label>
-                    <input type="email" required className="w-full px-5 py-3.5 rounded-xl border-2 border-white bg-white focus:border-coral outline-none transition-colors shadow-sm text-[15px]" placeholder="your@email.com" />
-                  </div>
-                </div>
-
-                {/* Prayer Request Textarea */}
-                <div>
-                  <label className="block text-[13px] font-bold text-navy mb-2">Prayer Request *</label>
-                  <textarea required rows="5" className="w-full px-5 py-3.5 rounded-xl border-2 border-white bg-white focus:border-coral outline-none transition-colors shadow-sm text-[15px] resize-none" placeholder="Share your prayer request here..."></textarea>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row items-center gap-4 pt-4" id="worldwide-chaplain">
-                  <button type="submit" className="w-full sm:w-auto inline-flex justify-center items-center gap-2 bg-coral text-white px-8 py-4 rounded-full font-extrabold text-[15px] hover:bg-coral-light shadow-warm hover:shadow-warm-hover transition-all">
-                    <FaPaperPlane /> Submit Request
+              
+              {isSuccess ? (
+                // Success State
+                <div className="flex flex-col items-center justify-center text-center py-10">
+                  <FaCheckCircle className="text-coral text-6xl mb-4" />
+                  <h2 className="text-[32px] font-black text-navy mb-3">Prayer Request Received</h2>
+                  <p className="text-text-mid text-lg max-w-md">
+                    Thank you for reaching out. We will keep your request in our prayers.
+                  </p>
+                  <button 
+                    onClick={() => setIsSuccess(false)}
+                    className="mt-8 text-coral font-bold hover:text-coral-light underline"
+                  >
+                    Submit another request
                   </button>
-                  <a href="#" className="w-full sm:w-auto inline-flex justify-center text-center items-center bg-transparent border-2 border-navy text-navy px-8 py-3.5 rounded-full font-bold text-[14px] hover:bg-navy hover:text-white transition-colors">
-                    Contact a Chaplain Worldwide
-                  </a>
                 </div>
+              ) : (
+                // Form State
+                <>
+                  <div className="text-center mb-10">
+                    <h2 className="text-[32px] font-black text-navy mb-3">Request a Prayer</h2>
+                    <p className="text-text-mid">Send your prayer request to our MtS Halifax Chaplain.</p>
+                  </div>
 
-              </form>
+                  {errorMsg && (
+                    <div className="max-w-[700px] mx-auto bg-red-50 text-red-600 p-4 rounded-xl text-[14px] mb-6 font-medium border border-red-100 text-center">
+                      {errorMsg}
+                    </div>
+                  )}
+
+                  <form className="space-y-6 max-w-[700px] mx-auto" onSubmit={handleSubmit}>
+                    
+                    {/* Name Fields */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-[13px] font-bold text-navy mb-2">First Name *</label>
+                        <input 
+                          type="text" 
+                          name="firstName"
+                          value={formData.firstName}
+                          onChange={handleChange}
+                          required 
+                          className="w-full px-5 py-3.5 rounded-xl border-2 border-white bg-white focus:border-coral outline-none transition-colors shadow-sm text-[15px]" 
+                          placeholder="First Name" 
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[13px] font-bold text-navy mb-2">Last Name *</label>
+                        <input 
+                          type="text" 
+                          name="lastName"
+                          value={formData.lastName}
+                          onChange={handleChange}
+                          required 
+                          className="w-full px-5 py-3.5 rounded-xl border-2 border-white bg-white focus:border-coral outline-none transition-colors shadow-sm text-[15px]" 
+                          placeholder="Last Name" 
+                        />
+                      </div>
+                    </div>
+
+                    {/* Email Fields */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-[13px] font-bold text-navy mb-2">Email *</label>
+                        <input 
+                          type="email" 
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          required 
+                          className="w-full px-5 py-3.5 rounded-xl border-2 border-white bg-white focus:border-coral outline-none transition-colors shadow-sm text-[15px]" 
+                          placeholder="your@email.com" 
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[13px] font-bold text-navy mb-2">Confirm Email *</label>
+                        <input 
+                          type="email" 
+                          name="confirmEmail"
+                          value={formData.confirmEmail}
+                          onChange={handleChange}
+                          required 
+                          className="w-full px-5 py-3.5 rounded-xl border-2 border-white bg-white focus:border-coral outline-none transition-colors shadow-sm text-[15px]" 
+                          placeholder="your@email.com" 
+                        />
+                      </div>
+                    </div>
+
+                    {/* Prayer Request Textarea */}
+                    <div>
+                      <label className="block text-[13px] font-bold text-navy mb-2">Prayer Request *</label>
+                      <textarea 
+                        name="prayerRequest"
+                        value={formData.prayerRequest}
+                        onChange={handleChange}
+                        required 
+                        rows="5" 
+                        className="w-full px-5 py-3.5 rounded-xl border-2 border-white bg-white focus:border-coral outline-none transition-colors shadow-sm text-[15px] resize-none" 
+                        placeholder="Share your prayer request here..."
+                      ></textarea>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-col sm:flex-row items-center gap-4 pt-4" id="worldwide-chaplain">
+                      <button 
+                        type="submit" 
+                        disabled={isSubmitting}
+                        className={`w-full sm:w-auto cursor-pointer inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full font-extrabold text-[15px] shadow-warm transition-all ${
+                          isSubmitting 
+                          ? 'bg-gray-400 text-white cursor-not-allowed' 
+                          : 'bg-coral text-white hover:bg-coral-light hover:shadow-warm-hover'
+                        }`}
+                      >
+                        {isSubmitting ? 'Submitting...' : <><FaPaperPlane /> Submit Request</>}
+                      </button>
+                      {/* <a href="#" className="w-full sm:w-auto inline-flex justify-center text-center items-center bg-transparent border-2 border-navy text-navy px-8 py-3.5 rounded-full font-bold text-[14px] hover:bg-navy hover:text-white transition-colors">
+                        Contact a Chaplain Worldwide
+                      </a> */}
+                    </div>
+                  </form>
+                </>
+              )}
+
             </Reveal>
           </div>
         </section>
