@@ -84,8 +84,50 @@ const EventList = () => {
 
   const getFirstImage = (content) => {
     if (!content) return null;
-    const match = content.match(/<img[^>]+src=["']([^"']+)["']/i);
-    return match ? match[1] : null;
+    
+    let searchContent = content;
+    
+    // Check if content is wrapped in data-html-block with encoded HTML
+    const htmlBlockMatch = content.match(/data-html-content="([^"]+)"/);
+    if (htmlBlockMatch) {
+      // Decode the HTML entities
+      const encoded = htmlBlockMatch[1];
+      const decoded = encoded
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&amp;/g, '&');
+      searchContent = decoded;
+    }
+    
+    // Try HTML regex
+    const match = searchContent.match(/<img[^>]+src=["']([^"']+)["']/i);
+    if (match) return match[1];
+    
+    try {
+      // Try parsing as JSON (Tiptap format)
+      const parsed = JSON.parse(searchContent);
+      
+      // Find first image node
+      if (parsed.content && Array.isArray(parsed.content)) {
+        for (const node of parsed.content) {
+          if (node.type === 'image' && node.attrs?.src) {
+            return node.attrs.src;
+          }
+          // Check nested content (like in paragraphs)
+          if (node.content && Array.isArray(node.content)) {
+            for (const child of node.content) {
+              if (child.type === 'image' && child.attrs?.src) {
+                return child.attrs.src;
+              }
+            }
+          }
+        }
+      }
+    } catch (e) {
+    }
+    
+    return null;
   };
 
   if (loading) {
