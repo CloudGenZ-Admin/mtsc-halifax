@@ -22,7 +22,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/whoweare" element={<About />} />
         <Route path="/prayer" element={<Prayer />} />
-        <Route path="/volunteer" element={<Awards />} /> {/* <-- 2. Add route */}
+        <Route path="/WaysToGive" element={<Awards />} /> {/* <-- 2. Add route */}
         <Route path="/sponsors" element={<Sponsors />} />
         
         {/* Event Management Routes */}

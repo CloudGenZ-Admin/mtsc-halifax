@@ -21,7 +21,7 @@ import advocacyRightsIcon from '../assets/img/Seafarers/advocacy-rights.svg';
 import communityConnectionIcon from '../assets/img/Seafarers/community-connection.svg';
 
 // Import local SVGs for "Ways to Get Involved" section
-import iconGiveNow from '../assets/img/Donate/icon-give-now.svg';
+// import iconGiveNow from '../assets/img/Donate/icon-give-now.svg'; // Commented out since Give Now is removed
 import iconApplyVolunteer from '../assets/img/Donate/icon-apply-volunteer.svg';
 import iconSubscribeNews from '../assets/img/Donate/icon-subscribe-news.svg';
 import findPortBgIcon from '../assets/img/Donate/find-port-bg.svg';
@@ -29,7 +29,27 @@ import findPortBgIcon from '../assets/img/Donate/find-port-bg.svg';
 // Import local image for "Find a Station" section
 import operatingShipsImg from '../assets/img/Seafarers/infgrph-operating-ships.png';
 
+// --- NEW PARTNER PORT LOGOS FOR CAROUSEL ---
+import portSydney from '../assets/Corpo/ports/Port-of-Sydney-Canada--768x388.png.webp';
+import portGCT from '../assets/Corpo/ports/Global-Container-Terminals-.png.webp';
+import portHopa from '../assets/Corpo/ports/hopa-ports-logo-768x388.png';
+import portHelm from '../assets/Corpo/ports/logo-helm-768x388.webp';
+import portOntario from '../assets/Corpo/ports/logo-ontario-shipyards.webp';
+import portPrinceRupert from '../assets/Corpo/ports/logo-prince-rupert.webp';
+import portRobertAllan from '../assets/Corpo/ports/logo-robert-allan.png.webp';
+import portTK from '../assets/Corpo/ports/logo-tk.webp';
+import portNamma from '../assets/Corpo/ports/nammalogo-1024x269.jpg.webp';
+import portToronto from '../assets/Corpo/ports/Toronto-Ports-logo-768x305.png';
+import portDpWorld from '../assets/Corpo/ports/dpworld-logo.png.webp';
+
 export default function Home() {
+  // Array of imported port logos for the carousel
+  const partnerLogos = [
+    portSydney, portGCT, portHopa, portHelm, portOntario, 
+    portPrinceRupert, portRobertAllan, portTK, portNamma, 
+    portToronto, portDpWorld
+  ];
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -41,7 +61,7 @@ export default function Home() {
         <div className="bg-white py-10 border-b border-coral/10">
           <div className="max-w-[1200px] mx-auto px-7 text-center">
             <p className="text-[clamp(20px,3vw,30px)] font-extrabold text-navy">
-              Caring for seafarers — <em className="text-coral not-italic">the unsung heroes of global trade</em>
+              Caring for seafarers,<em className="text-coral not-italic">the unsung heroes of global trade</em>
             </p>
           </div>
         </div>
@@ -110,27 +130,66 @@ export default function Home() {
 
         <Stats />
 
-       {/* Get Involved */}
+        {/* Sponsor Logos Floating Banner (UPDATED CAROUSEL) */}
+        <section className="bg-white py-12 border-b border-navy/10 overflow-hidden relative">
+          <div className="max-w-[1200px] mx-auto px-7 mb-8">
+            <h3 className="text-center text-[13px] font-extrabold text-text-mid tracking-[0.15em] uppercase">
+              Our Proud Sponsors & Partners
+            </h3>
+          </div>
+
+          <div className="w-full relative">
+            <style>
+              {`
+                @keyframes scroll {
+                  0% { transform: translateX(0); }
+                  100% { transform: translateX(-50%); }
+                }
+                .animate-scroll {
+                  display: flex;
+                  width: fit-content;
+                  animation: scroll 35s linear infinite;
+                }
+                .animate-scroll:hover {
+                  animation-play-state: paused;
+                }
+              `}
+            </style>
+            <div className="animate-scroll items-center gap-16 md:gap-24 px-8">
+              {/* Duplicated array to create a seamless infinite loop */}
+              {[...partnerLogos, ...partnerLogos].map((logo, index) => (
+                <img 
+                  key={index} 
+                  src={logo} 
+                  alt={`Sponsor Logo ${index}`} 
+                  className="h-12 md:h-16 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-pointer" 
+                />
+              ))}
+            </div>
+            {/* White gradient fades on left and right for seamless entrance/exit */}
+            <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
+            <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
+          </div>
+        </section>
+
+        {/* Get Involved */}
         <section className="bg-coral py-20">
           <div className="max-w-[1200px] mx-auto px-7">
             <Reveal className="flex flex-wrap items-center justify-center gap-6 mb-12">
               <h2 className="text-[38px] font-black text-white leading-none">Ways to Get Involved</h2>
-              <Link to="/donate" className="bg-navy-dark text-white px-7 py-3 rounded-full font-extrabold text-[13px] hover:bg-[#0f1c4a] transition-colors">
-                DONATE
-              </Link>
             </Reveal>
             <Reveal className="flex flex-wrap justify-center gap-6 md:gap-10">
               {[
-                { img: iconGiveNow, text: 'Give Now', link: '/donate' },
                 { img: findPortBgIcon, text: 'View Events', link: '/events' },
                 { img: iconApplyVolunteer, text: 'Apply to Volunteer', link: '/contact' },
                 { img: iconSubscribeNews, text: 'Subscribe to Newsletter', link: '/publication' },
               ].map((item, i) => (
                 <Link key={i} to={item.link} className="flex flex-col items-center gap-3.5 group hover:-translate-y-2 transition-transform">
-                  <div className="w-32 h-32 border-2 border-white/50 rounded-full flex items-center justify-center group-hover:bg-white/15 group-hover:border-white transition-all">
+                  <div className="w-32 h-32 border-2 border-white/50 rounded-full flex items-center justify-center
+                   group-hover:bg-white/15 group-hover:border-white transition-all px-4">
                     <img src={item.img} alt={item.text} className="w-10 h-10 object-contain brightness-0 invert" />
                   </div>
-                  <span className="text-white font-bold text-[13px] text-center max-w-[90px]">{item.text}</span>
+                  <span className="text-white font-bold text-[13px] text-center max-w-[120px]">{item.text}</span>
                 </Link>
               ))}
             </Reveal>
@@ -141,7 +200,7 @@ export default function Home() {
         <section className="bg-warm-gray py-20">
           <div className="max-w-[1200px] mx-auto px-7">
             <Reveal>
-              <h2 className="text-[34px] font-black text-navy text-center mb-10">Join Our Community</h2>
+              <h2 className="text-[34px] font-black text-navy text-center mb-10">Join or Host an Event for Us</h2>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
@@ -149,7 +208,7 @@ export default function Home() {
                     image: prayerWallImg, 
                     title: 'Prayer Wall', 
                     desc: "Share a prayer, read messages, and find strength and connection.",
-                    link: '/prayer' // Added link here
+                    link: '/prayer'
                   },
                   { 
                     image: happySeaImg, 
@@ -157,22 +216,21 @@ export default function Home() {
                     title: 'Get 24/7 Help', 
                     desc: "Chat 24/7, book rides, get essentials, explore well-being resources.", 
                     accent: true,
-                    link: '/contact' // Added link here
+                    link: '/contact'
                   },
                   { 
                     image: newsletterImg, 
                     title: 'Newsletter', 
                     desc: "Get local port news, seafarer support, and more.",
-                    link: '/publication' // Added link here
+                    link: '/publication'
                   },
                   { 
                     image: eventCalendarImg, 
-                    title: 'Host an Event', 
+                    title: 'Join or Host an Event for Us', // <--- Changed this title here
                     desc: "Honour a loved one by creating a fundraising page.",
-                    link: '/events' // Added link here
+                    link: '/events'
                   }
                 ].map((card, i) => (
-                  // Switched <div to <a and added href and cursor-pointer to make it clickable
                   <a 
                     key={i} 
                     href={card.link}

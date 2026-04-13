@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/common/Reveal';
@@ -7,6 +7,11 @@ import { FaMapMarkerAlt, FaPhoneAlt, FaFax, FaClock, FaShip, FaCheckCircle } fro
 import centerImage from '../assets/MtS Halifax Center.jpg';
 
 export default function Contact() {
+  // Scroll to top when the component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const maxChars = 600;
 
   // 1. Form State Management

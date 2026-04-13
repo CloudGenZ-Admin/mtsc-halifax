@@ -33,10 +33,10 @@ export default function Stats() {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <StatCard icon={FaShip} target={7104} label="Operating Ships" startAnimation={isVisible} />
+            <StatCard icon={FaShip} target={7104} label="Ships Visited" startAnimation={isVisible} />
             <StatCard icon={FaGlobe} target={181440} label="Seafarers Worldwide" startAnimation={isVisible} />
-            <StatCard icon={FaUsers} target={15} suffix="+" label="Years Supporting Seafarers" startAnimation={isVisible} />
-            <StatCard icon={FaHistory} target={160} suffix="+" label="Year Legacy" startAnimation={isVisible} />
+            <StatCard icon={FaUsers} target={15} suffix="+" label="Years Supporting Seafarers in Canada" startAnimation={isVisible} />
+            <StatCard icon={FaHistory} target={160} suffix="+" label="Years of Global Legacy" startAnimation={isVisible} />
           </div>
         </Reveal>
       </div>

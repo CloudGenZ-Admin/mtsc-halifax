@@ -8,6 +8,9 @@ import {
   FaSmile, FaLeaf, FaShip, FaShieldAlt, FaBrain, FaEnvelopeOpenText
 } from 'react-icons/fa';
 
+// Background Image
+import publicaBg from '../assets/publica.jpg';
+
 // Happiness, Foghorn, etc. PDF Imports
 import shiQ1_2024 from '../assets/pdf/Happyness/Seafarers_Happiness_Index_Q1_2024.pdf';
 import shiQ2_2024 from '../assets/pdf/Happyness/Seafarers_Happiness_Index_Q2_2024.pdf';
@@ -113,12 +116,19 @@ export default function Publication() {
 
       <main className="flex-grow">
         {/* HERO SECTION */}
-        <section className="relative pt-24 pb-32 bg-[#0B1A30]">
+        <section className="relative pt-24 pb-32 overflow-hidden bg-neutral-900">
+          {/* Background Image & Neutral Black Overlay (No Blue) */}
+          <div 
+            className="absolute inset-0 z-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${publicaBg})` }}
+          ></div>
+          <div className="absolute inset-0 z-0 bg-black/60"></div>
+
           <div className="max-w-[1200px] mx-auto px-7 relative z-10 text-center flex flex-col items-center">
-            <span className="inline-flex items-center gap-2 bg-[#E05A2B]/20 text-[#E05A2B] text-[13px] font-black tracking-wide px-4 py-1.5 rounded-full mb-5 border border-[#E05A2B]/30 uppercase">
+            <span className="inline-flex items-center gap-2 bg-[#E05A2B] text-white text-[13px] font-black tracking-wide px-4 py-1.5 rounded-full mb-5 border border-[#E05A2B]/30 uppercase">
               <FaBookOpen /> Resources & Archives
             </span>
-            <h1 className="text-[clamp(36px,5vw,56px)] font-black text-white leading-[1.1] mb-6 max-w-4xl mx-auto">
+            <h1 className="text-[clamp(36px,5vw,56px)] font-black text-white leading-[1.1] mb-6 max-w-4xl mx-auto drop-shadow-md">
               Our <span className="text-[#E05A2B]">Publications</span> & Reports
             </h1>
           </div>
@@ -304,7 +314,6 @@ export default function Publication() {
             </Reveal>
           </div>
         </section>
-
 
       </main>
       <Footer />

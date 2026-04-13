@@ -113,11 +113,11 @@ export default function Navbar() {
     },
     { name: 'Who We Are', path: '/whoweare' }, 
     { 
-      name: 'Volunteer', 
-      path: '/volunteer',
+      name: 'Ways to Give ', 
+      path: '/WaystoGive',
       dropdown: [
-        { name: 'Volunteer Awardees', path: '/volunteer#volunteer-awards' },
-        { name: 'Staff Awardees', path: '/volunteer#staff-awards' }
+        { name: 'Volunteer Awardees', path: '/WaystoGive#volunteer-awards' },
+        { name: 'Staff Awardees', path: '/WaystoGive#staff-awards' }
       ]
     }, 
     {
