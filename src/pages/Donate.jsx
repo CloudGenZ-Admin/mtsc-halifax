@@ -73,11 +73,15 @@ export default function Donate() {
                 <p className="mt-4">
                   Our annual Christmas Shoebox Gift-giving to seafarers continues! Last Christmas 2020, in the middle of the COVID-19 pandemic, we gave over 1,000 gifts to seafarers whose ships visited the Halifax ports.
                 </p>
+
+                <p className='mt-4'>
+                          Your gift will help provide vital care, comfort, and connection to the men and women who spend months away from home. Your online donation is simple, secure, and goes directly to programs that make a real difference in the lives of seafarers
+                </p> 
                 
                 {/* The Quote Block */}
                 <div className="mt-10 p-6 md:p-8 bg-[#FDF0EC] border-l-4 border-[#E05A2B] rounded-r-xl">
                   <p className="text-[18px] md:text-[22px] font-black text-[#112A46] italic leading-snug">
-                    "Our seafarers depend on us… we are so fortunate to be able to depend on YOU."
+                    "Thank you for Giving to Mission to Seafarers Halifax."
                   </p>
                 </div>
               </Reveal>

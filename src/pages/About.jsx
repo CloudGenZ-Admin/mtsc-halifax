@@ -3,16 +3,16 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/common/Reveal';
-import { 
-  FaAnchor, FaHeart, FaHandsHelping, FaUsers, 
+import {
+  FaAnchor, FaHeart, FaHandsHelping, FaUsers,
   FaCheckCircle, FaPrayingHands, FaShip, FaUserTie,
   FaChevronLeft, FaChevronRight, FaUserShield
 } from 'react-icons/fa';
 
 // Import existing images
 import unseenWorkforceImg from '../assets/Awards/life-sea-chaplain-messages.webp';
-import volunteersImg from '../assets/Awards/seafarers-ondeck-working-min.webp';
-
+import volunteersImg from '../assets/MtS Halifax Center.jpg';
+import helenImg from '../assets/Helen-Glenn-Mission-Manager-174x300.jpg';
 // ==========================================
 // IMPORT GALLERY IMAGES (AMENITIES)
 // ==========================================
@@ -59,16 +59,16 @@ export default function About() {
   return (
     <div className="min-h-screen flex flex-col relative">
       <Navbar />
-      
+
       <main className="flex-grow">
         {/* Inner Page Hero */}
         <section className="relative pt-24 pb-32 overflow-hidden">
           <div className="absolute inset-0 bg-navy-dark z-0"></div>
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200&q=85')] bg-cover bg-center opacity-20 mix-blend-overlay z-0"></div>
-          
+
           <div className="max-w-[1200px] mx-auto px-7 relative z-10 text-center">
             <span className="inline-block bg-coral/20 text-coral-light text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-5 border border-coral/30">
-              ✦ MTSC Halifax 
+              ✦ MTSC Halifax
             </span>
             <h1 className="text-[clamp(36px,5vw,56px)] font-black text-white leading-[1.1] mb-6 max-w-4xl mx-auto">
               A Welcoming Harbour for <span className="text-coral">Seafarers in Halifax</span>
@@ -124,7 +124,7 @@ export default function About() {
                   Through our station ship visits, and outreach services, we strive to ensure that every seafarer who arrives in Halifax feels supported and valued.
                 </p>
               </div>
-              
+
               <div className="bg-coral rounded-3xl p-10 md:p-14 shadow-warm hover:-translate-y-1 transition-transform">
                 <h3 className="text-navy-dark text-sm font-extrabold tracking-widest uppercase mb-3">Our Vision</h3>
                 <p className="text-white text-[22px] font-bold leading-snug">
@@ -176,9 +176,15 @@ export default function About() {
 
             <Reveal className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               <div className="bg-white rounded-3xl p-10 text-center shadow-card hover:-translate-y-1 transition-transform border border-navy/5">
-                <div className="w-24 h-24 bg-coral-pale text-coral rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
-                  <FaUserTie />
+                {/* Replaced FaUserTie icon with the imported image */}
+                <div className="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden border-2 border-coral-pale bg-coral-pale">
+                  <img
+                    src={helenImg}
+                    alt="Helen Glenn - Station Manager"
+                    className="w-full h-full object-cover object-top"
+                  />
                 </div>
+
                 <h3 className="text-2xl font-black text-navy mb-2">Helen</h3>
                 <p className="text-coral font-bold uppercase tracking-widest text-sm">Station Manager</p>
               </div>
@@ -233,7 +239,7 @@ export default function About() {
         {/* ------------------------------------------- */}
         <section className="py-24 text-navy-dark bg-warm-gray border-y border-white/10 overflow-hidden">
           <div className="max-w-[1200px] mx-auto px-7">
-            
+
             {/* Header */}
             <Reveal className="mb-12 text-center md:text-left">
               <div className="max-w-2xl mx-auto md:mx-0">
@@ -250,9 +256,9 @@ export default function About() {
             {/* Carousel Container */}
             <Reveal delay={100}>
               <div className="relative group">
-                
+
                 {/* Left Arrow Button */}
-                <button 
+                <button
                   onClick={scrollPrev}
                   className="absolute left-2 md:-left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-coral text-white shadow-xl flex items-center justify-center hover:bg-white hover:text-navy transition-all hover:scale-110 active:scale-95"
                   aria-label="Previous Facility"
@@ -261,7 +267,7 @@ export default function About() {
                 </button>
 
                 {/* Right Arrow Button */}
-                <button 
+                <button
                   onClick={scrollNext}
                   className="absolute right-2 md:-right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-coral text-white shadow-xl flex items-center justify-center hover:bg-white hover:text-navy transition-all hover:scale-110 active:scale-95"
                   aria-label="Next Facility"
@@ -270,31 +276,32 @@ export default function About() {
                 </button>
 
                 {/* Carousel Track */}
-                <div 
+                <div
                   ref={carouselRef}
                   className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4 pt-4 px-2"
-                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }} 
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
-                  <style dangerouslySetInnerHTML={{__html: `
+                  <style dangerouslySetInnerHTML={{
+                    __html: `
                     div::-webkit-scrollbar { display: none; }
                   `}} />
 
                   {amenitiesGallery.map((item) => (
-                    <div 
-                      key={item.id} 
+                    <div
+                      key={item.id}
                       className="relative flex flex-col overflow-hidden rounded-2xl bg-navy border border-white/10 shadow-lg shrink-0 snap-center sm:snap-start
                                  w-[85%] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
                     >
                       {/* The Image (No dark filter) */}
                       <div className="aspect-[4/3] w-full overflow-hidden">
-                        <img 
-                          src={item.img} 
-                          alt={item.title} 
+                        <img
+                          src={item.img}
+                          alt={item.title}
                           className="w-full h-full object-cover"
-                          draggable="false" 
+                          draggable="false"
                         />
                       </div>
-                      
+
                       {/* Card Content (Title placed below the image) */}
                       <div className="p-5 text-center flex-grow flex items-center justify-center">
                         <h3 className="text-white font-bold text-[18px] leading-tight">

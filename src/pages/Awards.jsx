@@ -421,18 +421,19 @@ export default function AwardsAndGiving() {
             </Reveal>
 
             {/* Support Halifax's Economy Banner */}
-            <div className="relative py-24 mb-24 bg-black rounded-[32px] overflow-hidden">
+            {/* <div className="relative py-24 mb-24 bg-black rounded-[32px] overflow-hidden">
               <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1506784365847-bbad939e9335?w=1600&q=80')] bg-cover bg-center opacity-40"></div>
               <div className="max-w-[800px] mx-auto px-7 relative z-10 text-center">
                 <h3 className="text-3xl md:text-4xl font-black text-white mb-6">Support Halifax’s Economy</h3>
                 <p className="text-white/90 text-[16px] mb-8 leading-relaxed">
                   Seafarers form the invisible workforce behind the goods, resources, and trade that sustain our communities. Becoming a corporate sponsor with The Mission to Seafarers Halifax is an investment in our local and national economic strength.
                 </p>
-                <Link to="/contact" className="inline-block border-2 border-white hover:bg-white hover:text-navy text-white font-bold py-3 px-8 rounded-full transition-colors">
+                <Link to="https://mtsc.ca/ways-to-give-seafarers/corporate-supporter/" className="inline-block border-2 border-white hover:bg-white hover:text-navy text-white font-bold py-3 px-8 rounded-full transition-colors">
                   LEARN ABOUT OUR IMPACT
                 </Link>
               </div>
-            </div>
+              
+            </div> */}
 
             {/* Grid Rows for Corporate Involvement */}
             <div className="max-w-[1000px] mx-auto px-7 space-y-24">
