@@ -61,7 +61,7 @@ export default function Home() {
         <div className="bg-white py-10 border-b border-coral/10">
           <div className="max-w-[1200px] mx-auto px-7 text-center">
             <p className="text-[clamp(20px,3vw,30px)] font-extrabold text-navy">
-              Caring for seafarers,<em className="text-coral not-italic">the unsung heroes of global trade</em>
+              Caring for seafarers, <em className="text-coral not-italic">the unsung heroes of global trade</em>
             </p>
           </div>
         </div>
