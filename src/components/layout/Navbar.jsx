@@ -116,8 +116,10 @@ export default function Navbar() {
       name: 'Ways to Give ', 
       path: '/WaystoGive',
       dropdown: [
-        { name: 'Volunteer Awardees', path: '/WaystoGive#volunteer-awards' },
-        { name: 'Staff Awardees', path: '/WaystoGive#staff-awards' }
+         { name: 'Corporate Partnership', path: '/WaystoGive#corporate-partner' },
+         { name: 'Our Events', path: '/events' },
+         { name: 'Volunteer Awardees', path: '/WaystoGive#volunteer-awards'},
+         { name: 'Staff Awardees', path: '/WaystoGive#staff-awards'}
       ]
     }, 
     {
