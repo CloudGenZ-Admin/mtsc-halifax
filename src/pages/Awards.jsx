@@ -3,9 +3,9 @@ import { useLocation, Link } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/common/Reveal';
-import { 
-  FaTrophy, FaMedal, FaAward, FaCamera, FaQuoteLeft, 
-  FaChevronRight, FaHandHoldingHeart, FaShip, FaRegBuilding, 
+import {
+  FaTrophy, FaMedal, FaAward, FaCamera, FaQuoteLeft,
+  FaChevronRight, FaHandHoldingHeart, FaShip, FaRegBuilding,
   FaUsers, FaHeart, FaHandsHelping, FaFileContract
 } from 'react-icons/fa';
 
@@ -57,6 +57,9 @@ import legacyShipVisits from '../assets/Corpo/legacyinfgrphic-2900-shipvisits_1.
 
 // --- IMPORTING PDF ---
 import lgLetterPdf from '../assets/pdf/LG-letter-Helen-Glenn.pdf';
+
+// --- IMPORTING LOCAL IMAGES ---
+import staffAwardsImg from '../assets/Awards/StaffAwards.jpg';
 
 export default function AwardsAndGiving() {
   const location = useLocation();
@@ -124,24 +127,24 @@ export default function AwardsAndGiving() {
 
   // Array of imported port logos for the carousel
   const partnerLogos = [
-    portSydney, portGCT, portHopa, portHelm, portOntario, 
-    portPrinceRupert, portRobertAllan, portTK, portNamma, 
+    portSydney, portGCT, portHopa, portHelm, portOntario,
+    portPrinceRupert, portRobertAllan, portTK, portNamma,
     portToronto, portDpWorld
   ];
 
   return (
     <div className="min-h-screen flex flex-col font-sans">
       <Navbar />
-      
+
       <main className="flex-grow">
-       
+
         {/* --- 1. CORPORATE PARTNER SECTION --- */}
         <section id="corporate-partner" className="bg-[#F8F9FA] pb-24">
           {/* Corporate Hero Banner */}
           <div className="relative py-32 bg-navy overflow-hidden">
-            <div 
+            <div
               className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-overlay"
-              // style={{ backgroundImage: `url(${corpoHero})` }}
+            // style={{ backgroundImage: `url(${corpoHero})` }}
             ></div>
             <div className="max-w-[1200px] mx-auto px-7 relative z-10 text-center">
               <h2 className="text-4xl md:text-5xl font-black text-white mb-4 drop-shadow-md">Corporate Partnership Makes an Impact</h2>
@@ -156,7 +159,7 @@ export default function AwardsAndGiving() {
                 <p className="text-text-mid mb-8 text-[16px] leading-relaxed">
                   As a corporate partner, your organization can help provide essential services and compassionate care to the seafarers who arrive at the Port of Halifax and who call Canada home.
                 </p>
-                
+
                 <div className="flex flex-wrap justify-center gap-4 mt-8">
                   <a href="https://mtsc.ca/ways-to-give-seafarers/corporate-supporter/" target="_blank" rel="noopener noreferrer" className="bg-navy hover:bg-navy-light text-white font-bold py-3 px-8 rounded-full transition-colors text-[15px] shadow-md">
                     WORKPLACE GIVING
@@ -171,7 +174,7 @@ export default function AwardsAndGiving() {
             {/* Our Partners / Star Club */}
             <Reveal className="text-center mb-24 bg-white p-10 md:p-14 rounded-[32px] shadow-sm border border-navy/5 overflow-hidden">
               <h3 className="text-3xl font-black text-navy mb-12">Our Partners & Supporters</h3>
-              
+
               {/* --- INFINITE CAROUSEL --- */}
               <div className="w-full relative mb-16">
                 <style>
@@ -193,11 +196,11 @@ export default function AwardsAndGiving() {
                 <div className="animate-scroll items-center gap-16 md:gap-24 px-8">
                   {/* Duplicated array to create a seamless infinite loop */}
                   {[...partnerLogos, ...partnerLogos].map((logo, index) => (
-                    <img 
-                      key={index} 
-                      src={logo} 
-                      alt={`Partner Logo ${index}`} 
-                      className="h-12 md:h-16 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300" 
+                    <img
+                      key={index}
+                      src={logo}
+                      alt={`Partner Logo ${index}`}
+                      className="h-12 md:h-16 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                     />
                   ))}
                 </div>
@@ -247,7 +250,7 @@ export default function AwardsAndGiving() {
                       <ul className="space-y-3">
                         {opt.list.map((item, i) => (
                           <li key={i} className={`flex items-center gap-3 text-navy font-medium ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
-                            <span className="text-coral text-lg shrink-0">➤</span> 
+                            <span className="text-coral text-lg shrink-0">➤</span>
                             <span>{item}</span>
                           </li>
                         ))}
@@ -260,9 +263,9 @@ export default function AwardsAndGiving() {
           </div>
         </section>
 
-         <div className="w-full h-4 bg-gradient-to-r from-navy via-coral to-navy"></div>
+        <div className="w-full h-4 bg-gradient-to-r from-navy via-coral to-navy"></div>
 
-         {/* --- 2. EVENTS CTA --- */}
+        {/* --- 2. EVENTS CTA --- */}
         <section className="py-20 bg-white">
           <div className="max-w-[1000px] mx-auto px-7 text-center">
             <Reveal>
@@ -295,9 +298,9 @@ export default function AwardsAndGiving() {
               <p className="text-text-mid text-[17px] mb-16 max-w-3xl mx-auto leading-relaxed">
                 Mission to Seafarers Halifax is part of a global ministry dedicated to caring for the world’s seafarers, men and women who work tirelessly at sea to keep global trade moving.
               </p>
-              
+
               <h4 className="text-3xl font-black text-coral mb-16">Why Support the Mission with a Legacy Gift</h4>
-              
+
               {/* Infographics Row */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-24">
                 {[
@@ -337,7 +340,7 @@ export default function AwardsAndGiving() {
                     "Gifts In-Kind from Individuals"
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <span className="text-coral text-lg mt-0.5">➤</span> 
+                      <span className="text-coral text-lg mt-0.5">➤</span>
                       <span className="text-navy font-medium text-[15px]">{item}</span>
                     </div>
                   ))}
@@ -357,13 +360,13 @@ export default function AwardsAndGiving() {
                 <FaFileContract className="text-5xl text-coral mx-auto mb-6" />
                 <h4 className="text-3xl font-black text-navy mb-6">Legal Address</h4>
                 <p className="text-text-mid mb-8 text-[16px] leading-relaxed">
-                  It’s important to correctly identify us by our legal name and address in your Will. <br/>Our legal name and address is:
+                  It’s important to correctly identify us by our legal name and address in your Will. <br />Our legal name and address is:
                 </p>
                 <div className="inline-block text-left bg-white p-8 rounded-2xl shadow-sm border border-gray-100 w-full max-w-sm">
                   <p className="font-black text-navy text-xl mb-3 border-b border-gray-100 pb-3">The Mission to Seafarers Halifax</p>
                   <p className="text-text-mid text-[16px] leading-loose">
-                    P.O. Box 27114<br/>
-                    Halifax, Nova Scotia, Canada<br/>
+                    P.O. Box 27114<br />
+                    Halifax, Nova Scotia, Canada<br />
                     B3H 4M8
                   </p>
                   {/* <div className="mt-6 pt-4 border-t border-gray-100">
@@ -380,11 +383,11 @@ export default function AwardsAndGiving() {
           </div>
         </section>
 
-           {/* Inner Page Hero */}
+        {/* Inner Page Hero */}
         <section className="relative pt-24 pb-32 overflow-hidden bg-black">
           <div className="absolute inset-0 bg-navy-dark z-10"></div>
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1531686264889-56fdcabd163f?w=1200&q=80')] bg-cover bg-center z-0"></div>
-          
+
           <div className="max-w-[1200px] mx-auto px-7 relative z-20 text-center flex flex-col items-center">
             <span className="inline-flex items-center gap-2 bg-coral/20 text-coral-light text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-5 border border-coral/30">
               <FaTrophy /> Recognition & Excellence
@@ -453,10 +456,10 @@ export default function AwardsAndGiving() {
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4 mb-3 md:mb-4">
                       {platinumAwardees.map((awardee, i) => (
                         <div key={i} className="group relative rounded-2xl overflow-hidden aspect-[4/5] bg-black border-[3px] border-white shadow-card">
-                          <img 
-                            src={awardee.src} 
-                            alt={awardee.name} 
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                          <img
+                            src={awardee.src}
+                            alt={awardee.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                           />
                           <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 md:p-4 pt-12">
                             <FaCamera className="text-coral-light mb-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[14px]" />
@@ -466,10 +469,10 @@ export default function AwardsAndGiving() {
                       ))}
                     </div>
                     <div className="group relative rounded-2xl overflow-hidden aspect-[16/9] md:aspect-[21/7] bg-black border-[3px] border-white shadow-card">
-                      <img 
-                        src={groupImg} 
-                        alt="Group Photo of Platinum Jubilee Awardees" 
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 object-top" 
+                      <img
+                        src={groupImg}
+                        alt="Group Photo of Platinum Jubilee Awardees"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 object-top"
                       />
                       <div className="absolute inset-0 flex flex-col justify-end p-5 md:p-6 bg-gradient-to-t from-black/80 via-black/20 to-transparent">
                         <span className="font-black text-white text-[15px] md:text-[19px] mb-1.5 drop-shadow-md">
@@ -500,11 +503,11 @@ export default function AwardsAndGiving() {
                   </p>
                 </div>
                 <div className="w-full md:w-[45%] relative min-h-[280px] md:min-h-full order-1 md:order-2 overflow-hidden bg-black">
-                   <img 
-                     src={captainTonySandraImg} 
-                     alt="Captain Anthony McGuinness presenting to Sandra Attersley" 
-                     className="w-full h-full object-cover absolute inset-0 object-center" 
-                   />
+                  <img
+                    src={captainTonySandraImg}
+                    alt="Captain Anthony McGuinness presenting to Sandra Attersley"
+                    className="w-full h-full object-cover absolute inset-0 object-center"
+                  />
                 </div>
               </Reveal>
             </div>
@@ -536,10 +539,10 @@ export default function AwardsAndGiving() {
                   <p className="text-navy font-bold italic text-[15px] leading-relaxed relative z-10 pl-8">
                     In his Honour’s letter to Helen, he pointed out “… you have demonstrated exceptional qualities and outstanding service to our Province…”
                   </p>
-                  <a 
-                    href={lgLetterPdf} 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                  <a
+                    href={lgLetterPdf}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-block mt-3 pl-8 text-[13px] font-extrabold text-coral hover:text-coral-light transition-colors underline underline-offset-4"
                   >
                     Read here the full text of the letter
@@ -547,13 +550,11 @@ export default function AwardsAndGiving() {
                 </div>
               </div>
               <div className="w-full md:w-[45%] relative min-h-[300px] bg-black">
-                 <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&q=80" alt="Placeholder for Helen Staff Award" className="w-full h-full object-cover absolute inset-0" />
-                 <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-6 text-center bg-black/40">
-                    <FaCamera className="text-4xl mb-3 text-coral" />
-                    <span className="font-bold text-[14px] bg-black/70 px-5 py-3 rounded-xl backdrop-blur-sm shadow-xl">
-                      Insert Image:<br/>Helen Glenn receiving Medal from Lieutenant Governor
-                    </span>
-                 </div>
+                <img
+                  src={staffAwardsImg}
+                  alt="Helen Glenn receiving Medal from Lieutenant Governor"
+                  className="w-full h-full object-cover absolute inset-0"
+                />
               </div>
             </Reveal>
           </div>
@@ -566,7 +567,7 @@ export default function AwardsAndGiving() {
           <div className="absolute bottom-[-100px] right-[-100px] w-96 h-96 bg-blue-400 rounded-full blur-[150px] opacity-20"></div>
 
           <div className="max-w-[1200px] mx-auto px-7 grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10">
-            
+
             {/* Donate Card */}
             <Reveal className="bg-white/10 p-10 md:p-14 rounded-[32px] border border-white/20 backdrop-blur-md text-center flex flex-col justify-between hover:bg-white/15 transition-colors">
               <div>
@@ -593,10 +594,10 @@ export default function AwardsAndGiving() {
                   Empower your community to give back. Whether it's a bake sale, a charity run, or an online campaign, hosting a fundraiser is an incredible way to raise awareness and critical funds for seafarers arriving in our port.
                 </p>
               </div>
-              <a 
-                href="https://fundraising.mtsc.ca/?_gl=1*1mkepix*_ga*MTQ1MDA1MDIuMTc3NDgyNTg5MA..*_ga_PRGHG34XYT*czE3NzU5NTE3NjMkbzE3JGcxJHQxNzc1OTUyODkzJGoxMSRsMCRoMA" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href="https://fundraising.mtsc.ca/?_gl=1*1mkepix*_ga*MTQ1MDA1MDIuMTc3NDgyNTg5MA..*_ga_PRGHG34XYT*czE3NzU5NTE3NjMkbzE3JGcxJHQxNzc1OTUyODkzJGoxMSRsMCRoMA"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-white text-coral hover:bg-gray-50 font-black py-4 px-10 rounded-full transition-all text-lg inline-block w-fit mx-auto shadow-lg relative z-10 hover:-translate-y-1"
               >
                 START FUNDRAISING
