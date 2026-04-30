@@ -53,13 +53,13 @@ app.use('/api/upload', uploadRoutes);
 // Error handling middleware
 app.use(errorHandler);
 
-// Database sync and server start
-sequelize.sync({ alter: true }).then(() => {
-  console.log('Database synced');
+// Database connection and server start
+sequelize.authenticate().then(() => {
+  console.log('Database connected');
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
 }).catch(err => {
-  console.error('Database sync error:', err);
+  console.error('Database connection error:', err);
   process.exit(1);
 });
