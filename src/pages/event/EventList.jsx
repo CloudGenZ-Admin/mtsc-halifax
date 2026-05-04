@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { eventService } from '../../services/eventService';
+import { useEvents } from '../../context/EventsContext';
 import ReactDatePicker from 'react-datepicker';
 import { FiCalendar, FiStar, FiSearch } from 'react-icons/fi';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -11,33 +11,11 @@ import Reveal from '../../components/common/Reveal';
 const DatePicker = ReactDatePicker.default || ReactDatePicker;
 
 const EventList = () => {
-  const [featuredEvents, setFeaturedEvents] = useState([]);
-  const [allEvents, setAllEvents] = useState([]);
+  const { allEvents, featuredEvents, loading: eventsLoading } = useEvents();
   const [selectedDate, setSelectedDate] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchEvents();
-  }, []);
-
-  const fetchEvents = async () => {
-    try {
-      const [featured, all] = await Promise.all([
-        eventService.getFeaturedEvents(),
-        eventService.getPublicEvents()
-      ]);
-      setFeaturedEvents(featured);
-      const eventsWithDate = all.filter(event => event.eventDate);
-      setAllEvents(eventsWithDate);
-    } catch (error) {
-      console.error('Error fetching events:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const formatDate = (date) => {
     if (!date) return null;
@@ -130,7 +108,7 @@ const EventList = () => {
     return null;
   };
 
-  if (loading) {
+  if (eventsLoading) {
     return (
       <div className="min-h-screen flex flex-col">
         <Navbar />

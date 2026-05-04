@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'; 
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { EventsProvider } from './context/EventsContext'; 
 
 // Pages Imports
 import Home from './pages/Home';
@@ -31,6 +32,7 @@ function ScrollToTop() {
 
 function App() {
   return (
+    <EventsProvider>
     <Router>
      
       <ScrollToTop /> 
@@ -56,6 +58,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
       </Routes>
     </Router>
+    </EventsProvider>
   );
 }
 

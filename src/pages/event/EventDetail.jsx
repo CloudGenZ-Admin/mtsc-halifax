@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { eventService } from '../../services/eventService';
+import { useEvents } from '../../context/EventsContext';
 import TiptapRender from '../../components/event/TiptapRender';
 import { FiArrowLeft, FiCalendar } from 'react-icons/fi';
 import Navbar from '../../components/layout/Navbar';
@@ -8,6 +8,7 @@ import Footer from '../../components/layout/Footer';
 
 const EventDetail = () => {
   const { url } = useParams();
+  const { fetchSingleEvent } = useEvents();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,7 +20,7 @@ const EventDetail = () => {
   const fetchEvent = async () => {
     try {
       
-      const data = await eventService.getEventByUrl(url);
+      const data = await fetchSingleEvent(url);
       setEvent(data);
     } catch (error) {
       setError('Event not found');

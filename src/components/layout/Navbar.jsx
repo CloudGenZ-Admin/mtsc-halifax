@@ -3,35 +3,19 @@ import { FaChevronDown, FaHandsHelping, FaBars, FaTimes, FaStar } from 'react-ic
 import { FaLinkedinIn, FaYoutube, FaInstagram, FaFacebookF, FaTiktok } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-import { eventService } from '../../services/eventService';
+import { useEvents } from '../../context/EventsContext';
 import seafarerLogoImg from '../../assets/seafarers-logo.png';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [featuredEvents, setFeaturedEvents] = useState([]);
+  const { featuredEvents } = useEvents();
   
   const [expandedMenus, setExpandedMenus] = useState({});
   
   const location = useLocation();
   const navigate = useNavigate();
   const navRef = useRef(null); 
-
-  useEffect(() => {
-    const fetchFeaturedEvents = async () => {
-      try {
-        const events = await eventService.getFeaturedEvents();
-        
-        // Reverse the array so the last items (like Sea Sunday) appear first
-        const reversedEvents = [...events].reverse();
-     
-        setFeaturedEvents(reversedEvents.slice(0, 10));
-      } catch (error) {
-        console.error('Error fetching featured events for Navbar:', error);
-      }
-    };
-    fetchFeaturedEvents();
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60);
