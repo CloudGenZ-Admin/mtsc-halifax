@@ -13,8 +13,8 @@ export default function Footer() {
   const footerLinks = [
     { name: 'Who We Are', path: '/whoweare' },
     { name: 'Events', path: '/events' },
-    { name: 'Sponsors', path: '/sponsors' },
-    { name: 'Volunteer', path: '/volunteer' },
+    { name: 'Sponsors', path: '/WaystoGive' },
+    { name: 'Volunteer', path: '/contact' },
     { name: 'Publication', path: '/publication' },
     { name: 'Prayer', path: '/prayer' },
     { name: 'Donate', path: '/donate' }
