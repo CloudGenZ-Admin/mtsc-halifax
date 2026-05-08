@@ -1,0 +1,496 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer';
+import Reveal from '../components/common/Reveal';
+import {
+  FaHeart, FaHandsHelping, FaDollarSign, FaGift, FaUsers, FaBuilding,
+  FaBullhorn, FaHandshake, FaAnchor, FaShip
+} from 'react-icons/fa';
+
+// Import images
+import portHalifaxImg from '../assets/port_halifax.jpg';
+import volunteersImg from '../assets/MtS Halifax Center.jpg';
+
+export default function WaystoGive() {
+  const [activeForm, setActiveForm] = useState(null);
+
+  // All sponsors from Sponsors page
+  const allSponsors = [
+    "100 Bluenosers Who Care", "AON", "Associated Cargo Specialists", "Atlantic Towing Ltd", 
+    "Atship Services Ltd.", "Atlantic Container Line", "Atlantic Pilotage Authority", 
+    "Blue Water Agencies Ltd.", "CN", "CERES", "Canadian Institute of Marine Engineering", 
+    "Canadian Steamship Lines", "Colley Motorships Ltd.", "Diocese Synod of NS and PEI", 
+    "Edmonds Landscape & Construction Services Ltd", "F.K. Warren Ltd.", "Flying Angel Fund", 
+    "Freight Checkers Union 1342", "Halifax Marriot Habourside Hotel", "Halifax Pilots", 
+    "Halifax Port Authority", "Horizon Maritime Services", "ILA 269 Halifax Long Shoreman's Association", 
+    "Inchcape Shipping Services", "International Sailor's Society Canada", "ITF Seafarer's Trust", 
+    "Logistec Stevedoring", "Maritime World Logistics", "Mark & Dr. Joanne MacDonald", 
+    "Metcalf & Company", "Mothers Union of NS and PEI", "MV Asterix", "NAMMA", "NICOM IT", 
+    "Open Church/Reachout Society for Humanitarian Aid", "Partner International Inc.", 
+    "P & H Milling Group", "PRAXES Medical Group", "PSA HALIFAX", "Protos Shipping Ltd.", 
+    "Quay Marine Associates", "RCR", "Secunda", "Stewart Mckelvey", "The Company of Master Mariners", 
+    "The Shipping Federation of Canada", "TK Foundation", "UNIFOR Marine Workers Union", 
+    "Vanco Farms", "Wallenius Willhelmsen Logistics", "ZIM Integrated Shipping Services Ltd.",
+    "Atlantic Towing Ltd", "Atship Services Ltd", "Atlantic Container Line", 
+    "Atlantic Pilotage Authority", "Blue Water Agencies Ltd.", "Canadian Institute of Marine Engineering", 
+    "Canadian Steamship Lines", "Colley Motorships Ltd", "CN", "Diocese Synod of NS & PE", 
+    "Edmonds Landscape & Construction Services Ltd.", "F.K.Warren Ltd", "The Halifax Pilots", 
+    "Halifax Port Authority", "Hapag Lloyd (Canada) Ltd.", "Holland America Line", "LeeWay Marine", 
+    "Logistec Stevedoring", "Metcalf & Company", "International Sailors' Society Canada", 
+    "Northrop Grumman", "Partner International Inc.", "P & H Milling Group", "Protos Shipping Ltd.", 
+    "Spectacle Group", "Svitzer Canada Ltd.", "Wallenius Willhelmsen Logistics", 
+    "ZIM Integrated Shipping Services Ltd."
+  ];
+
+  // Remove duplicates
+  const uniqueSponsors = [...new Set(allSponsors)];
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+
+      <main className="flex-grow">
+        {/* Hero Section */}
+        <section className="relative pt-24 pb-32 overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <img
+              src={portHalifaxImg}
+              alt="Port of Halifax"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#112A46]/90 via-[#2D5A7B]/85 to-[#E05A2B]/70"></div>
+          </div>
+
+          <div className="max-w-[1200px] mx-auto px-7 relative z-10 text-center">
+            <span className="inline-block bg-white/20 backdrop-blur-sm text-white text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-5 border border-white/30">
+              ✦ Support Our Mission
+            </span>
+            <h1 className="text-[clamp(36px,5vw,56px)] font-black text-white leading-[1.1] mb-6 max-w-4xl mx-auto drop-shadow-lg">
+              Get Involved with <span className="text-[#FFD700]">Mission to Seafarers Halifax</span>
+            </h1>
+            <p className="text-white/90 text-[18px] max-w-3xl mx-auto leading-relaxed">
+              There are many ways to support and help create a welcoming place for seafarers arriving at the Port of Halifax. Whether you choose to volunteer, donate, provide in-kind support, or partner with us, your support helps ensure that seafarers feel cared for.
+            </p>
+          </div>
+        </section>
+
+        {/* Donation Section */}
+        <section className="py-24 bg-white">
+          <div className="max-w-[1200px] mx-auto px-7">
+            
+            {/* Section Header */}
+            <Reveal className="text-center mb-16">
+              <span className="inline-block bg-[#E05A2B]/10 text-[#E05A2B] text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-4">
+                <FaDollarSign className="inline mr-1" /> DONATE
+              </span>
+              <h2 className="text-[clamp(32px,4vw,48px)] font-black text-[#112A46] mb-4">
+                Donate – Help Care for Seafarers
+              </h2>
+              <p className="text-[#5A6C7D] text-[17px] max-w-2xl mx-auto leading-relaxed">
+                Every gift helps us provide hospitality, practical support, transportation, Wi-Fi, refreshments, haircuts, and a welcoming place for seafarers visiting Halifax.
+              </p>
+            </Reveal>
+
+            {/* Donation Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+              
+              {/* Monthly Giving */}
+              <Reveal>
+                <div className="bg-gradient-to-br from-[#F8FBFD] to-white rounded-3xl p-8 md:p-10 shadow-xl border border-[#112A46]/5 hover:shadow-2xl transition-all h-full flex flex-col">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-[#E05A2B] rounded-xl flex items-center justify-center">
+                      <FaHeart className="text-white text-xl" />
+                    </div>
+                    <h3 className="text-[24px] font-black text-[#112A46]">Monthly Giving</h3>
+                  </div>
+                  
+                  <p className="text-[#5A6C7D] text-[16px] leading-relaxed mb-6">
+                    Become a monthly donor and help provide ongoing care and support throughout the year. Monthly gifts help us plan ahead.
+                  </p>
+
+                  <div className="space-y-3 mb-8 flex-grow">
+                    <div className="flex items-start gap-3 bg-white rounded-xl p-4 border border-[#E05A2B]/10">
+                      <div className="w-6 h-6 bg-[#E05A2B]/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                        <span className="text-[#E05A2B] text-xs font-black">$15</span>
+                      </div>
+                      <span className="text-[#112A46] text-[14px] font-medium">/month provides refreshments & hospitality</span>
+                    </div>
+                    <div className="flex items-start gap-3 bg-white rounded-xl p-4 border border-[#E05A2B]/10">
+                      <div className="w-6 h-6 bg-[#E05A2B]/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                        <span className="text-[#E05A2B] text-xs font-black">$25</span>
+                      </div>
+                      <span className="text-[#112A46] text-[14px] font-medium">/month supports transportation & Wi-Fi</span>
+                    </div>
+                    <div className="flex items-start gap-3 bg-white rounded-xl p-4 border border-[#E05A2B]/10">
+                      <div className="w-6 h-6 bg-[#E05A2B]/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                        <span className="text-[#E05A2B] text-xs font-black">$50</span>
+                      </div>
+                      <span className="text-[#112A46] text-[14px] font-medium">/month provides practical assistance & care</span>
+                    </div>
+                  </div>
+
+                  <a
+                    href="https://www.missiontoseafarershalifax.ca/donate/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 bg-[#112A46] text-white px-8 py-4 rounded-full font-bold text-[15px] hover:bg-[#1a3a5f] transition-all shadow-lg hover:shadow-xl w-full"
+                  >
+                    Become a Monthly Donor
+                  </a>
+                </div>
+              </Reveal>
+
+              {/* One-Time Gift */}
+              <Reveal delay={100}>
+                <div className="bg-gradient-to-br from-[#FDF0EC] to-white rounded-3xl p-8 md:p-10 shadow-xl border border-[#E05A2B]/10 hover:shadow-2xl transition-all h-full flex flex-col">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-[#E05A2B] rounded-xl flex items-center justify-center">
+                      <FaGift className="text-white text-xl" />
+                    </div>
+                    <h3 className="text-[24px] font-black text-[#112A46]">One-Time Gift</h3>
+                  </div>
+                  
+                  <p className="text-[#5A6C7D] text-[16px] leading-relaxed mb-8 flex-grow">
+                    Make a one-time donation to support Mission to Seafarers Halifax. Your gift helps create a welcoming space and care for seafarers right when they arrive.
+                  </p>
+
+                  <a
+                    href="https://www.missiontoseafarershalifax.ca/donate/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 bg-[#E05A2B] text-white px-8 py-4 rounded-full font-bold text-[15px] hover:bg-[#c94d23] transition-all shadow-lg hover:shadow-xl w-full"
+                  >
+                    Make a One-Time Gift
+                  </a>
+                </div>
+              </Reveal>
+
+            </div>
+          </div>
+        </section>
+
+        {/* Choose How You Would Like to Support */}
+        <section className="relative py-24 overflow-hidden">
+          {/* Soft maritime background */}
+          <div className="absolute inset-0">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#F8FBFD] via-[#EBF4F9] to-[#E0EEF7]"></div>
+            <svg className="absolute bottom-0 left-0 w-full h-64 opacity-10" viewBox="0 0 1440 320" preserveAspectRatio="none">
+              <path fill="#112A46" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L0,320Z"></path>
+            </svg>
+          </div>
+
+          <div className="max-w-[1200px] mx-auto px-7 relative z-10">
+            
+            <Reveal className="text-center mb-16">
+              <span className="inline-block bg-[#E05A2B]/10 text-[#E05A2B] text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-4">
+                WAYS TO HELP
+              </span>
+              <h2 className="text-[clamp(32px,4vw,48px)] font-black text-[#112A46] mb-4">
+                Choose How You Would Like to Support
+              </h2>
+            </Reveal>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              
+              {/* Partner Through Sponsorship */}
+              <Reveal>
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all border border-[#112A46]/5 h-full">
+                  <div className="w-14 h-14 bg-[#E05A2B]/10 rounded-xl flex items-center justify-center mb-5">
+                    <FaHandshake className="text-[#E05A2B] text-2xl" />
+                  </div>
+                  <h3 className="text-[20px] font-black text-[#112A46] mb-3">Partner Through Sponsorship</h3>
+                  <ul className="space-y-2 mb-6 text-[#5A6C7D] text-[14px]">
+                    <li>• Fund a Project (form)</li>
+                    <li>• Sponsor a Program (form)</li>
+                    <li>• Sponsor an Event (form)</li>
+                  </ul>
+                  <a
+                    href="https://www.missiontoseafarershalifax.ca/donate/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors"
+                  >
+                    Make a Donation →
+                  </a>
+                </div>
+              </Reveal>
+
+              {/* Give Back Through Your Social Responsibility Grants */}
+              <Reveal delay={100}>
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all border border-[#112A46]/5 h-full">
+                  <div className="w-14 h-14 bg-[#E05A2B]/10 rounded-xl flex items-center justify-center mb-5">
+                    <FaBuilding className="text-[#E05A2B] text-2xl" />
+                  </div>
+                  <h3 className="text-[20px] font-black text-[#112A46] mb-3">Engage Your Workplace</h3>
+                  <p className="text-[#5A6C7D] text-[14px] mb-4">Empower your team to make a difference together.</p>
+                  <ul className="space-y-2 mb-6 text-[#5A6C7D] text-[14px]">
+                    <li>• <a href="https://portal.healthpartners.ca/servlet/eAndar.article/30" target="_blank" rel="noopener noreferrer" className="text-[#E05A2B] hover:underline">Workplace or Payroll Giving</a></li>
+                    <li>• Employer Matching Gifts (form)</li>
+                    <li>• Volunteer Grants (form)</li>
+                    <li>• Union or Association Partnerships (form)</li>
+                  </ul>
+                </div>
+              </Reveal>
+
+              {/* Awareness Through Purpose */}
+              <Reveal delay={200}>
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all border border-[#112A46]/5 h-full">
+                  <div className="w-14 h-14 bg-[#E05A2B]/10 rounded-xl flex items-center justify-center mb-5">
+                    <FaBullhorn className="text-[#E05A2B] text-2xl" />
+                  </div>
+                  <h3 className="text-[20px] font-black text-[#112A46] mb-3">Awareness Through Purpose</h3>
+                  <p className="text-[#5A6C7D] text-[14px] mb-4">Host an event on our behalf:</p>
+                  <ul className="space-y-2 mb-6 text-[#5A6C7D] text-[14px]">
+                    <li>• Birthdays</li>
+                    <li>• Bake sales</li>
+                    <li>• Knitting groups</li>
+                    <li>• Garage sales</li>
+                  </ul>
+                  <a
+                    href="https://fundraising.mtsc.ca/?_gl=1*146le4y*_ga*MTM4NDM0OTE4My4xNzc4MDgxMDQx*_ga_PRGHG34XYT*czE3NzgxODUzMjAkbzgkZzEkdDE3NzgxODUzNzQkajYkbDAkaDA."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors"
+                  >
+                    Start Fundraising →
+                  </a>
+                </div>
+              </Reveal>
+
+              {/* Volunteer & Advocate */}
+              <Reveal>
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all border border-[#112A46]/5 h-full">
+                  <div className="w-14 h-14 bg-[#E05A2B]/10 rounded-xl flex items-center justify-center mb-5">
+                    <FaUsers className="text-[#E05A2B] text-2xl" />
+                  </div>
+                  <h3 className="text-[20px] font-black text-[#112A46] mb-3">Volunteer & Advocate</h3>
+                  <ul className="space-y-2 mb-6 text-[#5A6C7D] text-[14px]">
+                    <li>• Become a Volunteer</li>
+                    <li>• Raise Awareness</li>
+                    <li>• Share Our Work on Your Social Feed</li>
+                    <li>• Refer Our Organization for a Grant (form)</li>
+                  </ul>
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors"
+                  >
+                    Get Involved →
+                  </Link>
+                </div>
+              </Reveal>
+
+              {/* Explore Customized Partnership Opportunities */}
+              <Reveal delay={100}>
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all border border-[#112A46]/5 h-full">
+                  <div className="w-14 h-14 bg-[#E05A2B]/10 rounded-xl flex items-center justify-center mb-5">
+                    <FaAnchor className="text-[#E05A2B] text-2xl" />
+                  </div>
+                  <h3 className="text-[20px] font-black text-[#112A46] mb-3">Explore Customized Partnership Opportunities</h3>
+                  <p className="text-[#5A6C7D] text-[14px] mb-6">
+                    Across Halifax's Port (form)
+                  </p>
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors"
+                  >
+                    Contact Us →
+                  </Link>
+                </div>
+              </Reveal>
+
+              {/* In-Kind Gifts */}
+              <Reveal delay={200}>
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all border border-[#112A46]/5 h-full">
+                  <div className="w-14 h-14 bg-[#E05A2B]/10 rounded-xl flex items-center justify-center mb-5">
+                    <FaGift className="text-[#E05A2B] text-2xl" />
+                  </div>
+                  <h3 className="text-[20px] font-black text-[#112A46] mb-3">In-Kind Gifts</h3>
+                  <p className="text-[#5A6C7D] text-[14px] mb-6">
+                    Support us with goods and services from our wishlist
+                  </p>
+                  <a
+                    href="https://www.amazon.ca/hz/wishlist/ls/3C9KTQNHTZ0NM/ref=hz_ls_biz_ex"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors"
+                  >
+                    View Wishlist →
+                  </a>
+                </div>
+              </Reveal>
+
+            </div>
+          </div>
+        </section>
+
+        {/* Add Your Company Name to Our Proud Sponsors */}
+        <section className="py-24 bg-gradient-to-br from-[#F8FBFD] via-[#EBF4F9] to-[#E0EEF7]">
+          <div className="max-w-[1200px] mx-auto px-7">
+            
+            {/* General Sponsors - Thank You Section */}
+            <Reveal className="text-center mb-14">
+              <FaHeart className="text-[#E05A2B] text-4xl mx-auto mb-4" />
+              <h2 className="text-[34px] md:text-[40px] font-black text-[#112A46] mb-4 leading-tight">
+                The Mission to Seafarers Halifax is <br className="hidden md:block"/> grateful to our Sponsors!
+              </h2>
+              <p className="text-[#5A6C7D] max-w-2xl mx-auto text-[17px]">
+                Your generous support ensures we can continue to provide a "home away from home" for seafarers visiting our port.
+              </p>
+            </Reveal>
+
+            {/* General Sponsors Grid */}
+            <Reveal className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-16">
+              {uniqueSponsors.map((sponsor, index) => (
+                <div 
+                  key={index} 
+                  className="bg-white border border-[#112A46]/5 rounded-xl px-4 py-3 flex items-center justify-center text-center shadow-sm hover:shadow-lg hover:border-[#E05A2B]/30 hover:-translate-y-1 transition-all group h-full min-h-[70px]"
+                >
+                  <span className="font-bold text-[12.5px] text-[#112A46] group-hover:text-[#E05A2B] transition-colors leading-snug">
+                    {sponsor}
+                  </span>
+                </div>
+              ))}
+            </Reveal>
+
+          </div>
+        </section>
+
+        {/* Corporate Sponsorship & Star Club Section */}
+        <section className="py-24 bg-white border-t-4 border-[#E05A2B]">
+          <div className="max-w-[1200px] mx-auto px-7">
+            
+            {/* Split Sponsorship Info Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
+              <Reveal>
+                <h2 className="text-[36px] font-black text-[#112A46] leading-tight mb-6">
+                  Corporate Sponsorship Opportunities
+                </h2>
+                <p className="text-[#5A6C7D] text-[16px] leading-relaxed mb-6">
+                  Partnering with the Mission will provide your organization with extraordinary and rewarding relationship opportunities on both a local and global stage.
+                </p>
+                <p className="text-[#5A6C7D] text-[16px] leading-relaxed mb-8">
+                  Our team is happy to work with you to find a fit that realizes your philanthropic corporate social responsibility goal. Please check out how to become a community sponsor through our <strong>STAR PROGRAM</strong> and/or <strong>CORPORATE SPONSORSHIP PACKAGE</strong>.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  <div className="flex items-center gap-3 bg-[#FDF0EC] px-5 py-3 rounded-xl border border-[#E05A2B]/20">
+                    <FaShip className="text-[#E05A2B] text-xl" />
+                    <span className="font-bold text-[14px] text-[#112A46]">Global Reach</span>
+                  </div>
+                  <div className="flex items-center gap-3 bg-[#FDF0EC] px-5 py-3 rounded-xl border border-[#E05A2B]/20">
+                    <FaBuilding className="text-[#E05A2B] text-xl" />
+                    <span className="font-bold text-[14px] text-[#112A46]">Local Impact</span>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Program Cards */}
+              <Reveal className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="bg-[#E05A2B] border-2 border-[#E05A2B] rounded-[24px] p-8 text-center hover:-translate-y-2 transition-transform shadow-lg group">
+                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm group-hover:scale-110 transition-transform">
+                    <FaHandshake className="text-3xl text-[#E05A2B]" />
+                  </div>
+                  <h3 className="text-[18px] font-black text-white mb-3 leading-tight">STAR<br/>Program</h3>
+                  <p className="text-[13px] text-white/90 mb-6 leading-relaxed">
+                    Join an elite group of recurring sponsors dedicated to seafarer welfare.
+                  </p>
+                </div>
+
+                <div className="bg-[#112A46] border-2 border-[#112A46] rounded-[24px] p-8 text-center hover:-translate-y-2 transition-transform shadow-lg group">
+                  <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm group-hover:scale-110 transition-transform">
+                    <FaBuilding className="text-3xl text-white" />
+                  </div>
+                  <h3 className="text-[18px] font-black text-white mb-3 leading-tight">Corporate<br/>Package</h3>
+                  <p className="text-[13px] text-white/70 mb-6 leading-relaxed">
+                    Customized sponsorship packages designed for maximum CSR impact.
+                  </p>
+                </div>
+              </Reveal>
+            </div>
+
+            {/* Star Club Members Section */}
+            <div className="bg-gradient-to-br from-[#F8FBFD] to-[#EBF4F9] rounded-[32px] p-8 md:p-14 border border-[#112A46]/5 shadow-sm">
+              <Reveal className="text-center mb-12">
+                <div className="inline-flex items-center justify-center gap-2 text-[#E05A2B] mb-4">
+                  <FaHandshake /><FaHandshake className="text-2xl" /><FaHandshake />
+                </div>
+                <h3 className="text-[32px] font-black text-[#112A46] mb-4">Star Club Members</h3>
+                <p className="text-[#5A6C7D] max-w-2xl mx-auto text-[16px] font-medium">
+                  THANK YOU to our sponsors without whom we could not offer our service.
+                </p>
+              </Reveal>
+
+              <Reveal className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {uniqueSponsors.slice(0, 28).map((sponsor, index) => (
+                  <div 
+                    key={index} 
+                    className="bg-white border-2 border-transparent rounded-xl px-4 py-3 flex items-center justify-center text-center shadow-sm hover:shadow-lg hover:border-[#E05A2B]/20 hover:-translate-y-1 transition-all group"
+                  >
+                    <span className="font-extrabold text-[13px] text-[#112A46] group-hover:text-[#E05A2B] transition-colors leading-tight">
+                      {sponsor}
+                    </span>
+                  </div>
+                ))}
+              </Reveal>
+            </div>
+
+            {/* CTA to become a sponsor */}
+            <Reveal className="text-center mt-12">
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 bg-[#E05A2B] text-white px-8 py-4 rounded-full font-bold text-[15px] hover:bg-[#c94d23] transition-all shadow-lg hover:shadow-xl"
+              >
+                <FaHandshake />
+                Become a Sponsor
+              </Link>
+            </Reveal>
+            
+          </div>
+        </section>
+
+        {/* Final Call to Action */}
+        <section className="relative py-24 overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <img
+              src={volunteersImg}
+              alt="MTSC Halifax"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-[#E05A2B]/90"></div>
+          </div>
+
+          <div className="max-w-[1200px] mx-auto px-7 relative z-10 text-center">
+            <Reveal>
+              <FaHeart className="text-white text-5xl mx-auto mb-6 opacity-90" />
+              <h2 className="text-[clamp(32px,4vw,48px)] font-black text-white mb-6 leading-tight">
+                Every Act of Kindness Makes a Difference
+              </h2>
+              <p className="text-white/90 text-[18px] max-w-3xl mx-auto leading-relaxed mb-10">
+                From a warm drink and a haircut to a monthly donation or a few hours of volunteering, every act of support helps remind seafarers that they are not alone.
+              </p>
+
+              <div className="flex flex-wrap justify-center gap-4">
+                <a
+                  href="https://www.missiontoseafarershalifax.ca/donate/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-white text-[#E05A2B] px-8 py-4 rounded-full font-bold text-[15px] hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl"
+                >
+                  Donate Now
+                </a>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-bold text-[15px] hover:bg-white hover:text-[#E05A2B] transition-all"
+                >
+                  Contact Us
+                </Link>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+      </main>
+      <Footer />
+    </div>
+  );
+}

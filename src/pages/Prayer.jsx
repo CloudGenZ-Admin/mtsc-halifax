@@ -198,7 +198,7 @@ export default function Prayer() {
                 // Form State
                 <>
                   <div className="text-center mb-10">
-                    <h2 className="text-[32px] font-black text-navy mb-3">Request a Prayer</h2>
+                    <h2 className="text-[32px] font-black text-navy mb-3">Submit a Prayer</h2>
                     <p className="text-text-mid">Send your prayer request to our MtS Halifax Chaplain.</p>
                   </div>
 
@@ -268,7 +268,7 @@ export default function Prayer() {
 
                     {/* Prayer Request Textarea */}
                     <div>
-                      <label className="block text-[13px] font-bold text-navy mb-2">Prayer Request *</label>
+                      <label className="block text-[13px] font-bold text-navy mb-2">Submit a Prayer *</label>
                       <textarea 
                         name="prayerRequest"
                         value={formData.prayerRequest}

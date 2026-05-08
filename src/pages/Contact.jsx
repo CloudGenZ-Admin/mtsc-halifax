@@ -2,9 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/common/Reveal';
-import { FaMapMarkerAlt, FaPhoneAlt, FaFax, FaClock, FaShip, FaCheckCircle } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaPhoneAlt, FaFax, FaClock, FaShip, FaCheckCircle, FaWhatsapp } from 'react-icons/fa';
 
 import centerImage from '../assets/MtS Halifax Center.jpg';
+// Import volunteer and seafarer images for photo collage
+import volunteer1 from '../assets/events/A-grand-team-effort-768x1024.jpg';
+import volunteer2 from '../assets/events/Atlantic-Sky-crew-members-with-Helen-Elizabeth-and-Ronaldo-scaled.jpg';
+import volunteer3 from '../assets/events/Maria-and-Elizabeth-serves-Andy-with-Susan-and-Will-1024x768.jpg';
+import volunteer4 from '../assets/events/Day-of-Seafarers-1024x683.jpg';
 
 export default function Contact() {
   // Scroll to top when the component mounts
@@ -86,9 +91,23 @@ export default function Contact() {
       <Navbar />
       
       <main className="flex-grow">
-        {/* Page Header */}
-        <section className="relative bg-[#112A46] pt-32 pb-24 overflow-hidden">
-          <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1494459940152-1e911caa8bf5?w=1600&q=80')] bg-cover bg-center mix-blend-overlay"></div>
+        {/* Page Header with Photo Collage Background */}
+        <section className="relative bg-gradient-to-br from-[#112A46] via-[#1a3a5f] to-[#2D5A7B] pt-32 pb-24 overflow-hidden">
+          {/* Photo Collage Background */}
+          <div className="absolute inset-0 grid grid-cols-4 gap-0 opacity-15">
+            <div className="relative overflow-hidden">
+              <img src={volunteer1} alt="Team effort" className="w-full h-full object-cover" />
+            </div>
+            <div className="relative overflow-hidden">
+              <img src={volunteer2} alt="Welcoming crew" className="w-full h-full object-cover" />
+            </div>
+            <div className="relative overflow-hidden">
+              <img src={volunteer3} alt="Serving seafarers" className="w-full h-full object-cover" />
+            </div>
+            <div className="relative overflow-hidden">
+              <img src={volunteer4} alt="Day of Seafarers" className="w-full h-full object-cover" />
+            </div>
+          </div>
           
           <div className="max-w-[1200px] mx-auto px-7 relative z-10 text-center">
             <Reveal>
@@ -98,7 +117,7 @@ export default function Contact() {
               <h1 className="text-[clamp(36px,5vw,56px)] font-black text-white mb-4 leading-tight">
                 Contact Us
               </h1>
-              <p className="text-white/80 text-[17px] max-w-2xl mx-auto leading-relaxed font-medium">
+              <p className="text-white/90 text-[17px] max-w-2xl mx-auto leading-relaxed font-medium">
                 Whether you need assistance, want to volunteer, or have a question about our services, we're here to help seafarers in the Port of Halifax.
               </p>
             </Reveal>
@@ -106,7 +125,7 @@ export default function Contact() {
         </section>
 
         {/* Office Image */}
-        <section className="bg-gray-50 pt-16 pb-12 border-b border-gray-200">
+        <section className="bg-gray-50  pt-16 pb-12 border-b border-gray-200">
           <div className="max-w-[1300px] mx-auto px-6">
             <Reveal>
               <img 
@@ -221,6 +240,25 @@ export default function Contact() {
                       </span>
                     </div>
                   </div>
+
+                  {/* WhatsApp Contact */}
+                  <div className="bg-gradient-to-br from-[#25D366] to-[#128C7E] text-white rounded-[20px] p-6 shadow-lg hover:-translate-y-1 transition-transform">
+                    <div className="flex items-center gap-3 mb-3">
+                      <FaWhatsapp className="text-3xl" />
+                      <div>
+                        <h3 className="text-[14px] font-bold uppercase tracking-wider">WhatsApp</h3>
+                        <p className="text-white/80 text-[12px]">Connect with us directly</p>
+                      </div>
+                    </div>
+                    <a 
+                      href="https://wa.me/19024227790" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="block w-full bg-white text-[#25D366] text-center py-2.5 rounded-lg font-bold text-[14px] hover:bg-white/90 transition-colors"
+                    >
+                      Chat on WhatsApp
+                    </a>
+                  </div>
                 </div>
               </Reveal>
 
@@ -295,9 +333,14 @@ export default function Contact() {
                           </label>
                           <select name="inquiryType" value={formData.inquiryType} onChange={handleChange} className="w-full border border-gray-300 bg-white rounded-[6px] p-2 focus:outline-none focus:border-[#2A4582] focus:ring-1 focus:ring-[#2A4582]">
                             <option>General Inquiry</option>
-                            <option>Volunteer</option>
+                            <option>Seafarer Support</option>
+                            <option>Volunteer Opportunities</option>
                             <option>Corporate Partnership</option>
-                            <option>Financial Gift</option>
+                            <option>Sponsorship Opportunities</option>
+                            <option>Donation Inquiry</option>
+                            <option>Media Inquiry</option>
+                            <option>Grant Referral</option>
+                            <option>Event Partnership</option>
                           </select>
                         </div>
 

@@ -11,6 +11,11 @@ import {
 // Background Image
 import publicaBg from '../assets/publica.jpg';
 
+// Maritime storytelling images
+import seafarersOnDeck from '../assets/Awards/seafarers-ondeck-working-min.webp';
+import captainOnline from '../assets/Awards/captain-looking-online-resources.webp';
+import portHalifaxImg from '../assets/port_halifax.jpg';
+
 // Happiness, Foghorn, etc. PDF Imports
 import shiQ1_2024 from '../assets/pdf/Happyness/Seafarers_Happiness_Index_Q1_2024.pdf';
 import shiQ2_2024 from '../assets/pdf/Happyness/Seafarers_Happiness_Index_Q2_2024.pdf';
@@ -135,7 +140,7 @@ export default function Publication() {
         </section>
 
         {/* 1. HALIFAX NEWSLETTERS */}
-        <section id="halifax-newsletters" className="py-20 bg-gray-50 scroll-mt-[90px]">
+        <section id="halifax-newsletters" className="py-20 bg-gradient-to-br from-[#F8FBFD] via-white to-[#EBF4F9] scroll-mt-[90px]">
           <div className="max-w-[1200px] mx-auto px-7">
             <Reveal>
               <div className="border-l-4 border-[#E05A2B] pl-6 mb-10">
@@ -190,10 +195,15 @@ export default function Publication() {
         </section>
 
         {/* 3. FAN */}
-        <section id="fan" className="py-20 bg-[#0B1A30] scroll-mt-[90px]">
-          <div className="max-w-[1200px] mx-auto px-7 text-center">
+        <section id="fan" className="py-20 bg-gradient-to-br from-[#112A46] via-[#1a3a5f] to-[#2D5A7B] scroll-mt-[90px] relative overflow-hidden">
+          {/* Decorative wave pattern */}
+          <svg className="absolute bottom-0 left-0 w-full h-32 opacity-10" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path fill="#E05A2B" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L0,320Z"></path>
+          </svg>
+          
+          <div className="max-w-[1200px] mx-auto px-7 text-center relative z-10">
             <Reveal>
-              <div className="w-16 h-16 bg-[#E05A2B] rounded-2xl flex items-center justify-center mx-auto mb-6 transform rotate-3">
+              <div className="w-16 h-16 bg-[#E05A2B] rounded-2xl flex items-center justify-center mx-auto mb-6 transform rotate-3 shadow-lg">
                 <FaEnvelopeOpenText className="text-3xl text-white" />
               </div>
               <h2 className="text-[32px] font-black text-white mb-4">
@@ -215,7 +225,7 @@ export default function Publication() {
         </section>
 
         {/* 4. STATISTICS */}
-        <section id="mts-statistics" className="py-20 bg-white scroll-mt-[90px]">
+        <section id="mts-statistics" className="py-20 bg-gradient-to-br from-white via-[#F8FBFD] to-[#EBF4F9] scroll-mt-[90px]">
           <div className="max-w-[1000px] mx-auto px-7">
             <Reveal>
               <div className="border-l-4 border-[#112A46] pl-6 mb-8">
@@ -239,7 +249,7 @@ export default function Publication() {
         </section>
 
         {/* 5. HAPPINESS INDEX */}
-        <section id="happiness-index" className="py-20 bg-gray-50 scroll-mt-[90px]">
+        <section id="happiness-index" className="py-20 bg-gradient-to-br from-[#FDF0EC] via-white to-[#F8FBFD] scroll-mt-[90px]">
           <div className="max-w-[1200px] mx-auto px-7">
             <Reveal>
               <div className="border-l-4 border-[#E05A2B] pl-6 mb-10">
@@ -271,9 +281,9 @@ export default function Publication() {
         </section>
 
         {/* 6. ESG STRATEGY */}
-        <section id="esg-strategy" className="py-20 bg-white scroll-mt-[90px]">
+        <section id="esg-strategy" className="py-20 bg-gradient-to-br from-[#F0F9F4] via-white to-[#E8F5E9] scroll-mt-[90px]">
           <div className="max-w-[800px] mx-auto px-7 text-center">
-            <Reveal className="bg-green-50/50 border border-green-100 rounded-[32px] p-10 shadow-sm">
+            <Reveal className="bg-white/80 backdrop-blur-sm border border-green-200/50 rounded-[32px] p-10 shadow-xl">
               <FaLeaf className="text-5xl text-green-600 mx-auto mb-6" />
               <h2 className="text-[32px] font-black text-[#112A46] mb-8">
                 Mission to Seafarers ESG Strategy
@@ -303,15 +313,132 @@ export default function Publication() {
         </section>
 
         {/* 8. MARINE SAFETY */}
-        <section id="marine-safety" className="py-20 bg-white scroll-mt-[90px]">
+        <section id="marine-safety" className="py-20 bg-gradient-to-br from-[#E3F2FD] via-white to-[#F8FBFD] scroll-mt-[90px]">
           <div className="max-w-[800px] mx-auto px-7 text-center">
-            <Reveal className="bg-blue-50/50 border border-blue-100 rounded-[32px] p-10 shadow-sm">
+            <Reveal className="bg-white/80 backdrop-blur-sm border border-blue-200/50 rounded-[32px] p-10 shadow-xl">
               <FaShieldAlt className="text-5xl text-[#112A46] mx-auto mb-6" />
               <h2 className="text-[32px] font-black text-[#112A46] mb-8">
                 Marine Safety Handbook
               </h2>
               <PdfCard title="Port of Halifax Marine Safety Handbook, May 2025" href={marineSafetyHandbook} />
             </Reveal>
+          </div>
+        </section>
+
+        {/* MARITIME STORYTELLING SECTION */}
+        <section className="relative py-24 overflow-hidden">
+          {/* Background with Port Halifax Image */}
+          <div className="absolute inset-0 z-0">
+            <img
+              src={portHalifaxImg}
+              alt="Port of Halifax"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#112A46]/95 via-[#2D5A7B]/90 to-[#E05A2B]/85"></div>
+          </div>
+
+          {/* Decorative wave pattern */}
+          <svg className="absolute top-0 left-0 w-full h-32 opacity-10 transform rotate-180" viewBox="0 0 1440 320" preserveAspectRatio="none">
+            <path fill="#E05A2B" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L0,320Z"></path>
+          </svg>
+
+          <div className="max-w-[1200px] mx-auto px-7 relative z-10">
+            
+            {/* Section Header */}
+            <Reveal className="text-center mb-16">
+              <div className="w-16 h-16 bg-[#E05A2B] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
+                <FaShip className="text-white text-3xl" />
+              </div>
+              <h2 className="text-[clamp(32px,4vw,48px)] font-black text-white mb-4">
+                Connecting Seafarers to the World
+              </h2>
+              <p className="text-white/90 text-[18px] max-w-2xl mx-auto leading-relaxed">
+                Through our publications, we keep seafarers, supporters, and maritime communities informed and connected
+              </p>
+            </Reveal>
+
+            {/* Image Grid with Stories */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+              
+              {/* Story Card 1 */}
+              <Reveal>
+                <div className="bg-white/10 backdrop-blur-md rounded-3xl overflow-hidden border border-white/20 shadow-2xl hover:shadow-3xl transition-all group">
+                  <div className="aspect-[4/3] overflow-hidden">
+                    <img
+                      src={seafarersOnDeck}
+                      alt="Seafarers working on deck"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="p-8">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 bg-[#E05A2B] rounded-lg flex items-center justify-center">
+                        <FaBookOpen className="text-white text-lg" />
+                      </div>
+                      <h3 className="text-[22px] font-black text-white">Stories from the Sea</h3>
+                    </div>
+                    <p className="text-white/80 text-[15px] leading-relaxed">
+                      Our newsletters share real stories from seafarers, highlighting their experiences, challenges, and the support they receive at our Halifax station.
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Story Card 2 */}
+              <Reveal delay={100}>
+                <div className="bg-white/10 backdrop-blur-md rounded-3xl overflow-hidden border border-white/20 shadow-2xl hover:shadow-3xl transition-all group">
+                  <div className="aspect-[4/3] overflow-hidden">
+                    <img
+                      src={captainOnline}
+                      alt="Captain accessing online resources"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                  <div className="p-8">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 bg-[#E05A2B] rounded-lg flex items-center justify-center">
+                        <FaChartBar className="text-white text-lg" />
+                      </div>
+                      <h3 className="text-[22px] font-black text-white">Research & Insights</h3>
+                    </div>
+                    <p className="text-white/80 text-[15px] leading-relaxed">
+                      Through happiness surveys, statistics, and research reports, we track seafarer wellbeing and advocate for better conditions at sea.
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+
+            </div>
+
+            {/* Bottom CTA */}
+            <Reveal delay={200} className="text-center">
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-3xl mx-auto">
+                <FaBrain className="text-[#E05A2B] text-4xl mx-auto mb-4" />
+                <h3 className="text-[24px] font-black text-white mb-3">
+                  Stay Informed About Seafarer Welfare
+                </h3>
+                <p className="text-white/80 text-[16px] mb-6 leading-relaxed">
+                  Our publications provide valuable insights into the lives of seafarers and the vital work being done to support them in ports around the world.
+                </p>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <a
+                    href="#halifax-newsletters"
+                    className="inline-flex items-center gap-2 bg-[#E05A2B] text-white px-6 py-3 rounded-full font-bold text-[14px] hover:bg-white hover:text-[#112A46] transition-all shadow-lg"
+                  >
+                    <FaBookOpen /> Read Our Newsletters
+                  </a>
+                  <a
+                    href="https://www.missiontoseafarers.org/the-sea"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white border-2 border-white/40 px-6 py-3 rounded-full font-bold text-[14px] hover:bg-white hover:text-[#112A46] transition-all"
+                  >
+                    <FaExternalLinkAlt /> Subscribe to The Sea
+                  </a>
+                </div>
+              </div>
+            </Reveal>
+
           </div>
         </section>
 

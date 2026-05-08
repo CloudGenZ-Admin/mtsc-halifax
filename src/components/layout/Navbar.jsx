@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FaChevronDown, FaHandsHelping, FaBars, FaTimes, FaStar } from 'react-icons/fa';
+import { FaChevronDown, FaHandsHelping, FaBars, FaTimes, FaStar, FaBox } from 'react-icons/fa';
 import { FaLinkedinIn, FaYoutube, FaInstagram, FaFacebookF, FaTiktok } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { useEvents } from '../../context/EventsContext';
 import seafarerLogoImg from '../../assets/seafarers-logo.png';
+import happyAtSeaLogo from '../../assets/happy-sea-app.svg';
+import appStoreBtn from '../../assets/btn-appstore.png';
+import googlePlayBtn from '../../assets/btnapp-google-play.png.webp';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -73,41 +76,11 @@ export default function Navbar() {
   };
 
   const navLinks = [
-    { 
-      name: 'Events', 
-      path: '/events',
-     
-      ...(featuredEvents.length > 0 && {
-        dropdown: [
-          { name: 'View All Events', path: '/events' },
-          ...featuredEvents.map(event => ({
-            name: `${event.title}`,
-            path: `/events/${event.url}`
-          }))
-        ]
-      })
-    },
-    { 
-      name: 'Sponsors', 
-      path: '/sponsors',
-      dropdown: [
-        { name: 'Our Sponsors', path: '/sponsors#our-sponsors' },
-        { name: 'Corporate Sponsorship', path: '/sponsors#corporate-sponsorship' }
-      ]
-    },
-    { name: 'Who We Are', path: '/whoweare' }, 
-    { 
-      name: 'Ways to Give ', 
-      path: '/WaystoGive',
-      dropdown: [
-         { name: 'Corporate Partnership', path: '/WaystoGive#corporate-partner' },
-         { name: 'Our Events', path: '/events' },
-         { name: 'Volunteer Awardees', path: '/WaystoGive#volunteer-awards'},
-         { name: 'Staff Awardees', path: '/WaystoGive#staff-awards'}
-      ]
-    }, 
+    { name: 'Home', path: '/' },
+    { name: 'Who We Are', path: '/whoweare' },
+    { name: 'Get Involved', path: '/WaystoGive' },
     {
-      name: 'Publication',
+      name: 'Publications',
       path: '/publication',
       dropdown: [
         { name: 'Mission to Seafarers Halifax Flying Angel Newsletters', path: '/publication#halifax-newsletters' },
@@ -121,8 +94,7 @@ export default function Navbar() {
         { name: 'The Mental Health of Seafarers in Canada During Covid 19 Pandemic', path: '/publication#mental-health' }
       ]
     },
-    { name: 'Prayer', path: '/prayer' },
-    { name: 'Contact Us', path: '/contact' },
+    { name: 'Contact', path: '/contact' },
   ];
 
   return (
@@ -147,24 +119,33 @@ export default function Navbar() {
         ref={navRef} 
         className={`bg-white border-b-4 border-[#E05A2B] sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'shadow-[0_4px_20px_rgba(224,90,43,.12)]' : ''}`}
       >
-        <div className="max-w-[1200px] mx-auto px-7 flex items-center justify-between h-[75px] gap-5">
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-6 lg:px-8 flex h-20 items-center justify-between md:h-24 lg:h-28 gap-4">
           
-          <Link to="/" onClick={() => window.scrollTo(0,0)} className="flex items-center gap-3 no-underline group shrink-0">
-            <div className="w-24 h-18 flex items-center justify-center overflow-hidden border-2 border-[#ffffff] group-hover:border-[#faf9f8] transition-colors">
-              <img src={seafarerLogoImg} alt="Mission to Seafarers" className="w-full h-full object-contain" />
-            </div>
+          {/* Logo */}
+          <Link to="/" onClick={() => window.scrollTo(0,0)} className="flex items-center gap-2 lg:gap-3 no-underline group shrink-0">
+            <img 
+              src={seafarerLogoImg} 
+              alt="Mission to Seafarers Logo" 
+              className="h-20 md:h-20 lg:h-24 w-auto shrink-0 object-contain rounded-md group-hover:scale-105 transition-transform"
+            />
+            <span className="flex flex-col leading-none justify-center">
+              <span className="text-[16px] lg:text-[15px] xl:text-[18px] font-extrabold text-[#112A46] whitespace-nowrap">Mission to Seafarers</span>
+              <span className="text-[12px] lg:text-[11px] xl:text-[13px] font-bold uppercase tracking-[0.18em] text-[#E05A2B] mt-0.5 whitespace-nowrap">Canada</span>
+            </span>
           </Link>
           
-          <ul className="hidden xl:flex gap-1.5 list-none ml-auto mr-4 items-center">
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-2">
             {navLinks.map((item, index) => (
-              <li key={index} className="relative group">
+              <div key={index} className="relative group">
                 <Link 
                   to={item.path} 
+                  end={item.path === '/'}
                   onClick={(e) => handleNavClick(e, item.path)}
-                  className="text-[#112A46] font-bold text-[13.5px] px-3.5 py-2.5 rounded-lg hover:bg-[#FDF0EC] hover:text-[#E05A2B] transition-colors flex items-center gap-1.5 cursor-pointer"
+                  className="px-2 xl:px-3 py-2 text-[13px] xl:text-[15px] 2xl:text-base font-semibold whitespace-nowrap rounded-md transition-colors text-[#112A46] hover:text-[#E05A2B] flex items-center gap-1"
                 >
                   {item.name} 
-                  {item.dropdown && <FaChevronDown className="text-[10px] opacity-70 group-hover:rotate-180 transition-transform duration-300" />}
+                  {item.dropdown && <FaChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />}
                 </Link>
 
                 {item.dropdown && (
@@ -176,7 +157,7 @@ export default function Navbar() {
                             <Link 
                               to={dropItem.path} 
                               onClick={(e) => handleNavClick(e, dropItem.path)}
-                              className={`block px-5 py-3 text-[13px] font-bold text-[#112A46] hover:bg-[#FDF0EC] hover:text-[#E05A2B] hover:pl-6 transition-all border-b border-gray-50 last:border-0 whitespace-normal leading-tight ${dropItem.name.includes('✦') ? 'text-[#E05A2B]' : ''}`}
+                              className="block px-5 py-3 text-[13px] font-bold text-[#112A46] hover:bg-[#FDF0EC] hover:text-[#E05A2B] hover:pl-6 transition-all border-b border-gray-50 last:border-0 whitespace-normal leading-tight"
                             >
                               {dropItem.name}
                             </Link>
@@ -186,90 +167,125 @@ export default function Navbar() {
                     </div>
                   </div>
                 )}
-              </li>
+              </div>
             ))}
-          </ul>
+          </nav>
 
-          <Link to="/donate" className="hidden xl:inline-flex bg-[#E05A2B] text-white px-7 py-2.5 rounded-full font-black text-[13px] tracking-wide hover:bg-[#112A46] hover:shadow-lg transition-all transform hover:-translate-y-0.5 shrink-0">
-            DONATE
-          </Link>
+          {/* Desktop CTA Buttons */}
+          <div className="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
+            {/* Parcel Pickup Button */}
+            <a 
+              href="https://parcelservice.mtsc.ca/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center border-2 border-gray-300 bg-gray-50 text-[#112A46] hover:bg-[#112A46] hover:text-white font-bold whitespace-nowrap text-xs xl:text-sm px-3 xl:px-4 py-2 rounded-md transition-colors"
+            >
+              <FaBox className="w-4 h-4 mr-1.5 hidden 2xl:block" />
+              Parcel Pickup
+            </a>
 
+            {/* Prayer Button */}
+            <Link 
+              to="/prayer"
+              className="flex items-center border-2 border-[#112A46] text-[#112A46] hover:bg-[#112A46] hover:text-white font-bold whitespace-nowrap text-xs xl:text-sm px-3 xl:px-4 py-2 rounded-md transition-colors"
+            >
+              Prayer
+            </Link>
+
+            {/* Donate Button */}
+            <Link
+              to="/donate"
+              className="bg-[#E05A2B] hover:bg-[#c94d23] text-white font-bold shadow-lg hover:shadow-xl px-5 xl:px-6 py-2.5 text-sm xl:text-base whitespace-nowrap rounded-md transition-all"
+            >
+              Donate
+            </Link>
+          </div>
+
+          {/* Mobile Menu Toggle */}
           <button 
-            className="xl:hidden text-2xl text-[#112A46] focus:outline-none ml-auto hover:text-[#E05A2B] transition-colors"
+            aria-label="Toggle menu"
+            className="lg:hidden text-2xl text-[#112A46] focus:outline-none ml-auto hover:text-[#E05A2B] transition-colors p-2 rounded-md"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
+            {isMobileMenuOpen ? <FaTimes className="h-7 w-7" /> : <FaBars className="h-7 w-7" />}
           </button>
         </div>
 
-        {/* MOBILE MENU */}
+        {/* Mobile Navigation Drawer */}
         {isMobileMenuOpen && (
-          <div className="xl:hidden absolute top-full left-0 w-full bg-white shadow-[0_8px_24px_rgba(0,0,0,.15)] border-t border-gray-100 flex flex-col max-h-[85vh] overflow-y-auto z-50">
-            <ul className="flex flex-col list-none m-0 p-4">
+          <div className="lg:hidden border-t border-gray-200 bg-white shadow-xl">
+            <div className="px-4 py-4 flex flex-col gap-2 max-h-[85vh] overflow-y-auto">
               {navLinks.map((item, index) => (
-                <li key={index} className="border-b border-gray-100 last:border-0">
-                  <div className="flex flex-col">
-                    
-                    {/* Top Row: Link + Optional Toggle Button */}
-                    <div className="flex justify-between items-center w-full">
-                      <Link 
-                        to={item.path} 
-                        className="py-4 px-2 font-black text-[#112A46] hover:text-[#E05A2B] text-[15px] flex-grow"
-                        onClick={(e) => handleNavClick(e, item.path)}
+                <div key={index} className="flex flex-col">
+                  {item.dropdown ? (
+                    <>
+                      <button
+                        onClick={(e) => toggleMobileSubmenu(index, e)}
+                        className="px-3 py-3 text-base font-semibold rounded-md flex items-center justify-between w-full text-left transition-colors text-[#112A46] hover:bg-[#FDF0EC]"
                       >
                         {item.name}
-                      </Link>
-                      
-                      {item.dropdown && (
-                        <button 
-                          onClick={(e) => toggleMobileSubmenu(index, e)}
-                          className="p-4 text-[#112A46] hover:text-[#E05A2B] transition-colors focus:outline-none"
-                          aria-expanded={expandedMenus[index]}
-                        >
-                          <FaChevronDown 
-                            className={`text-[14px] transition-transform duration-300 ease-in-out ${expandedMenus[index] ? 'rotate-180 text-[#E05A2B]' : ''}`} 
-                          />
-                        </button>
-                      )}
-                    </div>
-                    
-                    {/* Submenu: Animated Accordion */}
-                    {item.dropdown && (
-                      <div 
-                        className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                          expandedMenus[index] 
-                            ? 'max-h-[1000px] opacity-100 mb-2' 
-                            : 'max-h-0 opacity-0'
-                        }`}
-                      >
-                        <ul className="pl-4 pb-2 border-l-2 border-[#E05A2B]/30 flex flex-col gap-1 mt-1 bg-gray-50/50 rounded-r-lg mx-2">
-                          {item.dropdown.map((dropItem, idx) => (
-                            <li key={idx}>
-                              <Link 
-                                to={dropItem.path} 
-                                className={`block py-3 px-3 text-[14px] font-bold text-gray-600 hover:text-[#E05A2B] hover:bg-white rounded-md transition-colors leading-tight ${dropItem.name.includes('✦') ? 'text-[#E05A2B]' : ''}`}
-                                onClick={(e) => handleNavClick(e, dropItem.path)}
-                              >
-                                {dropItem.name}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                        <FaChevronDown
+                          className={`w-5 h-5 transition-transform duration-300 ${expandedMenus[index] ? 'rotate-180' : ''}`}
+                        />
+                      </button>
 
-                  </div>
-                </li>
+                      <div
+                        className={`overflow-hidden transition-all duration-300 ease-in-out ${expandedMenus[index] ? 'max-h-[400px] opacity-100 mt-1' : 'max-h-0 opacity-0'}`}
+                      >
+                        <div className="flex flex-col gap-1 pl-4 border-l-2 border-gray-300 ml-3 mb-2">
+                          {item.dropdown.map((dropItem, idx) => (
+                            <Link
+                              key={idx}
+                              to={dropItem.path}
+                              className="px-3 py-2.5 text-sm font-medium rounded-md transition-colors text-gray-600 hover:text-[#112A46] hover:bg-[#FDF0EC]"
+                              onClick={(e) => handleNavClick(e, dropItem.path)}
+                            >
+                              {dropItem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <Link
+                      to={item.path}
+                      end={item.path === '/'}
+                      className="px-3 py-3 text-base font-semibold rounded-md transition-colors text-[#112A46] hover:bg-[#FDF0EC]"
+                      onClick={(e) => handleNavClick(e, item.path)}
+                    >
+                      {item.name}
+                    </Link>
+                  )}
+                </div>
               ))}
-            </ul>
-            <div className="p-5 bg-gray-50 border-t border-gray-100 mt-auto">
-              <Link 
-                to="/donate" 
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex justify-center bg-[#E05A2B] text-white px-6 py-4 rounded-xl font-black text-[15px] hover:bg-[#112A46] transition-all shadow-md"
-              >
-                DONATE NOW
-              </Link>
+
+              {/* Mobile CTAs */}
+              <div className="flex flex-col gap-3 pt-4 border-t border-gray-200 mt-2">
+                <a 
+                  href="https://parcelservice.mtsc.ca/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-start border-2 border-gray-300 bg-gray-50 text-[#112A46] font-bold w-full h-12 px-4 rounded-md"
+                >
+                  <FaBox className="w-5 h-5 mr-2" />
+                  Parcel Pickup Service
+                </a>
+                <Link 
+                  to="/prayer"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center justify-start border-2 border-[#112A46] text-[#112A46] font-bold w-full h-12 px-4 rounded-md"
+                >
+                  <FaHandsHelping className="w-5 h-5 mr-2" />
+                  Prayer
+                </Link>
+                <Link
+                  to="/donate"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="bg-[#E05A2B] hover:bg-[#c94d23] text-white font-extrabold w-full text-lg h-14 rounded-md flex items-center justify-center"
+                >
+                  Donate
+                </Link>
+              </div>
             </div>
           </div>
         )}

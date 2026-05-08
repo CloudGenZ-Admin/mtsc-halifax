@@ -7,8 +7,8 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Prayer from './pages/Prayer';
 import Awards from './pages/Awards';
-import Sponsors from './pages/Sponsors';
-import Contact from './pages/Contact'
+import Contact from './pages/Contact';
+import WaystoGive from './pages/WaystoGive';
 
 // Event Management System
 import AdminLogin from './pages/event/AdminLogin';
@@ -41,9 +41,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/whoweare" element={<About />} />
         <Route path="/prayer" element={<Prayer />} />
-        <Route path="/WaysToGive" element={<Awards />} />
-        <Route path="/sponsors" element={<Sponsors />} />
-        
+        <Route path="/WaysToGive" element={<WaystoGive />} />
         
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/events" element={<AdminDashboard />} />

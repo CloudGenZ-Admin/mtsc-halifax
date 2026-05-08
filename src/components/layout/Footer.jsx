@@ -4,6 +4,9 @@ import { FaLinkedinIn, FaYoutube, FaInstagram, FaFacebookF, FaTiktok } from 'rea
 
 // Import the local logo image
 import seafarerLogoImg from '../../assets/seafarers-logo.png';
+import happyAtSeaLogo from '../../assets/happy-sea-app.svg';
+import appStoreBtn from '../../assets/btn-appstore.png';
+import googlePlayBtn from '../../assets/btnapp-google-play.png.webp';
 
 export default function Footer() {
   // Links extracted directly from your Navbar content
@@ -69,10 +72,10 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Column 4: Social Media */}
+        {/* Column 4: Social Media & Happy At Sea App */}
         <div>
           <h4 className="text-white font-black text-[16px] mb-5 tracking-wide uppercase text-sm">Connect With Us</h4>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 mb-6">
             {[FaLinkedinIn, FaYoutube, FaInstagram, FaFacebookF, FaTiktok].map((Icon, i) => (
               <a 
                 key={i} 
@@ -83,6 +86,35 @@ export default function Footer() {
                 <Icon />
               </a>
             ))}
+          </div>
+
+          {/* Happy At Sea App */}
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+            <div className="flex items-center gap-3 mb-3">
+              <img src={happyAtSeaLogo} alt="Happy at Sea App" className="h-10 w-10 object-contain" />
+              <div>
+                <h5 className="text-white font-extrabold text-[13px]">Happy at Sea App</h5>
+                <p className="text-white/70 text-[11px]">24/7 chaplain chat service</p>
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <a 
+                href="https://apps.apple.com/us/app/happy-at-sea/id6447320913" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="transition-transform hover:scale-105"
+              >
+                <img src={appStoreBtn} alt="Download on the App Store" className="h-9 w-auto object-contain" />
+              </a>
+              <a 
+                href="https://play.google.com/store/apps/details?id=org.missiontoseafarers.app&hl=en_IN" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="transition-transform hover:scale-105"
+              >
+                <img src={googlePlayBtn} alt="Get it on Google Play" className="h-9 w-auto object-contain" />
+              </a>
+            </div>
           </div>
         </div>
 
