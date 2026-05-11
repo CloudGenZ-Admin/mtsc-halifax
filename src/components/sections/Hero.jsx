@@ -19,22 +19,22 @@ export default function Hero() {
         <div className="absolute inset-0 bg-gradient-to-r from-navy-dark/20 via-navy-dark/20 to-navy-dark/40"></div>
       </div>
 
-      {/* Content Grid */}
+ 
       <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 min-h-[88vh]">
-        <div className="flex flex-col justify-center px-7 py-16 md:pl-16 md:pr-10">
-          <div className="max-w-[600px]">
-            <span className="inline-block bg-coral text-white text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-5 shadow-md">
+      
+        <div className="flex flex-col justify-center px-7 py-16 md:pl-16 md:pr-10 h-full w-full md:w-[70%] bg-gradient-to-r from-black/80 via-black/40 to-transparent">
+
+          <div className="max-w-[600px] relative z-10">
+            <span className="inline-block bg-coral text-white text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-5">
               ✦ Serving Seafarers Since 1856
             </span>
 
-
-            <h1 className="text-[clamp(36px,4.5vw,56px)] font-black text-white leading-[1.1] mb-5 [text-shadow:_0_4px_16px_rgb(0_0_0_/_80%)]">
+            <h1 className="text-[clamp(36px,4.5vw,56px)] font-black text-white leading-[1.1] mb-5">
               Welcome to <br />
-              <span className="text-coral [text-shadow:_0_4px_16px_rgb(0_0_0_/_60%)]">The Mission to Seafarers Halifax</span>
+              <span className="text-coral">The Mission to Seafarers Halifax</span>
             </h1>
 
-
-            <p className="text-[20px] text-white font-medium leading-relaxed mb-8 max-w-[500px] [text-shadow:_0_2px_10px_rgb(0_0_0_/_100%)]">
+            <p className="text-[17px] text-white font-medium leading-relaxed mb-8 max-w-[500px]">
               At The Mission to Seafarers Halifax, we are a global lifeline with a local heart. From the historic waterfront of Halifax, we welcome seafarers with hospitality, practical support, and a place to belong while they are far from home.
             </p>
 
@@ -45,27 +45,15 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Updated Stats - Added shadows to numbers and changed labels to solid white with shadows */}
-          <div className="flex items-center gap-6 flex-wrap">
-            <div className="flex flex-col">
-              <strong className="text-4xl font-black text-coral [text-shadow:_0_2px_8px_rgb(0_0_0_/_60%)]">90%</strong>
-              <span className="text-sm font-bold text-white [text-shadow:_0_2px_8px_rgb(0_0_0_/_100%)]">World goods by sea</span>
-            </div>
-            <div className="w-px h-9 bg-white/50 shadow-md"></div>
-            <div className="flex flex-col">
-              <strong className="text-4xl font-black text-coral [text-shadow:_0_2px_8px_rgb(0_0_0_/_60%)]">7,104</strong>
-              <span className="text-sm font-bold text-white [text-shadow:_0_2px_8px_rgb(0_0_0_/_100%)]">Ships</span>
-            </div>
-            <div className="w-px h-9 bg-white/50 shadow-md"></div>
-            <div className="flex flex-col">
-              <strong className="text-4xl font-black text-coral [text-shadow:_0_2px_8px_rgb(0_0_0_/_60%)]">181K+</strong>
-              <span className="text-sm font-bold text-white [text-shadow:_0_2px_8px_rgb(0_0_0_/_100%)]">Seafarers</span>
-            </div>
-            <div className="w-px h-9 bg-white/50 shadow-md"></div>
-            <div className="flex flex-col">
-              <strong className="text-4xl font-black text-coral [text-shadow:_0_2px_8px_rgb(0_0_0_/_60%)]">160+</strong>
-              <span className="text-sm font-bold text-white [text-shadow:_0_2px_8px_rgb(0_0_0_/_100%)]">Year Legacy</span>
-            </div>
+          {/* Stats Block */}
+          <div className="flex items-center gap-4 flex-wrap relative z-10">
+            <div className="flex flex-col"><strong className="text-4xl font-black text-coral">90%</strong><span className="text-sm font-bold text-white">World goods by sea</span></div>
+            <div className="w-px h-9 bg-white/40"></div>
+            <div className="flex flex-col"><strong className="text-4xl font-black text-coral">7,104</strong><span className="text-sm font-bold text-white">Ships</span></div>
+            <div className="w-px h-9 bg-white/40"></div>
+            <div className="flex flex-col"><strong className="text-4xl font-black text-coral">181K+</strong><span className="text-sm font-bold text-white">Seafarers</span></div>
+            <div className="w-px h-9 bg-white/40"></div>
+            <div className="flex flex-col"><strong className="text-4xl font-black text-coral">160+</strong><span className="text-sm font-bold text-white">Year Legacy</span></div>
           </div>
         </div>
 
