@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
@@ -8,12 +8,68 @@ import {
   FaBullhorn, FaHandshake, FaAnchor, FaShip
 } from 'react-icons/fa';
 
+// Import newly created forms
+import { 
+  Modal, 
+  PartnershipForm, 
+  VolunteerForm, 
+  WorkplaceForm 
+} from '../components/forms/WaysToGiveForms';
+
 // Import images
 import portHalifaxImg from '../assets/port_halifax.jpg';
 import volunteersImg from '../assets/MtS Halifax Center.jpg';
 
+// CanadaHelps Embedded Widget Component
+const CanadaHelpsWidget = ({ pageId, formType }) => {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    // We use a small timeout to bypass React 18 Strict Mode double-invocations.
+    const timeoutId = setTimeout(() => {
+      if (!containerRef.current) return;
+
+      containerRef.current.innerHTML = '';
+      const script = document.createElement('script');
+      script.id = 'ch_cdn_embed';
+      script.type = 'text/javascript';
+      script.src = 'https://www.canadahelps.org/secure/js/cdf_embed.2.js';
+      script.charset = 'utf-8';
+      script.setAttribute('data-language', 'en');
+      script.setAttribute('data-page-id', pageId);
+      script.setAttribute('data-root-url', 'https://www.canadahelps.org');
+      script.setAttribute('data-formtype', formType);
+      script.setAttribute('data-cfasync', 'false');
+
+      containerRef.current.appendChild(script);
+    }, 50);
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (containerRef.current) {
+        containerRef.current.innerHTML = '';
+      }
+    };
+  }, [pageId, formType]);
+
+  return <div ref={containerRef} className="w-full min-h-[600px]"></div>;
+};
+
 export default function WaystoGive() {
-  const [activeForm, setActiveForm] = useState(null);
+  const [activeForm, setActiveForm] = useState(null); // null, 'monthly', or 'onetime'
+  const [activeModal, setActiveModal] = useState(null); // null, 'sponsorship', 'workplace', 'volunteer', 'partnership'
+  const donationSectionRef = useRef(null);
+
+  const handleScrollToDonate = () => {
+    setActiveForm(null); 
+    donationSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    alert("Thank you! Your form has been successfully submitted.");
+    setActiveModal(null);
+  };
 
   // All sponsors from Sponsors page
   const allSponsors = [
@@ -50,6 +106,39 @@ export default function WaystoGive() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
+      {/* --- MODALS --- */}
+      <Modal 
+        isOpen={activeModal === 'sponsorship'} 
+        onClose={() => setActiveModal(null)} 
+        title="Partner Through Sponsorship"
+      >
+        <CanadaHelpsWidget pageId="146459" formType="0" />
+      </Modal>
+
+      <Modal 
+        isOpen={activeModal === 'workplace'} 
+        onClose={() => setActiveModal(null)} 
+        title="Workplace Engagement"
+      >
+        <WorkplaceForm onSubmit={handleFormSubmit} />
+      </Modal>
+
+      <Modal 
+        isOpen={activeModal === 'volunteer'} 
+        onClose={() => setActiveModal(null)} 
+        title="Volunteer & Advocacy"
+      >
+        <VolunteerForm onSubmit={handleFormSubmit} />
+      </Modal>
+
+      <Modal 
+        isOpen={activeModal === 'partnership'} 
+        onClose={() => setActiveModal(null)} 
+        title="Partnership Inquiry"
+      >
+        <PartnershipForm onSubmit={handleFormSubmit} />
+      </Modal>
+
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="relative pt-24 pb-32 overflow-hidden">
@@ -76,7 +165,7 @@ export default function WaystoGive() {
         </section>
 
         {/* Donation Section */}
-        <section className="py-24 bg-white">
+        <section ref={donationSectionRef} className="py-24 bg-white scroll-mt-20">
           <div className="max-w-[1200px] mx-auto px-7">
             
             {/* Section Header */}
@@ -92,81 +181,93 @@ export default function WaystoGive() {
               </p>
             </Reveal>
 
-            {/* Donation Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-              
-              {/* Monthly Giving */}
-              <Reveal>
-                <div className="bg-gradient-to-br from-[#F8FBFD] to-white rounded-3xl p-8 md:p-10 shadow-xl border border-[#112A46]/5 hover:shadow-2xl transition-all h-full flex flex-col">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-[#E05A2B] rounded-xl flex items-center justify-center">
-                      <FaHeart className="text-white text-xl" />
+            {/* Render Cards OR Embedded Form based on state */}
+            {!activeForm ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                {/* Monthly Giving */}
+                <Reveal>
+                  <div className="bg-gradient-to-br from-[#F8FBFD] to-white rounded-3xl p-8 md:p-10 shadow-xl border border-[#112A46]/5 hover:shadow-2xl transition-all h-full flex flex-col">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-12 h-12 bg-[#E05A2B] rounded-xl flex items-center justify-center">
+                        <FaHeart className="text-white text-xl" />
+                      </div>
+                      <h3 className="text-[24px] font-black text-[#112A46]">Monthly Giving</h3>
                     </div>
-                    <h3 className="text-[24px] font-black text-[#112A46]">Monthly Giving</h3>
-                  </div>
-                  
-                  <p className="text-[#5A6C7D] text-[16px] leading-relaxed mb-6">
-                    Become a monthly donor and help provide ongoing care and support throughout the year. Monthly gifts help us plan ahead.
-                  </p>
+                    
+                    <p className="text-[#5A6C7D] text-[16px] leading-relaxed mb-6">
+                      Become a monthly donor and help provide ongoing care and support throughout the year. Monthly gifts help us plan ahead.
+                    </p>
 
-                  <div className="space-y-3 mb-8 flex-grow">
-                    <div className="flex items-start gap-3 bg-white rounded-xl p-4 border border-[#E05A2B]/10">
-                      <div className="w-6 h-6 bg-[#E05A2B]/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                        <span className="text-[#E05A2B] text-xs font-black">$15</span>
+                    <div className="space-y-3 mb-8 flex-grow">
+                      <div className="flex items-start gap-3 bg-white rounded-xl p-4 border border-[#E05A2B]/10">
+                        <div className="w-6 h-6 bg-[#E05A2B]/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                          <span className="text-[#E05A2B] text-xs font-black">$15</span>
+                        </div>
+                        <span className="text-[#112A46] text-[14px] font-medium">/month provides refreshments & hospitality</span>
                       </div>
-                      <span className="text-[#112A46] text-[14px] font-medium">/month provides refreshments & hospitality</span>
-                    </div>
-                    <div className="flex items-start gap-3 bg-white rounded-xl p-4 border border-[#E05A2B]/10">
-                      <div className="w-6 h-6 bg-[#E05A2B]/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                        <span className="text-[#E05A2B] text-xs font-black">$25</span>
+                      <div className="flex items-start gap-3 bg-white rounded-xl p-4 border border-[#E05A2B]/10">
+                        <div className="w-6 h-6 bg-[#E05A2B]/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                          <span className="text-[#E05A2B] text-xs font-black">$25</span>
+                        </div>
+                        <span className="text-[#112A46] text-[14px] font-medium">/month supports transportation & Wi-Fi</span>
                       </div>
-                      <span className="text-[#112A46] text-[14px] font-medium">/month supports transportation & Wi-Fi</span>
-                    </div>
-                    <div className="flex items-start gap-3 bg-white rounded-xl p-4 border border-[#E05A2B]/10">
-                      <div className="w-6 h-6 bg-[#E05A2B]/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                        <span className="text-[#E05A2B] text-xs font-black">$50</span>
+                      <div className="flex items-start gap-3 bg-white rounded-xl p-4 border border-[#E05A2B]/10">
+                        <div className="w-6 h-6 bg-[#E05A2B]/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+                          <span className="text-[#E05A2B] text-xs font-black">$50</span>
+                        </div>
+                        <span className="text-[#112A46] text-[14px] font-medium">/month provides practical assistance & care</span>
                       </div>
-                      <span className="text-[#112A46] text-[14px] font-medium">/month provides practical assistance & care</span>
                     </div>
-                  </div>
 
-                  <a
-                    href="https://www.missiontoseafarershalifax.ca/donate/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 bg-[#112A46] text-white px-8 py-4 rounded-full font-bold text-[15px] hover:bg-[#1a3a5f] transition-all shadow-lg hover:shadow-xl w-full"
-                  >
-                    Become a Monthly Donor
-                  </a>
-                </div>
+                    <button
+                      onClick={() => setActiveForm('monthly')}
+                      className="inline-flex items-center justify-center gap-2 bg-[#112A46] text-white px-8 py-4 rounded-full font-bold text-[15px] hover:bg-[#1a3a5f] transition-all shadow-lg hover:shadow-xl w-full"
+                    >
+                      Become a Monthly Donor
+                    </button>
+                  </div>
+                </Reveal>
+
+                {/* One-Time Gift */}
+                <Reveal delay={100}>
+                  <div className="bg-gradient-to-br from-[#FDF0EC] to-white rounded-3xl p-8 md:p-10 shadow-xl border border-[#E05A2B]/10 hover:shadow-2xl transition-all h-full flex flex-col">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-12 h-12 bg-[#E05A2B] rounded-xl flex items-center justify-center">
+                        <FaGift className="text-white text-xl" />
+                      </div>
+                      <h3 className="text-[24px] font-black text-[#112A46]">One-Time Gift</h3>
+                    </div>
+                    
+                    <p className="text-[#5A6C7D] text-[16px] leading-relaxed mb-8 flex-grow">
+                      Make a one-time donation to support Mission to Seafarers Halifax. Your gift helps create a welcoming space and care for seafarers right when they arrive.
+                    </p>
+
+                    <button
+                      onClick={() => setActiveForm('onetime')}
+                      className="inline-flex items-center justify-center gap-2 bg-[#E05A2B] text-white px-8 py-4 rounded-full font-bold text-[15px] hover:bg-[#c94d23] transition-all shadow-lg hover:shadow-xl w-full"
+                    >
+                      Make a One-Time Gift
+                    </button>
+                  </div>
+                </Reveal>
+              </div>
+            ) : (
+              /* Embedded Form View */
+              <Reveal className="max-w-4xl mx-auto bg-white rounded-3xl p-6 md:p-10 shadow-2xl border border-[#112A46]/10">
+                <button 
+                  onClick={() => setActiveForm(null)}
+                  className="mb-8 flex items-center gap-2 text-[#E05A2B] font-bold text-[15px] hover:text-[#c94d23] hover:-translate-x-1 transition-all"
+                >
+                  ← Back to Donation Options
+                </button>
+                
+                {activeForm === 'monthly' ? (
+                  <CanadaHelpsWidget key="form-monthly" pageId="110798" formType="4" />
+                ) : (
+                  <CanadaHelpsWidget key="form-onetime" pageId="42880" formType="0" />
+                )}
               </Reveal>
-
-              {/* One-Time Gift */}
-              <Reveal delay={100}>
-                <div className="bg-gradient-to-br from-[#FDF0EC] to-white rounded-3xl p-8 md:p-10 shadow-xl border border-[#E05A2B]/10 hover:shadow-2xl transition-all h-full flex flex-col">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-[#E05A2B] rounded-xl flex items-center justify-center">
-                      <FaGift className="text-white text-xl" />
-                    </div>
-                    <h3 className="text-[24px] font-black text-[#112A46]">One-Time Gift</h3>
-                  </div>
-                  
-                  <p className="text-[#5A6C7D] text-[16px] leading-relaxed mb-8 flex-grow">
-                    Make a one-time donation to support Mission to Seafarers Halifax. Your gift helps create a welcoming space and care for seafarers right when they arrive.
-                  </p>
-
-                  <a
-                    href="https://www.missiontoseafarershalifax.ca/donate/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 bg-[#E05A2B] text-white px-8 py-4 rounded-full font-bold text-[15px] hover:bg-[#c94d23] transition-all shadow-lg hover:shadow-xl w-full"
-                  >
-                    Make a One-Time Gift
-                  </a>
-                </div>
-              </Reveal>
-
-            </div>
+            )}
           </div>
         </section>
 
@@ -201,22 +302,20 @@ export default function WaystoGive() {
                   </div>
                   <h3 className="text-[20px] font-black text-[#112A46] mb-3">Partner Through Sponsorship</h3>
                   <ul className="space-y-2 mb-6 text-[#5A6C7D] text-[14px]">
-                    <li>• Fund a Project (form)</li>
-                    <li>• Sponsor a Program (form)</li>
-                    <li>• Sponsor an Event (form)</li>
+                    <li>• Fund a Project</li>
+                    <li>• Sponsor a Program</li>
+                    <li>• Sponsor an Event</li>
                   </ul>
-                  <a
-                    href="https://www.missiontoseafarershalifax.ca/donate/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors"
+                  <button
+                    onClick={() => setActiveModal('sponsorship')}
+                    className="inline-flex items-center cursor-pointer gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors"
                   >
-                    Make a Donation →
-                  </a>
+                    Sponsor Now →
+                  </button>
                 </div>
               </Reveal>
 
-              {/* Give Back Through Your Social Responsibility Grants */}
+              {/* Engage Your Workplace */}
               <Reveal delay={100}>
                 <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all border border-[#112A46]/5 h-full">
                   <div className="w-14 h-14 bg-[#E05A2B]/10 rounded-xl flex items-center justify-center mb-5">
@@ -226,10 +325,16 @@ export default function WaystoGive() {
                   <p className="text-[#5A6C7D] text-[14px] mb-4">Empower your team to make a difference together.</p>
                   <ul className="space-y-2 mb-6 text-[#5A6C7D] text-[14px]">
                     <li>• <a href="https://portal.healthpartners.ca/servlet/eAndar.article/30" target="_blank" rel="noopener noreferrer" className="text-[#E05A2B] hover:underline">Workplace or Payroll Giving</a></li>
-                    <li>• Employer Matching Gifts (form)</li>
-                    <li>• Volunteer Grants (form)</li>
-                    <li>• Union or Association Partnerships (form)</li>
+                    <li>• Employer Matching Gifts</li>
+                    <li>• Volunteer Grants</li>
+                    <li>• Union or Association Partnerships</li>
                   </ul>
+                  <button
+                    onClick={() => setActiveModal('workplace')}
+                    className="inline-flex cursor-pointer items-center gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors"
+                  >
+                    Fill out the form →
+                  </button>
                 </div>
               </Reveal>
 
@@ -251,7 +356,7 @@ export default function WaystoGive() {
                     href="https://fundraising.mtsc.ca/?_gl=1*146le4y*_ga*MTM4NDM0OTE4My4xNzc4MDgxMDQx*_ga_PRGHG34XYT*czE3NzgxODUzMjAkbzgkZzEkdDE3NzgxODUzNzQkajYkbDAkaDA."
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors"
+                    className="inline-flex items-center cursor-pointer gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors"
                   >
                     Start Fundraising →
                   </a>
@@ -269,14 +374,14 @@ export default function WaystoGive() {
                     <li>• Become a Volunteer</li>
                     <li>• Raise Awareness</li>
                     <li>• Share Our Work on Your Social Feed</li>
-                    <li>• Refer Our Organization for a Grant (form)</li>
+                    <li>• Refer Our Organization for a Grant</li>
                   </ul>
-                  <Link
-                    to="/contact"
-                    className="inline-flex items-center gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors"
+                  <button
+                    onClick={() => setActiveModal('volunteer')}
+                    className="inline-flex cursor-pointer items-center gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors"
                   >
                     Get Involved →
-                  </Link>
+                  </button>
                 </div>
               </Reveal>
 
@@ -288,14 +393,14 @@ export default function WaystoGive() {
                   </div>
                   <h3 className="text-[20px] font-black text-[#112A46] mb-3">Explore Customized Partnership Opportunities</h3>
                   <p className="text-[#5A6C7D] text-[14px] mb-6">
-                    Across Halifax's Port (form)
+                    Across Halifax's Port
                   </p>
-                  <Link
-                    to="/contact"
-                    className="inline-flex items-center gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors"
+                  <button
+                    onClick={() => setActiveModal('partnership')}
+                    className="inline-flex cursor-pointer items-center gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors"
                   >
                     Contact Us →
-                  </Link>
+                  </button>
                 </div>
               </Reveal>
 
@@ -313,7 +418,7 @@ export default function WaystoGive() {
                     href="https://www.amazon.ca/hz/wishlist/ls/3C9KTQNHTZ0NM/ref=hz_ls_biz_ex"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors"
+                    className="inline-flex items-center cursor-pointer gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors"
                   >
                     View Wishlist →
                   </a>
@@ -436,13 +541,13 @@ export default function WaystoGive() {
 
             {/* CTA to become a sponsor */}
             <Reveal className="text-center mt-12">
-              <Link
-                to="/contact"
+              <button
+                onClick={() => setActiveModal('partnership')}
                 className="inline-flex items-center gap-2 bg-[#E05A2B] text-white px-8 py-4 rounded-full font-bold text-[15px] hover:bg-[#c94d23] transition-all shadow-lg hover:shadow-xl"
               >
                 <FaHandshake />
                 Become a Sponsor
-              </Link>
+              </button>
             </Reveal>
             
           </div>
@@ -470,14 +575,12 @@ export default function WaystoGive() {
               </p>
 
               <div className="flex flex-wrap justify-center gap-4">
-                <a
-                  href="https://www.missiontoseafarershalifax.ca/donate/"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={handleScrollToDonate}
                   className="inline-flex items-center gap-2 bg-white text-[#E05A2B] px-8 py-4 rounded-full font-bold text-[15px] hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl"
                 >
                   Donate Now
-                </a>
+                </button>
                 <Link
                   to="/contact"
                   className="inline-flex items-center gap-2 bg-transparent border-2 border-white text-white px-8 py-4 rounded-full font-bold text-[15px] hover:bg-white hover:text-[#E05A2B] transition-all"

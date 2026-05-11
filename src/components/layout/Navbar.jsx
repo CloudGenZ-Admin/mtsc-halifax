@@ -126,7 +126,7 @@ export default function Navbar() {
             <img 
               src={seafarerLogoImg} 
               alt="Mission to Seafarers Logo" 
-              className="h-20 md:h-20 lg:h-24 w-auto shrink-0 object-contain rounded-md group-hover:scale-105 transition-transform"
+              className="h-20 md:h-20 lg:h-[85px] w-auto shrink-0 object-contain rounded-md group-hover:scale-105 transition-transform"
             />
             <span className="flex flex-col leading-none justify-center">
               <span className="text-[16px] lg:text-[15px] xl:text-[18px] font-extrabold text-[#112A46] whitespace-nowrap">Mission to Seafarers</span>

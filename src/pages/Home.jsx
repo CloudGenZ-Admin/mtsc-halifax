@@ -12,7 +12,7 @@ import prayerWallImg from '../assets/img/footer-prayer-wall.png';
 import happySeaImg from '../assets/img/footer-happy-sea.png';
 import newsletterImg from '../assets/img/footer-newsletter.png';
 import eventCalendarImg from '../assets/img/footer-event-calendar.png';
-
+import volunteerImg from '../assets/Volunteer.jpeg';
 // Import local SVGs for "How We Support the World's Seafarers in Canada" section
 import practicalSupportIcon from '../assets/img/Seafarers/practical-support_1.svg';
 import mentalEmotionalIcon from '../assets/img/Seafarers/mental-emotional-help.svg';
@@ -45,19 +45,19 @@ import portDpWorld from '../assets/Corpo/ports/dpworld-logo.png.webp';
 export default function Home() {
   // Array of imported port logos for the carousel
   const partnerLogos = [
-    portSydney, portGCT, portHopa, portHelm, portOntario, 
-    portPrinceRupert, portRobertAllan, portTK, portNamma, 
+    portSydney, portGCT, portHopa, portHelm, portOntario,
+    portPrinceRupert, portRobertAllan, portTK, portNamma,
     portToronto, portDpWorld
   ];
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      
+
       <main className="flex-grow">
         <Hero />
 
-      
+
 
         {/* Split CTA Section */}
         <section className="grid grid-cols-1 md:grid-cols-2 min-h-[460px]">
@@ -71,8 +71,12 @@ export default function Home() {
             </div>
           </Reveal>
           <Reveal className="relative overflow-hidden flex group cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=700&q=80" alt="Volunteer" className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-            <div className="relative z-10 p-12 md:p-14 flex flex-col justify-end items-end text-right w-full bg-gradient-to-t from-navy-dark/95 via-navy-dark/70 to-transparent">
+            <img
+              src={volunteerImg}
+              alt="Volunteer"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="relative z-10 p-12 md:p-14 flex flex-col justify-end items-end text-right w-full bg-gradient-to-t from-navy-dark/40 via-navy-dark/40 to-transparent">
               <p className="text-[15px] font-semibold text-white/70 mb-1">I am a</p>
               <h2 className="text-[40px] font-black text-white mb-3 leading-none">Volunteer,</h2>
               <p className="text-[17px] font-semibold text-white/90 max-w-[280px] mb-6 leading-tight">how do I donate, volunteer, or get involved?</p>
@@ -81,14 +85,15 @@ export default function Home() {
           </Reveal>
         </section>
 
-          {/* Mission Tagline */}
+        {/* Mission Tagline */}
         <div className="bg-white py-10 border-b border-[#E05A2B]/10">
           <div className="max-w-[1200px] mx-auto px-7 text-center">
             <h2 className="text-[clamp(28px,4vw,44px)] font-black text-[#112A46] mb-3.5 leading-tight">
               How We Support the World's Seafarers in Canada
             </h2>
             <p className="text-[#5A6C7D] text-base max-w-[560px] mx-auto leading-relaxed">
-              As part of a 160+ year legacy, we offer practical, emotional, and spiritual support at Canadian ports, ensuring no seafarer is alone.
+              Ships arrive into Halifax daily carrying crews who may spend months at sea before briefly stepping into the city. As part of a 160+ year legacy,
+              we offer them practical, emotional, and spiritual support, ensuring no seafarer is alone.
             </p>
           </div>
         </div>
@@ -97,7 +102,7 @@ export default function Home() {
         <section className="bg-[#FDF0EC] py-16">
           <div className="max-w-[1200px] mx-auto px-7">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              
+
               {/* 1. At the Station – Community Connection */}
               <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow border-2 border-transparent hover:border-[#E05A2B]/20">
                 <div className="flex items-start gap-4 mb-5">
@@ -115,8 +120,8 @@ export default function Home() {
                 <p className="text-[15px] text-[#5A6C7D] leading-relaxed mb-6">
                   Refreshments and a comfortable place to sit, pause, and reconnect with loved ones in a welcoming station space.
                 </p>
-                <a 
-                  href="/contact" 
+                <a
+                  href="/contact"
                   className="inline-flex items-center gap-2 bg-[#E05A2B] text-white px-6 py-3 rounded-full font-bold text-[14px] hover:bg-[#c94d23] transition-all shadow-md hover:shadow-lg"
                 >
                   Come Visit Us at the Station
@@ -140,8 +145,8 @@ export default function Home() {
                 <p className="text-[15px] text-[#5A6C7D] leading-relaxed mb-6">
                   Order essentials online and have them delivered securely to our station for pickup when you dock.
                 </p>
-                <a 
-                  href="https://parcelservice.mtsc.ca/" 
+                <a
+                  href="https://parcelservice.mtsc.ca/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-[#112A46] text-white px-6 py-3 rounded-full font-bold text-[14px] hover:bg-[#0d1f35] transition-all shadow-md hover:shadow-lg"
@@ -164,12 +169,12 @@ export default function Home() {
                 How We Care for Seafarers
               </h2>
               <p className="text-[#5A6C7D] text-base max-w-[600px] mx-auto leading-relaxed">
-                Comprehensive support services designed to meet the diverse needs of seafarers at Canadian ports.
+                For many seafarers arriving in Halifax, a ride into the city, access to Wi-Fi, or a call home becomes part of a very short window ashore.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              
+
               {/* Practical Support */}
               <div className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all hover:-translate-y-1 border border-[#E05A2B]/10">
                 <div className="w-12 h-12 bg-[#E05A2B]/10 rounded-full flex items-center justify-center mb-4">
@@ -323,11 +328,11 @@ export default function Home() {
             <div className="animate-scroll items-center gap-16 md:gap-24 px-8">
               {/* Duplicated array to create a seamless infinite loop */}
               {[...partnerLogos, ...partnerLogos].map((logo, index) => (
-                <img 
-                  key={index} 
-                  src={logo} 
-                  alt={`Sponsor Logo ${index}`} 
-                  className="h-12 md:h-16 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-pointer" 
+                <img
+                  key={index}
+                  src={logo}
+                  alt={`Sponsor Logo ${index}`}
+                  className="h-12 md:h-16 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-pointer"
                 />
               ))}
             </div>
@@ -342,11 +347,11 @@ export default function Home() {
           <div className="max-w-[1200px] mx-auto px-7">
             <div className="text-center mb-12">
               <h2 className="text-[clamp(32px,4vw,48px)] font-black text-white leading-none mb-4">Ways to Get Involved</h2>
-              <p className="text-white/90 text-base max-w-[600px] mx-auto">Join us in supporting seafarers across Canada</p>
+              <p className="text-white/90 text-base max-w-[600px] mx-auto">Join us in supporting seafarers arriving in Halifax</p>
             </div>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              
+
               {/* Join Our Events */}
               <a href="/events" className="bg-white/10 backdrop-blur-sm hover:bg-white/20 rounded-xl p-6 text-center transition-all hover:-translate-y-2 border-2 border-white/20 hover:border-white group">
                 <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-all">
@@ -444,38 +449,38 @@ export default function Home() {
           <div className="max-w-[1200px] mx-auto px-7">
             <Reveal>
               <h2 className="text-[34px] font-black text-navy text-center mb-10">Join or Host an Event for Us</h2>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
-                  { 
-                    image: prayerWallImg, 
-                    title: 'Prayer Wall', 
+                  {
+                    image: prayerWallImg,
+                    title: 'Prayer Wall',
                     desc: "Share a prayer, read messages, and find strength and connection.",
                     link: '/prayer'
                   },
-                  { 
-                    image: happySeaImg, 
-                    brand: 'Happy@Sea', 
-                    title: 'Get 24/7 Help', 
-                    desc: "Chat 24/7, book rides, get essentials, explore well-being resources.", 
+                  {
+                    image: happySeaImg,
+                    brand: 'Happy@Sea',
+                    title: 'Get 24/7 Help',
+                    desc: "Chat 24/7, book rides, get essentials, explore well-being resources.",
                     accent: true,
                     link: '/contact'
                   },
-                  { 
-                    image: newsletterImg, 
-                    title: 'Newsletter', 
+                  {
+                    image: newsletterImg,
+                    title: 'Newsletter',
                     desc: "Get local port news, seafarer support, and more.",
                     link: '/publication'
                   },
-                  { 
-                    image: eventCalendarImg, 
+                  {
+                    image: eventCalendarImg,
                     title: 'Join or Host an Event for Us', // <--- Changed this title here
                     desc: "Honour a loved one by creating a fundraising page.",
                     link: '/events'
                   }
                 ].map((card, i) => (
-                  <a 
-                    key={i} 
+                  <a
+                    key={i}
                     href={card.link}
                     className={`block cursor-pointer no-underline rounded-[18px] p-7 text-center transition-all hover:-translate-y-1.5 border-2 flex flex-col items-center justify-start ${card.accent ? 'bg-navy border-navy shadow-lg' : 'bg-white border-transparent shadow-card hover:shadow-card-hover hover:border-coral/20'}`}
                   >

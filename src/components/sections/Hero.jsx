@@ -16,7 +16,7 @@ export default function Hero() {
           className="w-full h-full object-cover"
         />
         {/* Gradient overlay - darker on left for text, lighter on right to show image */}
-        <div className="absolute inset-0 bg-gradient-to-r from-navy-dark/85 via-navy-dark/60 to-navy-dark/40"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-navy-dark/20 via-navy-dark/20 to-navy-dark/40"></div>
       </div>
 
       {/* Content Grid */}

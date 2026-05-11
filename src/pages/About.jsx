@@ -14,7 +14,7 @@ import volunteersImg from '../assets/MtS Halifax Center.jpg';
 import helenImg from '../assets/Helen-Glenn-Mission-Manager-174x300.jpg';
 import portHalifaxImg from '../assets/port_halifax.jpg';
 import seafarersOnDeckImg from '../assets/Awards/seafarers-ondeck-working-min.webp';
-
+import josephImg from '../assets/Josefloot.jpeg';
 // ==========================================
 // IMPORT VOLUNTEER GALLERY IMAGES
 // ==========================================
@@ -357,8 +357,12 @@ function About() {
                 {/* Joseph */}
                 <div className="bg-gradient-to-br from-[#F8FBFD] to-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all border border-[#112A46]/5">
                   <div className="flex flex-col items-center text-center">
-                    <div className="w-32 h-32 bg-[#E05A2B]/10 text-[#E05A2B] rounded-full flex items-center justify-center text-5xl mx-auto mb-6 border-4 border-[#E05A2B]/20 shadow-lg">
-                      <FaUserTie />
+                     <div className="w-32 h-32 mb-6 rounded-full overflow-hidden border-4 border-[#E05A2B]/20 shadow-lg">
+                      <img
+                        src={josephImg}
+                        alt="Helen Glenn - Station Manager"
+                        className="w-full h-full object-cover "
+                      />
                     </div>
                     <h4 className="text-[24px] font-black text-[#112A46] mb-2">Joseph</h4>
                     <p className="text-[#E05A2B] font-bold uppercase tracking-widest text-[13px] mb-4">Assistant Manager</p>
