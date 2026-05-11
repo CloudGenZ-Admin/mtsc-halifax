@@ -77,7 +77,7 @@ export default function Home() {
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <div className="relative z-10 p-12 md:p-14 flex flex-col justify-end items-end text-right w-full bg-gradient-to-t from-navy-dark/40 via-navy-dark/40 to-transparent">
-              <p className="text-[15px] font-semibold text-white/70 mb-1">I am a</p>
+              <p className="text-[15px] font-semibold text-white/90 mb-1">I am a</p>
               <h2 className="text-[40px] font-black text-white mb-3 leading-none">Volunteer,</h2>
               <p className="text-[17px] font-semibold text-white/90 max-w-[280px] mb-6 leading-tight">how do I donate, volunteer, or get involved?</p>
               <a href="/volunteer" className="bg-white text-navy self-end px-6 py-2.5 rounded-full font-bold text-[13px] hover:bg-warm-gray transition-colors">GET INVOLVED</a>
