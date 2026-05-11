@@ -92,8 +92,7 @@ export default function Home() {
               How We Support the World's Seafarers in Canada
             </h2>
             <p className="text-[#5A6C7D] text-base max-w-[560px] mx-auto leading-relaxed">
-              Ships arrive into Halifax daily carrying crews who may spend months at sea before briefly stepping into the city. As part of a 160+ year legacy,
-              we offer them practical, emotional, and spiritual support, ensuring no seafarer is alone.
+              Ships arrive into Halifax daily carrying crews who may spend months at sea before briefly stepping into the city.
             </p>
           </div>
         </div>

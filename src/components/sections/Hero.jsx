@@ -10,9 +10,9 @@ export default function Hero() {
     <section className="relative min-h-[88vh] overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src={portHalifaxBg} 
-          alt="Port of Halifax" 
+        <img
+          src={portHalifaxBg}
+          alt="Port of Halifax"
           className="w-full h-full object-cover"
         />
         {/* Gradient overlay - darker on left for text, lighter on right to show image */}
@@ -22,61 +22,61 @@ export default function Hero() {
       {/* Content Grid */}
       <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 min-h-[88vh]">
         <div className="flex flex-col justify-center px-7 py-16 md:pl-16 md:pr-10">
-  <div className="max-w-[600px]">
-    <span className="inline-block bg-coral text-white text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-5 shadow-md">
-      ✦ Serving Seafarers Since 1856
-    </span>
-    
-   
-    <h1 className="text-[clamp(36px,4.5vw,56px)] font-black text-white leading-[1.1] mb-5 [text-shadow:_0_4px_16px_rgb(0_0_0_/_80%)]">
-      Welcome to <br/>
-      <span className="text-coral [text-shadow:_0_4px_16px_rgb(0_0_0_/_60%)]">The Mission to Seafarers Halifax</span>
-    </h1>
-    
-    
-    <p className="text-[20px] text-white font-medium leading-relaxed mb-8 max-w-[500px] [text-shadow:_0_2px_10px_rgb(0_0_0_/_100%)]">
-      At The Mission to Seafarers Halifax, we are a global lifeline with a local heart. From the historic waterfront of Halifax, we welcome seafarers with hospitality, practical support, and a place to belong while they are far from home.
-    </p>
-    
-    <div className="flex flex-wrap gap-3.5 mb-12">
-      <a href="/donate" className="inline-flex items-center gap-2 bg-coral text-white px-8 py-3.5 rounded-full font-extrabold text-sm hover:bg-coral-light hover:-translate-y-0.5 shadow-warm hover:shadow-warm-hover transition-all">
-        DONATE NOW
-      </a>
-    </div>
-  </div>
-  
-  {/* Updated Stats - Added shadows to numbers and changed labels to solid white with shadows */}
-  <div className="flex items-center gap-6 flex-wrap">
-    <div className="flex flex-col">
-      <strong className="text-4xl font-black text-coral [text-shadow:_0_2px_8px_rgb(0_0_0_/_60%)]">90%</strong>
-      <span className="text-sm font-bold text-white [text-shadow:_0_2px_8px_rgb(0_0_0_/_100%)]">World goods by sea</span>
-    </div>
-    <div className="w-px h-9 bg-white/50 shadow-md"></div>
-    <div className="flex flex-col">
-      <strong className="text-4xl font-black text-coral [text-shadow:_0_2px_8px_rgb(0_0_0_/_60%)]">7,104</strong>
-      <span className="text-sm font-bold text-white [text-shadow:_0_2px_8px_rgb(0_0_0_/_100%)]">Ships</span>
-    </div>
-    <div className="w-px h-9 bg-white/50 shadow-md"></div>
-    <div className="flex flex-col">
-      <strong className="text-4xl font-black text-coral [text-shadow:_0_2px_8px_rgb(0_0_0_/_60%)]">181K+</strong>
-      <span className="text-sm font-bold text-white [text-shadow:_0_2px_8px_rgb(0_0_0_/_100%)]">Seafarers</span>
-    </div>
-    <div className="w-px h-9 bg-white/50 shadow-md"></div>
-    <div className="flex flex-col">
-      <strong className="text-4xl font-black text-coral [text-shadow:_0_2px_8px_rgb(0_0_0_/_60%)]">160+</strong>
-      <span className="text-sm font-bold text-white [text-shadow:_0_2px_8px_rgb(0_0_0_/_100%)]">Year Legacy</span>
-    </div>
-  </div>
-</div>
+          <div className="max-w-[600px]">
+            <span className="inline-block bg-coral text-white text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-5 shadow-md">
+              ✦ Serving Seafarers Since 1856
+            </span>
+
+
+            <h1 className="text-[clamp(36px,4.5vw,56px)] font-black text-white leading-[1.1] mb-5 [text-shadow:_0_4px_16px_rgb(0_0_0_/_80%)]">
+              Welcome to <br />
+              <span className="text-coral [text-shadow:_0_4px_16px_rgb(0_0_0_/_60%)]">The Mission to Seafarers Halifax</span>
+            </h1>
+
+
+            <p className="text-[20px] text-white font-medium leading-relaxed mb-8 max-w-[500px] [text-shadow:_0_2px_10px_rgb(0_0_0_/_100%)]">
+              At The Mission to Seafarers Halifax, we are a global lifeline with a local heart. From the historic waterfront of Halifax, we welcome seafarers with hospitality, practical support, and a place to belong while they are far from home.
+            </p>
+
+            <div className="flex flex-wrap gap-3.5 mb-12">
+              <a href="/donate" className="inline-flex items-center gap-2 bg-coral text-white px-8 py-3.5 rounded-full font-extrabold text-sm hover:bg-coral-light hover:-translate-y-0.5 shadow-warm hover:shadow-warm-hover transition-all">
+                DONATE NOW
+              </a>
+            </div>
+          </div>
+
+          {/* Updated Stats - Added shadows to numbers and changed labels to solid white with shadows */}
+          <div className="flex items-center gap-6 flex-wrap">
+            <div className="flex flex-col">
+              <strong className="text-4xl font-black text-coral [text-shadow:_0_2px_8px_rgb(0_0_0_/_60%)]">90%</strong>
+              <span className="text-sm font-bold text-white [text-shadow:_0_2px_8px_rgb(0_0_0_/_100%)]">World goods by sea</span>
+            </div>
+            <div className="w-px h-9 bg-white/50 shadow-md"></div>
+            <div className="flex flex-col">
+              <strong className="text-4xl font-black text-coral [text-shadow:_0_2px_8px_rgb(0_0_0_/_60%)]">7,104</strong>
+              <span className="text-sm font-bold text-white [text-shadow:_0_2px_8px_rgb(0_0_0_/_100%)]">Ships</span>
+            </div>
+            <div className="w-px h-9 bg-white/50 shadow-md"></div>
+            <div className="flex flex-col">
+              <strong className="text-4xl font-black text-coral [text-shadow:_0_2px_8px_rgb(0_0_0_/_60%)]">181K+</strong>
+              <span className="text-sm font-bold text-white [text-shadow:_0_2px_8px_rgb(0_0_0_/_100%)]">Seafarers</span>
+            </div>
+            <div className="w-px h-9 bg-white/50 shadow-md"></div>
+            <div className="flex flex-col">
+              <strong className="text-4xl font-black text-coral [text-shadow:_0_2px_8px_rgb(0_0_0_/_60%)]">160+</strong>
+              <span className="text-sm font-bold text-white [text-shadow:_0_2px_8px_rgb(0_0_0_/_100%)]">Year Legacy</span>
+            </div>
+          </div>
+        </div>
 
         <div className="hidden md:flex items-center justify-center p-10 relative">
           <div className="relative w-full max-w-[540px]">
             {/* Adjusted aspect ratio to 4/3 to better accommodate the wider landscape image */}
             <div className="rounded-[24px] overflow-hidden aspect-[4/3] shadow-[0_20px_60px_rgba(45,53,128,.15)] bg-white">
-              <img 
-                src={heroImg} 
-                alt="Mission to Seafarers Halifax Station and Staff" 
-                className="w-full h-full object-cover" 
+              <img
+                src={heroImg}
+                alt="Mission to Seafarers Halifax Station and Staff"
+                className="w-full h-full object-cover"
               />
             </div>
             <div className="absolute -bottom-6 -left-5 bg-white rounded-2xl p-5 flex flex-col gap-1 shadow-[0_8px_32px_rgba(45,53,128,.12)] min-w-[180px]">

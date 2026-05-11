@@ -187,14 +187,17 @@ function About() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            {/* Changed from items-start to items-stretch for equal heights */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
 
               {/* Mission Card */}
-              <div className="group">
-                <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-[#112A46]/5 hover:shadow-2xl transition-all duration-300">
+              {/* Added h-full here */}
+              <div className="group h-full">
+                {/* Added h-full and flex flex-col here */}
+                <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-[#112A46]/5 hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
 
                   {/* Image Header */}
-                  <div className="relative h-64 overflow-hidden">
+                  <div className="relative h-64 overflow-hidden shrink-0">
                     <img
                       src={portHalifaxImg}
                       alt="Port of Halifax"
@@ -213,8 +216,8 @@ function About() {
                     </div>
                   </div>
 
-                  {/* Content */}
-                  <div className="p-8 md:p-10">
+                  {/* Content - Added flex-grow */}
+                  <div className="p-8 md:p-10 flex-grow">
                     <p className="text-[#112A46] text-[18px] leading-relaxed mb-5 font-semibold">
                       To care for and support seafarers visiting the Port of Halifax by offering a welcoming environment where they can rest, communicate with loved ones, and access practical assistance and pastoral care during their time in port.
                     </p>
@@ -248,11 +251,13 @@ function About() {
               </div>
 
               {/* Vision Card */}
-              <div className="group">
-                <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-[#E05A2B]/10 hover:shadow-2xl transition-all duration-300">
+              {/* Added h-full here */}
+              <div className="group h-full">
+                {/* Added h-full and flex flex-col here */}
+                <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-[#E05A2B]/10 hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
 
                   {/* Image Header */}
-                  <div className="relative h-64 overflow-hidden">
+                  <div className="relative h-64 overflow-hidden shrink-0">
                     <img
                       src={seafarersOnDeckImg}
                       alt="Seafarers at work"
@@ -271,8 +276,8 @@ function About() {
                     </div>
                   </div>
 
-                  {/* Content */}
-                  <div className="p-8 md:p-10">
+                  {/* Content - Added flex-grow */}
+                  <div className="p-8 md:p-10 flex-grow">
                     <p className="text-[#112A46] text-[20px] leading-snug font-bold mb-6">
                       To be a trusted place of welcome and care for seafarers visiting Halifax, where every crew member arriving in port can find support, connection, and a sense of belonging.
                     </p>
@@ -354,14 +359,16 @@ function About() {
                   </div>
                 </div>
 
-                {/* Joseph */}
+             
                 <div className="bg-gradient-to-br from-[#F8FBFD] to-white rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all border border-[#112A46]/5">
                   <div className="flex flex-col items-center text-center">
-                     <div className="w-32 h-32 mb-6 rounded-full overflow-hidden border-4 border-[#E05A2B]/20 shadow-lg">
+                  
+                     <div className="w-32 h-32 mb-6 rounded-full overflow-hidden border-4 border-[#E05A2B]/20 shadow-lg bg-[#EAE6DF] flex items-center justify-center">
                       <img
                         src={josephImg}
-                        alt="Helen Glenn - Station Manager"
-                        className="w-full h-full object-cover "
+                        alt="Joseph - Assistant Manager"
+                     
+                        className="w-full h-full object-contain scale-[1.2]"
                       />
                     </div>
                     <h4 className="text-[24px] font-black text-[#112A46] mb-2">Joseph</h4>
