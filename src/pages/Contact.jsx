@@ -1,380 +1,328 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from "react";
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
-import Reveal from '../components/common/Reveal';
-import { FaMapMarkerAlt, FaPhoneAlt, FaFax, FaClock, FaShip, FaCheckCircle, FaWhatsapp } from 'react-icons/fa';
+import { Mail, Phone, MapPin, Clock, Send, MessageCircle, Mailbox, CheckCircle2, AlertCircle, User } from "lucide-react";
 
 import centerImage from '../assets/MtS Halifax Center.jpg';
-// Import volunteer and seafarer images for photo collage
-import volunteer1 from '../assets/events/A-grand-team-effort-768x1024.jpg';
-import volunteer2 from '../assets/events/Atlantic-Sky-crew-members-with-Helen-Elizabeth-and-Ronaldo-scaled.jpg';
-import volunteer3 from '../assets/events/Maria-and-Elizabeth-serves-Andy-with-Susan-and-Will-1024x768.jpg';
-import volunteer4 from '../assets/events/Day-of-Seafarers-1024x683.jpg';
 
-export default function Contact() {
+const interests = [
+  "Seafarer support",
+  "Volunteering",
+  "Donating goods or services",
+  "Local partnership",
+  "Media inquiry",
+  "Other"
+];
+
+const Contact = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const formRef = useRef(null);
+
   // Scroll to top when the component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const maxChars = 600;
-
-  // 1. Form State Management
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    confirmEmail: '',
-    inquiryType: 'General Inquiry',
-    message: ''
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-
-  // Handle Input Changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'message' && value.length > maxChars) return;
-    
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  // 2. Form Submit Handler (GOOGLE FORM INTEGRATION)
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMsg('');
-
-    // Check if emails match
-    if (formData.email !== formData.confirmEmail) {
-      setErrorMsg("Emails do not match!");
-      return;
-    }
-
-    setIsSubmitting(true);
-
-  
-    const FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdDRLf8Fjde4Y-q1oUmoa_5JAbmAFp5TeG0RV3qjyVL3Aabhg/formResponse";
-
-    const data = new FormData();
-    
-   
-    data.append('entry.2050372848', formData.firstName);   // First Name
-    data.append('entry.608487628', formData.lastName);    // Last Name
-    data.append('entry.278774456', formData.email);       // Email
-    data.append('entry.1990273286', formData.inquiryType); // Dropdown
-    data.append('entry.1454859148', formData.message);     // Message
-
-    try {
-      // mode: 'no-cors' is crucial for Google Forms
-      await fetch(FORM_ACTION_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: data
-      });
-      
-      // Success
+  // This handles the iframe finishing its load (meaning Google received the data)
+  const handleIframeLoad = () => {
+    if (isSubmitting) {
       setIsSuccess(true);
-      setFormData({
-        firstName: '', lastName: '', email: '', confirmEmail: '', inquiryType: 'General Inquiry', message: ''
-      });
-    } catch (error) {
-      setErrorMsg("Something went wrong. Please try again.");
-    } finally {
       setIsSubmitting(false);
+      if (formRef.current) {
+        formRef.current.reset();
+      }
+      // Auto-hide success message after 5 seconds
+      setTimeout(() => setIsSuccess(false), 5000);
     }
   };
+
+  // Reusable Tailwind classes mimicking the standard UI
+  const inputClasses = "mt-1.5 flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-[#112A46] font-medium placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E05A2B]/50 focus:border-[#E05A2B] disabled:cursor-not-allowed disabled:opacity-50 transition-colors";
+  const labelClasses = "text-sm font-medium leading-none text-[#112A46] peer-disabled:cursor-not-allowed peer-disabled:opacity-70";
 
   return (
-    <div className="min-h-screen flex flex-col ">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
       
       <main className="flex-grow">
-        {/* Page Header with Photo Collage Background */}
-        <section className="relative bg-gradient-to-br from-[#112A46] via-[#1a3a5f] to-[#2D5A7B] pt-32 pb-24 overflow-hidden">
-          {/* Photo Collage Background */}
-          <div className="absolute inset-0 grid grid-cols-4 gap-0 opacity-15">
-            <div className="relative overflow-hidden">
-              <img src={volunteer1} alt="Team effort" className="w-full h-full object-cover" />
-            </div>
-            <div className="relative overflow-hidden">
-              <img src={volunteer2} alt="Welcoming crew" className="w-full h-full object-cover" />
-            </div>
-            <div className="relative overflow-hidden">
-              <img src={volunteer3} alt="Serving seafarers" className="w-full h-full object-cover" />
-            </div>
-            <div className="relative overflow-hidden">
-              <img src={volunteer4} alt="Day of Seafarers" className="w-full h-full object-cover" />
-            </div>
+        {/* Hero Section */}
+        <section className="relative pt-28 pb-20 md:pt-36 md:pb-28 overflow-hidden bg-[#112A46] min-h-[45vh] flex items-center justify-center border-b border-[#0a1a2c]">
+          {/* Background Image & Overlays */}
+          <div className="absolute inset-0 z-0">
+            <img 
+              src={centerImage} 
+              alt="Contact Background" 
+              className="w-full h-full object-cover object-center opacity-30 mix-blend-overlay" 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0a1a2c] via-[#112A46]/70 to-[#112A46]/40" />
           </div>
           
-          <div className="max-w-[1200px] mx-auto px-7 relative z-10 text-center">
-            <Reveal>
-              <span className="inline-block bg-[#E05A2B] text-white text-[13px] font-extrabold px-4 py-1.5 rounded-full mb-4 tracking-wide">
-                GET IN TOUCH
+          {/* Hero Content */}
+          <div className="w-full max-w-[1200px] mx-auto relative z-10 text-center px-6">
+            <div className="mb-6 flex justify-center">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E05A2B]/20 text-[#f48c6f] text-xs font-extrabold uppercase tracking-widest border border-[#E05A2B]/30">
+                <Mail className="w-4 h-4 text-[#f48c6f]" /> Contact
               </span>
-              <h1 className="text-[clamp(36px,5vw,56px)] font-black text-white mb-4 leading-tight">
-                Contact Us
-              </h1>
-              <p className="text-white/90 text-[17px] max-w-2xl mx-auto leading-relaxed font-medium">
-                Whether you need assistance, want to volunteer, or have a question about our services, we're here to help seafarers in the Port of Halifax.
-              </p>
-            </Reveal>
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
+              Contact Mission to Seafarers Halifax
+            </h1>
+            <p className="text-lg md:text-xl text-white/80 leading-relaxed font-medium max-w-3xl mx-auto">
+              We would love to hear from you.
+            </p>
           </div>
         </section>
 
-        {/* Office Image */}
-        <section className="bg-gray-50  pt-16 pb-12 border-b border-gray-200">
-          <div className="max-w-[1300px] mx-auto px-6">
-            <Reveal>
-              <img 
-                src={centerImage} 
-                alt="MtS Halifax Center" 
-                className="w-full h-[350px] md:h-[450px] lg:h-[500px] object-cover rounded-[24px] shadow-[0_8px_30px_rgba(17,42,70,.1)] border-4 border-white"
-              />
-            </Reveal>
-          </div>
-        </section>
-
-        {/* 3-COLUMN SECTION */}
-        <section className="bg-white py-20">
-          <div className="max-w-[1300px] mx-auto px-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
+        {/* Main Content Section */}
+        <section className="py-20 md:py-28 bg-white">
+          <div className="w-full max-w-[1200px] mx-auto grid lg:grid-cols-12 gap-10 items-start px-6">
+            
+            {/* Contact info (Left Column) */}
+            <div className="lg:col-span-5 space-y-5">
               
-              {/* COLUMN 1: HOURS */}
-              <Reveal>
-                <div className="bg-[#FDF0EC] border-2 border-[#E05A2B]/15 rounded-[24px] p-8 h-full shadow-sm">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 bg-[#E05A2B] rounded-full flex items-center justify-center text-white text-xl shadow-lg shadow-[#E05A2B]/30 shrink-0">
-                      <FaClock />
-                    </div>
-                    <h2 className="text-[22px] font-black text-[#112A46] leading-tight">Hours of Operation</h2>
-                  </div>
-                  <p className="text-[#112A46]/80 text-[14px] leading-relaxed mb-6 font-medium">
-                    We are open Mondays to Saturdays including holidays when ships are in the Port of Halifax. Our hours are flexible depending on whether there are ships in port.
-                  </p>
-                  <div className="bg-white rounded-xl p-5 shadow-sm border border-[#E05A2B]/10">
-                    <ul className="flex flex-col gap-3 text-[14px] font-bold text-[#112A46]">
-                      <li className="flex justify-between items-center pb-2 border-b border-gray-100 text-gray-400">
-                        <span>Sunday</span>
-                        <span className="bg-gray-100 text-gray-500 px-3 py-1 rounded-md text-[11px] font-extrabold">CLOSED</span>
-                      </li>
-                      <li className="flex justify-between items-center pb-2 border-b border-gray-100">
-                        <span>Monday</span>
-                        <span className="text-[#E05A2B]">10:00 – Closing</span>
-                      </li>
-                      <li className="flex justify-between items-center pb-2 border-b border-gray-100">
-                        <span>Tuesday</span>
-                        <span className="text-[#E05A2B]">10:00 – Closing</span>
-                      </li>
-                      <li className="flex justify-between items-center pb-2 border-b border-gray-100">
-                        <span>Wednesday</span>
-                        <span className="text-[#E05A2B]">10:00 – Closing</span>
-                      </li>
-                      <li className="flex justify-between items-center pb-2 border-b border-gray-100">
-                        <span>Thursday</span>
-                        <span className="text-[#E05A2B]">10:00 – Closing</span>
-                      </li>
-                      <li className="flex justify-between items-center pb-2 border-b border-gray-100">
-                        <span>Friday</span>
-                        <span className="text-[#E05A2B]">10:00 – Closing</span>
-                      </li>
-                      <li className="flex justify-between items-center">
-                        <span>Saturday</span>
-                        <span className="text-[#E05A2B]">10:00 – Closing</span>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="mt-5 flex items-start gap-3 text-[#112A46]/70 text-[13px] font-semibold bg-white/50 p-4 rounded-xl">
-                    <FaShip className="text-[#E05A2B] mt-0.5 text-[16px] shrink-0" />
-                    <p>Hours may vary slightly based on port activity to best serve visiting seafarers.</p>
-                  </div>
-                </div>
-              </Reveal>
+              {/* Blue Gradient Box */}
+              <div className="rounded-2xl bg-gradient-to-br from-[#112A46] to-[#1a3a5f] text-white p-7 md:p-8 shadow-xl">
+                <h2 className="text-2xl font-extrabold text-white">Halifax Station</h2>
+                <p className="mt-2 text-white/85 text-sm">Location: 844 Marginal Road, Halifax, Nova Scotia</p>
 
-              {/* COLUMN 2: ADDRESSES */}
-              <Reveal>
-                <div className="flex flex-col gap-5 h-full">
-                  <div className="bg-white border-2 border-gray-100 hover:border-[#E05A2B]/30 transition-colors rounded-[24px] p-7 shadow-[0_4px_20px_rgba(17,42,70,.03)] flex gap-5 items-start">
-                    <div className="w-12 h-12 bg-[#112A46] rounded-full flex items-center justify-center text-white text-lg shrink-0">
-                      <FaMapMarkerAlt />
-                    </div>
-                    <div>
-                      <h3 className="text-[17px] font-black text-[#112A46] mb-1.5">Civic Address</h3>
-                      <p className="text-[#112A46]/70 text-[14px] leading-relaxed font-semibold">
-                        Mission to Seafarers Halifax<br />
-                        844 Marginal Road<br />
-                        Halifax, NS B3H 2P7
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="bg-white border-2 border-gray-100 hover:border-[#E05A2B]/30 transition-colors rounded-[24px] p-7 shadow-[0_4px_20px_rgba(17,42,70,.03)] flex gap-5 items-start">
-                    <div className="w-12 h-12 bg-[#112A46]/5 rounded-full flex items-center justify-center text-[#112A46] text-lg shrink-0 border border-[#112A46]/10">
-                      <FaMapMarkerAlt />
-                    </div>
-                    <div>
-                      <h3 className="text-[17px] font-black text-[#112A46] mb-1.5">Mailing Address</h3>
-                      <p className="text-[#112A46]/70 text-[14px] leading-relaxed font-semibold">
-                        Mission to Seafarers Halifax<br />
-                        P.O. Box 27114<br />
-                        Halifax, NS B3H 4M8
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-[#112A46] text-white rounded-[20px] p-5 shadow-lg flex flex-col items-center text-center hover:-translate-y-1 transition-transform cursor-pointer">
-                      <FaPhoneAlt className="text-[#E05A2B] text-xl mb-2" />
-                      <h3 className="text-[12px] text-white/70 font-bold mb-1 uppercase tracking-wider">Telephone</h3>
-                      <a href="tel:19024227790" className="text-[15px] font-black hover:text-[#E05A2B] transition-colors whitespace-nowrap">
-                        1-902-422-7790
+                <ul className="mt-7 space-y-4 text-sm">
+                  <li className="flex gap-3.5">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-white/15">
+                      <MapPin className="h-4 w-4 text-[#f48c6f]" />
+                    </span>
+                    <span>
+                      <span className="block text-white/60 text-[11px] uppercase font-bold tracking-widest">Civic Address</span>
+                      844 Marginal Road, Halifax, Nova Scotia<br/>
+                      <span className="text-white/80 text-xs">Situated across from Pier 24 in the Halifax Seaport area.</span>
+                    </span>
+                  </li>
+                  <li className="flex gap-3.5">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-white/15">
+                      <Mailbox className="h-4 w-4 text-[#f48c6f]" />
+                    </span>
+                    <span>
+                      <span className="block text-white/60 text-[11px] uppercase font-bold tracking-widest">Mailing Address</span>
+                      P.O. Box 27114, Halifax, NS B3H 4M8
+                    </span>
+                  </li>
+                  <li className="flex gap-3.5">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-white/15">
+                      <Mail className="h-4 w-4 text-[#f48c6f]" />
+                    </span>
+                    <span className="break-all">
+                      <span className="block text-white/60 text-[11px] uppercase font-bold tracking-widest">Email</span>
+                      <a href="mailto:hglenn@missiontoseafarershalifax.ca" className="text-white hover:text-[#f48c6f] transition-colors underline">
+                        hglenn@missiontoseafarershalifax.ca
                       </a>
-                    </div>
-                    <div className="bg-white border-2 border-gray-100 rounded-[20px] p-5 shadow-sm flex flex-col items-center text-center hover:-translate-y-1 hover:shadow-md transition-all">
-                      <FaFax className="text-[#112A46]/40 text-xl mb-2" />
-                      <h3 className="text-[12px] text-[#112A46]/60 font-bold mb-1 uppercase tracking-wider">Fax</h3>
-                      <span className="text-[15px] font-black text-[#112A46] whitespace-nowrap">
-                        1-902-420-9786
-                      </span>
-                    </div>
-                  </div>
+                    </span>
+                  </li>
+                  <li className="flex gap-3.5">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-white/15">
+                      <Phone className="h-4 w-4 text-[#f48c6f]" />
+                    </span>
+                    <span>
+                      <span className="block text-white/60 text-[11px] uppercase font-bold tracking-widest">Telephone</span>
+                      <a href="tel:+19024227790" className="text-white hover:text-[#f48c6f] transition-colors underline">
+                        +1 902-422-7790
+                      </a>
+                    </span>
+                  </li>
+                  <li className="flex gap-3.5">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-white/15">
+                      <MessageCircle className="h-4 w-4 text-[#f48c6f]" />
+                    </span>
+                    <span>
+                      <span className="block text-white/60 text-[11px] uppercase font-bold tracking-widest">WhatsApp / Mobile</span>
+                      <a href="https://wa.me/19024561658" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#f48c6f] transition-colors underline">
+                        +1 902-456-1658
+                      </a>
+                    </span>
+                  </li>
+                </ul>
+              </div>
 
-                  {/* WhatsApp Contact */}
-                  <div className="bg-gradient-to-br from-[#25D366] to-[#128C7E] text-white rounded-[20px] p-6 shadow-lg hover:-translate-y-1 transition-transform">
-                    <div className="flex items-center gap-3 mb-3">
-                      <FaWhatsapp className="text-3xl" />
-                      <div>
-                        <h3 className="text-[14px] font-bold uppercase tracking-wider">WhatsApp</h3>
-                        <p className="text-white/80 text-[12px]">Connect with us directly</p>
+              {/* Hours Box */}
+              <div className="rounded-2xl border border-gray-200 bg-[#f9fafb] p-6 text-sm text-gray-600 leading-relaxed shadow-sm">
+                <div className="flex items-center gap-2 mb-3">
+                  <Clock className="h-5 w-5 text-[#E05A2B]" />
+                  <h3 className="text-base font-extrabold text-[#112A46]">General Station Hours</h3>
+                </div>
+                <p className="mb-4 font-medium">
+                  Hours may vary depending on ship arrivals, vessel schedules, and volunteer availability.
+                </p>
+                <ul className="space-y-2 mb-4 font-medium">
+                  <li className="flex justify-between items-center pb-2 border-b border-gray-200">
+                    <span className="text-[#112A46]">Monday – Saturday</span>
+                    <span className="text-[#E05A2B]">10:00 AM to 4:00 PM</span>
+                  </li>
+                  <li className="flex justify-between items-center">
+                    <span className="text-[#112A46]">Sunday</span>
+                    <span className="text-gray-400 text-xs font-bold uppercase tracking-wider bg-gray-200 px-2 py-0.5 rounded">Generally closed</span>
+                  </li>
+                </ul>
+                <p className="text-xs italic text-gray-500">
+                  Ship visits and seafarer support may still occur outside regular station hours depending on vessel schedules.
+                </p>
+              </div>
+
+              {/* Emergency & Direct Contact Box */}
+              <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-gray-800 leading-relaxed shadow-sm">
+                <div className="flex items-center gap-2 mb-3">
+                  <AlertCircle className="h-5 w-5 text-red-600" />
+                  <h3 className="text-base font-extrabold text-red-700">Need Urgent Assistance?</h3>
+                </div>
+                <p className="mb-5 font-medium text-red-900/80">
+                  Contact us directly by phone or WhatsApp for immediate support.
+                </p>
+                
+                <div className="space-y-4">
+                  <a href="tel:+19024227790" className="flex items-center justify-center gap-2 w-full bg-white border border-red-200 text-red-700 font-bold py-3.5 px-4 rounded-xl shadow-sm hover:bg-red-100 transition-colors">
+                    <Phone className="h-5 w-5" /> Main Station: +1 902-422-7790
+                  </a>
+                  
+                  <div className="space-y-3">
+                    <div className="bg-white p-3.5 rounded-xl border border-red-100 shadow-sm">
+                      <div className="font-bold text-[#112A46] text-xs uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <User className="h-3.5 w-3.5 text-[#E05A2B]" /> Helen Glenn, Station Manager
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <a href="https://wa.me/19024561658" className="flex items-center justify-center gap-1.5 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 font-bold py-2.5 rounded-lg transition-colors text-xs">
+                          <MessageCircle className="h-4 w-4" /> +1 902-456-1658
+                        </a>
+                        <a href="mailto:hglenn@missiontoseafarershalifax.ca" className="flex items-center justify-center gap-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 font-bold py-2.5 rounded-lg transition-colors text-xs truncate px-2">
+                          <Mail className="h-4 w-4 shrink-0" /> Email
+                        </a>
                       </div>
                     </div>
-                    <a 
-                      href="https://wa.me/19024227790" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="block w-full bg-white text-[#25D366] text-center py-2.5 rounded-lg font-bold text-[14px] hover:bg-white/90 transition-colors"
-                    >
-                      Chat on WhatsApp
-                    </a>
+
+                    <div className="bg-white p-3.5 rounded-xl border border-red-100 shadow-sm">
+                      <div className="font-bold text-[#112A46] text-xs uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <User className="h-3.5 w-3.5 text-[#E05A2B]" /> Joseph Loot, Assistant Manager
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <a href="https://wa.me/19029893388" className="flex items-center justify-center gap-1.5 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 font-bold py-2.5 rounded-lg transition-colors text-xs">
+                          <MessageCircle className="h-4 w-4" /> +1 902-989-3388
+                        </a>
+                        <a href="mailto:jloot@missiontoseafarershalifax.ca" className="flex items-center justify-center gap-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 font-bold py-2.5 rounded-lg transition-colors text-xs truncate px-2">
+                          <Mail className="h-4 w-4 shrink-0" /> Email
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </Reveal>
-
-              {/* COLUMN 3: FORM */}
-              <Reveal>
-                <div className="bg-white p-8 rounded-[24px] border-2 border-gray-100 shadow-[0_8px_30px_rgba(17,42,70,.04)] h-full">
-                  
-                  {/* Success Message UI */}
-                  {isSuccess ? (
-                    <div className="flex flex-col items-center justify-center h-full text-center py-10">
-                      <FaCheckCircle className="text-green-500 text-6xl mb-4" />
-                      <h2 className="text-[26px] font-bold text-[#112A46] mb-2">Message Sent!</h2>
-                      <p className="text-gray-600 text-[15px]">Thank you for reaching out. We will get back to you shortly.</p>
-                      <button 
-                        onClick={() => setIsSuccess(false)}
-                        className="mt-6 text-[#E05A2B] font-bold hover:underline"
-                      >
-                        Send another message
-                      </button>
-                    </div>
-                  ) : (
-                    <>
-                      <h2 className="text-[26px] font-bold text-[#E05A2B] leading-tight mb-6">
-                        Send Us a Message
-                      </h2>
-
-                      {errorMsg && (
-                        <div className="bg-red-50 text-red-600 p-3 rounded-md text-[13px] mb-4 font-medium border border-red-100">
-                          {errorMsg}
-                        </div>
-                      )}
-
-                      <form onSubmit={handleSubmit} className="flex flex-col gap-5 font-serif text-[14px]">
-                        {/* Name */}
-                        <div>
-                          <span className="text-[#112A46] font-semibold block mb-1.5 font-sans">
-                            Name <span className="text-[#E05A2B] text-[12px] font-normal">(Required)</span>
-                          </span>
-                          <div className="grid grid-cols-2 gap-3">
-                            <div>
-                              <label className="text-gray-500 text-[12px] block mb-1">First</label>
-                              <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required className="w-full border border-gray-300 rounded-[6px] p-2 focus:outline-none focus:border-[#2A4582] focus:ring-1 focus:ring-[#2A4582]" />
-                            </div>
-                            <div>
-                              <label className="text-gray-500 text-[12px] block mb-1">Last</label>
-                              <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required className="w-full border border-gray-300 rounded-[6px] p-2 focus:outline-none focus:border-[#2A4582] focus:ring-1 focus:ring-[#2A4582]" />
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Email */}
-                        <div>
-                          <span className="text-[#112A46] font-semibold block mb-1.5 font-sans">
-                            Email <span className="text-[#E05A2B] text-[12px] font-normal">(Required)</span>
-                          </span>
-                          <div className="grid grid-cols-1 gap-3">
-                            <div>
-                              <label className="text-gray-500 text-[12px] block mb-1">Enter Email</label>
-                              <input type="email" name="email" value={formData.email} onChange={handleChange} required className="w-full border border-gray-300 rounded-[6px] p-2 focus:outline-none focus:border-[#2A4582] focus:ring-1 focus:ring-[#2A4582]" />
-                            </div>
-                            <div>
-                              <label className="text-gray-500 text-[12px] block mb-1">Confirm Email</label>
-                              <input type="email" name="confirmEmail" value={formData.confirmEmail} onChange={handleChange} required className="w-full border border-gray-300 rounded-[6px] p-2 focus:outline-none focus:border-[#2A4582] focus:ring-1 focus:ring-[#2A4582]" />
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Dropdown */}
-                        <div>
-                          <label className="text-[#112A46] font-semibold block mb-1.5 font-sans">
-                            What would you like to chat about?
-                          </label>
-                          <select name="inquiryType" value={formData.inquiryType} onChange={handleChange} className="w-full border border-gray-300 bg-white rounded-[6px] p-2 focus:outline-none focus:border-[#2A4582] focus:ring-1 focus:ring-[#2A4582]">
-                            <option>General Inquiry</option>
-                            <option>Seafarer Support</option>
-                            <option>Volunteer Opportunities</option>
-                            <option>Corporate Partnership</option>
-                            <option>Sponsorship Opportunities</option>
-                            <option>Donation Inquiry</option>
-                            <option>Media Inquiry</option>
-                            <option>Grant Referral</option>
-                            <option>Event Partnership</option>
-                          </select>
-                        </div>
-
-                        {/* Message Area */}
-                        <div>
-                          <textarea 
-                            name="message"
-                            value={formData.message}
-                            onChange={handleChange}
-                            rows="4"
-                            className="w-full border border-gray-300 rounded-[6px] p-2 focus:outline-none focus:border-[#2A4582] focus:ring-1 focus:ring-[#2A4582] resize-y"
-                          ></textarea>
-                          <div className="text-gray-500 text-[11px] mt-1 text-right font-sans">
-                            {formData.message.length} of {maxChars} max characters
-                          </div>
-                        </div>
-
-                        {/* Submit */}
-                        <div className="mt-1 font-sans cursor-pointer">
-                          <button 
-                            type="submit" 
-                            disabled={isSubmitting}
-                            className={`font-bold py-2.5  px-6 rounded-[8px] cursor-pointer shadow-md transition-colors w-full text-[14px] ${isSubmitting ? 'bg-gray-400 cursor-not-allowed text-white' : 'bg-[#2A4582] hover:bg-[#1C3263] text-white'}`}
-                          >
-                            {isSubmitting ? 'Sending...' : 'Submit Message'}
-                          </button>
-                        </div>
-                      </form>
-                    </>
-                  )}
-                </div>
-              </Reveal>
-
+              </div>
             </div>
+
+            {/* Form wrapper (Right Column) */}
+            <div className="lg:col-span-7 rounded-2xl bg-[#f9fafb] border border-gray-100 p-6 md:p-8 shadow-[0_8px_30px_rgba(17,42,70,.05)] space-y-5">
+              <div className="flex items-center gap-2 mb-2">
+                <Send className="h-6 w-6 text-[#E05A2B]" />
+                <h2 className="text-xl md:text-3xl font-extrabold text-[#112A46]">Send Us a Message</h2>
+              </div>
+              
+              <p className="text-gray-600 font-medium leading-relaxed pb-4 border-b border-gray-200">
+                Whether you are a seafarer, volunteer, supporter, donor, or community partner, we welcome your questions and inquiries.
+              </p>
+
+              {/* Success Message Banner */}
+              {isSuccess && (
+                <div className="flex items-center gap-3 bg-green-50 text-green-700 p-4 rounded-lg border border-green-200 mb-4 animate-in fade-in slide-in-from-top-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0" />
+                  <p className="text-sm font-medium">
+                    Your inquiry has been successfully sent. We will be in touch with you shortly.
+                  </p>
+                </div>
+              )}
+
+              {/* Hidden iframe triggers handleIframeLoad when Google Form finishes processing */}
+              <iframe 
+                name="hidden_iframe" 
+                id="hidden_iframe" 
+                style={{ display: 'none' }}
+                onLoad={handleIframeLoad}
+              ></iframe>
+
+              <form 
+                ref={formRef}
+                className="space-y-5" 
+                action="https://docs.google.com/forms/d/e/1FAIpQLSdDRLf8Fjde4Y-q1oUmoa_5JAbmAFp5TeG0RV3qjyVL3Aabhg/formResponse" 
+                method="POST" 
+                target="hidden_iframe"
+                onSubmit={() => setIsSubmitting(true)}
+              >
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="cname" className={labelClasses}>Name *</label>
+                    <input 
+                      id="cname" 
+                      name="entry.2050372848" 
+                      required 
+                      className={inputClasses} 
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="cemail" className={labelClasses}>Email *</label>
+                    <input 
+                      id="cemail" 
+                      type="email" 
+                      name="entry.608487628" 
+                      required 
+                      className={inputClasses} 
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="cphone" className={labelClasses}>Phone</label>
+                    <input 
+                      id="cphone" 
+                      type="tel" 
+                      name="entry.278774456" 
+                      className={inputClasses} 
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="cinterest" className={labelClasses}>I am interested in: *</label>
+                    <select
+                      id="cinterest"
+                      name="entry.1990273286"
+                      required
+                      defaultValue=""
+                      className={inputClasses}
+                    >
+                      <option value="" disabled>Select an option...</option>
+                      {interests.map((i) => (
+                        <option key={i} value={i}>{i}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label htmlFor="cmessage" className={labelClasses}>Message *</label>
+                    <textarea 
+                      id="cmessage" 
+                      name="entry.1454859148" 
+                      required 
+                      rows={5} 
+                      className="mt-1.5 flex min-h-[120px] w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-[#112A46] font-medium placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E05A2B]/50 focus:ring-offset-0 focus:border-[#E05A2B] resize-none disabled:cursor-not-allowed disabled:opacity-50 transition-colors" 
+                    />
+                  </div>
+                </div>
+
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="inline-flex items-center justify-center w-full bg-[#E05A2B] hover:bg-[#c94d22] text-white font-bold shadow-lg h-12 rounded-md text-base transition-colors focus:outline-none focus:ring-2 focus:ring-[#E05A2B]/50 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? "Sending..." : "Submit Inquiry"} <Send className="ml-2 h-4 w-4" />
+                </button>
+              </form>
+            </div>
+            
+          </div>
+          
+          <div className="w-full max-w-[800px] mx-auto px-6 mt-16 text-center text-sm font-medium text-gray-500">
+            <p>
+              Mission to Seafarers Halifax operates as part of Mission to Seafarers Canada.<br className="hidden md:block" /> Local volunteer opportunities, station engagement, seafarer support, and community partnerships are coordinated through the Halifax station.
+            </p>
           </div>
         </section>
 
@@ -397,4 +345,6 @@ export default function Contact() {
       <Footer />
     </div>
   );
-}
+};
+
+export default Contact;

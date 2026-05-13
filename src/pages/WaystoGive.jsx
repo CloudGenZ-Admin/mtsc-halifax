@@ -5,7 +5,7 @@ import Footer from '../components/layout/Footer';
 import Reveal from '../components/common/Reveal';
 import {
   FaHeart, FaHandsHelping, FaDollarSign, FaGift, FaUsers, FaBuilding,
-  FaBullhorn, FaHandshake, FaAnchor, FaShip
+  FaBullhorn, FaHandshake, FaAnchor, FaShip, FaStar
 } from 'react-icons/fa';
 
 // Import newly created forms
@@ -99,12 +99,44 @@ export default function WaystoGive() {
     "ZIM Integrated Shipping Services Ltd."
   ];
 
-  // Remove duplicates
+  // Remove duplicates for general sponsors
   const uniqueSponsors = [...new Set(allSponsors)];
+  // Take top 28 for Star Club members
+  const starSponsors = uniqueSponsors.slice(0, 28);
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
+
+      {/* --- INJECT MARQUEE ANIMATION STYLES --- */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes marquee {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes marquee-reverse {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0%); }
+        }
+        .animate-marquee {
+          animation: marquee 60s linear infinite;
+          width: max-content;
+        }
+        .animate-marquee-reverse {
+          animation: marquee-reverse 40s linear infinite;
+          width: max-content;
+        }
+        .animate-marquee:hover, .animate-marquee-reverse:hover {
+          animation-play-state: paused;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}} />
 
       {/* --- MODALS --- */}
       <Modal 
@@ -429,12 +461,12 @@ export default function WaystoGive() {
           </div>
         </section>
 
-        {/* Add Your Company Name to Our Proud Sponsors */}
-        <section className="py-24 bg-gradient-to-br from-[#F8FBFD] via-[#EBF4F9] to-[#E0EEF7]">
-          <div className="max-w-[1200px] mx-auto px-7">
-            
-            {/* General Sponsors - Thank You Section */}
-            <Reveal className="text-center mb-14">
+        {/* ======================================================== */}
+        {/* AUTO-SCROLLING GENERAL SPONSORS SECTION                  */}
+        {/* ======================================================== */}
+        <section className="py-24 bg-gradient-to-br from-[#F8FBFD] via-[#EBF4F9] to-[#E0EEF7] overflow-hidden">
+          <div className="max-w-[1200px] mx-auto px-7 mb-14">
+            <Reveal className="text-center">
               <FaHeart className="text-[#E05A2B] text-4xl mx-auto mb-4" />
               <h2 className="text-[34px] md:text-[40px] font-black text-[#112A46] mb-4 leading-tight">
                 The Mission to Seafarers Halifax is <br className="hidden md:block"/> grateful to our Sponsors!
@@ -443,30 +475,48 @@ export default function WaystoGive() {
                 Your generous support ensures we can continue to provide a "home away from home" for seafarers visiting our port.
               </p>
             </Reveal>
+          </div>
 
-            {/* General Sponsors Grid */}
-            <Reveal className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mb-16">
-              {uniqueSponsors.map((sponsor, index) => (
-                <div 
-                  key={index} 
-                  className="bg-white border border-[#112A46]/5 rounded-xl px-4 py-3 flex items-center justify-center text-center shadow-sm hover:shadow-lg hover:border-[#E05A2B]/30 hover:-translate-y-1 transition-all group h-full min-h-[70px]"
-                >
-                  <span className="font-bold text-[12.5px] text-[#112A46] group-hover:text-[#E05A2B] transition-colors leading-snug">
-                    {sponsor}
-                  </span>
-                </div>
-              ))}
-            </Reveal>
+          {/* Marquee Wrapper */}
+          <div className="w-full relative flex flex-col gap-6">
+            <div className="flex animate-marquee hover:[animation-play-state:paused]">
+              
+              {/* Box 1 (Original List) */}
+              <div className="flex gap-4 pr-4 pl-4">
+                {uniqueSponsors.map((sponsor, index) => (
+                  <div 
+                    key={`gen1-${index}`} 
+                    className="shrink-0 w-[240px] bg-white border border-[#112A46]/5 rounded-xl px-4 py-4 flex items-center justify-center text-center shadow-sm hover:shadow-lg hover:border-[#E05A2B]/30 hover:-translate-y-1 transition-all group min-h-[80px]"
+                  >
+                    <span className="font-bold text-[13px] text-[#112A46] group-hover:text-[#E05A2B] transition-colors leading-snug whitespace-normal break-words">
+                      {sponsor}
+                    </span>
+                  </div>
+                ))}
+              </div>
 
+              {/* Box 2 (Duplicated List for Seamless Loop) */}
+              <div className="flex gap-4 pr-4">
+                {uniqueSponsors.map((sponsor, index) => (
+                  <div 
+                    key={`gen2-${index}`} 
+                    className="shrink-0 w-[240px] bg-white border border-[#112A46]/5 rounded-xl px-4 py-4 flex items-center justify-center text-center shadow-sm hover:shadow-lg hover:border-[#E05A2B]/30 hover:-translate-y-1 transition-all group min-h-[80px]"
+                  >
+                    <span className="font-bold text-[13px] text-[#112A46] group-hover:text-[#E05A2B] transition-colors leading-snug whitespace-normal break-words">
+                      {sponsor}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+            </div>
           </div>
         </section>
 
-        {/* Corporate Sponsorship & Star Club Section */}
-        <section className="py-24 bg-white border-t-4 border-[#E05A2B]">
+        {/* Corporate Sponsorship Info */}
+        <section className="pt-24 pb-12 bg-white border-t-4 border-[#E05A2B]">
           <div className="max-w-[1200px] mx-auto px-7">
-            
-            {/* Split Sponsorship Info Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <Reveal>
                 <h2 className="text-[36px] font-black text-[#112A46] leading-tight mb-6">
                   Corporate Sponsorship Opportunities
@@ -512,12 +562,19 @@ export default function WaystoGive() {
                 </div>
               </Reveal>
             </div>
+          </div>
+        </section>
 
-            {/* Star Club Members Section */}
-            <div className="bg-gradient-to-br from-[#F8FBFD] to-[#EBF4F9] rounded-[32px] p-8 md:p-14 border border-[#112A46]/5 shadow-sm">
-              <Reveal className="text-center mb-12">
+        {/* ======================================================== */}
+        {/* AUTO-SCROLLING STAR CLUB MEMBERS SECTION                 */}
+        {/* ======================================================== */}
+        <section className="pb-24 pt-12 bg-white overflow-hidden">
+          <div className="max-w-[1200px] mx-auto px-7">
+            <div className="bg-gradient-to-br from-[#F8FBFD] to-[#EBF4F9] rounded-[32px] py-12 border border-[#112A46]/5 shadow-sm relative overflow-hidden">
+              
+              <Reveal className="text-center px-6 mb-10">
                 <div className="inline-flex items-center justify-center gap-2 text-[#E05A2B] mb-4">
-                  <FaHandshake /><FaHandshake className="text-2xl" /><FaHandshake />
+                  <FaStar /><FaStar className="text-2xl" /><FaStar />
                 </div>
                 <h3 className="text-[32px] font-black text-[#112A46] mb-4">Star Club Members</h3>
                 <p className="text-[#5A6C7D] max-w-2xl mx-auto text-[16px] font-medium">
@@ -525,18 +582,41 @@ export default function WaystoGive() {
                 </p>
               </Reveal>
 
-              <Reveal className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {uniqueSponsors.slice(0, 28).map((sponsor, index) => (
-                  <div 
-                    key={index} 
-                    className="bg-white border-2 border-transparent rounded-xl px-4 py-3 flex items-center justify-center text-center shadow-sm hover:shadow-lg hover:border-[#E05A2B]/20 hover:-translate-y-1 transition-all group"
-                  >
-                    <span className="font-extrabold text-[13px] text-[#112A46] group-hover:text-[#E05A2B] transition-colors leading-tight">
-                      {sponsor}
-                    </span>
+              {/* Star Club Marquee Wrapper */}
+              <div className="w-full relative">
+                <div className="flex animate-marquee-reverse hover:[animation-play-state:paused]">
+                  
+                  {/* Box 1 (Original List) */}
+                  <div className="flex gap-4 pr-4 pl-4">
+                    {starSponsors.map((sponsor, index) => (
+                      <div 
+                        key={`star1-${index}`} 
+                        className="shrink-0 w-[260px] md:w-[300px] bg-white border border-gray-100 rounded-2xl px-6 py-6 flex items-center justify-center text-center shadow-sm hover:shadow-md hover:border-[#E05A2B]/30 hover:-translate-y-1 transition-all group min-h-[100px]"
+                      >
+                        <span className="font-extrabold text-[15px] text-[#112A46] group-hover:text-[#E05A2B] transition-colors leading-tight whitespace-normal break-words">
+                          {sponsor}
+                        </span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </Reveal>
+
+                  {/* Box 2 (Duplicated List for Seamless Loop) */}
+                  <div className="flex gap-4 pr-4">
+                    {starSponsors.map((sponsor, index) => (
+                      <div 
+                        key={`star2-${index}`} 
+                        className="shrink-0 w-[260px] md:w-[300px] bg-white border border-gray-100 rounded-2xl px-6 py-6 flex items-center justify-center text-center shadow-sm hover:shadow-md hover:border-[#E05A2B]/30 hover:-translate-y-1 transition-all group min-h-[100px]"
+                      >
+                        <span className="font-extrabold text-[15px] text-[#112A46] group-hover:text-[#E05A2B] transition-colors leading-tight whitespace-normal break-words">
+                          {sponsor}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                </div>
+              </div>
+              
             </div>
 
             {/* CTA to become a sponsor */}

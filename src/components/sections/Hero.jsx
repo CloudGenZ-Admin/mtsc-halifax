@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 // Images
-import heroImg from '../../assets/impact-img-min-1024x510.webp';
+import heroImg from '../../assets/WhatsApp Image 2026-05-09 at 12.35.02 AM.jpeg';
 import skyline from '../../assets/halifax-skyline.png'; 
 import seaBg from '../../assets/sea1.jpg'; 
 
@@ -63,7 +63,7 @@ export default function Hero() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
             {/* LEFT COLUMN: Text Content */}
-            <div className="flex flex-col items-start w-full order-2 lg:order-1 mt-8 lg:mt-0">
+            <div className="flex flex-col items-start w-full order-1">
               
               {/* Skyline & Eyebrow Badge */}
               <div className="mb-6 flex flex-col items-start">
@@ -121,7 +121,7 @@ export default function Hero() {
             </div>
 
             {/* RIGHT COLUMN: Image */}
-            <div className="relative w-full max-w-md mx-auto lg:max-w-none order-1 lg:order-2 ">
+            <div className="relative w-full max-w-md mx-auto lg:max-w-none order-2">
               {/* Image Container with fixed aspect ratio to prevent stretching */}
               <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] lg:aspect-[4/5] border-4 border-white/40 animate-float-slow">
                 <img

@@ -334,7 +334,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ----------------- HAIRCUTS FOR SEAFARERS ----------------- */}
+        {/* ----------------- CLOTHING BANK FOR SEAFARERS ----------------- */}
         <section className="py-20 bg-[#fdf0eb]/50 border-y border-gray-200">
           <div className="max-w-[1200px] mx-auto px-7">
             <Reveal>
@@ -349,7 +349,7 @@ export default function Home() {
                   </div>
 
                   <h2 className="mt-5 text-3xl md:text-4xl font-extrabold text-[#2d3580] leading-tight">
-                    Haircuts for Seafarers
+                   Clothing Bank
                   </h2>
 
                   <div className="mt-5 text-base md:text-lg text-[#666666] leading-relaxed space-y-5">
@@ -881,50 +881,10 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ----------------- SPONSOR LOGOS CAROUSEL ----------------- */}
-        <section className="bg-white py-12 border-t border-navy/10 overflow-hidden relative">
-          <div className="max-w-[1200px] mx-auto px-7 mb-8">
-            <div className="flex justify-center mb-8">
-              <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#e05a2b]">
-                <span className="block h-[1px] w-8 bg-[#e05a2b]"></span>
-                Our Proud Sponsors & Partners
-              </span>
-            </div>
-          </div>
 
-          <div className="w-full relative">
-            <style>
-              {`
-                @keyframes scroll {
-                  0% { transform: translateX(0); }
-                  100% { transform: translateX(-50%); }
-                }
-                .animate-scroll {
-                  display: flex;
-                  width: fit-content;
-                  animation: scroll 35s linear infinite;
-                }
-                .animate-scroll:hover {
-                  animation-play-state: paused;
-                }
-              `}
-            </style>
-            <div className="animate-scroll items-center gap-16 md:gap-24 px-8">
-              {/* Duplicated array to create a seamless infinite loop */}
-              {[...partnerLogos, ...partnerLogos].map((logo, index) => (
-                <img
-                  key={index}
-                  src={logo}
-                  alt={`Sponsor Logo ${index}`}
-                  className="h-12 md:h-16 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-pointer"
-                />
-              ))}
-            </div>
-            {/* White gradient fades on left and right for seamless entrance/exit */}
-            <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-white to-transparent pointer-events-none"></div>
-            <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-white to-transparent pointer-events-none"></div>
-          </div>
-        </section>
+        
+
+      
 
       </main>
       <Footer />
