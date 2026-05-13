@@ -8,7 +8,7 @@ const nav = [
   { to: "/", label: "Home" },
   { to: "/whoweare", label: "Who We Are" },
   { to: "/WaystoGive", label: "Get Involved" },
-  {to:"/support", label:"Support"},
+  { to: "/support", label: "Support" },
   {
     to: "/publication",
     label: "Publications",
@@ -44,13 +44,11 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu and reset accordion when route changes
   useEffect(() => {
     setOpen(false);
     setMobileExpanded(null);
   }, [location.pathname]);
 
-  // Handle clicking outside of the header to close the mobile dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (headerRef.current && !headerRef.current.contains(event.target)) {
@@ -70,7 +68,6 @@ export default function Navbar() {
     };
   }, [open]);
 
-  // Prevent background scrolling when the donate modal is open
   useEffect(() => {
     if (donateDialogOpen) {
       document.body.style.overflow = 'hidden';
@@ -86,7 +83,6 @@ export default function Navbar() {
     setMobileExpanded(mobileExpanded === label ? null : label);
   };
 
-  // Custom handler to scroll to hash tags seamlessly
   const handleNavClick = (e, fullPath) => {
     const [path, hash] = fullPath.split('#');
     
@@ -101,7 +97,6 @@ export default function Navbar() {
     if (open) setOpen(false);
   };
 
-  // Custom function to check hash route match for styling
   const isActiveHash = (to) => {
     const [path, hash] = to.split('#');
     return location.pathname === path && location.hash === (hash ? `#${hash}` : '');
@@ -109,7 +104,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Top Bar */}
       <div className="bg-[#0B1A30] text-white text-[12.5px] py-2 hidden md:block z-50 relative">
         <div className="max-w-[1200px] mx-auto px-7 flex justify-between items-center">
           <span className="font-bold">✦ The Mission to Seafarers Halifax ✦</span>
@@ -126,46 +120,44 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Main Header */}
       <header
         ref={headerRef}
         className={`sticky top-0 z-40 w-full transition-all duration-300 ${
           scrolled ? "bg-white/95 backdrop-blur-md shadow-[0_4px_24px_rgba(17,42,70,.08)]" : "bg-white/80 backdrop-blur"
         }`}
       >
-        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-6 lg:px-8 flex h-16 sm:h-20 md:h-24 xl:h-28 items-center justify-between gap-2 xl:gap-4">
+        <div className="w-full max-w-[1600px] mx-auto px-3 sm:px-6 lg:px-4 2xl:px-8 flex h-16 sm:h-20 md:h-24 xl:h-24 2xl:h-28 items-center justify-between gap-1 2xl:gap-4">
 
-          {/* Logo */}
-          <Link to="/" onClick={() => window.scrollTo(0,0)} className="flex items-center gap-2 xl:gap-3 group shrink-0 no-underline max-w-[75%] sm:max-w-none">
+          {/* Logo - Sizes aggressively reduced for xl screens */}
+          <Link to="/" onClick={() => window.scrollTo(0,0)} className="flex items-center gap-1.5 2xl:gap-3 group shrink-0 no-underline">
             <img
               src={seafarerLogoImg}
               alt="Mission to Seafarers Logo"
-              className="h-12 sm:h-16 md:h-20 xl:h-24 w-auto shrink-0 object-contain rounded-md group-hover:scale-105 transition-transform"
+              className="h-10 sm:h-14 md:h-16 xl:h-14 2xl:h-20 w-auto shrink-0 object-contain rounded-md group-hover:scale-105 transition-transform"
             />
             <span className="flex flex-col leading-none justify-center">
-              <span className="text-[13px] sm:text-[15px] xl:text-[18px] font-extrabold text-[#112A46] whitespace-nowrap truncate">Mission to Seafarers</span>
-              <span className="text-[9px] sm:text-[11px] xl:text-[13px] font-bold uppercase tracking-[0.18em] text-[#E05A2B] mt-0.5 whitespace-nowrap truncate">Halifax</span>
+              <span className="text-[12px] sm:text-[14px] xl:text-[13px] 2xl:text-[18px] font-extrabold text-[#112A46] whitespace-nowrap">Mission to Seafarers</span>
+              <span className="text-[9px] sm:text-[10px] xl:text-[10px] 2xl:text-[13px] font-bold uppercase tracking-[0.18em] text-[#E05A2B] mt-0.5 whitespace-nowrap">Halifax</span>
             </span>
           </Link>
 
-          {/* Desktop Navigation - Shifted to XL (1280px) to prevent overlap with long button text */}
-          <nav className="hidden xl:flex items-center gap-2 2xl:gap-3">
+          {/* Desktop Navigation - Reduced gap and paddings */}
+          <nav className="hidden xl:flex items-center gap-0.5 2xl:gap-3">
             {nav.map((n) => (
               n.subItems ? (
                 <div key={n.to} className="relative group">
                   <NavLink
                     to={n.to}
                     className={({ isActive }) =>
-                      `flex items-center gap-1 px-2 2xl:px-3 py-2 text-[14px] 2xl:text-base font-semibold whitespace-nowrap rounded-md transition-colors ${
+                      `flex items-center gap-1 px-1.5 2xl:px-3 py-2 text-[12.5px] 2xl:text-[15px] font-semibold whitespace-nowrap rounded-md transition-colors ${
                         isActive || location.pathname.includes(n.to) ? "text-[#E05A2B]" : "text-[#112A46] hover:text-[#E05A2B]"
                       }`
                     }
                   >
                     {n.label}
-                    <FaChevronDown className="w-3.5 h-3.5 transition-transform group-hover:rotate-180" />
+                    <FaChevronDown className="w-3 h-3 2xl:w-3.5 2xl:h-3.5 transition-transform group-hover:rotate-180" />
                   </NavLink>
 
-                  {/* Desktop Dropdown Menu */}
                   <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                     <div className="w-[380px] bg-white rounded-xl shadow-[0_2px_12px_rgba(0,0,0,.06)] border border-gray-100 p-2 flex flex-col gap-1">
                       {n.subItems.map((sub) => (
@@ -189,7 +181,7 @@ export default function Navbar() {
                   to={n.to}
                   end={n.to === "/"}
                   className={({ isActive }) =>
-                    `px-2 2xl:px-3 py-2 text-[14px] 2xl:text-base font-semibold whitespace-nowrap rounded-md transition-colors ${
+                    `px-1.5 2xl:px-3 py-2 text-[12.5px] 2xl:text-[15px] font-semibold whitespace-nowrap rounded-md transition-colors ${
                       isActive ? "text-[#E05A2B]" : "text-[#112A46] hover:text-[#E05A2B]"
                     }`
                   }
@@ -200,37 +192,33 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Desktop CTA Buttons - Shifted to XL */}
-          <div className="hidden xl:flex items-center gap-2 2xl:gap-3 shrink-0">
-            {/* Seafarer Parcel Pickup Service Button */}
+          {/* Desktop CTA Buttons - Aggressively shrunken for xl screens */}
+          <div className="hidden xl:flex items-center gap-1 2xl:gap-3 shrink-0">
             <a 
               href="https://parcelservice.mtsc.ca/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center border border-gray-200 bg-[#f7f7f7] text-[#112A46] hover:bg-[#112A46] hover:text-white font-bold whitespace-nowrap text-[13px] 2xl:text-sm px-3 2xl:px-4 h-9 lg:h-10 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-1"
+              className="inline-flex items-center justify-center border border-gray-200 bg-[#f7f7f7] text-[#112A46] hover:bg-[#112A46] hover:text-white font-bold whitespace-nowrap text-[11px] 2xl:text-[13px] px-2 2xl:px-4 h-8 2xl:h-10 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-1"
             >
-              <FaBox className="w-3.5 h-3.5 mr-1.5" />
+              <FaBox className="w-3 h-3 2xl:w-3.5 2xl:h-3.5 mr-1.5" />
               <span>Seafarer Parcel Pickup Service</span>
             </a>
 
-            {/* Send a Prayer Button */}
             <Link 
               to="/prayer"
-              className="inline-flex items-center justify-center border border-[#112A46] bg-transparent text-[#112A46] hover:bg-[#112A46] hover:text-white font-bold whitespace-nowrap text-[13px] 2xl:text-sm px-3 2xl:px-4 h-9 lg:h-10 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-1"
+              className="inline-flex items-center justify-center border border-[#112A46] bg-transparent text-[#112A46] hover:bg-[#112A46] hover:text-white font-bold whitespace-nowrap text-[11px] 2xl:text-[13px] px-2 2xl:px-4 h-8 2xl:h-10 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-1"
             >
               Send a Prayer
             </Link>
 
-            {/* Large Orange Donate Button */}
             <button
               onClick={() => setDonateDialogOpen(true)}
-              className="inline-flex items-center justify-center bg-[#E05A2B] hover:bg-[#c94d23] text-white font-bold shadow-[0_6px_20px_rgba(224,90,43,.35)] hover:shadow-[0_10px_28px_rgba(224,90,43,.45)] px-5 2xl:px-6 h-10 2xl:h-11 text-sm 2xl:text-base whitespace-nowrap rounded-md transition-all focus-visible:outline-none focus-visible:ring-1 cursor-pointer"
+              className="inline-flex items-center justify-center bg-[#E05A2B] hover:bg-[#c94d23] text-white font-bold shadow-[0_6px_20px_rgba(224,90,43,.35)] hover:shadow-[0_10px_28px_rgba(224,90,43,.45)] px-3 2xl:px-6 h-8 2xl:h-11 text-[12px] 2xl:text-[15px] whitespace-nowrap rounded-md transition-all focus-visible:outline-none focus-visible:ring-1 cursor-pointer"
             >
               Donate
             </button>
           </div>
 
-          {/* Mobile Menu Toggle - Shows until XL (1280px) */}
           <button
             aria-label="Toggle menu"
             onClick={() => setOpen((v) => !v)}
@@ -240,7 +228,6 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Navigation Drawer - Shows until XL */}
         {open && (
           <div className="xl:hidden absolute top-full left-0 w-full border-t border-gray-100 bg-white shadow-xl origin-top animate-in fade-in slide-in-from-top-4 duration-300">
             <div className="max-w-[1600px] mx-auto px-5 py-4 flex flex-col gap-2 max-h-[calc(100vh-4rem)] sm:max-h-[85vh] overflow-y-auto">
@@ -299,7 +286,6 @@ export default function Navbar() {
                 </div>
               ))}
 
-              {/* Mobile CTAs */}
               <div className="flex flex-col gap-3 pt-4 border-t border-gray-100 mt-2 pb-6">
                 <a 
                   href="https://parcelservice.mtsc.ca/" 
@@ -333,12 +319,9 @@ export default function Navbar() {
         )}
       </header>
 
-      {/* Shadcn-Style Dialog Popup for Donations built with standard HTML */}
       {donateDialogOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-3 sm:p-6 animate-in fade-in duration-200">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-5xl h-[95vh] flex flex-col overflow-hidden relative animate-in zoom-in-95 duration-200">
-            
-            {/* Modal Header */}
             <div className="flex items-center justify-between p-4 pb-3 shrink-0 border-b border-gray-100">
               <h2 className="flex items-center gap-2 sm:gap-3 text-lg sm:text-xl font-extrabold text-[#112A46] m-0 truncate">
                 <FaGift className="h-5 w-5 text-[#E05A2B] shrink-0" />
@@ -352,8 +335,6 @@ export default function Navbar() {
                 <FaTimes className="h-5 w-5 text-gray-500" />
               </button>
             </div>
-            
-            {/* Modal Content */}
             <div className="flex-1 overflow-hidden p-0 sm:p-2 bg-gray-50 md:p-4">
               <div className="w-full h-full bg-white sm:rounded-lg border-0 sm:border border-gray-200 overflow-hidden shadow-none sm:shadow-sm">
                 <iframe
@@ -364,7 +345,6 @@ export default function Navbar() {
                 ></iframe>
               </div>
             </div>
-
           </div>
         </div>
       )}
