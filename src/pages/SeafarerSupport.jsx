@@ -128,16 +128,16 @@ export default function SeafarerSupport() {
 
       <main className="flex-grow">
         
-        {/* ================= HERO SECTION ================= */}
-        <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden border-b-[6px] border-[#E05A2B]">
+        {/* ================= HERO SECTION (Updated to match About Page) ================= */}
+        <section className="relative pt-12 pb-16 md:pt-16 md:pb-16 min-h-[40vh] flex flex-col justify-center overflow-hidden ">
           <div className="absolute inset-0 z-0">
             <img src={portHalifaxImg} alt="Halifax Harbour" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-br from-[#112A46]/95 via-[#112A46]/90 to-[#2D5A7B]/80"></div>
           </div>
 
-          <div className="max-w-[1200px] mx-auto px-6 relative z-10 text-center">
+          <div className="w-full max-w-[1200px] mx-auto px-6 relative z-10 text-center">
             <Reveal>
-              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-5 py-2 rounded-full text-sm font-bold tracking-wide uppercase mb-6 cursor-default">
+              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-5 py-2 rounded-full text-sm font-bold tracking-wide uppercase mb-2 cursor-default">
                 <FaAnchor className="text-[#FFD700]" /> For Visiting Crews
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 max-w-4xl mx-auto">
