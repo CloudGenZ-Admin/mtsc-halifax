@@ -18,6 +18,7 @@ import EventList from './pages/event/EventList';
 import EventDetail from './pages/event/EventDetail';
 import Publication from './pages/Publication'
 import Donate from './pages/Donate';
+import SeafarerSupport from './pages/SeafarerSupport';
 
 
 function ScrollToTop() {
@@ -42,6 +43,7 @@ function App() {
         <Route path="/whoweare" element={<About />} />
         <Route path="/prayer" element={<Prayer />} />
         <Route path="/WaysToGive" element={<WaystoGive />} />
+        <Route path="/support" element={<SeafarerSupport />} />
         
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/events" element={<AdminDashboard />} />

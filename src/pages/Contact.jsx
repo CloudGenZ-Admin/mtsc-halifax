@@ -10,6 +10,7 @@ const interests = [
   "Volunteering",
   "Donating goods or services",
   "Local partnership",
+  "Clothing ",
   "Media inquiry",
   "Other"
 ];
@@ -215,7 +216,7 @@ const Contact = () => {
             </div>
 
             {/* Form wrapper (Right Column) */}
-            <div className="lg:col-span-7 rounded-2xl bg-[#f9fafb] border border-gray-100 p-6 md:p-8 shadow-[0_8px_30px_rgba(17,42,70,.05)] space-y-5">
+            <div className="lg:col-span-7  rounded-2xl bg-[#f9fafb] border border-gray-100 p-6 md:p-8 shadow-[0_8px_30px_rgba(17,42,70,.05)] space-y-5">
               <div className="flex items-center gap-2 mb-2">
                 <Send className="h-6 w-6 text-[#E05A2B]" />
                 <h2 className="text-xl md:text-3xl font-extrabold text-[#112A46]">Send Us a Message</h2>
@@ -289,7 +290,7 @@ const Contact = () => {
                       defaultValue=""
                       className={inputClasses}
                     >
-                      <option value="" disabled>Select an option...</option>
+                      <option value="" className="cursor-pointer" disabled>Select an option...</option>
                       {interests.map((i) => (
                         <option key={i} value={i}>{i}</option>
                       ))}
@@ -310,7 +311,7 @@ const Contact = () => {
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="inline-flex items-center justify-center w-full bg-[#E05A2B] hover:bg-[#c94d22] text-white font-bold shadow-lg h-12 rounded-md text-base transition-colors focus:outline-none focus:ring-2 focus:ring-[#E05A2B]/50 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="inline-flex items-center cursor-pointer justify-center w-full bg-[#E05A2B] hover:bg-[#c94d22] text-white font-bold shadow-lg h-12 rounded-md text-base transition-colors focus:outline-none focus:ring-2 focus:ring-[#E05A2B]/50 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? "Sending..." : "Submit Inquiry"} <Send className="ml-2 h-4 w-4" />
                 </button>

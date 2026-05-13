@@ -282,7 +282,7 @@ export default function Home() {
                   As part of a 160+ year legacy, Seafarers visiting the Port of Halifax can access
                 </p>
                 <p className="text-[#666666] text-[16px] max-w-[600px] mx-auto leading-relaxed">
-                  As the Halifax station develops, it continues to take shape around what seafarers need during their time ashore. As the Halifax station grows, we are creating a space
+                  As the Halifax station develops, it continues to take shape around what seafarers need during their time ashore. 
                 </p>
               </div>
 
@@ -516,7 +516,7 @@ export default function Home() {
                     Become a monthly donor
                   </h3>
                   <p className="text-white/90 text-[16px] md:text-[18px] leading-relaxed mb-8 flex-1">
-                    Support Mission to Seafarers Toronto through Mission to Seafarers Canada
+                    Support Mission to Seafarers Halifax  through Mission to Seafarers Canada
                   </p>
                   {/* CHANGED FROM <a> to <button> TO TRIGGER MODAL */}
                   <button 
@@ -538,17 +538,17 @@ export default function Home() {
                     Make a one-time gift
                   </h3>
                   <p className="text-[#666666] text-[16px] md:text-[18px] leading-relaxed mb-8 flex-1">
-                    Support Mission to Seafarers Toronto through Mission to Seafarers Canada
+                    Support Mission to Seafarers Halifax  through Mission to Seafarers Canada
                   </p>
                   {/* CHANGED FROM <a> to <button> TO TRIGGER MODAL */}
                   <button 
                     onClick={() => setIsDonateModalOpen(true)}
-                    className="w-full bg-[#2d3580] hover:bg-[#1c2e6b] text-white font-bold h-14 rounded-xl flex items-center justify-center transition-colors text-[16px] mb-6"
+                    className="w-full bg-[#2d3580] cursor-pointer hover:bg-[#1c2e6b] text-white font-bold h-14 rounded-xl flex items-center justify-center transition-colors text-[16px] mb-6"
                   >
                     Make a One-Time Gift
                     <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
                   </button>
-                  <p className="text-sm text-[#666666] italic text-center">
+                  <p className="text-sm text-[#666666] cursor-pointer italic text-center">
                     Small note: All donations are processed through Mission to Seafarers Canada in support of the Halifax station and the wider mission across Canada.
                   </p>
                 </div>
@@ -567,7 +567,7 @@ export default function Home() {
                   <div className="flex mb-4">
                     <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#e05a2b]">
                       <span className="block h-[1px] w-8 bg-[#e05a2b]"></span>
-                      Updates & News
+                      News and Upcoming Events
                     </span>
                   </div>
                   <h2 className="text-3xl md:text-4xl font-extrabold text-[#2d3580] leading-tight">
@@ -577,7 +577,7 @@ export default function Home() {
 
                 <button
                   onClick={() => setShowAllEvents(!showAllEvents)}
-                  className="border-2 border-[#2d3580] text-[#2d3580] hover:bg-[#2d3580] hover:text-white font-bold px-6 py-2.5 rounded-lg transition-colors flex items-center"
+                  className="border-2 border-[#2d3580] cursor-pointer text-[#2d3580] hover:bg-[#2d3580] hover:text-white font-bold px-6 py-2.5 rounded-lg transition-colors flex items-center"
                 >
                   {showAllEvents ? "Show Less Updates" : "View Updates"}
                   <svg className={`ml-2 h-4 w-4 transition-transform ${showAllEvents ? "rotate-90" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -642,7 +642,7 @@ export default function Home() {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => scrollGallery('left')}
-                    className="h-12 w-12 rounded-full border-2 border-[#2d3580]/10 cursor-pointer flex items-center justify-center text-[#2d3580] hover:bg-[#2d3580] hover:text-white transition-all shadow-sm focus:outline-none"
+                    className="h-12 w-12 rounded-full border-2 cursor-pointer border-[#2d3580]/10 cursor-pointer flex items-center justify-center text-[#2d3580] hover:bg-[#2d3580] hover:text-white transition-all shadow-sm focus:outline-none"
                     aria-label="Scroll left"
                   >
                     <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -651,7 +651,7 @@ export default function Home() {
                   </button>
                   <button
                     onClick={() => scrollGallery('right')}
-                    className="h-12 w-12 rounded-full border-2 border-[#2d3580]/10 cursor-pointer flex items-center justify-center text-[#2d3580] hover:bg-[#2d3580] hover:text-white transition-all shadow-sm focus:outline-none"
+                    className="h-12 w-12 rounded-full border-2 cursor-pointer border-[#2d3580]/10 cursor-pointer flex items-center justify-center text-[#2d3580] hover:bg-[#2d3580] hover:text-white transition-all shadow-sm focus:outline-none"
                     aria-label="Scroll right"
                   >
                     <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -808,7 +808,7 @@ export default function Home() {
                 {/* CHANGED FROM <a> to <button> TO TRIGGER MODAL */}
                 <button 
                   onClick={() => setIsDonateModalOpen(true)}
-                  className="inline-flex justify-center items-center bg-[#e05a2b] text-white px-9 py-4 rounded-full font-bold text-[14px] hover:bg-[#c94d23] shadow-lg transition-all"
+                  className="inline-flex justify-center cursor-pointer items-center bg-[#e05a2b] text-white px-9 py-4 rounded-full font-bold text-[14px] hover:bg-[#c94d23] shadow-lg transition-all"
                 >
                   Donate Through Mission to Seafarers Canada
                 </button>
@@ -906,7 +906,7 @@ export default function Home() {
               </h3>
               <button
                 onClick={() => setIsDonateModalOpen(false)}
-                className="bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-800 p-3 rounded-full transition-colors focus:outline-none"
+                className="bg-gray-100 cursor-pointer hover:bg-gray-200 text-gray-500 hover:text-gray-800 p-3 rounded-full transition-colors focus:outline-none"
                 aria-label="Close modal"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

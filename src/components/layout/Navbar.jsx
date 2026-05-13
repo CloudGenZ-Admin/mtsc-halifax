@@ -8,6 +8,7 @@ const nav = [
   { to: "/", label: "Home" },
   { to: "/whoweare", label: "Who We Are" },
   { to: "/WaystoGive", label: "Get Involved" },
+  {to:"/support", label:"Support"},
   {
     to: "/publication",
     label: "Publications",

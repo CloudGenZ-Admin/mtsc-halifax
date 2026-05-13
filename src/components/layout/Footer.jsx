@@ -34,7 +34,7 @@ export default function Footer() {
             />
           </div>
           <p className="font-extrabold text-white text-[14.5px] mb-3 tracking-wide">
-            ✦ Mission to Seafarers Canada ✦
+            ✦ Mission to Seafarers Halifax  ✦
           </p>
           <p className="text-white/60 text-[14px] leading-relaxed max-w-sm">
             Caring for seafarers visiting the Port of Halifax by providing a welcoming harbour, pastoral care, and practical support.
@@ -123,7 +123,7 @@ export default function Footer() {
       {/* Copyright Bar */}
       <div className="max-w-[1200px] mx-auto px-7 py-6 text-center lg:flex lg:justify-between lg:items-center">
         <p className="text-white/40 text-[13px] font-medium">
-          &copy; {new Date().getFullYear()} Mission to Seafarers Canada. All rights reserved.
+          &copy; {new Date().getFullYear()} Mission to Seafarers  Canada. All rights reserved.
         </p>
         <p className="text-white/30 text-[12px] mt-2 lg:mt-0">
           Designed with purpose for the seafarers of Halifax.
