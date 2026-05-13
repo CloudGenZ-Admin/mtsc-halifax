@@ -20,6 +20,15 @@ export default function Footer() {
     { name: 'Donate', path: '/donate' }
   ];
 
+  // Social Media Links mapped to their respective icons
+  const socialLinks = [
+    { Icon: FaLinkedinIn, url: 'https://www.linkedin.com/company/mission-to-seafarers-canada/', label: 'LinkedIn' },
+    { Icon: FaYoutube, url: 'https://www.youtube.com/@MissiontoSeafarersCanada', label: 'YouTube' },
+    { Icon: FaInstagram, url: 'https://www.instagram.com/missiontoseafarerscanada/', label: 'Instagram' },
+    { Icon: FaFacebookF, url: 'https://www.facebook.com/SeafarersCanada/', label: 'Facebook' },
+    { Icon: FaTiktok, url: 'https://www.tiktok.com/@seafarerscanada', label: 'TikTok' }
+  ];
+
   return (
     <footer className="bg-navy-dark">
       <div className="max-w-[1200px] mx-auto px-7 pt-16 pb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12 border-b border-white/10">
@@ -76,12 +85,14 @@ export default function Footer() {
         <div>
           <h4 className="text-white font-black text-[16px] mb-5 tracking-wide uppercase text-sm">Connect With Us</h4>
           <div className="flex flex-wrap gap-3 mb-6">
-            {[FaLinkedinIn, FaYoutube, FaInstagram, FaFacebookF, FaTiktok].map((Icon, i) => (
+            {socialLinks.map(({ Icon, url, label }, i) => (
               <a 
                 key={i} 
-                href="#" 
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-white text-[15px] hover:bg-coral hover:-translate-y-1 transition-all shadow-sm"
-                aria-label="Social Media Link"
+                aria-label={label}
               >
                 <Icon />
               </a>
