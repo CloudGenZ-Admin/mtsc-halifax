@@ -153,7 +153,7 @@ export default function Home() {
                 </h2>
 
                 <p className="mt-5 text-base md:text-lg text-[#666666]">
-                  As part of a 160+ year legacy, we offer practical, emotional, and spiritual support at Canadian ports, ensuring no seafarer is alone.
+                  As part of a 160+ year legacy, we provide practical, emotional, and community-based support for seafarers while they are in port ensuring no one feels alone.
                 </p>
 
                 <div className="mt-8 text-base md:text-lg text-[#666666] leading-relaxed space-y-5">

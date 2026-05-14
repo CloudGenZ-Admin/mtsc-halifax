@@ -419,18 +419,18 @@ const SiteHeader = () => {
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-md shadow-soft" : "bg-white/80 backdrop-blur"
         }`}
     >
-      <div className="w-full max-w-[2000px] mx-auto px-4 md:px-6 lg:px-8 flex h-20 items-center justify-between md:h-24 lg:h-28 gap-4">
+      <div className="w-full max-w-[1400px] mx-auto px-4 md:px-5 lg:px-6 flex h-16 md:h-20 lg:h-22 items-center justify-between gap-2 xl:gap-4">
 
         {/* Logo - Ensures text doesn't wrap using whitespace-nowrap */}
         <Link to="/" className="flex items-center gap-2 lg:gap-3 group shrink-0">
           <img
             src={logo}
             alt="Mission to Seafarers Logo"
-            className="h-20 md:h-20 lg:h-24 w-auto shrink-0 object-contain rounded-md group-hover:scale-105 transition-transform"
+            className="h-12 md:h-14 lg:h-16 w-auto shrink-0 object-contain rounded-md group-hover:scale-105 transition-transform"
           />
           <span className="flex flex-col leading-none justify-center">
-            <span className="text-[16px] lg:text-[15px] xl:text-[18px] font-extrabold text-navy whitespace-nowrap">Mission to Seafarers</span>
-            <span className="text-[12px] lg:text-[11px] xl:text-[13px] font-bold uppercase tracking-[0.18em] text-coral mt-0.5 whitespace-nowrap">Halifax</span>
+            <span className="text-[13px] lg:text-[14px] xl:text-[16px] font-extrabold text-navy whitespace-nowrap">Mission to Seafarers</span>
+            <span className="text-[10px] lg:text-[11px] xl:text-[12px] font-bold uppercase tracking-[0.15em] text-coral mt-0.5 whitespace-nowrap">Halifax</span>
           </span>
         </Link>
 
@@ -442,7 +442,7 @@ const SiteHeader = () => {
                 <NavLink
                   to={n.to}
                   className={({ isActive }) =>
-                    `flex items-center gap-1 px-2 xl:px-3 py-2 text-[13px] xl:text-[15px] 2xl:text-base font-semibold whitespace-nowrap rounded-md transition-colors ${isActive || location.pathname.includes(n.to) ? "text-coral" : "text-navy hover:text-coral"
+                    `flex items-center gap-0.5 px-1.5 xl:px-3 py-2 text-[12px] xl:text-[14px] 2xl:text-[15px] font-semibold whitespace-nowrap rounded-md transition-colors ${isActive || location.pathname.includes(n.to) ? "text-coral" : "text-navy hover:text-coral"
                     }`
                   }
                 >
@@ -474,7 +474,7 @@ const SiteHeader = () => {
                 to={n.to}
                 end={n.to === "/"}
                 className={({ isActive }) =>
-                  `px-2 xl:px-3 py-2 text-[13px] xl:text-[15px] 2xl:text-base font-semibold whitespace-nowrap rounded-md transition-colors ${isActive ? "text-coral" : "text-navy hover:text-coral"
+                  `px-1.5 xl:px-3 py-2 text-[12px] xl:text-[14px] 2xl:text-[15px] font-semibold whitespace-nowrap rounded-md transition-colors ${isActive ? "text-coral" : "text-navy hover:text-coral"
                   }`
                 }
               >
@@ -485,7 +485,7 @@ const SiteHeader = () => {
         </nav>
 
         {/* Desktop CTA Buttons */}
-        <div className="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
+        <div className="hidden lg:flex items-center gap-1.5 xl:gap-3 shrink-0">
           <Button asChild variant="outline" size="sm" className="border-border bg-warm-gray text-navy hover:bg-navy hover:text-white font-bold whitespace-nowrap text-xs xl:text-sm px-3 xl:px-4">
             <a href="https://parcel.mtsc.ca/" target="_blank" rel="noopener noreferrer" className="flex items-center">
               <Package className="w-4 h-4 mr-1.5 hidden 2xl:block" />
@@ -503,7 +503,7 @@ const SiteHeader = () => {
           <Button
             onClick={() => setDonateDialogOpen(true)}
             size="lg"
-            className="bg-coral hover:bg-coral-light text-white font-bold shadow-warm hover:shadow-warm-hover px-5 xl:px-6 text-sm xl:text-base whitespace-nowrap cursor-pointer"
+            className="bg-coral hover:bg-coral-light text-white font-bold shadow-warm hover:shadow-warm-hover px-3 xl:px-5 text-[12px] xl:text-[14px] whitespace-nowrap cursor-pointer h-9 xl:h-11"
           >
             Donate
           </Button>
