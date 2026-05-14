@@ -960,7 +960,7 @@ export default function WaystoGive() {
                         <div className="w-6 h-6 bg-[#E05A2B]/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                           <span className="text-[#E05A2B] text-xs font-black">$50</span>
                         </div>
-                        <span className="text-[#112A46] text-[14px] font-medium">/month can help provide care, comfort, and practical assistance</span>
+                        <span className="text-[#112A46] text-[14px] font-medium">/month can help provide care, comfort, and practical assistance for visiting crews</span>
                       </div>
                     </div>
 

@@ -322,7 +322,7 @@ function About() {
                   <div className="mt-6 space-y-4 text-base md:text-lg text-gray-600 leading-relaxed">
                     <p>
                       Helen leads Mission to Seafarers Halifax with compassion, warmth, and a deep commitment to the welfare of seafarers visiting the Port of Halifax.
-                    </p>c
+                    </p>
                     <p>
                       Through leadership, outreach, volunteer coordination, and community engagement, she helps ensure that every seafarer who connects with the station experiences hospitality, practical support, and a welcoming place of care while ashore.
                     </p>
@@ -349,7 +349,7 @@ function About() {
                   <h3 className="text-2xl font-bold text-[#112A46]">Joseph</h3>
                   <p className="text-[#E05A2B] font-bold uppercase text-sm mt-2 mb-4 tracking-wider">Assistant Manager</p>
                   <p className="text-gray-600 leading-relaxed font-medium">
-                    Joseph supports the daily operations of the Halifax station and helps create a welcoming environment for seafarers visiting the port. His dedication and calm presence help make the station a trusted place for many visiting crews.
+                    Joseph supports the daily operations of the Halifax station and helps create a welcoming environment for seafarers visiting the port.Supporting outreach, station activities, and practical services to ensure seafarers in Halifax receive care, connection, and assistance during their stay. His dedication and calm presence help make the station a trusted place for many visiting crews.
                   </p>
                 </div>
 
@@ -553,6 +553,9 @@ function About() {
               <h2 className="mt-4 text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#112A46] leading-tight">
                 How the Structure Works
               </h2>
+              <p className="mt-2 text-gray-600 text-[14px] max-w-2xl mx-auto leading-relaxed font-medium">
+                One Mission. Many Hands. Shared Care.” with “How the Structure Works”
+              </p>
             </div>
 
             <div className="mt-14 grid md:grid-cols-2 gap-8 max-w-4xl mx-auto relative">
@@ -575,7 +578,7 @@ function About() {
                 Together, ensure that every seafarer who comes through Halifax is not only seen, but cared for.
               </p>
               <Link
-                to="/get-involved"
+                to="/contact"
                 className="inline-flex items-center justify-center bg-[#E05A2B] hover:bg-[#c94d22] text-white font-bold shadow-lg h-14 px-8 rounded-md text-lg transition-colors"
               >
                 Become a Volunteer

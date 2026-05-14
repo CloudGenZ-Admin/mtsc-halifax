@@ -163,7 +163,7 @@ const Contact = () => {
                   </li>
                 </ul>
                 <p className="text-xs italic text-gray-500">
-                  Ship visits and seafarer support may still occur outside regular station hours depending on vessel schedules.
+                  Ship visits and seafarer support may still occur outside regular station hours.
                 </p>
               </div>
 

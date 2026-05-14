@@ -192,7 +192,7 @@ export default function SeafarerSupport() {
                     <FaBoxOpen className="text-3xl text-[#E05A2B]" />
                   </div>
                   <h3 className="text-xl font-bold text-[#112A46] mb-3">Send or Receive Parcel</h3>
-                  <p className="text-gray-600 font-medium mb-6 flex-grow">Order personal items online and have them delivered safely to our station for pickup.</p>
+                  <p className="text-gray-600 font-medium mb-6 flex-grow">Order personal items online and have them delivered safely to our Halifax station for pickup.</p>
                   <div className="text-[#E05A2B] font-bold text-sm inline-flex items-center gap-2">Parcel Info & Request →</div>
                 </div>
               </Reveal>
@@ -216,7 +216,7 @@ export default function SeafarerSupport() {
                     <FaHandsHelping className="text-3xl text-[#E05A2B]" />
                   </div>
                   <h3 className="text-xl font-bold text-[#112A46] mb-3">Request Support</h3>
-                  <p className="text-gray-600 font-medium mb-6 flex-grow">We can assist with practical, emotional, or local support needs while visiting Halifax.</p>
+                  <p className="text-gray-600 font-medium mb-6 flex-grow">We can assist with practical, emotional, transportation, or local support needs while your vessel is visiting the Port of Halifax.</p>
                   <div className="text-[#E05A2B] font-bold text-sm inline-flex items-center gap-2">General Support Form →</div>
                 </div>
               </Reveal>
@@ -228,7 +228,7 @@ export default function SeafarerSupport() {
                     <FaTshirt className="text-3xl text-[#E05A2B]" />
                   </div>
                   <h3 className="text-xl font-bold text-[#112A46] mb-3">Clothing & Essentials</h3>
-                  <p className="text-gray-600 font-medium mb-6 flex-grow">Access seasonal clothing, gloves, jackets, and practical essentials during port time.</p>
+                  <p className="text-gray-600 font-medium mb-6 flex-grow">Access seasonal clothing, gloves, jackets, hygiene items, and practical essentials during your time in port.</p>
                   <div className="text-[#E05A2B] font-bold text-sm inline-flex items-center gap-2">Request Assistance →</div>
                 </div>
               </Reveal>
@@ -240,7 +240,7 @@ export default function SeafarerSupport() {
                     <FaBus className="text-3xl text-[#E05A2B]" />
                   </div>
                   <h3 className="text-xl font-bold text-[#112A46] mb-3">Transport & Guidance</h3>
-                  <p className="text-gray-600 font-medium mb-6 flex-grow">Need help getting around Halifax or finding local services? We may be able to assist.</p>
+                  <p className="text-gray-600 font-medium mb-6 flex-grow">Need help getting around Halifax or finding local services? Our team may be able to assist.</p>
                   <div className="text-[#E05A2B] font-bold text-sm inline-flex items-center gap-2">Transportation Request →</div>
                 </div>
               </Reveal>
@@ -268,7 +268,7 @@ export default function SeafarerSupport() {
                   Every day, seafarers from around the world arrive in Halifax.
                 </h2>
                 <p className="text-gray-600 text-lg font-medium leading-relaxed mb-8">
-                  After long journeys at sea, whether you are here for a few hours or several days, our team is here to welcome and support you.
+                  Every day, seafarers from around the world arrive in Halifax after long journeys at sea. Whether you are here for a few hours or several days, our team is here to welcome and support you.
                 </p>
                 <div className="grid sm:grid-cols-2 gap-4">
                   {[
@@ -302,8 +302,8 @@ export default function SeafarerSupport() {
               
               {[
                 { step: "1", title: "Choose", desc: "Select the service or support you need from our dashboard above." },
-                { step: "2", title: "Request", desc: "Fill out a short request form or send a message directly to our team." },
-                { step: "3", title: "Connect", desc: "Our volunteers or station team will contact you shortly to help." }
+                { step: "2", title: "Request", desc: "Fill out a short request form or message our team." },
+                { step: "3", title: "Connect", desc: "Our volunteers or station team will contact you shortly." }
               ].map((s, idx) => (
                 <Reveal delay={idx * 100} key={idx} className="relative z-10 flex flex-col items-center">
                   <div className="w-20 h-20 bg-[#E05A2B] rounded-full flex items-center justify-center text-3xl font-black mb-6 shadow-xl border-4 border-[#112A46]">
@@ -412,7 +412,7 @@ export default function SeafarerSupport() {
                     </div>
                     <div>
                       <h4 className="font-bold text-[#112A46] text-lg mb-1">Civic Address</h4>
-                      <p className="text-gray-600 font-medium">844 Marginal Road, Halifax, NS<br/>Situated across from Pier 24 in the Halifax Seaport area.</p>
+                      <p className="text-gray-600 font-medium">844 Marginal Road, Halifax, Nova Scotia<br/>Situated across from Pier 24 in the Halifax Seaport area.</p>
                       <h4 className="font-bold text-[#112A46] text-lg mt-4 mb-1">Mailing Address</h4>
                       <p className="text-gray-600 font-medium">P.O. Box 27114, Halifax, NS B3H 4M8</p>
                     </div>
