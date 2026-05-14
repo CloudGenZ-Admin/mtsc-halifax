@@ -323,7 +323,7 @@ export default function Home() {
               </div>
 
               <div className="flex flex-wrap justify-center gap-4">
-                <a href="/about" className="inline-flex items-center gap-2 bg-[#e05a2b] text-white px-8 py-3.5 rounded-full font-bold text-[14px] hover:bg-[#c94d23] shadow-lg transition-all">
+                <a href="/whoweare" className="inline-flex items-center gap-2 bg-[#e05a2b] text-white px-8 py-3.5 rounded-full font-bold text-[14px] hover:bg-[#c94d23] shadow-lg transition-all">
                   Learn More About Seafarer Support
                 </a>
                 <a href="https://parcelservice.mtsc.ca/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#2d3580] text-white px-8 py-3.5 rounded-full font-bold text-[14px] hover:bg-[#1c2e6b] shadow-lg transition-all">
@@ -589,7 +589,7 @@ export default function Home() {
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {displayedUpdates.map((n, idx) => (
                   <article key={idx} className="group rounded-2xl border border-gray-200 bg-white overflow-hidden hover:shadow-[0_12px_32px_rgba(224,90,43,0.12)] hover:-translate-y-1 transition-all flex flex-col">
-                    <div className="aspect-[16/9] relative overflow-hidden shrink-0 flex items-end p-5">
+                    <div className="aspect-[36/9] relative overflow-hidden shrink-0 flex items-end p-5">
                       <div className="absolute inset-0 bg-gradient-to-br from-[#2d3580]/80 via-[#1c2e6b] to-[#112A46] z-0" />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#112A46]/95 via-[#112A46]/40 to-transparent z-0" />
 

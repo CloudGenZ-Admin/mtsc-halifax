@@ -11,8 +11,8 @@ import {
 // Import images
 import portHalifaxImg from '../assets/port_halifax.jpg';
 import volunteersImg from '../assets/MtS Halifax Center.jpg';
-import helenImg from '../assets/Helen-Glenn-Mission-Manager-174x300.jpg';
-import josephImg from '../assets/Josefloot.jpeg';
+import helenImg from '../assets/HelenCircle.jpg';
+import josephImg from '../assets/Josefloot.jpg';
 
 // Simple Reusable Modal for Request Forms with Loading State
 const SupportModal = ({ isOpen, onClose, title, onSubmit }) => {

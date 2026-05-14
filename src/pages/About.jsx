@@ -12,8 +12,8 @@ import volunteersImg from '../assets/MtS Halifax Center.jpg';
 import helenImg from '../assets/Helen-Glenn-Mission-Manager-174x300.jpg';
 import portHalifaxImg from '../assets/port_halifax.jpg';
 import seafarersOnDeckImg from '../assets/Awards/seafarers-ondeck-working-min.webp';
-import josephImg from '../assets/Josefloot.jpeg';
-
+import josephImg from '../assets/Josefloot.jpg';
+import helecncircle from '../assets/HelenCircle.jpg'
 // ==========================================
 // IMPORT VOLUNTEER GALLERY IMAGES
 // ==========================================
@@ -305,13 +305,13 @@ function About() {
             {/* Featured Leader - Helen */}
             <Reveal>
               <div className="grid lg:grid-cols-12 gap-12 items-center mb-12 bg-[#F8FBFD] border border-gray-100 p-8 md:p-12 rounded-3xl shadow-sm hover:shadow-lg transition-shadow">
-                <div className="lg:col-span-5">
-                  <img
-                    src={helenImg}
-                    alt="Helen Glenn"
-                    className="w-full rounded-2xl shadow-md object-cover aspect-[4/5] object-top border-4 border-white"
-                  />
-                </div>
+               <div className="lg:col-span-5 flex justify-center">
+  <img
+    src={helecncircle}
+    alt="Helen Glenn"
+    className="w-full max-w-sm rounded-full shadow-md object-cover aspect-square object-top border-4 border-white"
+  />
+</div>
                 <div className="lg:col-span-7">
                   <h2 className="text-2xl md:text-3xl font-extrabold text-[#112A46] leading-tight">
                     Station Manager
@@ -338,8 +338,13 @@ function About() {
             <Reveal delay={100}>
               <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                 <div className="flex flex-col items-center text-center bg-white border border-gray-100 rounded-3xl p-10 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="w-40 h-40 rounded-full shadow-md mb-6 bg-[#EAE6DF] flex items-center justify-center overflow-hidden border-4 border-white">
-                    <img src={josephImg} alt="Joseph" className="w-full h-full object-contain scale-[1.2]" />
+
+                  <div className="w-40 h-40 mx-auto rounded-full shadow-md mb-6 overflow-hidden border-4 border-white flex justify-center items-center bg-[#DCD2B9]">
+                    <img
+                      src={josephImg}
+                      alt="Joseph"
+                      className="w-[98%] max-w-none h-auto"
+                    />
                   </div>
                   <h3 className="text-2xl font-bold text-[#112A46]">Joseph</h3>
                   <p className="text-[#E05A2B] font-bold uppercase text-sm mt-2 mb-4 tracking-wider">Assistant Manager</p>
@@ -372,7 +377,7 @@ function About() {
           </div>
         </section>
 
-        
+
 
         {/* CAROUSEL SECTION: VOLUNTEERS */}
         <section className="py-20 bg-[#F8FBFD] border-y border-gray-100 overflow-hidden">
@@ -474,7 +479,7 @@ function About() {
                   <p className="text-white/80 leading-relaxed font-medium mb-8">
                     To every volunteer, supporter, maritime partner, church community, and donor who helps sustain this mission: thank you. Your compassion and generosity continue to make Mission to Seafarers Halifax a place of welcome, care, and connection for seafarers from around the world.
                   </p>
-                  
+
                   <h3 className="text-2xl font-extrabold mb-4 text-[#E05A2B]">Interested in Volunteering?</h3>
                   <p className="text-white/80 leading-relaxed font-medium">
                     Whether you can help occasionally or become part of ongoing outreach efforts, there are many ways to get involved and support seafarers visiting Halifax.
@@ -487,7 +492,7 @@ function About() {
         </section>
 
 
-          {/* CAROUSEL SECTION: AMENITIES */}
+        {/* CAROUSEL SECTION: AMENITIES */}
         <section className="py-20 bg-white overflow-hidden">
           <div className="w-full max-w-[1200px] px-6 mx-auto">
             <Reveal className="text-center mb-12">
@@ -538,10 +543,10 @@ function About() {
           </div>
         </section>
 
-      
 
 
-          {/* How the structure works (London Style) */}
+
+        {/* How the structure works (London Style) */}
         <section className="py-20 md:py-28 bg-[#F8FBFD] border-t border-gray-200">
           <div className="w-full max-w-[1200px] px-6 mx-auto">
             <div className="text-center max-w-3xl mx-auto">
@@ -580,8 +585,8 @@ function About() {
         </section>
 
 
-      
-    
+
+
 
       </main>
       <Footer />
