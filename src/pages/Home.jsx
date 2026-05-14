@@ -55,7 +55,7 @@ import galleryImg8 from '../assets/WhatsApp Image 2026-05-09 at 12.59.52 AM.jpeg
 export default function Home() {
   // State to control showing all events in the news section
   const [showAllEvents, setShowAllEvents] = useState(false);
-  
+
   // State to control the donation modal
   const [isDonateModalOpen, setIsDonateModalOpen] = useState(false);
 
@@ -282,7 +282,7 @@ export default function Home() {
                   As part of a 160+ year legacy, Seafarers visiting the Port of Halifax can access
                 </p>
                 <p className="text-[#666666] text-[16px] max-w-[600px] mx-auto leading-relaxed">
-                  As the Halifax station develops, it continues to take shape around what seafarers need during their time ashore. 
+                  As the Halifax station develops, it continues to take shape around what seafarers need during their time ashore.
                 </p>
               </div>
 
@@ -349,7 +349,7 @@ export default function Home() {
                   </div>
 
                   <h2 className="mt-5 text-3xl md:text-4xl font-extrabold text-[#2d3580] leading-tight">
-                   Clothing Bank
+                    Clothing Bank
                   </h2>
 
                   <div className="mt-5 text-base md:text-lg text-[#666666] leading-relaxed space-y-5">
@@ -460,17 +460,22 @@ export default function Home() {
                 </div>
 
                 <div className="flex flex-wrap justify-center gap-4">
-                  <a href="/WaystoGive" className="inline-flex cursor-pointer justify-center bg-[#E05A2B] text-white px-7 py-3 rounded-full font-bold text-[14px] hover:bg-[#c94d23] shadow-md transition-all">
+                  <a href="/contact" className="inline-flex cursor-pointer justify-center bg-[#E05A2B] text-white px-7 py-3 rounded-full font-bold text-[14px] hover:bg-[#c94d23] shadow-md transition-all">
                     Volunteer Locally
                   </a>
                   {/* CHANGED FROM <a> to <button> TO TRIGGER MODAL */}
-                  <button 
+                  <button
                     onClick={() => setIsDonateModalOpen(true)}
                     className="inline-flex justify-center cursor-pointer bg-[#112A46] text-white px-7 py-3 rounded-full font-bold text-[14px] hover:bg-[#0d1f35] shadow-md transition-all"
                   >
                     Support the Halifax Station
                   </button>
-                  <a href="/contact" className="inline-flex cursor-pointer justify-center bg-transparent border-2 border-[#112A46] text-[#112A46] px-7 py-3 rounded-full font-bold text-[14px] hover:bg-[#112A46] hover:text-white shadow-md transition-all">
+                  <a
+                    href="https://mtsc.ca/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex cursor-pointer justify-center bg-transparent border-2 border-[#112A46] text-[#112A46] px-7 py-3 rounded-full font-bold text-[14px] hover:bg-[#112A46] hover:text-white shadow-md transition-all"
+                  >
                     Explore National Partnerships
                   </a>
                 </div>
@@ -519,7 +524,7 @@ export default function Home() {
                     Support Mission to Seafarers Halifax  through Mission to Seafarers Canada
                   </p>
                   {/* CHANGED FROM <a> to <button> TO TRIGGER MODAL */}
-                  <button 
+                  <button
                     onClick={() => setIsDonateModalOpen(true)}
                     className="w-full bg-white cursor-pointer text-[#e05a2b] hover:bg-white/90 font-bold h-14 rounded-xl flex items-center justify-center transition-colors text-[16px]"
                   >
@@ -541,7 +546,7 @@ export default function Home() {
                     Support Mission to Seafarers Halifax  through Mission to Seafarers Canada
                   </p>
                   {/* CHANGED FROM <a> to <button> TO TRIGGER MODAL */}
-                  <button 
+                  <button
                     onClick={() => setIsDonateModalOpen(true)}
                     className="w-full bg-[#2d3580] cursor-pointer hover:bg-[#1c2e6b] text-white font-bold h-14 rounded-xl flex items-center justify-center transition-colors text-[16px] mb-6"
                   >
@@ -806,7 +811,7 @@ export default function Home() {
                   Contact the Halifax Station
                 </a>
                 {/* CHANGED FROM <a> to <button> TO TRIGGER MODAL */}
-                <button 
+                <button
                   onClick={() => setIsDonateModalOpen(true)}
                   className="inline-flex justify-center cursor-pointer items-center bg-[#e05a2b] text-white px-9 py-4 rounded-full font-bold text-[14px] hover:bg-[#c94d23] shadow-lg transition-all"
                 >
@@ -882,9 +887,9 @@ export default function Home() {
         </section>
 
 
-        
 
-      
+
+
 
       </main>
       <Footer />
@@ -892,15 +897,15 @@ export default function Home() {
       {/* --- DONATION MODAL POPUP --- */}
       {isDonateModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-[#112A46]/80 backdrop-blur-sm transition-opacity">
-          
+
           {/* Modal Container */}
           <div className="bg-white rounded-[32px] shadow-2xl w-full max-w-4xl relative max-h-[95vh] flex flex-col overflow-hidden animate-fade-in-up">
-            
+
             {/* Modal Header */}
             <div className="flex items-center justify-between p-6 md:px-8 border-b border-gray-100 bg-white z-10">
               <h3 className="text-2xl font-black text-[#112A46] flex items-center gap-3">
                 <svg className="w-6 h-6 text-[#E05A2B]" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                 </svg>
                 Secure Donation
               </h3>
@@ -910,15 +915,15 @@ export default function Home() {
                 aria-label="Close modal"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
-            
+
             {/* Modal Iframe Content */}
             <div className="flex-grow overflow-y-auto w-full bg-gray-50 p-4 md:p-8 flex justify-center">
-              <iframe 
-                src="https://www.canadahelps.org/en/dn/42880" 
+              <iframe
+                src="https://www.canadahelps.org/en/dn/42880"
                 title="CanadaHelps Secure Donation Form"
                 className="w-full max-w-[800px] h-[75vh] md:h-[800px] lg:h-[950px] border-none block bg-transparent rounded-xl"
                 scrolling="auto"

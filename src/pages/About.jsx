@@ -322,7 +322,7 @@ function About() {
                   <div className="mt-6 space-y-4 text-base md:text-lg text-gray-600 leading-relaxed">
                     <p>
                       Helen leads Mission to Seafarers Halifax with compassion, warmth, and a deep commitment to the welfare of seafarers visiting the Port of Halifax.
-                    </p>
+                    </p>c
                     <p>
                       Through leadership, outreach, volunteer coordination, and community engagement, she helps ensure that every seafarer who connects with the station experiences hospitality, practical support, and a welcoming place of care while ashore.
                     </p>
