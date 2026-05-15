@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaLinkedinIn, FaYoutube, FaInstagram, FaFacebookF, FaTiktok } from 'react-icons/fa';
 
 // Import the local logo and app images
-import seafarerLogoImg from '../../assets/seafarers-logo.png';
+import seafarerLogoImg from '../../assets//logo.jpeg';
 import happyAtSeaLogo from '../../assets/happy-sea-app.svg';
 import appStoreBtn from '../../assets/btn-appstore.png';
 import googlePlayBtn from '../../assets/btnapp-google-play.png.webp';
