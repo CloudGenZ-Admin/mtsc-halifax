@@ -2,16 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaLinkedinIn, FaYoutube, FaInstagram, FaFacebookF, FaTiktok } from 'react-icons/fa';
 
-// Import the local logo image
+// Import the local logo and app images
 import seafarerLogoImg from '../../assets/seafarers-logo.png';
 import happyAtSeaLogo from '../../assets/happy-sea-app.svg';
 import appStoreBtn from '../../assets/btn-appstore.png';
 import googlePlayBtn from '../../assets/btnapp-google-play.png.webp';
 
 export default function Footer() {
-  // Links extracted directly from your Navbar content
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  };
+
   const footerLinks = [
-    { name: 'Who We Are', path: '/whoweare' },
+    { name: 'About', path: '/whoweare' },
     { name: 'Events', path: '/events' },
     { name: 'Sponsors', path: '/WaystoGive' },
     { name: 'Volunteer', path: '/contact' },
@@ -20,7 +23,6 @@ export default function Footer() {
     { name: 'Donate', path: '/donate' }
   ];
 
-  // Social Media Links mapped to their respective icons
   const socialLinks = [
     { Icon: FaLinkedinIn, url: 'https://www.linkedin.com/company/mission-to-seafarers-canada/', label: 'LinkedIn' },
     { Icon: FaYoutube, url: 'https://www.youtube.com/@MissiontoSeafarersCanada', label: 'YouTube' },
@@ -30,115 +32,139 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-navy-dark">
-      <div className="max-w-[1200px] mx-auto px-7 pt-16 pb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12 border-b border-white/10">
+    // UPDATED: bg-[#233465] -> bg-navy-dark, added text-white/90 for base text
+    <footer className="bg-navy-dark text-white/90 font-sans w-full lg:mt-12">
+      <div className="max-w-[1480px] mx-auto px-4 md:px-8 py-8 lg:py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-6">
         
         {/* Column 1: Brand & About */}
-        <div className="lg:col-span-1">
-          <div className="mb-6 bg-white inline-flex items-center justify-center p-2 rounded-xl shadow-sm">
-            <img 
-              src={seafarerLogoImg} 
-              alt="Mission to Seafarers Logo" 
-              className="h-12 w-auto object-contain" 
-            />
-          </div>
-          <p className="font-extrabold text-white text-[14.5px] mb-3 tracking-wide">
-            ✦ Mission to Seafarers Halifax  ✦
-          </p>
-          <p className="text-white/60 text-[14px] leading-relaxed max-w-sm">
+        <div className="flex flex-col lg:col-span-4 lg:pl-10 xl:pl-[70px]">
+          <Link 
+            to="/" 
+            className="flex items-center gap-4 group"
+            onClick={handleScrollToTop}
+          >
+            <div className="bg-white rounded-lg p-1.5 w-[68px] h-[68px] md:w-[72px] md:h-[72px] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <img 
+                src={seafarerLogoImg} 
+                alt="Mission to Seafarers Logo" 
+                className="max-w-full max-h-full object-contain" 
+              />
+            </div>
+            <div className="flex flex-col justify-center mt-1">
+              <span className="text-[18px] lg:text-[20px] font-bold text-white leading-none tracking-wide whitespace-nowrap">
+                Mission to Seafarers
+              </span>
+              {/* UPDATED: text-[#ee5a32] -> text-coral-light */}
+              <span className="text-[13px] font-bold uppercase tracking-[0.18em] text-coral-light mt-1.5">
+                Halifax
+              </span>
+            </div>
+          </Link>
+          
+          {/* UPDATED: text-[#b6c2d9] -> text-white/70 */}
+          <p className="mt-5 text-[14.5px] leading-[1.6] text-white/70 md:pr-10 xl:pr-22">
             Caring for seafarers visiting the Port of Halifax by providing a welcoming harbour, pastoral care, and practical support.
           </p>
         </div>
 
-        {/* Column 2: Navigation Links (Part 1) */}
-        <div className="flex flex-col gap-3 lg:pl-8">
-          <h4 className="text-white font-black text-[16px] mb-2 tracking-wide uppercase text-sm">Explore</h4>
-          {footerLinks.slice(0, 4).map(link => (
-            <Link 
-              key={link.name} 
-              to={link.path} 
-              onClick={() => window.scrollTo(0,0)}
-              className="text-white/70 hover:text-coral font-medium text-[14.5px] transition-colors w-fit flex items-center gap-2"
-            >
-              {link.name}
-            </Link>
-          ))}
-        </div>
-
-        {/* Column 3: Navigation Links (Part 2) */}
-        <div className="flex flex-col gap-3">
-          <h4 className="text-white font-black text-[16px] mb-2 tracking-wide uppercase text-sm opacity-0 hidden lg:block">&nbsp;</h4>
-          <h4 className="text-white font-black text-[16px] mb-2 tracking-wide uppercase text-sm lg:hidden">More Links</h4>
-          {footerLinks.slice(4).map(link => (
-            <Link 
-              key={link.name} 
-              to={link.path} 
-              onClick={() => window.scrollTo(0,0)}
-              className="text-white/70 hover:text-coral font-medium text-[14.5px] transition-colors w-fit flex items-center gap-2"
-            >
-              {link.name}
-            </Link>
-          ))}
-        </div>
-
-        {/* Column 4: Social Media & Happy At Sea App */}
-        <div>
-          <h4 className="text-white font-black text-[16px] mb-5 tracking-wide uppercase text-sm">Connect With Us</h4>
-          <div className="flex flex-wrap gap-3 mb-6">
-            {socialLinks.map(({ Icon, url, label }, i) => (
-              <a 
-                key={i} 
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-white text-[15px] hover:bg-coral hover:-translate-y-1 transition-all shadow-sm"
-                aria-label={label}
-              >
-                <Icon />
-              </a>
+        {/* Column 2: Explore */}
+        <div className="lg:col-span-3 lg:pl-4">
+          {/* UPDATED: text-[#ee5a32] -> text-coral-light, font-bold -> font-extrabold to match other footer */}
+          <h4 className="text-[14px] font-extrabold uppercase tracking-wider text-coral-light mb-4">
+            Explore
+          </h4>
+          <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5 text-[14.5px]">
+            {footerLinks.map(link => (
+              <li key={link.name}>
+                {/* UPDATED: text-[#b6c2d9] -> text-white/90 | hover:text-white -> hover:text-coral-light */}
+                <Link 
+                  to={link.path} 
+                  className="text-white/90 hover:text-coral-light transition-colors block"
+                  onClick={handleScrollToTop}
+                >
+                  {link.name}
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
+        </div>
 
-          {/* Happy At Sea App */}
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
-            <div className="flex items-center gap-3 mb-3">
-              <img src={happyAtSeaLogo} alt="Happy at Sea App" className="h-10 w-10 object-contain" />
-              <div>
-                <h5 className="text-white font-extrabold text-[13px]">Happy at Sea App</h5>
-                <p className="text-white/70 text-[11px]">24/7 chaplain chat service</p>
-              </div>
-            </div>
-            <div className="flex flex-col gap-2">
-              <a 
-                href="https://apps.apple.com/us/app/happy-at-sea/id6447320913" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="transition-transform hover:scale-105"
-              >
-                <img src={appStoreBtn} alt="Download on the App Store" className="h-9 w-auto object-contain" />
-              </a>
-              <a 
-                href="https://play.google.com/store/apps/details?id=org.missiontoseafarers.app&hl=en_IN" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="transition-transform hover:scale-105"
-              >
-                <img src={googlePlayBtn} alt="Get it on Google Play" className="h-9 w-auto object-contain" />
-              </a>
-            </div>
+        {/* Column 3: Connect With Us */}
+        <div className="lg:col-span-2">
+          {/* UPDATED: text-[#ee5a32] -> text-coral-light */}
+          <h4 className="text-[14px] font-extrabold uppercase tracking-wider text-coral-light mb-4">
+            Connect With Us
+          </h4>
+          <ul className="space-y-2.5 text-[14.5px]">
+            {socialLinks.map(({ Icon, url, label }, i) => (
+              <li key={i} className="flex items-center gap-3">
+                {/* UPDATED: text-[#ee5a32] -> text-coral-light */}
+                <Icon className="text-[16px] shrink-0 text-coral-light mt-0.5" />
+                {/* UPDATED: hover:text-white -> hover:text-coral-light */}
+                <a 
+                  href={url} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-white/90 hover:text-coral-light transition-colors leading-tight"
+                >
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Column 4: Happy at Sea App */}
+        <div className="lg:col-span-3">
+          {/* UPDATED: text-[#ee5a32] -> text-coral-light */}
+          <h4 className="text-[14px] font-extrabold uppercase tracking-wider text-coral-light mb-4">
+            Happy at Sea App
+          </h4>
+          <div className="flex items-center gap-3 mb-4">
+            <img 
+              src={happyAtSeaLogo} 
+              alt="Happy at Sea App" 
+              className="h-6 w-6 shrink-0 object-contain" 
+            />
+            {/* UPDATED: text-[#b6c2d9] -> text-white/70 */}
+            <p className="text-[14.5px] text-white/70 leading-tight">
+              24/7 chaplain chat service
+            </p>
+          </div>
+          
+          <div className="flex flex-col gap-3">
+            <a 
+              href="https://apps.apple.com/us/app/happy-at-sea/id6447320913" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="transition-transform hover:scale-105 inline-block w-max"
+            >
+              <img src={appStoreBtn} alt="Download on the App Store" className="h-[36px] w-auto object-contain" />
+            </a>
+            <a 
+              href="https://play.google.com/store/apps/details?id=org.missiontoseafarers.app&hl=en_IN" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="transition-transform hover:scale-105 inline-block w-max"
+            >
+              <img src={googlePlayBtn} alt="Get it on Google Play" className="h-[36px] w-auto object-contain" />
+            </a>
           </div>
         </div>
 
       </div>
 
-      {/* Copyright Bar */}
-      <div className="max-w-[1200px] mx-auto px-7 py-6 text-center lg:flex lg:justify-between lg:items-center">
-        <p className="text-white/40 text-[13px] font-medium">
-          &copy; {new Date().getFullYear()} Mission to Seafarers  Canada. All rights reserved.
-        </p>
-        <p className="text-white/30 text-[12px] mt-2 lg:mt-0">
-          Designed with purpose for the seafarers of Halifax.
-        </p>
+      {/* Bottom Copyright Bar */}
+      <div className="border-t border-white/10">
+        {/* UPDATED: text-[#b6c2d9] -> text-white/60 to match previous footer styling */}
+        <div className="max-w-[1480px] mx-auto px-4 md:px-8 py-5 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/60">
+          <p className="text-center md:text-left lg:pl-10 xl:pl-[70px]">
+            &copy; {new Date().getFullYear()} Mission to Seafarers Canada. All rights reserved.
+          </p>
+          <p className="text-center md:text-right md:pr-4">
+            Designed with purpose for the seafarers of Halifax.
+          </p>
+        </div>
       </div>
     </footer>
   );
