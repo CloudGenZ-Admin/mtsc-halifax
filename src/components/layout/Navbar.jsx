@@ -420,7 +420,7 @@ const SiteHeader = () => {
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-md shadow-soft" : "bg-white/80 backdrop-blur"
         }`}
     >
-      <div className="w-full max-w-[1600px] mx-auto px-4 md:px-6 lg:px-8 flex h-20 items-center justify-between md:h-24 lg:h-28 gap-4">
+      <div className="w-full max-w-[1600px] mx-auto px-2 md:px-3 lg:px-4 flex h-20 items-center justify-between md:h-24 lg:h-28 gap-4">
 
         {/* Logo - Ensures text doesn't wrap using whitespace-nowrap */}
         <Link to="/" className="flex items-center gap-2 lg:gap-3 group shrink-0">
