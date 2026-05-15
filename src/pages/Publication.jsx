@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
@@ -49,6 +49,13 @@ import faSummer2025 from '../assets/pdf/FlyingAngel/MtS-Summer-2025-Newsletter_D
 
 export default function Publication() {
   const location = useLocation();
+  
+  // States for toggling archives
+  const [showArchivesHalifax, setShowArchivesHalifax] = useState(false);
+  const [showArchivesHappiness, setShowArchivesHappiness] = useState(false);
+  const [showArchivesFoghorn, setShowArchivesFoghorn] = useState(false);
+  const [showArchivesEsg, setShowArchivesEsg] = useState(false);
+  const [showArchivesSafety, setShowArchivesSafety] = useState(false);
 
   useEffect(() => {
     if (location.hash) {
@@ -63,7 +70,7 @@ export default function Publication() {
     }
   }, [location]);
 
-  // Mapped to actual imported PDF files for Halifax Newsletters
+  // 1. Halifax Newsletters Data
   const halifaxNewslettersData = [
     { title: "Fall 2025", href: faFall2025 },
     { title: "Summer 2025", href: faSummer2025 },
@@ -73,7 +80,6 @@ export default function Publication() {
     { title: "Spring 2024", href: faSpring2024 },
     { title: "Fall 2023", href: faFall2023 },
     { title: "Summer 2023", href: faSummer2023 },
-    // { title: "Spring 2023", href: null }, // Retained for visual list accuracy 
     { title: "Fall 2022", href: faFall2022 },
     { title: "Summer 2022", href: faSummer2022 },
     { title: "Spring 2022", href: faSpring2022 },
@@ -82,8 +88,10 @@ export default function Publication() {
     { title: "Summer 2021", href: faSummer2021 },
     { title: "Spring 2021", href: faSpring2021 }
   ];
+  const currentHalifax = halifaxNewslettersData.filter(item => item.title.includes('2026'));
+  const archiveHalifax = halifaxNewslettersData.filter(item => !item.title.includes('2026'));
 
-  // Mapped to actual imported PDF files
+  // 2. Happiness Reports Data
   const happinessReportsData = [
     { title: "Quarter 3 2025 Report", href: shiQ3_2025 },
     { title: "Quarter 2 2025 Report", href: shiQ2_2025 },
@@ -93,12 +101,31 @@ export default function Publication() {
     { title: "Quarter 2 2024 Report", href: shiQ2_2024 },
     { title: "Quarter 1 2024 Report", href: shiQ1_2024 }
   ];
+  const currentHappiness = happinessReportsData.filter(item => item.title.includes('2026'));
+  const archiveHappiness = happinessReportsData.filter(item => !item.title.includes('2026'));
 
-  // Mapped to actual imported PDF files
+  // 3. Foghorn Reports Data
   const foghornReportsData = [
     { title: "July 2025", href: foghornJuly2025 },
     { title: "February 2025", href: foghornFeb2025 }
   ];
+  const currentFoghorn = foghornReportsData.filter(item => item.title.includes('2026'));
+  const archiveFoghorn = foghornReportsData.filter(item => !item.title.includes('2026'));
+
+  // 4. ESG Strategy Data
+  const esgStrategyData = [
+    { title: "MtS ESG Strategy 2023", href: esgStrategy }
+  ];
+  const currentEsg = esgStrategyData.filter(item => item.title.includes('2026'));
+  const archiveEsg = esgStrategyData.filter(item => !item.title.includes('2026'));
+
+  // 5. Marine Safety Data
+  const marineSafetyData = [
+    { title: "Port of Halifax Marine Safety Handbook, May 2025", href: marineSafetyHandbook }
+  ];
+  const currentSafety = marineSafetyData.filter(item => item.title.includes('2026'));
+  const archiveSafety = marineSafetyData.filter(item => !item.title.includes('2026'));
+
 
   // Updated PdfCard to accept 'href'
   const PdfCard = ({ title, href }) => (
@@ -122,7 +149,6 @@ export default function Publication() {
       <main className="flex-grow">
         {/* HERO SECTION */}
         <section className="relative pt-24 pb-32 overflow-hidden bg-neutral-900">
-          {/* Background Image & Neutral Black Overlay (No Blue) */}
           <div 
             className="absolute inset-0 z-0 bg-cover bg-center"
             style={{ backgroundImage: `url(${publicaBg})` }}
@@ -147,13 +173,32 @@ export default function Publication() {
                 <h2 className="text-[32px] font-black text-[#112A46] mb-2">
                   Mission to Seafarers Halifax Flying Angel Newsletters
                 </h2>
-
               </div>
+              
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {halifaxNewslettersData.map((newsletter, index) => (
+                {currentHalifax.map((newsletter, index) => (
                   <PdfCard key={index} title={newsletter.title} href={newsletter.href} />
                 ))}
               </div>
+
+              <div className="mt-10 flex justify-center">
+                <button
+                  onClick={() => setShowArchivesHalifax(!showArchivesHalifax)}
+                  className="flex items-center justify-center gap-2 bg-white text-[#112A46] border border-[#112A46]/20 px-8 py-3 rounded-xl font-bold hover:border-[#112A46] hover:bg-[#F8FBFD] transition-colors shadow-sm cursor-pointer"
+                >
+                  <FaBookOpen /> {showArchivesHalifax ? "Hide Archives" : "Halifax Newsletter Archives"}
+                </button>
+              </div>
+
+              {showArchivesHalifax && (
+                <div className="mt-8 pt-8 border-t border-[#112A46]/10">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                    {archiveHalifax.map((newsletter, index) => (
+                      <PdfCard key={index} title={newsletter.title} href={newsletter.href} />
+                    ))}
+                  </div>
+                </div>
+              )}
             </Reveal>
           </div>
         </section>
@@ -177,7 +222,7 @@ export default function Publication() {
                   href="https://www.missiontoseafarers.org/the-sea"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-[#E05A2B] text-white px-8 py-4 rounded-xl font-bold hover:bg-[#112A46] transition-colors shadow-md"
+                  className="flex items-center justify-center gap-2 bg-[#E05A2B] text-white px-8 py-4 rounded-xl font-bold hover:bg-[#112A46] transition-colors shadow-md cursor-pointer"
                 >
                   <FaEnvelopeOpenText /> Sign Up
                 </a>
@@ -185,7 +230,7 @@ export default function Publication() {
                   href="https://www.missiontoseafarers.org/the-sea-archive"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-white text-[#112A46] border border-[#112A46]/20 px-8 py-4 rounded-xl font-bold hover:border-[#112A46] transition-colors"
+                  className="flex items-center justify-center gap-2 bg-white text-[#112A46] border border-[#112A46]/20 px-8 py-4 rounded-xl font-bold hover:border-[#112A46] transition-colors cursor-pointer"
                 >
                   <FaBookOpen /> Archive Copies
                 </a>
@@ -196,7 +241,6 @@ export default function Publication() {
 
         {/* 3. FAN */}
         <section id="fan" className="py-20 bg-gradient-to-br from-[#112A46] via-[#1a3a5f] to-[#2D5A7B] scroll-mt-[90px] relative overflow-hidden">
-          {/* Decorative wave pattern */}
           <svg className="absolute bottom-0 left-0 w-full h-32 opacity-10" viewBox="0 0 1440 320" preserveAspectRatio="none">
             <path fill="#E05A2B" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L0,320Z"></path>
           </svg>
@@ -216,7 +260,7 @@ export default function Publication() {
                 href="https://www.missiontoseafarers.org/fan"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-white text-[#112A46] px-8 py-4 rounded-xl font-black text-[15px] hover:bg-[#E05A2B] hover:text-white transition-all shadow-lg"
+                className="inline-flex items-center gap-2 bg-white text-[#112A46] px-8 py-4 rounded-xl font-black text-[15px] hover:bg-[#E05A2B] hover:text-white transition-all shadow-lg cursor-pointer"
               >
                 Sign Up Here <FaExternalLinkAlt />
               </a>
@@ -240,7 +284,7 @@ export default function Publication() {
                 href={mtsHalifaxStats}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-[#E05A2B] font-bold text-[16px] hover:text-[#112A46] transition-colors group"
+                className="inline-flex items-center gap-2 text-[#E05A2B] font-bold text-[16px] hover:text-[#112A46] transition-colors group cursor-pointer"
               >
                 <FaChartBar className="text-xl" /> See the latest statistics here. <FaExternalLinkAlt className="group-hover:translate-x-1 transition-transform text-sm" />
               </a>
@@ -256,14 +300,32 @@ export default function Publication() {
                 <h2 className="text-[32px] font-black text-[#112A46] mb-2 flex items-center gap-3">
                   Seafarers Happiness Index <FaSmile className="text-[#E05A2B]" />
                 </h2>
-
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
-                {happinessReportsData.map((report, index) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {currentHappiness.map((report, index) => (
                   <PdfCard key={index} title={report.title} href={report.href} />
                 ))}
               </div>
+
+              <div className="mt-8 mb-8 flex justify-center">
+                <button
+                  onClick={() => setShowArchivesHappiness(!showArchivesHappiness)}
+                  className="flex items-center justify-center gap-2 bg-white text-[#112A46] border border-[#112A46]/20 px-8 py-3 rounded-xl font-bold hover:border-[#112A46] hover:bg-[#FDF0EC] transition-colors shadow-sm cursor-pointer"
+                >
+                  <FaBookOpen /> {showArchivesHappiness ? "Hide Archives" : "Happiness Index Archives"}
+                </button>
+              </div>
+
+              {showArchivesHappiness && (
+                <div className="mb-8 pt-8 border-t border-[#112A46]/10">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {archiveHappiness.map((report, index) => (
+                      <PdfCard key={index} title={report.title} href={report.href} />
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <div className="bg-[#112A46] text-white p-6 rounded-xl flex items-center gap-4 hover:shadow-lg transition-shadow">
                 <div className="bg-[#E05A2B] p-3 rounded-lg"><FaExternalLinkAlt /></div>
@@ -271,7 +333,7 @@ export default function Publication() {
                   href="https://www.seafarershappinessindex.org/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-bold text-[15px] hover:text-[#E05A2B] transition-colors"
+                  className="font-bold text-[15px] hover:text-[#E05A2B] transition-colors cursor-pointer"
                 >
                   Read link to the survey and archive of Reports here
                 </a>
@@ -288,7 +350,31 @@ export default function Publication() {
               <h2 className="text-[32px] font-black text-[#112A46] mb-8">
                 Mission to Seafarers ESG Strategy
               </h2>
-              <PdfCard title="MtS ESG Strategy 2023" href={esgStrategy} />
+              
+              <div className="flex flex-col gap-4">
+                {currentEsg.map((item, idx) => (
+                  <PdfCard key={idx} title={item.title} href={item.href} />
+                ))}
+              </div>
+
+              <div className="mt-8 flex justify-center">
+                <button
+                  onClick={() => setShowArchivesEsg(!showArchivesEsg)}
+                  className="flex items-center justify-center gap-2 bg-white text-[#112A46] border border-[#112A46]/20 px-8 py-3 rounded-xl font-bold hover:border-[#112A46] hover:bg-[#F0F9F4] transition-colors shadow-sm cursor-pointer"
+                >
+                  <FaBookOpen /> {showArchivesEsg ? "Hide Archives" : "ESG Strategy Archives"}
+                </button>
+              </div>
+
+              {showArchivesEsg && (
+                <div className="mt-6 pt-6 border-t border-gray-200/50">
+                  <div className="flex flex-col gap-4">
+                    {archiveEsg.map((item, idx) => (
+                      <PdfCard key={idx} title={item.title} href={item.href} />
+                    ))}
+                  </div>
+                </div>
+              )}
             </Reveal>
           </div>
         </section>
@@ -301,13 +387,32 @@ export default function Publication() {
                 <h2 className="text-[32px] font-black text-[#112A46] mb-2">
                   The Foghorn – Master Mariners of Canada, Maritimes Division
                 </h2>
-
               </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {foghornReportsData.map((report, idx) => (
+                {currentFoghorn.map((report, idx) => (
                   <PdfCard key={idx} title={`The Foghorn – ${report.title}`} href={report.href} />
                 ))}
               </div>
+
+              <div className="mt-10 flex justify-center">
+                <button
+                  onClick={() => setShowArchivesFoghorn(!showArchivesFoghorn)}
+                  className="flex items-center justify-center gap-2 bg-white text-[#112A46] border border-[#112A46]/20 px-8 py-3 rounded-xl font-bold hover:border-[#112A46] hover:bg-white transition-colors shadow-sm cursor-pointer"
+                >
+                  <FaBookOpen /> {showArchivesFoghorn ? "Hide Archives" : "Foghorn Archives"}
+                </button>
+              </div>
+
+              {showArchivesFoghorn && (
+                <div className="mt-8 pt-8 border-t border-[#112A46]/10">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {archiveFoghorn.map((report, idx) => (
+                      <PdfCard key={idx} title={`The Foghorn – ${report.title}`} href={report.href} />
+                    ))}
+                  </div>
+                </div>
+              )}
             </Reveal>
           </div>
         </section>
@@ -320,14 +425,37 @@ export default function Publication() {
               <h2 className="text-[32px] font-black text-[#112A46] mb-8">
                 Marine Safety Handbook
               </h2>
-              <PdfCard title="Port of Halifax Marine Safety Handbook, May 2025" href={marineSafetyHandbook} />
+              
+              <div className="flex flex-col gap-4">
+                {currentSafety.map((item, idx) => (
+                  <PdfCard key={idx} title={item.title} href={item.href} />
+                ))}
+              </div>
+
+              <div className="mt-8 flex justify-center">
+                <button
+                  onClick={() => setShowArchivesSafety(!showArchivesSafety)}
+                  className="flex items-center justify-center gap-2 bg-white text-[#112A46] border border-[#112A46]/20 px-8 py-3 rounded-xl font-bold hover:border-[#112A46] hover:bg-[#E3F2FD] transition-colors shadow-sm cursor-pointer"
+                >
+                  <FaBookOpen /> {showArchivesSafety ? "Hide Archives" : "Marine Safety Archives"}
+                </button>
+              </div>
+
+              {showArchivesSafety && (
+                <div className="mt-6 pt-6 border-t border-gray-200/50">
+                  <div className="flex flex-col gap-4">
+                    {archiveSafety.map((item, idx) => (
+                      <PdfCard key={idx} title={item.title} href={item.href} />
+                    ))}
+                  </div>
+                </div>
+              )}
             </Reveal>
           </div>
         </section>
 
         {/* MARITIME STORYTELLING SECTION */}
         <section className="relative py-24 overflow-hidden">
-          {/* Background with Port Halifax Image */}
           <div className="absolute inset-0 z-0">
             <img
               src={portHalifaxImg}
@@ -337,14 +465,12 @@ export default function Publication() {
             <div className="absolute inset-0 bg-gradient-to-br from-[#112A46]/95 via-[#2D5A7B]/90 to-[#E05A2B]/85"></div>
           </div>
 
-          {/* Decorative wave pattern */}
           <svg className="absolute top-0 left-0 w-full h-32 opacity-10 transform rotate-180" viewBox="0 0 1440 320" preserveAspectRatio="none">
             <path fill="#E05A2B" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L0,320Z"></path>
           </svg>
 
           <div className="max-w-[1200px] mx-auto px-7 relative z-10">
             
-            {/* Section Header */}
             <Reveal className="text-center mb-16">
               <div className="w-16 h-16 bg-[#E05A2B] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
                 <FaShip className="text-white text-3xl" />
@@ -357,10 +483,8 @@ export default function Publication() {
               </p>
             </Reveal>
 
-            {/* Image Grid with Stories */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
               
-              {/* Story Card 1 */}
               <Reveal>
                 <div className="bg-white/10 backdrop-blur-md rounded-3xl overflow-hidden border border-white/20 shadow-2xl hover:shadow-3xl transition-all group">
                   <div className="aspect-[4/3] overflow-hidden">
@@ -384,7 +508,6 @@ export default function Publication() {
                 </div>
               </Reveal>
 
-              {/* Story Card 2 */}
               <Reveal delay={100}>
                 <div className="bg-white/10 backdrop-blur-md rounded-3xl overflow-hidden border border-white/20 shadow-2xl hover:shadow-3xl transition-all group">
                   <div className="aspect-[4/3] overflow-hidden">
@@ -410,7 +533,6 @@ export default function Publication() {
 
             </div>
 
-            {/* Bottom CTA */}
             <Reveal delay={200} className="text-center">
               <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-3xl mx-auto">
                 <FaBrain className="text-[#E05A2B] text-4xl mx-auto mb-4" />
@@ -423,7 +545,7 @@ export default function Publication() {
                 <div className="flex flex-wrap justify-center gap-4">
                   <a
                     href="#halifax-newsletters"
-                    className="inline-flex items-center gap-2 bg-[#E05A2B] text-white px-6 py-3 rounded-full font-bold text-[14px] hover:bg-white hover:text-[#112A46] transition-all shadow-lg"
+                    className="inline-flex items-center gap-2 bg-[#E05A2B] text-white px-6 py-3 rounded-full font-bold text-[14px] hover:bg-white hover:text-[#112A46] transition-all shadow-lg cursor-pointer"
                   >
                     <FaBookOpen /> Read Our Newsletters
                   </a>
@@ -431,7 +553,7 @@ export default function Publication() {
                     href="https://www.missiontoseafarers.org/the-sea"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white border-2 border-white/40 px-6 py-3 rounded-full font-bold text-[14px] hover:bg-white hover:text-[#112A46] transition-all"
+                    className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white border-2 border-white/40 px-6 py-3 rounded-full font-bold text-[14px] hover:bg-white hover:text-[#112A46] transition-all cursor-pointer"
                   >
                     <FaExternalLinkAlt /> Subscribe to The Sea
                   </a>

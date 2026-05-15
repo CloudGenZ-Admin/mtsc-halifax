@@ -31,7 +31,7 @@
 //   const [scrolled, setScrolled] = useState(false);
 //   const [mobileExpanded, setMobileExpanded] = useState(null);
 //   const [donateDialogOpen, setDonateDialogOpen] = useState(false);
-  
+
 //   const location = useLocation();
 //   const navigate = useNavigate();
 //   const headerRef = useRef(null);
@@ -84,7 +84,7 @@
 
 //   const handleNavClick = (e, fullPath) => {
 //     const [path, hash] = fullPath.split('#');
-    
+
 //     if (location.pathname === path && hash) {
 //       setTimeout(() => {
 //         const element = document.getElementById(hash);
@@ -103,7 +103,7 @@
 
 //   return (
 //     <>
-      
+
 //       <header
 //         ref={headerRef}
 //         className={`sticky top-0 z-40 w-full transition-all duration-300 ${
@@ -352,9 +352,9 @@ import logo from "@/assets/logo.jpeg";
 const nav = [
   { to: "/", label: "Home" },
   { to: "/whoweare", label: "Who We Are" },
-   { to: "/support", label: "Seafarer Support" },
+  { to: "/support", label: "Seafarer Support" },
   { to: "/WaystoGive", label: "Get Involved" },
- 
+
   {
     to: "/publication",
     label: "Publications",
@@ -370,6 +370,7 @@ const nav = [
       { to: "/publication#mental-health", label: "The Mental Health of Seafarers in Canada During Covid 19 Pandemic" }
     ]
   },
+  { to: "/events", label: "Events" },
   { to: "/contact", label: "Contact" },
 ];
 
@@ -419,18 +420,18 @@ const SiteHeader = () => {
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-md shadow-soft" : "bg-white/80 backdrop-blur"
         }`}
     >
-      <div className="w-full max-w-[1400px] mx-auto px-4 md:px-5 lg:px-6 flex h-16 md:h-20 lg:h-22 items-center justify-between gap-2 xl:gap-4">
+      <div className="w-full max-w-[1600px] mx-auto px-4 md:px-6 lg:px-8 flex h-20 items-center justify-between md:h-24 lg:h-28 gap-4">
 
         {/* Logo - Ensures text doesn't wrap using whitespace-nowrap */}
         <Link to="/" className="flex items-center gap-2 lg:gap-3 group shrink-0">
           <img
             src={logo}
             alt="Mission to Seafarers Logo"
-            className="h-12 md:h-14 lg:h-16 w-auto shrink-0 object-contain rounded-md group-hover:scale-105 transition-transform"
+            className="h-20 md:h-20 lg:h-24 w-auto shrink-0 object-contain rounded-md group-hover:scale-105 transition-transform"
           />
           <span className="flex flex-col leading-none justify-center">
-            <span className="text-[13px] lg:text-[14px] xl:text-[16px] font-extrabold text-navy whitespace-nowrap">Mission to Seafarers</span>
-            <span className="text-[10px] lg:text-[11px] xl:text-[12px] font-bold uppercase tracking-[0.15em] text-coral mt-0.5 whitespace-nowrap">Halifax</span>
+            <span className="text-[16px] lg:text-[15px] xl:text-[18px] font-extrabold text-navy whitespace-nowrap">Mission to Seafarers</span>
+            <span className="text-[12px] lg:text-[11px] xl:text-[13px] font-bold uppercase tracking-[0.18em] text-coral mt-0.5 whitespace-nowrap">Halifax</span>
           </span>
         </Link>
 
@@ -442,7 +443,7 @@ const SiteHeader = () => {
                 <NavLink
                   to={n.to}
                   className={({ isActive }) =>
-                    `flex items-center gap-0.5 px-1.5 xl:px-3 py-2 text-[12px] xl:text-[14px] 2xl:text-[15px] font-semibold whitespace-nowrap rounded-md transition-colors ${isActive || location.pathname.includes(n.to) ? "text-coral" : "text-navy hover:text-coral"
+                    `flex items-center gap-1 px-1.5 xl:px-2 py-2 text-[11px] xl:text-[13px] 2xl:text-[14px] font-semibold whitespace-nowrap rounded-md transition-colors ${isActive || location.pathname.includes(n.to) ? "text-coral" : "text-navy hover:text-coral"
                     }`
                   }
                 >
@@ -474,7 +475,7 @@ const SiteHeader = () => {
                 to={n.to}
                 end={n.to === "/"}
                 className={({ isActive }) =>
-                  `px-1.5 xl:px-3 py-2 text-[12px] xl:text-[14px] 2xl:text-[15px] font-semibold whitespace-nowrap rounded-md transition-colors ${isActive ? "text-coral" : "text-navy hover:text-coral"
+                  `px-1.5 xl:px-2 py-2 text-[11px] xl:text-[13px] 2xl:text-[14px] font-semibold whitespace-nowrap rounded-md transition-colors ${isActive ? "text-coral" : "text-navy hover:text-coral"
                   }`
                 }
               >
@@ -487,7 +488,7 @@ const SiteHeader = () => {
         {/* Desktop CTA Buttons */}
         <div className="hidden lg:flex items-center gap-1.5 xl:gap-3 shrink-0">
           <Button asChild variant="outline" size="sm" className="border-border bg-warm-gray text-navy hover:bg-navy hover:text-white font-bold whitespace-nowrap text-xs xl:text-sm px-3 xl:px-4">
-            <a href="https://parcel.mtsc.ca/" target="_blank" rel="noopener noreferrer" className="flex items-center">
+            <a href="https://parcelservice.mtsc.ca/" target="_blank" rel="noopener noreferrer" className="flex items-center">
               <Package className="w-4 h-4 mr-1.5 hidden 2xl:block" />
               <span className="hidden 2xl:inline">Seafarer Parcel Pickup Service</span>
               <span className="2xl:hidden">Parcel Pickup</span>
@@ -495,15 +496,15 @@ const SiteHeader = () => {
           </Button>
 
           <Button asChild variant="outline" size="sm" className="border-navy text-navy hover:bg-navy hover:text-white font-bold whitespace-nowrap text-xs xl:text-sm px-3 xl:px-4">
-            <a href="https://mtsc.ca/for-seafarers/prayer-wall/" target="_blank" rel="noopener noreferrer">
+            <Link to="/prayer">
               Send a Prayer
-            </a>
+            </Link>
           </Button>
 
           <Button
             onClick={() => setDonateDialogOpen(true)}
             size="lg"
-            className="bg-coral hover:bg-coral-light text-white font-bold shadow-warm hover:shadow-warm-hover px-3 xl:px-5 text-[12px] xl:text-[14px] whitespace-nowrap cursor-pointer h-9 xl:h-11"
+            className="bg-coral hover:bg-coral-light text-white font-bold shadow-warm hover:shadow-warm-hover px-5 xl:px-6 text-sm xl:text-base whitespace-nowrap cursor-pointer"
           >
             Donate
           </Button>
@@ -578,15 +579,15 @@ const SiteHeader = () => {
             {/* Mobile CTAs - Inme ab proper gap aayega screen ke edges se */}
             <div className="flex flex-col gap-3 pt-6 border-t border-gray-100 mt-2">
               <Button asChild variant="outline" className="border-2 border-border bg-warm-gray text-navy font-bold w-full justify-center h-12 rounded-xl">
-                <a href="https://parcel.mtsc.ca/" target="_blank" rel="noopener noreferrer">
+                <a href="https://parcelservice.mtsc.ca/" target="_blank" rel="noopener noreferrer">
                   <Package className="w-5 h-5 mr-2" />
                   Seafarer Parcel Pickup Service
                 </a>
               </Button>
               <Button asChild variant="outline" className="border-2 border-navy text-navy font-bold w-full justify-center h-12 rounded-xl">
-                <a href="https://mtsc.ca/for-seafarers/prayer-wall/" target="_blank" rel="noopener noreferrer">
+                <Link to="/prayer">
                   Send a Prayer
-                </a>
+                </Link>
               </Button>
               <Button
                 onClick={() => {
@@ -605,7 +606,7 @@ const SiteHeader = () => {
       {/* FULLY RESPONSIVE DONATE DIALOG POPUP */}
       <Dialog open={donateDialogOpen} onOpenChange={setDonateDialogOpen}>
         {/* showCloseButton={false} use kiya hai taaki default cross button conflict na kare */}
-        <DialogContent 
+        <DialogContent
           showCloseButton={false}
           className="max-w-[95vw] lg:max-w-[1200px] w-full h-[95vh] md:h-[90vh] p-0 overflow-hidden flex flex-col rounded-2xl"
         >
@@ -615,9 +616,9 @@ const SiteHeader = () => {
               <Gift className="h-5 w-5 text-coral" />
               Secure Donation Form
             </DialogTitle>
-            
+
             {/* CROSS (X) BUTTON - Yeh har device par clearly dikhega */}
-            <button 
+            <button
               onClick={() => setDonateDialogOpen(false)}
               className="p-2 -mr-2 text-gray-500 hover:text-navy hover:bg-gray-100 rounded-full transition-colors focus:outline-none"
               aria-label="Close dialog"
@@ -625,7 +626,7 @@ const SiteHeader = () => {
               <X className="h-6 w-6 md:h-7 md:w-7" />
             </button>
           </DialogHeader>
-          
+
           {/* Responsive Padding inside Dialog */}
           <div className="flex-1 overflow-hidden p-2 sm:p-4 md:p-6 lg:p-8 bg-gray-50/80 flex flex-col">
             <div className="w-full flex-1 bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm relative">
