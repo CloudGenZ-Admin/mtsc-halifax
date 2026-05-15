@@ -155,7 +155,7 @@ export default function SeafarerSupport() {
                 <button onClick={scrollToDashboard} className="w-full sm:w-auto px-8 py-4 bg-white text-[#112A46] hover:bg-gray-100 font-extrabold rounded-xl shadow-lg transition-transform hover:-translate-y-1 cursor-pointer">
                   Explore Services
                 </button>
-                <a href="https://wa.me/19024561658" target="_blank" rel="noreferrer" className="w-full sm:w-auto px-8 py-4 bg-[#25D366] hover:bg-[#1ebd57] text-white font-extrabold rounded-xl shadow-lg flex items-center justify-center gap-2 transition-transform hover:-translate-y-1 cursor-pointer">
+                <a href="https://wa.me/+19029893388" target="_blank" rel="noreferrer" className="w-full sm:w-auto px-8 py-4 bg-[#25D366] hover:bg-[#1ebd57] text-white font-extrabold rounded-xl shadow-lg flex items-center justify-center gap-2 transition-transform hover:-translate-y-1 cursor-pointer">
                   <FaWhatsapp className="text-xl" /> Message on WhatsApp
                 </a>
               </div>
@@ -199,7 +199,7 @@ export default function SeafarerSupport() {
 
               {/* Card 3 (WhatsApp Direct) */}
               <Reveal delay={200}>
-                <a href="https://wa.me/19024561658" target="_blank" rel="noreferrer" className="bg-[#112A46] rounded-3xl p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group h-full flex flex-col block">
+                <a href="https://wa.me/19029893388" target="_blank" rel="noreferrer" className="bg-[#112A46] rounded-3xl p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group h-full flex flex-col block">
                   <div className="w-16 h-16 bg-[#25D366]/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                     <FaUserTie className="text-3xl text-[#25D366]" />
                   </div>
