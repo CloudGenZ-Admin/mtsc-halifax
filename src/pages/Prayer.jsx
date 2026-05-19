@@ -34,7 +34,7 @@ export default function Prayer() {
   const fetchPrayers = async () => {
     try {
       // Apne backend URL ke hisaab se adjust karein (vite env variables use hote hain mostly)
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const API_URL = import.meta.env.VITE_API_URL || 'https://mediumpurple-giraffe-353804.hostingersite.com/api';
       const response = await fetch(`${API_URL}/prayers/public`);
       if (response.ok) {
         const data = await response.json();
@@ -65,7 +65,7 @@ export default function Prayer() {
     setIsSubmitting(true);
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const API_URL = import.meta.env.VITE_API_URL || 'https://mediumpurple-giraffe-353804.hostingersite.com/api';
       
       const response = await fetch(`${API_URL}/prayers`, {
         method: 'POST',
