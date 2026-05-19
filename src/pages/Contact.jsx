@@ -83,7 +83,7 @@ const Contact = () => {
             <div className="lg:col-span-5 space-y-5">
 
               {/* Blue Gradient Box */}
-              <div className="rounded-2xl bg-gradient-to-br from-[#233373] to-[#1a3a5f] text-white p-7 md:p-8 shadow-xl">
+              <div className="rounded-2xl bg-gradient-to-br from-[#2A367C] to-[#2A367C] text-white p-7 md:p-8 shadow-xl">
                 <h2 className="text-2xl font-extrabold text-white">Halifax Station</h2>
                 <p className="mt-2 text-white/85 text-sm">Location: 844 Marginal Road, Halifax, Nova Scotia ,</p>
 
