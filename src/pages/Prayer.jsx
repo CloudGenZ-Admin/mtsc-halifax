@@ -65,7 +65,7 @@ export default function Prayer() {
     setIsSubmitting(true);
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const API_URL = import.meta.env.VITE_API_URL || 'https://mediumpurple-giraffe-353804.hostingersite.com/api';
       
       const response = await fetch(`${API_URL}/prayers`, {
         method: 'POST',
