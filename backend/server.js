@@ -7,6 +7,7 @@ import sequelize from './config/database.js';
 import authRoutes from './routes/auth.js';
 import eventRoutes from './routes/events.js';
 import uploadRoutes from './routes/upload.js';
+import prayerRoutes from './routes/prayers.js'; 
 import { errorHandler } from './middleware/errorHandler.js';
 
 dotenv.config();
@@ -49,7 +50,7 @@ app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/upload', uploadRoutes);
-
+app.use('/api/prayers', prayerRoutes); 
 // Error handling middleware
 app.use(errorHandler);
 

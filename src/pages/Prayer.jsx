@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/common/Reveal';
 import { 
-  FaPrayingHands, FaWater, FaCompass, FaGlobe, FaPaperPlane, FaCheckCircle 
+  FaPrayingHands, FaWater, FaCompass, FaGlobe, FaPaperPlane, FaCheckCircle, FaQuoteLeft 
 } from 'react-icons/fa';
 
-// Import the local image provided (matching your exact spelling)
+// Import the local image provided
 import prayerImg from '../assets/paryer.jpg';
 
 export default function Prayer() {
@@ -22,6 +22,28 @@ export default function Prayer() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  
+  // Naya State: Submitted Prayers List ke liye
+  const [prayersList, setPrayersList] = useState([]);
+
+  // Fetch Prayers on Component Mount
+  useEffect(() => {
+    fetchPrayers();
+  }, []);
+
+  const fetchPrayers = async () => {
+    try {
+      // Apne backend URL ke hisaab se adjust karein (vite env variables use hote hain mostly)
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const response = await fetch(`${API_URL}/prayers/public`);
+      if (response.ok) {
+        const data = await response.json();
+        setPrayersList(data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch prayers:", error);
+    }
+  };
 
   // Handle Input Changes
   const handleChange = (e) => {
@@ -29,8 +51,7 @@ export default function Prayer() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // 2. Form Submit Handler (GOOGLE FORM INTEGRATION)
-  // 2. Form Submit Handler (GOOGLE FORM INTEGRATION)
+  // 2. Form Submit Handler (OWN BACKEND INTEGRATION)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
@@ -43,32 +64,39 @@ export default function Prayer() {
 
     setIsSubmitting(true);
 
-    const FORM_ACTION_URL = "https://docs.google.com/forms/d/e/1FAIpQLSct44_ZBScaEOzu0v2PAhR3ics7jMPa0dlFfO_4NtarcNZoSA/formResponse";
-    
-    // ⚠️ CHANGE: Used URLSearchParams instead of FormData
-    const data = new URLSearchParams();
-    data.append('entry.933573082', formData.firstName);      // First Name
-    data.append('entry.851808031', formData.lastName);       // Last Name
-    data.append('entry.1643267528', formData.email);         // Email
-    data.append('entry.1542329303', formData.prayerRequest); // Prayer Request
-
     try {
-      await fetch(FORM_ACTION_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          // ⚠️ CHANGE: Added Header for URLSearchParams
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: data.toString() // ⚠️ CHANGE: Convert to string
-      });
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
       
-      // Success (Note: mode 'no-cors' doesn't return a readable response, 
-      // so if fetch doesn't throw a network error, we assume it worked)
+      const response = await fetch(`${API_URL}/prayers`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          prayerRequest: formData.prayerRequest
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit prayer');
+      }
+
+      const newPrayer = await response.json();
+      
+      // Jaise hi submit hoga, Nayi prayer ko UI list ke top par add kar do
+      setPrayersList(prevList => [newPrayer, ...prevList]);
+      
       setIsSuccess(true);
       setFormData({
         firstName: '', lastName: '', email: '', confirmEmail: '', prayerRequest: ''
       });
+      
+      // Thodi der baad success message hata denge takki user aur request kar sake
+      setTimeout(() => setIsSuccess(false), 5000);
+
     } catch (error) {
       console.error(error);
       setErrorMsg("Something went wrong. Please check your network connection.");
@@ -85,7 +113,6 @@ export default function Prayer() {
         {/* Inner Page Hero with Image */}
         <section className="relative pt-24 pb-32 overflow-hidden">
           <div className="absolute inset-0 bg-navy-dark z-0"></div>
-          {/* Top Image: Calm ocean sunset */}
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1495555687398-3f50fa82fd06?w=1200&q=80')] 
           bg-cover bg-center opacity-30 mix-blend-overlay z-0"></div>
           
@@ -129,7 +156,6 @@ export default function Prayer() {
 
         {/* Prayers Grid Section */}
         <section className="py-24 bg-warm-gray border-y border-coral/10">
-          {/* ... (Your existing prayer grid cards go here exactly as they were) ... */}
           <div className="max-w-[1200px] mx-auto px-7">
             <Reveal className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Prayer 1 */}
@@ -175,7 +201,7 @@ export default function Prayer() {
         </section>
 
         {/* Prayer Request Form Section */}
-        <section className="py-24 bg-white">
+        <section className="pt-24 pb-12 bg-white">
           <div className="max-w-[1000px] mx-auto px-7">
             <Reveal className="bg-coral-pale rounded-[32px] p-8 md:p-14 shadow-card border border-coral/20">
               
@@ -185,7 +211,7 @@ export default function Prayer() {
                   <FaCheckCircle className="text-coral text-6xl mb-4" />
                   <h2 className="text-[32px] font-black text-navy mb-3">Prayer Request Received</h2>
                   <p className="text-text-mid text-lg max-w-md">
-                    Thank you for reaching out. We will keep your request in our prayers.
+                    Thank you for reaching out. Your prayer has been added to our community wall below.
                   </p>
                   <button 
                     onClick={() => setIsSuccess(false)}
@@ -268,7 +294,7 @@ export default function Prayer() {
 
                     {/* Prayer Request Textarea */}
                     <div>
-                      <label className="block text-[13px] font-bold text-navy mb-2">Submit a Prayer *</label>
+                      <label className="block text-[13px] font-bold text-navy mb-2">Your Prayer *</label>
                       <textarea 
                         name="prayerRequest"
                         value={formData.prayerRequest}
@@ -293,14 +319,56 @@ export default function Prayer() {
                       >
                         {isSubmitting ? 'Submitting...' : <><FaPaperPlane /> Submit Request</>}
                       </button>
-                      {/* <a href="#" className="w-full sm:w-auto inline-flex justify-center text-center items-center bg-transparent border-2 border-navy text-navy px-8 py-3.5 rounded-full font-bold text-[14px] hover:bg-navy hover:text-white transition-colors">
-                        Contact a Chaplain Worldwide
-                      </a> */}
                     </div>
                   </form>
                 </>
               )}
+            </Reveal>
+          </div>
+        </section>
 
+        {/* NAYA SECTION: Display Community Prayers Here */}
+        <section className="pb-24 pt-12 bg-white">
+          <div className="max-w-[1200px] mx-auto px-7">
+            <Reveal>
+              <div className="text-center mb-12">
+                <h2 className="text-[32px] font-black text-navy mb-3">Community Prayers</h2>
+                <p className="text-text-mid max-w-2xl mx-auto">
+                  Join us in praying for these seafarers, their families, and our community.
+                </p>
+              </div>
+
+              {prayersList.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {prayersList.map((prayer) => (
+                    <div key={prayer.id} className="bg-warm-gray rounded-2xl p-7 relative border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                      <FaQuoteLeft className="text-coral/20 text-3xl absolute top-6 right-6" />
+                      <p className="text-text-mid text-[15px] leading-relaxed italic mb-6 relative z-10 line-clamp-5">
+                        "{prayer.prayerRequest}"
+                      </p>
+                      <div className="border-t border-gray-200 pt-4 flex justify-between items-center">
+                        <div>
+                           {/* Sirf First Name aur Last Name ka pehla letter dikhayenge privacy ke liye */}
+                          <h4 className="text-navy font-bold text-[14px]">
+                            {prayer.firstName} {prayer.lastName.charAt(0)}.
+                          </h4>
+                          <p className="text-xs text-gray-500 font-medium">
+                            {new Date(prayer.createdAt).toLocaleDateString('en-US', {
+                               year: 'numeric', month: 'short', day: 'numeric'
+                            })}
+                          </p>
+                        </div>
+                        <FaPrayingHands className="text-coral/60 text-xl" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center bg-gray-50 rounded-2xl p-10 border border-gray-100">
+                  <FaPrayingHands className="text-4xl text-gray-300 mx-auto mb-4" />
+                  <p className="text-gray-500 font-medium">Be the first to share a prayer request.</p>
+                </div>
+              )}
             </Reveal>
           </div>
         </section>
