@@ -11,7 +11,6 @@ router.get('/public', getPublicPrayers);
 router.post('/', [
   body('firstName').notEmpty().trim().escape(),
   body('lastName').notEmpty().trim().escape(),
-  body('email').isEmail().normalizeEmail(),
   body('prayerRequest').notEmpty().trim().escape()
 ], createPrayer);
 
