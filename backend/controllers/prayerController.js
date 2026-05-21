@@ -22,12 +22,11 @@ export const createPrayer = async (req, res, next) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { firstName, lastName, email, prayerRequest } = req.body;
+    const { firstName, lastName,  prayerRequest } = req.body;
 
     const prayer = await Prayer.create({
       firstName,
       lastName,
-      email,
       prayerRequest,
       isApproved: true // Auto-approved for immediate display
     });

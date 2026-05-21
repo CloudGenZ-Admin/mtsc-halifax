@@ -132,7 +132,7 @@ export default function SeafarerSupport() {
         <section className="relative pt-12 pb-16 md:pt-16 md:pb-16 min-h-[40vh] flex flex-col justify-center overflow-hidden ">
           <div className="absolute inset-0 z-0">
             <img src={portHalifaxImg} alt="Halifax Harbour" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-br from-[#112A46]/95 via-[#112A46]/90 to-[#2D5A7B]/80"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-[#112A46]/45 from-[#2D5A7B]/45 via-[#2D5A7B]/55"></div>
           </div>
 
           <div className="w-full max-w-[1200px] mx-auto px-6 relative z-10 text-center">

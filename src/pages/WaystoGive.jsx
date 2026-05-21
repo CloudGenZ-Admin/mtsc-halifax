@@ -896,7 +896,7 @@ export default function WaystoGive() {
               alt="Port of Halifax"
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-[#112A46]/90 via-[#2D5A7B]/85 to-[#E05A2B]/70"></div>
+            <div className="absolute inset-0 bg-gradient-to-br from-[#2D5A7B]/45 via-[#2D5A7B]/55 "></div>
           </div>
 
           <div className="max-w-[1200px] mx-auto px-7 relative z-10 text-center">

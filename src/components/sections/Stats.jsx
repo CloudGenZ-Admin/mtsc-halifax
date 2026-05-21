@@ -33,10 +33,13 @@ export default function Stats() {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <StatCard icon={FaShip} target={7104} label="Ships Visited" startAnimation={isVisible} />
-            <StatCard icon={FaGlobe} target={181440} label="Seafarers Worldwide" startAnimation={isVisible} />
-            <StatCard icon={FaUsers} target={15} suffix="+" label="Years Supporting Seafarers in Canada" startAnimation={isVisible} />
-            <StatCard icon={FaHistory} target={160} suffix="+" label="Years of Global Legacy" startAnimation={isVisible} />
+            {/* Updated with PDF Data */}
+            <StatCard icon={FaShip} target={2312} label="Total Ship Visits" startAnimation={isVisible} />
+            <StatCard icon={FaUsers} target={11160} label="Total Mission Visitors" startAnimation={isVisible} />
+            <StatCard icon={FaGlobe} target={8586} label="Total Transports" startAnimation={isVisible} />
+            
+            {/* Kept original 4th card to maintain your grid layout without adding new concepts */}
+           <StatCard icon={FaHistory} target={117} prefix="+" suffix="%" label="Visitor Growth (2022-2025)" startAnimation={isVisible} />
           </div>
         </Reveal>
       </div>

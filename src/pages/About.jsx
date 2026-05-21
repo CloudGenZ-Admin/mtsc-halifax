@@ -11,7 +11,7 @@ import {
 import volunteersImg from '../assets/MtS Halifax Center.jpg';
 import helenImg from '../assets/Helen-Glenn-Mission-Manager-174x300.jpg';
 import portHalifaxImg from '../assets/port_halifax.jpg';
-import seafarersOnDeckImg from '../assets/Awards/seafarers-ondeck-working-min.webp';
+import seafarersOnDeckImg from '../assets/Awards/seafarers-ondeck-working-min.jpg';
 import josephImg from '../assets/Josefloot.jpg';
 import helecncircle from '../assets/HelenCircle.jpg'
 // ==========================================
@@ -152,7 +152,7 @@ function About() {
               alt="About Mission to Seafarers Halifax"
               className="w-full h-full object-cover object-center opacity-40 mix-blend-overlay"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0a1a2c] via-[#112A46]/60 to-transparent" />
+            {/* <div className="absolute inset-0 bg-gradient-to-t from-[#0a1a2c] via-[#112A46]/60 to-transparent" /> */}
           </div>
 
           <div className="w-full max-w-[1200px] mx-auto px-6 relative z-10 text-center">

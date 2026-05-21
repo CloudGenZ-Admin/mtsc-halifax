@@ -9,13 +9,22 @@ import {
 // Import the local image provided
 import prayerImg from '../assets/paryer.jpg';
 
+// Helper function to clean text (removes &quot; and extra quotes)
+const formatPrayerText = (text) => {
+  if (!text) return '';
+  let cleanText = text.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+  // Agar API se already quotes aa rahe hain, toh unhe double hone se rokne ke liye
+  if (cleanText.startsWith('"') && cleanText.endsWith('"')) {
+    cleanText = cleanText.substring(1, cleanText.length - 1);
+  }
+  return cleanText;
+};
+
 export default function Prayer() {
-  // 1. Form State Management
+  // Form State Management (Confirm Email Removed)
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    email: '',
-    confirmEmail: '',
     prayerRequest: ''
   });
 
@@ -23,7 +32,7 @@ export default function Prayer() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   
-  // Naya State: Submitted Prayers List ke liye
+  // State: Submitted Prayers List
   const [prayersList, setPrayersList] = useState([]);
 
   // Fetch Prayers on Component Mount
@@ -33,7 +42,6 @@ export default function Prayer() {
 
   const fetchPrayers = async () => {
     try {
-      // Apne backend URL ke hisaab se adjust karein (vite env variables use hote hain mostly)
       const API_URL = import.meta.env.VITE_API_URL || 'https://mediumpurple-giraffe-353804.hostingersite.com/api';
       const response = await fetch(`${API_URL}/prayers/public`);
       if (response.ok) {
@@ -51,17 +59,10 @@ export default function Prayer() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // 2. Form Submit Handler (OWN BACKEND INTEGRATION)
+  // Form Submit Handler 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg('');
-
-    // Check if emails match
-    if (formData.email !== formData.confirmEmail) {
-      setErrorMsg("Emails do not match!");
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
@@ -86,15 +87,15 @@ export default function Prayer() {
 
       const newPrayer = await response.json();
       
-      // Jaise hi submit hoga, Nayi prayer ko UI list ke top par add kar do
+      // Add to top of list
       setPrayersList(prevList => [newPrayer, ...prevList]);
       
       setIsSuccess(true);
+      // Reset form
       setFormData({
-        firstName: '', lastName: '', email: '', confirmEmail: '', prayerRequest: ''
+        firstName: '', lastName: '', prayerRequest: ''
       });
       
-      // Thodi der baad success message hata denge takki user aur request kar sake
       setTimeout(() => setIsSuccess(false), 5000);
 
     } catch (error) {
@@ -264,33 +265,8 @@ export default function Prayer() {
                       </div>
                     </div>
 
-                    {/* Email Fields */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-[13px] font-bold text-navy mb-2">Email *</label>
-                        <input 
-                          type="email" 
-                          name="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          required 
-                          className="w-full px-5 py-3.5 rounded-xl border-2 border-white bg-white focus:border-coral outline-none transition-colors shadow-sm text-[15px]" 
-                          placeholder="your@email.com" 
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-[13px] font-bold text-navy mb-2">Confirm Email *</label>
-                        <input 
-                          type="email" 
-                          name="confirmEmail"
-                          value={formData.confirmEmail}
-                          onChange={handleChange}
-                          required 
-                          className="w-full px-5 py-3.5 rounded-xl border-2 border-white bg-white focus:border-coral outline-none transition-colors shadow-sm text-[15px]" 
-                          placeholder="your@email.com" 
-                        />
-                      </div>
-                    </div>
+                    {/* Email Field - Full Width */}
+                   
 
                     {/* Prayer Request Textarea */}
                     <div>
@@ -327,7 +303,7 @@ export default function Prayer() {
           </div>
         </section>
 
-        {/* NAYA SECTION: Display Community Prayers Here */}
+        {/* PERFECT HEIGHT FIX: Community Prayers Section */}
         <section className="pb-24 pt-12 bg-white">
           <div className="max-w-[1200px] mx-auto px-7">
             <Reveal>
@@ -341,16 +317,22 @@ export default function Prayer() {
               {prayersList.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {prayersList.map((prayer) => (
-                    <div key={prayer.id} className="bg-warm-gray rounded-2xl p-7 relative border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                    // h-full added to card container
+                    <div key={prayer.id} className="bg-warm-gray rounded-2xl p-7 relative border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
                       <FaQuoteLeft className="text-coral/20 text-3xl absolute top-6 right-6" />
-                      <p className="text-text-mid text-[15px] leading-relaxed italic mb-6 relative z-10 line-clamp-5">
-                        "{prayer.prayerRequest}"
-                      </p>
-                      <div className="border-t border-gray-200 pt-4 flex justify-between items-center">
+                      
+                      {/* IMPORTANT FIX: Separated flex-grow into a wrapper DIV */}
+                      <div className="flex-grow flex flex-col mb-6 relative z-10">
+                        <p className="text-text-mid text-[15px] leading-relaxed italic break-words line-clamp-5">
+                          "{formatPrayerText(prayer.prayerRequest)}"
+                        </p>
+                      </div>
+                      
+                      {/* mt-auto pushes footer perfectly to the bottom */}
+                      <div className="border-t border-gray-200 pt-4 flex justify-between items-center mt-auto">
                         <div>
-                           {/* Sirf First Name aur Last Name ka pehla letter dikhayenge privacy ke liye */}
                           <h4 className="text-navy font-bold text-[14px]">
-                            {prayer.firstName} {prayer.lastName.charAt(0)}.
+                            {prayer.firstName} {prayer.lastName?.charAt(0)}.
                           </h4>
                           <p className="text-xs text-gray-500 font-medium">
                             {new Date(prayer.createdAt).toLocaleDateString('en-US', {
@@ -358,7 +340,7 @@ export default function Prayer() {
                             })}
                           </p>
                         </div>
-                        <FaPrayingHands className="text-coral/60 text-xl" />
+                        <FaPrayingHands className="text-coral/60 text-xl flex-shrink-0" />
                       </div>
                     </div>
                   ))}
