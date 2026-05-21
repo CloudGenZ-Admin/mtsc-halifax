@@ -21,6 +21,7 @@
   --color-periwinkle: #7b8cce;
   --color-teal: #2db5b5;
   --color-text-mid: #666666;
+  --color-warm-gray-contact: hsl(var(--warm-gray));
 
   /* Fonts */
   --font-nunito: 'Nunito', sans-serif;
@@ -31,6 +32,10 @@
   --shadow-warm-hover: 0 10px 28px rgba(224,90,43,.45);
   --shadow-card: 0 2px 12px rgba(0,0,0,.06);
   --shadow-card-hover: 0 8px 24px rgba(224,90,43,.1);
+  --shadow-soft: 0 4px 24px rgba(45, 53, 128, 0.08);
+
+  /* Gradients */
+  --background-image-gradient-hero: var(--gradient-hero);
 }
 
 /* Base Styles */
@@ -614,6 +619,8 @@ body {
 }
 
 :root {
+  --gradient-hero: linear-gradient(135deg, hsl(232 48% 34%) 0%, hsl(226 58% 26%) 100%);
+  --warm-gray: 30 21% 96%;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
