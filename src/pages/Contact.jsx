@@ -48,7 +48,7 @@ const Contact = () => {
 
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="relative pt-28 pb-20 md:pt-36 md:pb-28 overflow-hidden bg-[#35468b] min-h-[45vh] flex items-center justify-center border-b border-[#0a1a2c]">
+        <section className="relative pt-28 pb-20 md:pt-36 md:pb-28 overflow-hidden bg-[#272d46] min-h-[45vh] flex items-center justify-center border-b border-[#0a1a2c]">
           {/* Background Image & Overlays */}
           <div className="absolute inset-0 z-0">
             <img
