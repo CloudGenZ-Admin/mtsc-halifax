@@ -15,10 +15,6 @@ const Prayer = sequelize.define('Prayer', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
   prayerRequest: {
     type: DataTypes.TEXT('long'),
     allowNull: false,
