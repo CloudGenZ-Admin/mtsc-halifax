@@ -12,7 +12,7 @@ import prayerWallImg from '../assets/img/footer-prayer-wall.png';
 import happySeaImg from '../assets/img/footer-happy-sea.png';
 import newsletterImg from '../assets/img/footer-newsletter.png';
 import eventCalendarImg from '../assets/img/footer-event-calendar.png';
-import volunteerImg from '../assets/Volunteer.jpeg';
+import volunteerImg from '../assets/Volunteer.jpg';
 
 // Import local SVGs for "How We Support the World's Seafarers in Canada" section
 import practicalSupportIcon from '../assets/img/Seafarers/practical-support_1.svg';
@@ -43,14 +43,36 @@ import portToronto from '../assets/Corpo/ports/Toronto-Ports-logo-768x305.png';
 import portDpWorld from '../assets/Corpo/ports/dpworld-logo.png.webp';
 
 // --- GALLERY IMAGES ---
-import galleryImg1 from '../assets/WhatsApp Image 2026-05-09 at 12.35.02 AM (1).jpeg';
-import galleryImg2 from '../assets/WhatsApp Image 2026-05-09 at 12.35.02 AM (3).jpeg';
-import galleryImg3 from '../assets/WhatsApp Image 2026-05-09 at 12.35.02 AM.jpeg';
-import galleryImg4 from '../assets/WhatsApp Image 2026-05-09 at 12.50.10 AM.jpeg';
-import galleryImg5 from '../assets/WhatsApp Image 2026-05-09 at 12.52.42 AM.jpeg';
-import galleryImg6 from '../assets/WhatsApp Image 2026-05-09 at 12.56.18 AM (1).jpeg';
-import galleryImg7 from '../assets/WhatsApp Image 2026-05-09 at 12.56.18 AM.jpeg';
-import galleryImg8 from '../assets/WhatsApp Image 2026-05-09 at 12.59.52 AM.jpeg';
+
+import moment2a from '../assets/Moments from Halifax/2a. Moments.jpg';
+import moment2b from '../assets/Moments from Halifax/2b. Moments.jpg';
+import moment2c from '../assets/Moments from Halifax/2c. Moments.jpg';
+import moment2d from '../assets/Moments from Halifax/2d. Moments.jpg';
+import moment2e from '../assets/Moments from Halifax/2e. Moments.jpg';
+import moment2f from '../assets/Moments from Halifax/2f. Moments.jpg';
+import moment2g from '../assets/Moments from Halifax/2g. Moments.jpg';
+import moment2h from '../assets/Moments from Halifax/2h. Moments.jpg';
+import moment2i from '../assets/Moments from Halifax/2i. Moments.jpg';
+import moment2j from '../assets/Moments from Halifax/2j. Moments.jpg';
+import moment2k from '../assets/Moments from Halifax/2k. Moments.jpg';
+import moment2l from '../assets/Moments from Halifax/2l. Moments.jpg';
+import moment2m from '../assets/Moments from Halifax/2m. Moments.jpg';
+import moment2n from '../assets/Moments from Halifax/2n. Moments.jpg';
+import moment2o from '../assets/Moments from Halifax/2o. Moments.jpg';
+import moment2p from '../assets/Moments from Halifax/2p. Moments.jpg';
+import moment2q from '../assets/Moments from Halifax/2q. Moments.jpg';
+import moment2r from '../assets/Moments from Halifax/2r. Moments.jpg';
+import moment2s from '../assets/Moments from Halifax/2s. Moments.jpg';
+import moment2t from '../assets/Moments from Halifax/2t. Moments.jpg';
+import moment2u from '../assets/Moments from Halifax/2u. Moments.jpg';
+import moment2v from '../assets/Moments from Halifax/2v. Moments.jpg';
+import moment2w from '../assets/Moments from Halifax/2w. Moments.jpg';
+import moment2x from '../assets/Moments from Halifax/2x. Moments.jpg';
+import moment2y from '../assets/Moments from Halifax/2y. Moments.jpg';
+import moment2z from '../assets/Moments from Halifax/2z. Moments.jpg';
+
+
+
 
 export default function Home() {
   // State to control showing all events in the news section
@@ -116,8 +138,13 @@ export default function Home() {
   const displayedUpdates = showAllEvents ? allUpdates : allUpdates.slice(0, 3);
 
   const galleryImages = [
-    galleryImg1, galleryImg2, galleryImg3, galleryImg4,
-    galleryImg5, galleryImg6, galleryImg7, galleryImg8
+    moment2a, moment2b, moment2c, moment2d,
+    moment2e, moment2f, moment2g, moment2h,
+    moment2i, moment2j, moment2k, moment2l,
+    moment2m, moment2n, moment2o, moment2p,
+    moment2q, moment2r, moment2s, moment2t,
+    moment2u, moment2v, moment2w, moment2x,
+    moment2y, moment2z
   ];
 
   // Slider scroll function
@@ -293,7 +320,13 @@ export default function Home() {
                     { svg: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z", t: "Friendly ship visits and hospitality" },
                     { svg: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z", t: "Transportation and local guidance" },
                     { svg: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253", t: "Access to a welcoming station space" },
-                    { svg: "M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3", t: "Wi-Fi and communication tools" },
+                   
+                   
+
+                    { svg: "M1.42 9a16 16 0 0 1 21.16 0M5 12.55a11 11 0 0 1 14.08 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01", t: "Wi-Fi & Communication Tools" },
+
+
+
                     { svg: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z", t: "Refreshments and a comfortable place to sit, pause, and reconnect with loved ones" },
                     { svg: "M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z", t: "Emotional and spiritual support, if requested" },
                     { svg: "M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9", t: "Help during times of stress, isolation, or uncertainty" },

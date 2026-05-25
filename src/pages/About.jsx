@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
@@ -7,11 +7,14 @@ import {
   FaCheckCircle, FaChevronLeft, FaChevronRight, FaHeart
 } from 'react-icons/fa';
 
+// Import newly added forms
+import { Modal, VolunteerForm } from '../components/forms/WaysToGiveForms';
+
 // Import existing images
 import volunteersImg from '../assets/MtS Halifax Center.jpg';
 import helenImg from '../assets/Helen-Glenn-Mission-Manager-174x300.jpg';
 import portHalifaxImg from '../assets/port_halifax.jpg';
-import seafarersOnDeckImg from '../assets/Awards/seafarers-ondeck-working-min.jpg';
+import seafarersOnDeckImg from '../assets/Awards/3. The History.jpg';
 import josephImg from '../assets/Josefloot.jpg';
 import helecncircle from '../assets/HelenCircle.jpg'
 // ==========================================
@@ -38,6 +41,7 @@ import freeRoomImg from '../assets/Amenities - Free Room.jpg';
 import basketballImg from '../assets/Amenities - Half Court Basketball 2.jpg';
 import loungeImg from '../assets/Amenities - Lounge.jpg';
 import sunDeckImg from '../assets/Amenities - Sun Deck.jpg';
+import freeWifiImg from '../assets/5. Free Wifi.jpg';
 
 // Combine Halifax content into London's timeline structure
 const historyBlocks = [
@@ -94,10 +98,18 @@ const historyBlocks = [
 ];
 
 function About() {
+  const [activeModal, setActiveModal] = useState(null);
+
   // Scroll to top on mount
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    alert("Thank you! Your application has been successfully submitted.");
+    setActiveModal(null);
+  };
 
   const volunteersGallery = [
     { id: 1, img: volunteer1, title: 'Team Effort' },
@@ -113,13 +125,14 @@ function About() {
   const amenitiesGallery = [
     { id: 1, img: loungeImg, title: 'Comfortable Lounge' },
     { id: 2, img: canteenImg, title: 'Canteen & Souvenir Shop' },
-    { id: 3, img: freeRoomImg, title: 'Free Wi-Fi & Computers Room' },
+    { id: 3, img: freeRoomImg, title: 'Men’s and Women’s Free Rooms' },
     { id: 4, img: chapelImg, title: 'Chapel & Prayer Room' },
     { id: 5, img: transportImg, title: 'Complimentary Transport' },
     { id: 6, img: bicyclesImg, title: 'Bicycles for Loan' },
     { id: 7, img: basketballImg, title: 'Half Court Basketball' },
     { id: 8, img: sunDeckImg, title: 'Outdoor Sun Deck' },
     { id: 9, img: conferenceImg, title: 'Conference Space' },
+    { id: 10, img: freeWifiImg, title: 'Free WiFi' },
   ];
 
   const carouselRef = useRef(null);
@@ -141,6 +154,15 @@ function About() {
   return (
     <div className="min-h-screen flex flex-col relative">
       <Navbar />
+
+      {/* Volunteer Modal */}
+      <Modal 
+        isOpen={activeModal === 'volunteer'} 
+        onClose={() => setActiveModal(null)} 
+        title="Volunteer Application"
+      >
+        <VolunteerForm onSubmit={handleFormSubmit} />
+      </Modal>
 
       <main className="flex-grow">
 
@@ -201,7 +223,7 @@ function About() {
 
                     {/* Image Side */}
                     <div className="w-full md:w-1/2 relative group">
-                      <div className="aspect-[4/3] rounded-3xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500 border-4 border-white">
+                      <div className="aspect-[3/3] rounded-3xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500 border-4 border-white">
                         <img
                           src={block.img}
                           alt={block.title}
@@ -483,9 +505,16 @@ function About() {
                   </p>
 
                   <h3 className="text-2xl font-extrabold mb-4 text-[#E05A2B]">Interested in Volunteering?</h3>
-                  <p className="text-white/80 leading-relaxed font-medium">
+                  <p className="text-white/80 leading-relaxed font-medium mb-6">
                     Whether you can help occasionally or become part of ongoing outreach efforts, there are many ways to get involved and support seafarers visiting Halifax.
                   </p>
+                  
+                  <button 
+                    onClick={() => setActiveModal('volunteer')}
+                    className="inline-flex cursor-pointer items-center justify-center bg-[#E05A2B] hover:bg-[#c94d22] text-white font-bold shadow-lg h-12 px-8 rounded-full text-[15px] transition-colors"
+                  >
+                    Volunteer Application
+                  </button>
                 </div>
               </div>
             </Reveal>
@@ -531,7 +560,7 @@ function About() {
                       key={item.id}
                       className="relative flex flex-col overflow-hidden rounded-3xl bg-[#112A46] border border-gray-100 shadow-md shrink-0 snap-center sm:snap-start w-[85%] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
                     >
-                      <div className="aspect-[4/3] w-full overflow-hidden">
+                      <div className="aspect-[2/3] w-full overflow-hidden">
                         <img src={item.img} alt={item.title} className="w-full h-full object-cover" draggable="false" />
                       </div>
                       <div className="p-5 text-center flex-grow flex items-center justify-center">
@@ -579,12 +608,12 @@ function About() {
               <p className="text-xl font-bold text-[#E05A2B] leading-relaxed italic mb-8">
                 Together, ensure that every seafarer who comes through Halifax is not only seen, but cared for.
               </p>
-              <Link
-                to="/contact"
-                className="inline-flex items-center justify-center bg-[#E05A2B] hover:bg-[#c94d22] text-white font-bold shadow-lg h-14 px-8 rounded-md text-lg transition-colors"
+              <button
+                onClick={() => setActiveModal('volunteer')}
+                className="inline-flex cursor-pointer items-center justify-center bg-[#E05A2B] hover:bg-[#c94d22] text-white font-bold shadow-lg h-14 px-8 rounded-md text-lg transition-colors"
               >
                 Become a Volunteer
-              </Link>
+              </button>
             </div>
           </div>
         </section>
