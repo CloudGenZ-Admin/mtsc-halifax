@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Ship, MapPin, Home as HomeIcon, Wifi, Users, HeartHandshake, LifeBuoy, Package, ShieldCheck } from 'lucide-react';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Hero from '../components/sections/Hero';
@@ -317,29 +318,21 @@ export default function Home() {
 
                 <div className="flex flex-wrap justify-center gap-6 md:gap-10 max-w-[1200px] mx-auto">
                   {[
-                    { svg: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z", t: "Friendly ship visits and hospitality" },
-                    { svg: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z", t: "Transportation and local guidance" },
-                    { svg: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253", t: "Access to a welcoming station space" },
-                   
-                   
-
-                    { svg: "M1.42 9a16 16 0 0 1 21.16 0M5 12.55a11 11 0 0 1 14.08 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01", t: "Wi-Fi & Communication Tools" },
-
-
-
-                    { svg: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z", t: "Refreshments and a comfortable place to sit, pause, and reconnect with loved ones" },
-                    { svg: "M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z", t: "Emotional and spiritual support, if requested" },
-                    { svg: "M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9", t: "Help during times of stress, isolation, or uncertainty" },
-                    { svg: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4", t: "Access to local services " },
-                    { svg: "M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7", t: "Clothing bank" },
-                  ].map(({ svg, t }) => (
+                    { i: Ship, t: "Friendly ship visits and hospitality" },
+                    { i: MapPin, t: "Transportation and local guidance" },
+                    { i: HomeIcon, t: "Access to a welcoming station space" },
+                    { i: Wifi, t: "Wi-Fi & Communication Tools" },
+                    { i: Users, t: "Refreshments and a comfortable place to sit, pause, and reconnect with loved ones" },
+                    { i: HeartHandshake, t: "Emotional and spiritual support, if requested" },
+                    { i: LifeBuoy, t: "Help during times of stress, isolation, or uncertainty" },
+                    { i: Package, t: "Access to local services" },
+                    { i: ShieldCheck, t: "Clothing bank" },
+                  ].map(({ i: Icon, t }) => (
                     <div
                       key={t}
                       className="flex flex-col items-center justify-center w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full bg-white shadow-xl transition-transform hover:-translate-y-1.5 p-4 sm:p-6 md:p-8"
                     >
-                      <svg className="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 text-[#2d3580] mb-3 sm:mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={svg} />
-                      </svg>
+                      <Icon className="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 text-[#2d3580] mb-3 sm:mb-4" strokeWidth={1.5} />
                       <span className="text-[13px] sm:text-[15px] md:text-[17px] font-extrabold text-[#e05a2b] leading-snug px-2 max-w-[90%] text-center">
                         {t}
                       </span>
