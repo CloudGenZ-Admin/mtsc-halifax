@@ -256,7 +256,9 @@ function About() {
                     "Refreshments and hospitality",
                     "Emotional and spiritual care",
                     "Seafarers Parcel Pickup Service",
-                    "Community connection and advocacy"
+                    "Community connection and advocacy",
+                    "Recreational amenities including bikes, billiards, darts, and basketball"
+
                   ].map((service, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <FaCheckCircle className="text-[#E05A2B] text-[16px] mt-0.5 shrink-0" />
@@ -346,7 +348,7 @@ function About() {
                       className="w-[98%] max-w-none h-auto"
                     />
                   </div>
-                  <h3 className="text-2xl font-bold text-[#112A46]">Joseph</h3>
+                  <h3 className="text-2xl font-bold text-[#112A46]">Joseph Loot</h3>
                   <p className="text-[#E05A2B] font-bold uppercase text-sm mt-2 mb-4 tracking-wider">Assistant Manager</p>
                   <p className="text-gray-600 leading-relaxed font-medium">
                     Joseph supports the daily operations of the Halifax station and helps create a welcoming environment for seafarers visiting the port.Supporting outreach, station activities, and practical services to ensure seafarers in Halifax receive care, connection, and assistance during their stay. His dedication and calm presence help make the station a trusted place for many visiting crews.
@@ -459,7 +461,7 @@ function About() {
 
                 <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
                   <div className="bg-white border border-gray-100 p-8 rounded-3xl shadow-sm">
-                    <div className="text-4xl font-extrabold text-[#E05A2B] mb-2">50+</div>
+                    <div className="text-4xl font-extrabold text-[#E05A2B] mb-2">30+</div>
                     <div className="text-lg font-bold text-[#112A46] uppercase tracking-wider mb-2">Active Volunteers</div>
                     <p className="text-gray-600 text-sm font-medium">
                       Supporting ship visits, hospitality, outreach, transportation, and station programs

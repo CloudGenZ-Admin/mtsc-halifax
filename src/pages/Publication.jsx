@@ -28,7 +28,8 @@ import esgStrategy from '../assets/pdf/MtS-ESG-Report-2023_29112024 (1).pdf';
 import foghornJuly2025 from '../assets/pdf/Foghorn/July-2025-Foghorn.pdf';
 import foghornFeb2025 from '../assets/pdf/Foghorn/February-2025-Foghorn-.pdf';
 import marineSafetyHandbook from '../assets/pdf/PORT-OF-HALIFAX-MARINE-SAFETY-HANDBOOK-2nd-ed.pdf';
-import mtsHalifaxStats from '../assets/pdf/MtS-ESG-Report-2023_29112024 (1).pdf';
+import mtsHalifaxStats from '../assets/pdf/2026YearToYearComparisons.pdf';
+import shiQ1_2026 from '../assets/pdf/Happyness/SHI_Q1_2026-2.pdf';
 
 // Flying Angel PDF Imports
 import faFall2021 from '../assets/pdf/FlyingAngel/Mission-Newsletter-Fall-2021.pdf';
@@ -46,7 +47,7 @@ import faSpring2024 from '../assets/pdf/FlyingAngel/MtS-Spring-2024-Newsletter.p
 import faSpring2025 from '../assets/pdf/FlyingAngel/MtS-Spring-2025-Newsletter_Digital.pdf';
 import faSummer2024 from '../assets/pdf/FlyingAngel/MtS-Summer-2024-Newsletter-DIGITAL.pdf';
 import faSummer2025 from '../assets/pdf/FlyingAngel/MtS-Summer-2025-Newsletter_Digital.pdf';
-
+import faSpring2026 from '../assets/pdf/FlyingAngel/MtS-Spring-2026-Newsletter_DIGITAL.pdf';
 export default function Publication() {
   const location = useLocation();
   
@@ -72,6 +73,7 @@ export default function Publication() {
 
   // 1. Halifax Newsletters Data
   const halifaxNewslettersData = [
+    { title: "Post Spring 2026", href: faSpring2026 },
     { title: "Fall 2025", href: faFall2025 },
     { title: "Summer 2025", href: faSummer2025 },
     { title: "Spring 2025", href: faSpring2025 },
@@ -93,6 +95,7 @@ export default function Publication() {
 
   // 2. Happiness Reports Data
   const happinessReportsData = [
+    { title: "Quarter 1 2026 Report", href: shiQ1_2026 },
     { title: "Quarter 3 2025 Report", href: shiQ3_2025 },
     { title: "Quarter 2 2025 Report", href: shiQ2_2025 },
     { title: "Quarter 2 2025 Report (Alt)", href: shiQ2_2025_alt },

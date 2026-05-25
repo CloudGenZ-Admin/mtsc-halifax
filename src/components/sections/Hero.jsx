@@ -136,7 +136,7 @@ export default function Hero() {
               {/* Floating Legacy Badge */}
               <div className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 lg:top-8 lg:-right-8 bg-coral text-white rounded-full h-24 w-24 sm:h-28 sm:w-28 flex flex-col items-center justify-center shadow-xl rotate-[12deg] border-4 border-white z-20 animate-float-fast">
                 <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider opacity-90">Legacy</span>
-                <span className="text-2xl sm:text-3xl font-black leading-none my-0.5">160+</span>
+                <span className="text-2xl sm:text-3xl font-black leading-none my-0.5">85+</span>
                 <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider opacity-90">Years</span>
               </div>
             </div>

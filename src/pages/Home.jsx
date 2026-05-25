@@ -729,7 +729,8 @@ export default function Home() {
                   "Support during times of stress, isolation, or uncertainty",
                   "Access to local services, seasonal clothing, and community resources",
                   "Seafarers Parcel Pickup Service",
-                  "Hospitality and care through volunteers and local partnerships"
+                  "Hospitality and care through volunteers and local partnerships",
+                  "Recreational amenities including bikes, billiards, darts, and basketball"
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-4 text-[#112A46] font-semibold text-[15px]">
                     <svg className="w-6 h-6 text-[#E05A2B] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>

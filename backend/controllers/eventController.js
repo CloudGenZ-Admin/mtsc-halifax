@@ -6,7 +6,7 @@ import { Op } from 'sequelize';
 export const getPublicEvents = async (req, res, next) => {
   try {
     const events = await Event.findAll({
-      order: [['eventDate', 'DESC'], ['createdAt', 'DESC']],
+      order: [['createdAt', 'DESC'], ['createdAt', 'DESC']],
     });
     res.json(events);
   } catch (error) {
