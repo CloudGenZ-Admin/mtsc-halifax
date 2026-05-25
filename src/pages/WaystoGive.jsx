@@ -766,6 +766,19 @@ const uniqueSponsors = [...new Set(allSponsors)];
 // Take top 28 for Star Club members
 const starSponsors = uniqueSponsors.slice(0, 28);
 
+const eventsList = [
+  { name: "Annual Christmas Luncheon", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/annual-christmas-luncheon" },
+  { name: "Christmas Shoebox", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/christmas-shoebox" },
+  { name: "International Day of the Seafarer", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/international-day-of-the-seafarer" },
+  { name: "Mission to Seafarers Halifax Car Rally", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/mission-to-seafarers-halifax-car-rally" },
+  { name: "MtS Golf Tournament", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/mts-golf-tournament" },
+  { name: "Sea Sunday", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/sea-sunday" },
+  { name: "Take-Out Luncheons", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/takeout-luncheons" },
+  { name: "Toast to Spring", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/toast-to-spring-1" },
+  { name: "Volunteer Appreciation Event", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/volunteer-appreciation-event" },
+  { name: "Mission to Seafarers Halifax Cruise Raffle", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/mission-to-seafarers-halifax-cruise-raffle" }
+];
+
 // CanadaHelps Embedded Widget Component
 const CanadaHelpsWidget = ({ pageId, formType }) => {
   const containerRef = useRef(null);
@@ -803,6 +816,8 @@ const CanadaHelpsWidget = ({ pageId, formType }) => {
 export default function WaystoGive() {
   const [activeForm, setActiveForm] = useState(null); 
   const [activeModal, setActiveModal] = useState(null); 
+  const [selectedEventUrl, setSelectedEventUrl] = useState(eventsList[0].url);
+  const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const donationSectionRef = useRef(null);
 
   const handleScrollToDonate = () => {
@@ -887,6 +902,20 @@ export default function WaystoGive() {
         <PartnershipForm onSubmit={handleFormSubmit} />
       </Modal>
 
+      <Modal
+        isOpen={isEventModalOpen}
+        onClose={() => setIsEventModalOpen(false)}
+        title="Purchase Event Tickets"
+      >
+        <div className="w-full h-[500px] overflow-hidden rounded-xl">
+          <iframe 
+            src={selectedEventUrl} 
+            title="Event Tickets" 
+            className="w-full h-full border-0"
+          ></iframe>
+        </div>
+      </Modal>
+
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="relative pt-24 pb-32 overflow-hidden">
@@ -929,7 +958,7 @@ export default function WaystoGive() {
             </Reveal>
 
             {!activeForm ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full mx-auto">
                 <Reveal>
                   <div className="bg-gradient-to-br from-[#F8FBFD] to-white rounded-3xl p-8 md:p-10 shadow-xl border border-[#112A46]/5 hover:shadow-2xl transition-all h-full flex flex-col">
                     <div className="flex items-center gap-3 mb-6">
@@ -994,6 +1023,41 @@ export default function WaystoGive() {
                     </button>
                   </div>
                 </Reveal>
+
+                <Reveal delay={200}>
+                  <div className="bg-gradient-to-br from-[#EBF4F9] to-white rounded-3xl p-8 md:p-10 shadow-xl border border-[#112A46]/5 hover:shadow-2xl transition-all h-full flex flex-col">
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-12 h-12 bg-[#112A46] rounded-xl flex items-center justify-center">
+                        <FaStar className="text-[#FFD700] text-xl" />
+                      </div>
+                      <h3 className="text-[24px] font-black text-[#112A46]">Purchase Event Tickets</h3>
+                    </div>
+                    
+                    <p className="text-[#5A6C7D] text-[16px] leading-relaxed mb-6 flex-grow">
+                      Join us at our upcoming events! Select an event from the list below and purchase your tickets to show your support.
+                    </p>
+
+                    <div className="mb-6">
+                      <label className="block text-[#112A46] font-bold text-[14px] mb-2">Select Event:</label>
+                      <select 
+                        value={selectedEventUrl}
+                        onChange={(e) => setSelectedEventUrl(e.target.value)}
+                        className="w-full bg-white border border-[#112A46]/20 rounded-xl px-4 py-3 text-[#112A46] font-medium focus:outline-none focus:border-[#E05A2B]"
+                      >
+                        {eventsList.map((event, idx) => (
+                          <option key={idx} value={event.url}>{event.name}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <button
+                      onClick={() => setIsEventModalOpen(true)}
+                      className="inline-flex cursor-pointer items-center justify-center gap-2 bg-[#E05A2B] text-white px-8 py-4 rounded-full font-bold text-[15px] hover:bg-[#c94d23] transition-all shadow-lg hover:shadow-xl w-full"
+                    >
+                      Get Tickets
+                    </button>
+                  </div>
+                </Reveal>
               </div>
             ) : (
               <Reveal className="max-w-4xl mx-auto bg-white rounded-3xl p-6 md:p-10 shadow-2xl border border-[#112A46]/10">
@@ -1005,7 +1069,7 @@ export default function WaystoGive() {
                 </button>
                 
                 {activeForm === 'monthly' ? (
-                  <CanadaHelpsWidget key="form-monthly" pageId="110798" formType="4" />
+                  <CanadaHelpsWidget key="form-monthly" pageId="146457" formType="0" />
                 ) : (
                   <CanadaHelpsWidget key="form-onetime" pageId="42880" formType="0" />
                 )}
