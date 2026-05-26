@@ -48,6 +48,7 @@ import faSpring2025 from '../assets/pdf/FlyingAngel/MtS-Spring-2025-Newsletter_D
 import faSummer2024 from '../assets/pdf/FlyingAngel/MtS-Summer-2024-Newsletter-DIGITAL.pdf';
 import faSummer2025 from '../assets/pdf/FlyingAngel/MtS-Summer-2025-Newsletter_Digital.pdf';
 import faSpring2026 from '../assets/pdf/FlyingAngel/MtS-Spring-2026-Newsletter_DIGITAL.pdf';
+
 export default function Publication() {
   const location = useLocation();
   
@@ -73,7 +74,7 @@ export default function Publication() {
 
   // 1. Halifax Newsletters Data
   const halifaxNewslettersData = [
-    { title: "Post Spring 2026", href: faSpring2026 },
+    { title: "Spring 2026", href: faSpring2026 },
     { title: "Fall 2025", href: faFall2025 },
     { title: "Summer 2025", href: faSummer2025 },
     { title: "Spring 2025", href: faSpring2025 },
@@ -216,8 +217,7 @@ export default function Publication() {
                   Mission to Seafarers The Sea Newsletters
                 </h2>
                 <p className="text-gray-700 text-[16px] font-medium space-y-2 flex flex-col">
-                  <span>To sign up and have the latest issue sent to your inbox, click here.</span>
-                  <span>For Archive copies of the magazine, click here.</span>
+                  <span>To sign up and have the latest issue sent directly to your inbox with news from Canada and around the world, click here.</span>
                 </p>
               </div>
               <div className="relative z-10 flex flex-col gap-3 w-full md:w-auto shrink-0">
@@ -228,6 +228,14 @@ export default function Publication() {
                   className="flex items-center justify-center gap-2 bg-[#E05A2B] text-white px-8 py-4 rounded-xl font-bold hover:bg-[#112A46] transition-colors shadow-md cursor-pointer"
                 >
                   <FaEnvelopeOpenText /> Sign Up
+                </a>
+                <a
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-[#112A46] text-white px-8 py-4 rounded-xl font-bold hover:bg-[#E05A2B] transition-colors shadow-md cursor-pointer"
+                >
+                  <FaEnvelopeOpenText /> Canada Newsletter
                 </a>
                 <a
                   href="https://www.missiontoseafarers.org/the-sea-archive"
@@ -453,6 +461,44 @@ export default function Publication() {
                   </div>
                 </div>
               )}
+            </Reveal>
+          </div>
+        </section>
+
+        {/* 9. INDUSTRY RESOURCES */}
+        <section id="industry-resources" className="py-20 bg-gradient-to-br from-[#F8FBFD] via-white to-[#EBF4F9] scroll-mt-[90px]">
+          <div className="max-w-[1200px] mx-auto px-7">
+            <Reveal>
+              <div className="border-l-4 border-[#112A46] pl-6 mb-10">
+                <h2 className="text-[32px] font-black text-[#112A46] mb-2">
+                  Industry Resources & Certifications
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <a
+                  href="https://tc.canada.ca/en/marine-transportation/marine-training-certification-individuals/foreign-other-qualifications-skills-recognition/canadian-endorsement-attesting-recognition-foreign-certificate-through-reciprocal-arrangement"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white border border-[#112A46]/10 rounded-xl px-5 py-4 flex items-center justify-between shadow-sm hover:shadow-lg hover:border-[#E05A2B] hover:-translate-y-1 transition-all group w-full"
+                >
+                  <span className="font-bold text-[14px] text-[#112A46] group-hover:text-[#E05A2B] transition-colors leading-snug">
+                    Canada Recognition of Foreign Seafarers’ STCW Certificate
+                  </span>
+                  <FaExternalLinkAlt className="text-[#112A46]/30 group-hover:text-[#E05A2B] text-xl shrink-0 transition-colors" />
+                </a>
+
+                <a
+                  href="https://imagine-marine.ca/about-us"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white border border-[#112A46]/10 rounded-xl px-5 py-4 flex items-center justify-between shadow-sm hover:shadow-lg hover:border-[#E05A2B] hover:-translate-y-1 transition-all group w-full"
+                >
+                  <span className="font-bold text-[14px] text-[#112A46] group-hover:text-[#E05A2B] transition-colors leading-snug">
+                    Canadian Marine Careers Foundation
+                  </span>
+                  <FaExternalLinkAlt className="text-[#112A46]/30 group-hover:text-[#E05A2B] text-xl shrink-0 transition-colors" />
+                </a>
+              </div>
             </Reveal>
           </div>
         </section>

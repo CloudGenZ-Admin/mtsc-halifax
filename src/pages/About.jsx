@@ -23,7 +23,7 @@ import helecncircle from '../assets/HelenCircle.jpg'
 import volunteer1 from '../assets/events/A-grand-team-effort-768x1024.jpg';
 import volunteer2 from '../assets/events/Atlantic-Sky-crew-members-with-Helen-Elizabeth-and-Ronaldo-scaled.jpg';
 import volunteer3 from '../assets/events/Maria-and-Elizabeth-serves-Andy-with-Susan-and-Will-1024x768.jpg';
-import volunteer4 from '../assets/events/Nadia-and-Joanne-1024x768.jpg';
+import volunteer4 from '../assets/events/2. Community.jpg';
 import volunteer5 from '../assets/events/Volunteer-John-Attersley-with-Chris-Hall-768x1024.jpg';
 import volunteer6 from '../assets/events/Day-of-Seafarers-1024x683.jpg';
 import volunteer7 from '../assets/events/International-Day-of-the-Seafarer-1024x768.jpg';
@@ -41,7 +41,9 @@ import freeRoomImg from '../assets/Amenities - Free Room.jpg';
 import basketballImg from '../assets/Amenities - Half Court Basketball 2.jpg';
 import loungeImg from '../assets/Amenities - Lounge.jpg';
 import sunDeckImg from '../assets/Amenities - Sun Deck.jpg';
-import freeWifiImg from '../assets/5. Free Wifi.jpg';
+import freeWifiImg from '../assets/5. Free Wifi.png';
+import Chapal from '../assets/4a. Chapel.jpg';
+import SeafarersLounge from '../assets/4b. Seafarer.jpg';
 
 // Combine Halifax content into London's timeline structure
 const historyBlocks = [
@@ -112,20 +114,21 @@ function About() {
   };
 
   const volunteersGallery = [
-    { id: 1, img: volunteer1, title: 'Team Effort' },
-    { id: 2, img: volunteer2, title: 'Welcoming Crew Members' },
-    { id: 3, img: volunteer3, title: 'Serving with Care' },
-    { id: 4, img: volunteer4, title: 'Community Connection' },
-    { id: 5, img: volunteer5, title: 'Volunteer Support' },
-    { id: 6, img: volunteer6, title: 'Day of Seafarers' },
-    { id: 7, img: volunteer7, title: 'International Celebration' },
-    { id: 8, img: volunteer8, title: 'Our Dedicated Team' },
+    { id: 1, img: volunteer1 },
+    { id: 2, img: volunteer2 },
+    { id: 3, img: volunteer3 },
+    { id: 4, img: volunteer4 },
+    { id: 5, img: volunteer5 },
+    { id: 6, img: volunteer6 },
+    { id: 7, img: volunteer7 },
+    { id: 8, img: volunteer8 },
   ];
 
   const amenitiesGallery = [
-    { id: 1, img: loungeImg, title: 'Comfortable Lounge' },
-    { id: 2, img: canteenImg, title: 'Canteen & Souvenir Shop' },
-    { id: 3, img: freeRoomImg, title: 'Men’s and Women’s Free Rooms' },
+    { id: 0, img: Chapal, title: 'Chapel' },
+    { id: 1, img: loungeImg, title: 'Edmonds Lounge' },
+    { id: 2, img: SeafarersLounge, title: 'Seafarers Lounge' },
+    { id: 3, img: canteenImg, title: 'Canteen & Souvenir Shop' },
     { id: 4, img: chapelImg, title: 'Chapel & Prayer Room' },
     { id: 5, img: transportImg, title: 'Complimentary Transport' },
     { id: 6, img: bicyclesImg, title: 'Bicycles for Loan' },
@@ -133,6 +136,9 @@ function About() {
     { id: 8, img: sunDeckImg, title: 'Outdoor Sun Deck' },
     { id: 9, img: conferenceImg, title: 'Conference Space' },
     { id: 10, img: freeWifiImg, title: 'Free WiFi' },
+    { id: 11, img: freeRoomImg, title: 'Men’s and Women’s Free Rooms' },
+    
+   
   ];
 
   const carouselRef = useRef(null);
@@ -167,7 +173,7 @@ function About() {
       <main className="flex-grow">
 
         {/* Hero Section - Matching London Design */}
-        <section className="relative pt-28 pb-20 md:pt-36 md:pb-28 overflow-hidden bg-[#112A46] min-h-[45vh] flex items-center justify-center border-b border-[#0a1a2c]">
+        <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 overflow-hidden bg-[#112A46] min-h-[30vh] flex items-center justify-center border-b border-[#0a1a2c]">
           <div className="absolute inset-0 z-0">
             <img
               src={volunteersImg}
@@ -453,9 +459,9 @@ function About() {
                         <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" draggable="false" />
                       </div>
                       <div className="absolute inset-0 bg-gradient-to-t from-[#112A46]/90 via-transparent to-transparent flex items-end p-6">
-                        <div className="bg-white/95 backdrop-blur-sm rounded-xl px-4 py-2 shadow-sm">
+                        {/* <div className="bg-white/95 backdrop-blur-sm rounded-xl px-4 py-2 shadow-sm">
                           <h3 className="text-[#112A46] font-bold text-[14px]">{item.title}</h3>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   ))}

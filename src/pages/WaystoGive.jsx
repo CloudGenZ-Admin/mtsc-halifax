@@ -1024,8 +1024,9 @@ export default function WaystoGive() {
                   </div>
                 </Reveal>
 
+                {/* Added id="tickets" and scroll-mt-32 here so it perfectly anchors the redirect! */}
                 <Reveal delay={200}>
-                  <div className="bg-gradient-to-br from-[#EBF4F9] to-white rounded-3xl p-8 md:p-10 shadow-xl border border-[#112A46]/5 hover:shadow-2xl transition-all h-full flex flex-col">
+                  <div id="tickets" className="bg-gradient-to-br from-[#EBF4F9] to-white rounded-3xl p-8 md:p-10 shadow-xl border border-[#112A46]/5 hover:shadow-2xl transition-all h-full flex flex-col scroll-mt-32">
                     <div className="flex items-center gap-3 mb-6">
                       <div className="w-12 h-12 bg-[#112A46] rounded-xl flex items-center justify-center">
                         <FaStar className="text-[#FFD700] text-xl" />
@@ -1310,7 +1311,7 @@ export default function WaystoGive() {
                   We welcome support from local businesses, organizations, schools, faith communities, and community groups. Partnering with the Mission will provide your organization with extraordinary and rewarding relationship opportunities.
                 </p>
                 <p className="text-[#5A6C7D] text-[16px] leading-relaxed mb-6">
-                  You can support local events, volunteer activities, hospitality, and community awareness initiatives. For customized packages, please complete the partnership inquiry form, and our team will connect with you directly at <a href="mailto:marsha.clyne@missiontoseafarers.org" className="text-[#E05A2B] font-bold hover:underline">marsha.clyne@missiontoseafarers.org</a>.
+                  You can support local events, volunteer activities, hospitality, and community awareness initiatives. For customized packages, please complete the partnership inquiry form, and our team will connect with you directly.
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mt-8">
@@ -1322,7 +1323,7 @@ export default function WaystoGive() {
                     Partner with Halifax Station
                   </button>
                   <a
-                    href="https://www.missiontoseafarers.ca/"
+                    href="https://mtsc.ca/contact/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center cursor-pointer gap-2 bg-[#112A46] text-white px-6 py-3 rounded-full font-bold text-[14px] hover:bg-[#1a3a5f] transition-all shadow-md"

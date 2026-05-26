@@ -198,6 +198,7 @@ const Contact = () => {
                         <a href="https://wa.me/19024561658" className="flex items-center justify-center gap-1.5 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 font-bold py-2.5 rounded-lg transition-colors text-xs">
                           <MessageCircle className="h-4 w-4" /> +1 902-456-1658
                         </a>
+                        {/* Using mailto: prefix to open directly in the email application */}
                         <a href="mailto:hglenn@missiontoseafarershalifax.ca" className="flex items-center justify-center gap-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 font-bold py-2.5 rounded-lg transition-colors text-xs truncate px-2">
                           <Mail className="h-4 w-4 shrink-0" /> Email
                         </a>
@@ -212,6 +213,7 @@ const Contact = () => {
                         <a href="https://wa.me/19029893388" className="flex items-center justify-center gap-1.5 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 font-bold py-2.5 rounded-lg transition-colors text-xs">
                           <MessageCircle className="h-4 w-4" /> +1 902-989-3388
                         </a>
+                        {/* Using mailto: prefix to open directly in the email application */}
                         <a href="mailto:jloot@missiontoseafarershalifax.ca" className="flex items-center justify-center gap-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 font-bold py-2.5 rounded-lg transition-colors text-xs truncate px-2">
                           <Mail className="h-4 w-4 shrink-0" /> Email
                         </a>

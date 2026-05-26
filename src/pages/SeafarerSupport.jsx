@@ -121,7 +121,6 @@ export default function SeafarerSupport() {
 
       {/* Dynamic Modals */}
       <SupportModal isOpen={activeModal === 'shipVisit'} onClose={() => setActiveModal(null)} title="Request a Ship Visit" onSubmit={handleFormSubmit} />
-      <SupportModal isOpen={activeModal === 'parcel'} onClose={() => setActiveModal(null)} title="Send or Receive a Parcel" onSubmit={handleFormSubmit} />
       <SupportModal isOpen={activeModal === 'support'} onClose={() => setActiveModal(null)} title="Request General Support" onSubmit={handleFormSubmit} />
       <SupportModal isOpen={activeModal === 'clothing'} onClose={() => setActiveModal(null)} title="Request Clothing & Essentials" onSubmit={handleFormSubmit} />
       <SupportModal isOpen={activeModal === 'transport'} onClose={() => setActiveModal(null)} title="Transportation Request" onSubmit={handleFormSubmit} />
@@ -185,16 +184,18 @@ export default function SeafarerSupport() {
                 </div>
               </Reveal>
 
-              {/* Card 2 */}
+              {/* Card 2 - Direct link to parcel service */}
               <Reveal delay={100}>
-                <div onClick={() => setActiveModal('parcel')} className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#E05A2B]/30 transition-all cursor-pointer group h-full flex flex-col">
+                <a href="https://parcelservice.mtsc.ca/login" target="_blank" rel="noopener noreferrer" className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#E05A2B]/30 transition-all cursor-pointer group h-full flex flex-col block">
                   <div className="w-16 h-16 bg-[#FDF0EC] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                     <FaBoxOpen className="text-3xl text-[#E05A2B]" />
                   </div>
                   <h3 className="text-xl font-bold text-[#112A46] mb-3">Send or Receive Parcel</h3>
-                  <p className="text-gray-600 font-medium mb-6 flex-grow">Order personal items online and have them delivered safely to our Halifax station for pickup.</p>
+                  <p className="text-gray-600 font-medium mb-6 flex-grow">Order personal items online and have them delivered safely to our Halifax station for pickup.
+                       Please ensure that all courier and parcel deliveries to the Mission are scheduled within official office hours.
+                  </p>
                   <div className="text-[#E05A2B] font-bold text-sm inline-flex items-center gap-2">Parcel Info & Request →</div>
-                </div>
+                </a>
               </Reveal>
 
               {/* Card 3 (WhatsApp Direct) */}

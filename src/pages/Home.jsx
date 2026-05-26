@@ -44,7 +44,7 @@ import portToronto from '../assets/Corpo/ports/Toronto-Ports-logo-768x305.png';
 import portDpWorld from '../assets/Corpo/ports/dpworld-logo.png.webp';
 
 // --- GALLERY IMAGES ---
-
+import moment1a from '../assets/Moments from Halifax/1. Moments.jpg';
 import moment2a from '../assets/Moments from Halifax/2a. Moments.jpg';
 import moment2b from '../assets/Moments from Halifax/2b. Moments.jpg';
 import moment2c from '../assets/Moments from Halifax/2c. Moments.jpg';
@@ -108,18 +108,45 @@ export default function Home() {
   const allUpdates = [
     {
       tag: "Event",
-      title: "One port city",
-      date: "June 6th",
-      overview: "Join us in celebrating our vibrant port city and the seafarers who keep it moving.",
-      image: null
+      title: "Monthly Luncheon",
+      date: "May 28 ,2026 ",
+      overview: "The Monthly Luncheon is a recurring gathering that brings together members, guests, and community supporters  .",
     },
     {
       tag: "Event",
-      title: "International seafarers Day",
-      date: "June 25th",
-      overview: "A day to honor and recognize the vital contributions of seafarers worldwide.",
+      title: "One port city",
+      date: "Jun 6TH",
+      overview:"Join us in celebrating our vibrant port city and the seafarers who keep it moving."
+    },
+    
+
+
+   
+    {
+      tag: "Event",
+      title: "Christmas Shoebox Campaign",
+      date: "December 25",
+      overview: "Nothing can stop Christmas, and we continue to share with seafarers the joy and spirit of the holidays through gift-giving. .",
       image: null
     },
+
+    {
+
+      tag: "Event",
+      title: "International Seafarers Day",
+      date: "June 25",
+      overview:"A day to honor and recognize the vital contributions of seafarers worldwide."
+
+    },
+
+    {
+      tag: "Event",
+      title: "Car Rally",
+      date: "2025",
+      overview: "MtS Car Rally is a fun driving event where participants travel along a planned route.",
+      image: null
+    },
+    
     {
       tag: "Event",
       title: "Sea Sunday",
@@ -133,12 +160,21 @@ export default function Home() {
       date: "Annual traditions",
       overview: "Our annual traditions continue with the MtS Halifax Golf Tournament. Stay tuned for more details!",
       image: null
-    }
+    },
+     {
+      tag: "Event",
+      title: "Sea Sunday",
+      date: "2025",
+      overview: "The Mission to Seafarers Halifax joins Christian churches and faith or religious organizations worldwide in observing Sea Sunday.",
+      image: null
+    },
+
   ];
 
   const displayedUpdates = showAllEvents ? allUpdates : allUpdates.slice(0, 3);
 
   const galleryImages = [
+     moment1a,
     moment2a, moment2b, moment2c, moment2d,
     moment2e, moment2f, moment2g, moment2h,
     moment2i, moment2j, moment2k, moment2l,

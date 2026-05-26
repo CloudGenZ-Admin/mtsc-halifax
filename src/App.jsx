@@ -22,11 +22,23 @@ import SeafarerSupport from './pages/SeafarerSupport';
 
 
 function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    // If a hash exists (like #tickets), scroll to the matching element
+    if (hash) {
+      setTimeout(() => {
+        const id = hash.replace('#', '');
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      // Otherwise scroll to top as normal
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
 
   return null; 
 }

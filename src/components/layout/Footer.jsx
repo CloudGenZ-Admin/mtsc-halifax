@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaLinkedinIn, FaYoutube, FaInstagram, FaFacebookF, FaTiktok } from 'react-icons/fa';
+import { X, Gift } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 // Import the local logo and app images
 import seafarerLogoImg from '../../assets//logo.jpeg';
@@ -9,6 +16,8 @@ import appStoreBtn from '../../assets/btn-appstore.png';
 import googlePlayBtn from '../../assets/btnapp-google-play.png.webp';
 
 export default function Footer() {
+  const [donateDialogOpen, setDonateDialogOpen] = useState(false);
+
   const handleScrollToTop = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   };
@@ -24,16 +33,16 @@ export default function Footer() {
   ];
 
   const socialLinks = [
-    { Icon: FaLinkedinIn, url: 'https://www.linkedin.com/company/mission-to-seafarers-canada/', label: 'LinkedIn' },
-    { Icon: FaYoutube, url: 'https://www.youtube.com/@MissiontoSeafarersCanada', label: 'YouTube' },
-    { Icon: FaInstagram, url: 'https://www.instagram.com/missiontoseafarerscanada/', label: 'Instagram' },
-    { Icon: FaFacebookF, url: 'https://www.facebook.com/SeafarersCanada/', label: 'Facebook' },
-    { Icon: FaTiktok, url: 'https://www.tiktok.com/@seafarerscanada', label: 'TikTok' }
+    // { Icon: FaLinkedinIn, url: 'https://www.linkedin.com/company/mission-to-seafarers-canada/', label: 'LinkedIn' },
+    // { Icon: FaYoutube, url: 'https://www.youtube.com/@MissiontoSeafarersCanada', label: 'YouTube' },
+    // { Icon: FaInstagram, url: 'https://www.instagram.com/missiontoseafarerscanada/', label: 'Instagram' },
+    { Icon: FaFacebookF, url: 'https://www.facebook.com/MissionToSeafarersHalifaxCanada', label: 'Facebook' },
+    // { Icon: FaTiktok, url: 'https://www.tiktok.com/@seafarerscanada', label: 'TikTok' }
   ];
 
   return (
     // UPDATED: bg-[#233465] -> bg-navy-dark, added text-white/90 for base text
-    <footer className="bg-navy-dark text-white/90 font-sans w-full lg:mt-12">
+    <footer className="bg-navy-dark text-white/90 font-sans w-full lg:mt-12 relative">
       <div className="max-w-[1480px] mx-auto px-4 md:px-8 py-8 lg:py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-6">
         
         {/* Column 1: Brand & About */}
@@ -76,14 +85,22 @@ export default function Footer() {
           <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5 text-[14.5px]">
             {footerLinks.map(link => (
               <li key={link.name}>
-                {/* UPDATED: text-[#b6c2d9] -> text-white/90 | hover:text-white -> hover:text-coral-light */}
-                <Link 
-                  to={link.path} 
-                  className="text-white/90 hover:text-coral-light transition-colors block"
-                  onClick={handleScrollToTop}
-                >
-                  {link.name}
-                </Link>
+                {link.name === 'Donate' ? (
+                  <button 
+                    onClick={() => setDonateDialogOpen(true)}
+                    className="text-white/90 hover:text-coral-light transition-colors block text-left"
+                  >
+                    {link.name}
+                  </button>
+                ) : (
+                  <Link 
+                    to={link.path} 
+                    className="text-white/90 hover:text-coral-light transition-colors block"
+                    onClick={handleScrollToTop}
+                  >
+                    {link.name}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
@@ -166,6 +183,39 @@ export default function Footer() {
           </p>
         </div>
       </div>
+
+      {/* FULLY RESPONSIVE DONATE DIALOG POPUP (Matches Header) */}
+      <Dialog open={donateDialogOpen} onOpenChange={setDonateDialogOpen}>
+        <DialogContent
+          showCloseButton={false}
+          className="max-w-[95vw] lg:max-w-[1200px] w-full h-[95vh] md:h-[90vh] p-0 overflow-hidden flex flex-col rounded-2xl"
+        >
+          <DialogHeader className="p-4 md:p-5 shrink-0 border-b bg-white shadow-sm z-10 flex flex-row items-center justify-between">
+            <DialogTitle className="flex items-center gap-2 md:gap-3 text-lg md:text-xl font-extrabold text-navy">
+              <Gift className="h-5 w-5 text-coral" />
+              Secure Donation Form
+            </DialogTitle>
+            <button
+              onClick={() => setDonateDialogOpen(false)}
+              className="p-2 -mr-2 text-gray-500 hover:text-navy hover:bg-gray-100 rounded-full transition-colors focus:outline-none"
+              aria-label="Close dialog"
+            >
+              <X className="h-6 w-6 md:h-7 md:w-7" />
+            </button>
+          </DialogHeader>
+
+          <div className="flex-1 overflow-hidden p-2 sm:p-4 md:p-6 lg:p-8 bg-gray-50/80 flex flex-col">
+            <div className="w-full flex-1 bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm relative">
+              <iframe
+                src="https://www.canadahelps.org/en/dn/42880"
+                title="CanadaHelps Secure Donation Form"
+                className="absolute inset-0 w-full h-full border-none bg-transparent"
+                allow="payment"
+              ></iframe>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </footer>
   );
 }
