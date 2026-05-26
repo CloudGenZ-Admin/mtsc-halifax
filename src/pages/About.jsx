@@ -20,15 +20,17 @@ import helecncircle from '../assets/HelenCircle.jpg'
 // ==========================================
 // IMPORT VOLUNTEER GALLERY IMAGES
 // ==========================================
-import volunteer1 from '../assets/events/A-grand-team-effort-768x1024.jpg';
-import volunteer2 from '../assets/events/Atlantic-Sky-crew-members-with-Helen-Elizabeth-and-Ronaldo-scaled.jpg';
-import volunteer3 from '../assets/events/Maria-and-Elizabeth-serves-Andy-with-Susan-and-Will-1024x768.jpg';
-import volunteer4 from '../assets/events/2. Community.jpg';
-import volunteer5 from '../assets/events/Volunteer-John-Attersley-with-Chris-Hall-768x1024.jpg';
-import volunteer6 from '../assets/events/Day-of-Seafarers-1024x683.jpg';
-import volunteer7 from '../assets/events/International-Day-of-the-Seafarer-1024x768.jpg';
-import volunteer8 from '../assets/events/Patricia-Susan-Elizabeth-Jack-Andy-.-Maria-Colm-Jim-Helen-768x1024.jpg';
-
+import volunteer1 from '../assets/Vol/3m. Volunteers.jpg';
+import volunteer2 from '../assets/Vol/3n. Volunteers.jpg';
+import volunteer3 from '../assets/Vol/3o. Volunteers.jpg';
+import volunteer4 from '../assets/Vol/3p. Volunteers.jpg';
+import volunteer5 from '../assets/Vol/3q. Volunteers.jpg';
+import volunteer6 from '../assets/Vol/3r. Volunteers.jpg';
+import volunteer7 from '../assets/Vol/3s. Volunteers.jpg';
+import volunteer8 from '../assets/Vol/3t. Volunteers.jpg';
+import volunteer9 from '../assets/Vol/3v. Volunteers.jpg';
+import volunteer10 from '../assets/Vol/3w. Volunteers.jpg';
+import volunteer11 from '../assets/Vol/3x. Volunteers.jpg';
 // ==========================================
 // IMPORT GALLERY IMAGES (AMENITIES)
 // ==========================================
@@ -113,16 +115,19 @@ function About() {
     setActiveModal(null);
   };
 
-  const volunteersGallery = [
-    { id: 1, img: volunteer1 },
-    { id: 2, img: volunteer2 },
-    { id: 3, img: volunteer3 },
-    { id: 4, img: volunteer4 },
-    { id: 5, img: volunteer5 },
-    { id: 6, img: volunteer6 },
-    { id: 7, img: volunteer7 },
-    { id: 8, img: volunteer8 },
-  ];
+const volunteersGallery = [
+  { id: 1, img: volunteer1 },
+  { id: 2, img: volunteer2 },
+  { id: 3, img: volunteer3 },
+  { id: 4, img: volunteer4 },
+  { id: 5, img: volunteer5 },
+  { id: 6, img: volunteer6 },
+  { id: 7, img: volunteer7 },
+  { id: 8, img: volunteer8 },
+  { id: 9, img: volunteer9 },
+  { id: 10, img: volunteer10 },
+  { id: 11, img: volunteer11 },
+];
 
   const amenitiesGallery = [
     { id: 0, img: Chapal, title: 'Chapel' },
