@@ -33,11 +33,11 @@ export default function Footer() {
   ];
 
   const socialLinks = [
-    // { Icon: FaLinkedinIn, url: 'https://www.linkedin.com/company/mission-to-seafarers-canada/', label: 'LinkedIn' },
-    // { Icon: FaYoutube, url: 'https://www.youtube.com/@MissiontoSeafarersCanada', label: 'YouTube' },
-    // { Icon: FaInstagram, url: 'https://www.instagram.com/missiontoseafarerscanada/', label: 'Instagram' },
+    { Icon: FaLinkedinIn, url: 'https://www.linkedin.com/company/mission-to-seafarers-halifax-ns/', label: 'LinkedIn' },
+    { Icon: FaYoutube, url: 'https://www.youtube.com/@MissiontoSeafarersCanada', label: 'YouTube' },
+    { Icon: FaInstagram, url: 'https://www.instagram.com/missiontoseafarerscanada/', label: 'Instagram' },
     { Icon: FaFacebookF, url: 'https://www.facebook.com/MissionToSeafarersHalifaxCanada', label: 'Facebook' },
-    // { Icon: FaTiktok, url: 'https://www.tiktok.com/@seafarerscanada', label: 'TikTok' }
+    { Icon: FaTiktok, url: 'https://www.tiktok.com/@seafarerscanada', label: 'TikTok' }
   ];
 
   return (
