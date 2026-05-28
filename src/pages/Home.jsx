@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Ship, MapPin, Home as HomeIcon, Wifi, Users, HeartHandshake, LifeBuoy, Package, ShieldCheck } from 'lucide-react';
 import Navbar from '../components/layout/Navbar';
@@ -6,6 +6,9 @@ import Footer from '../components/layout/Footer';
 import Hero from '../components/sections/Hero';
 import Stats from '../components/sections/Stats';
 import Reveal from '../components/common/Reveal';
+
+// Import Events API Context
+import { useEvents } from '../context/EventsContext';
 
 // Import local images for the "Join Our Community" section
 import findPortImg from '../assets/img/footer-find-port_1.png';
@@ -72,10 +75,62 @@ import moment2x from '../assets/Moments from Halifax/2x. Moments.jpg';
 import moment2y from '../assets/Moments from Halifax/2y. Moments.jpg';
 import moment2z from '../assets/Moments from Halifax/2z. Moments.jpg';
 
+// Helper function to extract plain text and robustly strip out any leaked CSS from the CMS
+const extractText = (content, overview) => {
+  let text = overview || '';
 
+  if (!text && content) {
+    try {
+      // Unpack data-html-content if present
+      const htmlMatch = content.match(/data-html-content="([^"]+)"/);
+      if (htmlMatch) {
+        text = htmlMatch[1];
+      } else {
+        text = content;
+      }
+      
+      // Unescape basic HTML so tags can be recognized
+      text = text.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+      
+      // Completely remove <style> and <script> blocks before stripping tags
+      text = text.replace(/<(style|script)[^>]*>[\s\S]*?<\/\1>/gi, '');
+      
+      // Strip all remaining HTML tags
+      text = text.replace(/<[^>]+>/g, '');
+    } catch (e) {
+      text = '';
+    }
+  }
 
+  if (!text) return 'Click to view event details...';
+
+  // Aggressive cleanup for leaked CSS strings (whether originating from overview or content fields)
+  text = text.replace(/\/\*[\s\S]*?\*\//g, ''); // Removes CSS comments like /* Scoped CSS ... */
+  text = text.replace(/[.#a-zA-Z0-9\-_:\s]+{[^}]*}/g, ''); // Removes CSS blocks like .className { ... } or :root { ... }
+  
+  // Clean up common HTML entities and excessive whitespace
+  text = text.replace(/&nbsp;/g, ' ')
+             .replace(/&quot;/g, '"')
+             .replace(/&amp;/g, '&')
+             .replace(/&#[0-9]+;/g, '')
+             .replace(/\s+/g, ' ')
+             .trim();
+
+  // Final safety net: If raw CSS properties are still detected, hide the garbage text
+  if (text.includes('max-width:') || text.includes('margin:') || text.includes('padding:') || text.includes('font-family:')) {
+    return 'Click to view event details...';
+  }
+
+  if (!text) return 'Click to view event details...';
+
+  // Truncate cleanly
+  return text.substring(0, 120) + (text.length > 120 ? '...' : '');
+};
 
 export default function Home() {
+  // Use featuredEvents instead of allEvents
+  const { featuredEvents, loading } = useEvents();
+
   // State to control showing all events in the news section
   const [showAllEvents, setShowAllEvents] = useState(false);
 
@@ -97,92 +152,28 @@ export default function Home() {
     };
   }, [isDonateModalOpen]);
 
-  // Array of imported port logos for the carousel
-  const partnerLogos = [
-    portSydney, portGCT, portHopa, portHelm, portOntario,
-    portPrinceRupert, portRobertAllan, portTK, portNamma,
-    portToronto, portDpWorld
-  ];
-
-  // Halifax Events mapped to match the Toronto style
-  const allUpdates = [
-    {
-      tag: "Event",
-      title: "Monthly Luncheon",
-      date: "May 28 ,2026 ",
-      overview: "The Monthly Luncheon is a recurring gathering that brings together members, guests, and community supporters  .",
-    },
-    {
-      tag: "Event",
-      title: "One port city",
-      date: "Jun 6TH",
-      overview:"Join us in celebrating our vibrant port city and the seafarers who keep it moving."
-    },
-    
-
-
-   
-    {
-      tag: "Event",
-      title: "Christmas Shoebox Campaign",
-      date: "December 25",
-      overview: "Nothing can stop Christmas, and we continue to share with seafarers the joy and spirit of the holidays through gift-giving. .",
-      image: null
-    },
-
-    {
-
-      tag: "Event",
-      title: "International Seafarers Day",
-      date: "June 25",
-      overview:"A day to honor and recognize the vital contributions of seafarers worldwide."
-
-    },
-
-    {
-      tag: "Event",
-      title: "Car Rally",
-      date: "2025",
-      overview: "MtS Car Rally is a fun driving event where participants travel along a planned route.",
-      image: null
-    },
-    
-    {
-      tag: "Event",
-      title: "Sea Sunday",
-      date: "July 12",
-      overview: "An annual celebration to pray for seafarers and their families and give thanks for their lives and work.",
-      image: null
-    },
-    {
-      tag: "Tradition",
-      title: "MtS Halifax Golf Tournament",
-      date: "Annual traditions",
-      overview: "Our annual traditions continue with the MtS Halifax Golf Tournament. Stay tuned for more details!",
-      image: null
-    },
-     {
-      tag: "Event",
-      title: "Sea Sunday",
-      date: "2025",
-      overview: "The Mission to Seafarers Halifax joins Christian churches and faith or religious organizations worldwide in observing Sea Sunday.",
-      image: null
-    },
-
-  ];
-
-  const displayedUpdates = showAllEvents ? allUpdates : allUpdates.slice(0, 3);
-
+  // Gallery images array
   const galleryImages = [
-     moment1a,
-    moment2a, moment2b, moment2c, moment2d,
-    moment2e, moment2f, moment2g, moment2h,
-    moment2i, moment2j, moment2k, moment2l,
-    moment2m, moment2n, moment2o, moment2p,
-    moment2q, moment2r, moment2s, moment2t,
-    moment2u, moment2v, moment2w, moment2x,
+    moment1a, moment2a, moment2b, moment2c, moment2d,
+    moment2e, moment2f, moment2g, moment2h, moment2i, 
+    moment2j, moment2k, moment2l, moment2m, moment2n, 
+    moment2o, moment2p, moment2q, moment2r, moment2s, 
+    moment2t, moment2u, moment2v, moment2w, moment2x,
     moment2y, moment2z
   ];
+
+  // Process API Events (Sort by Newest, fallback to createdAt if eventDate is null)
+  const sortedEvents = useMemo(() => {
+    if (!featuredEvents || featuredEvents.length === 0) return [];
+    
+    return [...featuredEvents].sort((a, b) => {
+      const dateA = new Date(a.eventDate || a.createdAt || 0);
+      const dateB = new Date(b.eventDate || b.createdAt || 0);
+      return dateB - dateA;
+    });
+  }, [featuredEvents]);
+
+  const displayedUpdates = showAllEvents ? sortedEvents : sortedEvents.slice(0, 3);
 
   // Slider scroll function
   const scrollGallery = (direction) => {
@@ -435,7 +426,7 @@ export default function Home() {
                 <div className="hidden md:flex w-full md:w-4/12 justify-center">
                   <div className="grid h-48 w-48 place-items-center rounded-full bg-white shadow-[0_4px_24px_rgba(45,53,128,0.08)] border-4 border-[#e05a2b]/10">
                     <svg className="h-20 w-20 text-[#e05a2b]" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="6" cy="6" r="3" /><circle cx="6" cy="18" r="3" /><line x1="20" x2="8.12" y1="4" y2="15.88" /><line x1="14.47" x2="20" y1="14.48" y2="20" /><line x1="8.12" x2="12" y1="8.12" y2="12" />
+                      <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" />
                     </svg>
                   </div>
                 </div>
@@ -522,7 +513,6 @@ export default function Home() {
                   <a href="/contact" className="inline-flex cursor-pointer justify-center bg-[#E05A2B] text-white px-7 py-3 rounded-full font-bold text-[14px] hover:bg-[#c94d23] shadow-md transition-all">
                     Volunteer Locally
                   </a>
-                  {/* CHANGED FROM <a> to <button> TO TRIGGER MODAL */}
                   <button
                     onClick={() => setIsDonateModalOpen(true)}
                     className="inline-flex justify-center cursor-pointer bg-[#112A46] text-white px-7 py-3 rounded-full font-bold text-[14px] hover:bg-[#0d1f35] shadow-md transition-all"
@@ -582,7 +572,6 @@ export default function Home() {
                   <p className="text-white/90 text-[16px] md:text-[18px] leading-relaxed mb-8 flex-1">
                     Support Mission to Seafarers Halifax  through Mission to Seafarers Canada
                   </p>
-                  {/* CHANGED FROM <a> to <button> TO TRIGGER MODAL */}
                   <button
                     onClick={() => setIsDonateModalOpen(true)}
                     className="w-full bg-white cursor-pointer text-[#e05a2b] hover:bg-white/90 font-bold h-14 rounded-xl flex items-center justify-center transition-colors text-[16px]"
@@ -604,7 +593,6 @@ export default function Home() {
                   <p className="text-[#666666] text-[16px] md:text-[18px] leading-relaxed mb-8 flex-1">
                     Support Mission to Seafarers Halifax  through Mission to Seafarers Canada
                   </p>
-                  {/* CHANGED FROM <a> to <button> TO TRIGGER MODAL */}
                   <button
                     onClick={() => setIsDonateModalOpen(true)}
                     className="w-full bg-[#2d3580] cursor-pointer hover:bg-[#1c2e6b] text-white font-bold h-14 rounded-xl flex items-center justify-center transition-colors text-[16px] mb-6"
@@ -622,7 +610,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ----------------- LATEST FROM HALIFAX ----------------- */}
+        {/* ----------------- LATEST FROM HALIFAX (Now Uses featuredEvents) ----------------- */}
         <section className="bg-[#FDF0EC] py-20 md:py-28">
           <div className="max-w-[1200px] mx-auto px-7">
             <Reveal>
@@ -631,7 +619,7 @@ export default function Home() {
                   <div className="flex mb-4">
                     <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#e05a2b]">
                       <span className="block h-[1px] w-8 bg-[#e05a2b]"></span>
-                      News and Upcoming Events
+                      Featured Events
                     </span>
                   </div>
                   <h2 className="text-3xl md:text-4xl font-extrabold text-[#2d3580] leading-tight">
@@ -639,48 +627,62 @@ export default function Home() {
                   </h2>
                 </div>
 
-                <button
-                  onClick={() => setShowAllEvents(!showAllEvents)}
-                  className="border-2 border-[#2d3580] cursor-pointer text-[#2d3580] hover:bg-[#2d3580] hover:text-white font-bold px-6 py-2.5 rounded-lg transition-colors flex items-center"
-                >
-                  {showAllEvents ? "Show Less Updates" : "View Updates"}
-                  <svg className={`ml-2 h-4 w-4 transition-transform ${showAllEvents ? "rotate-90" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
+                {sortedEvents.length > 3 && (
+                  <button
+                    onClick={() => setShowAllEvents(!showAllEvents)}
+                    className="border-2 border-[#2d3580] cursor-pointer text-[#2d3580] hover:bg-[#2d3580] hover:text-white font-bold px-6 py-2.5 rounded-lg transition-colors flex items-center"
+                  >
+                    {showAllEvents ? "Show Less Updates" : "View Updates"}
+                    <svg className={`ml-2 h-4 w-4 transition-transform ${showAllEvents ? "rotate-90" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                )}
               </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {displayedUpdates.map((n, idx) => (
-                  <article key={idx} className="group rounded-2xl border border-gray-200 bg-white overflow-hidden hover:shadow-[0_12px_32px_rgba(224,90,43,0.12)] hover:-translate-y-1 transition-all flex flex-col">
-                    <div className="aspect-[36/9] relative overflow-hidden shrink-0 flex items-end p-5">
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#2d3580]/80 via-[#1c2e6b] to-[#112A46] z-0" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#112A46]/95 via-[#112A46]/40 to-transparent z-0" />
+              {loading ? (
+                <div className="flex justify-center items-center py-12">
+                   <p className="text-lg text-[#2d3580] font-bold animate-pulse">Loading featured events...</p>
+                </div>
+              ) : displayedUpdates.length > 0 ? (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {displayedUpdates.map((n, idx) => (
+                    <Link 
+                      to={`/events/${n.url}`} 
+                      key={n.id || idx} 
+                      className="group rounded-2xl border border-gray-200 bg-white overflow-hidden hover:shadow-[0_12px_32px_rgba(224,90,43,0.12)] hover:-translate-y-1 transition-all flex flex-col block no-underline"
+                    >
+                      <div className="aspect-[36/9] relative overflow-hidden shrink-0 flex items-end p-5">
+                        <div className="absolute inset-0 bg-gradient-to-br from-[#2d3580]/80 via-[#1c2e6b] to-[#112A46] z-0" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#112A46]/95 via-[#112A46]/40 to-transparent z-0" />
 
-                      <div className="absolute top-4 left-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-[#e05a2b] text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 shadow-sm">
-                        <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        {n.tag}
+                        <div className="absolute top-4 left-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-[#e05a2b] text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1.5 shadow-sm">
+                          <svg className="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          {n.tags && n.tags.length > 0 ? n.tags[0] : "Event"}
+                        </div>
+                        <div className="relative z-10 text-white/95 text-xs font-bold uppercase tracking-wider drop-shadow-md">
+                          Halifax
+                        </div>
                       </div>
-                      <div className="relative z-10 text-white/95 text-xs font-bold uppercase tracking-wider drop-shadow-md">
-                        {n.date} <span className="mx-2 text-white/40">|</span> Halifax
-                      </div>
-                    </div>
 
-                    <div className="p-6 flex-1 flex flex-col">
-                      <h3 className="text-lg font-extrabold text-[#2d3580] leading-snug group-hover:text-[#e05a2b] transition-colors">
-                        {n.title}
-                      </h3>
-                      {n.overview && (
+                      <div className="p-6 flex-1 flex flex-col">
+                        <h3 className="text-lg font-extrabold text-[#2d3580] leading-snug group-hover:text-[#e05a2b] transition-colors">
+                          {n.title}
+                        </h3>
                         <p className="mt-3 text-sm text-[#666666] leading-relaxed line-clamp-3">
-                          {n.overview}
+                          {extractText(n.content, n.overview)}
                         </p>
-                      )}
-                    </div>
-                  </article>
-                ))}
-              </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12">
+                  <p className="text-lg text-[#666666] font-medium">More events and updates coming soon. Please check back later!</p>
+                </div>
+              )}
             </Reveal>
           </div>
         </section>
@@ -870,7 +872,6 @@ export default function Home() {
                 <a href="/contact" className="inline-flex justify-center items-center bg-transparent border-2 border-[#2d3580] text-[#2d3580] px-9 py-4 rounded-full font-bold text-[14px] hover:bg-[#2d3580] hover:text-white shadow-sm transition-all">
                   Contact the Halifax Station
                 </a>
-                {/* CHANGED FROM <a> to <button> TO TRIGGER MODAL */}
                 <button
                   onClick={() => setIsDonateModalOpen(true)}
                   className="inline-flex justify-center cursor-pointer items-center bg-[#e05a2b] text-white px-9 py-4 rounded-full font-bold text-[14px] hover:bg-[#c94d23] shadow-lg transition-all"
@@ -945,11 +946,6 @@ export default function Home() {
             </Reveal>
           </div>
         </section>
-
-
-
-
-
 
       </main>
       <Footer />

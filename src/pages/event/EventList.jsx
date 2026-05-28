@@ -7,6 +7,9 @@ import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import Reveal from '../../components/common/Reveal';
 
+// Import the background image
+import eventsBg from '../../assets/Events.jpeg';
+
 const EventList = () => {
   const { allEvents, featuredEvents, loading: eventsLoading } = useEvents();
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -20,24 +23,31 @@ const EventList = () => {
     });
   };
 
-  // 1. FILTER FOR ONGOING & UPCOMING EVENTS
+  // 1. FILTER FOR TOP 3 LATEST FEATURED EVENTS (Ongoing & Upcoming)
   const sliderEvents = useMemo(() => {
-    if (!allEvents || allEvents.length === 0) return [];
+    // We prioritize "featuredEvents", but fallback to "allEvents" if empty
+    const sourceEvents = (featuredEvents && featuredEvents.length > 0) ? featuredEvents : allEvents;
+    
+    if (!sourceEvents || sourceEvents.length === 0) return [];
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const upcoming = allEvents
+    // Filter for ongoing and upcoming events
+    const upcoming = sourceEvents
       .filter((event) => event.eventDate && new Date(event.eventDate) >= today)
       .sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate));
 
-    // Fallback if no upcoming events exist so the slider doesn't break
-    if (upcoming.length === 0) {
-      return allEvents.slice(0, 3);
+    // If we have upcoming events, take the top 3
+    if (upcoming.length > 0) {
+      return upcoming.slice(0, 3);
     }
 
-    return upcoming.slice(0, 5); 
-  }, [allEvents]);
+    // Fallback: If no future events exist, just grab the 3 latest featured events 
+    return [...sourceEvents]
+      .sort((a, b) => new Date(b.eventDate || 0) - new Date(a.eventDate || 0))
+      .slice(0, 3);
+  }, [allEvents, featuredEvents]);
 
   // 2. AUTO-PLAY EFFECT
   useEffect(() => {
@@ -108,16 +118,25 @@ const EventList = () => {
       <main className="flex-grow bg-warm-gray">
         
         {/* Hero Section */}
-        <section className="relative pt-24 pb-32 overflow-hidden bg-navy-dark">
-          <div className="absolute inset-0 bg-cover bg-center opacity-10 mix-blend-overlay z-0"></div>
+        <section className="relative pt-24 pb-32 overflow-hidden">
+          <div className="absolute inset-0 z-0">
+            <img 
+              src={eventsBg} 
+              alt="Events" 
+              className="w-full h-full object-cover" 
+              style={{ objectPosition: '50% 25%' }} 
+            />
+            <div className="absolute inset-0 bg-navy/40"></div>
+          </div>
+          
           <div className="max-w-[1200px] mx-auto px-7 relative z-10 text-center flex flex-col items-center">
-            <span className="inline-flex items-center gap-2 bg-coral/20 text-coral-light text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-5 border border-coral/30">
+            <span className="inline-flex items-center gap-2 bg-coral/80 backdrop-blur-sm text-white text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-5 border border-white/20">
               <FiCalendar /> Community Events
             </span>
-            <h1 className="text-[clamp(36px,5vw,56px)] font-black text-white leading-[1.1] mb-6 max-w-3xl mx-auto">
+            <h1 className="text-[clamp(36px,5vw,56px)] font-black text-white leading-[1.1] mb-6 max-w-3xl mx-auto drop-shadow-lg">
               Our <span className="text-coral">Events</span>
             </h1>
-            <p className="text-white/80 text-[17px] font-medium max-w-2xl mx-auto mb-8">
+            <p className="text-white text-[20px] font-medium max-w-2xl mx-auto mb-8 drop-shadow-md">
               Join us in celebrating and supporting seafarers through our community events, fundraisers, and special occasions throughout the year.
             </p>
             
@@ -143,10 +162,10 @@ const EventList = () => {
                   <span className="w-2 h-8 bg-coral rounded-full"></span>
                   Events Announcement
                 </h2>
-                <p className="text-text-mid mt-2 ml-5">Ongoing and upcoming events</p>
+                <p className="text-text-mid mt-2 ml-5">Our top ongoing and upcoming events</p>
               </div>
               
-              <div className="relative w-full h-[450px] md:h-[500px] bg-navy rounded-2xl overflow-hidden shadow-card">
+              <div className="relative w-full h-[450px] md:h-[500px] rounded-2xl overflow-hidden shadow-card">
                 
                 {sliderEvents.length > 0 ? (
                   <div className="relative w-full h-full">
@@ -176,17 +195,23 @@ const EventList = () => {
                                 className="absolute inset-0 w-full h-full object-cover z-0"
                               />
                             ) : (
-                              <div className="absolute inset-0 w-full h-full bg-navy-dark z-0"></div>
+                              // Slider Fallback Image
+                              <img 
+                                src={eventsBg} 
+                                alt={event.title} 
+                                className="absolute inset-0 w-full h-full object-cover z-0"
+                                style={{ objectPosition: '50% 25%' }}
+                              />
                             )}
                             
                             {/* LAYER 1: Dark Overlay so text is readable */}
                             <div className="absolute inset-0 bg-black/60 z-10"></div>
                             
-                            {/* LAYER 2: Text Content & Button (Guaranteed to be on top) */}
+                            {/* LAYER 2: Text Content & Button */}
                             <div className="absolute inset-0 z-20 flex flex-col justify-center items-center text-center p-6 md:p-12">
                               
                               <span className="inline-block bg-coral/90 text-white text-xs md:text-sm font-bold tracking-widest uppercase px-5 py-2 rounded-full mb-6 shadow-md border border-coral-light/50">
-                                {isUpcoming ? "Announcement" : "Recent Event"}
+                                {isUpcoming ? "Upcoming Event" : "Recent Event"}
                               </span>
                               
                               <h3 className="text-3xl md:text-5xl font-black text-white mb-4 drop-shadow-lg max-w-4xl leading-tight">
@@ -199,7 +224,7 @@ const EventList = () => {
                                 </p>
                               )}
                               
-                              {/* --- THE EVENT BUTTON --- */}
+                              {/* --- LINK BUTTON TO SPECIFIC EVENT --- */}
                               <Link
                                 to={`/events/${event.url}`}
                                 className="inline-flex items-center gap-2 bg-coral text-white px-8 md:px-10 py-4 rounded-full font-bold text-lg transition-all shadow-[0_0_20px_rgba(255,107,107,0.4)] hover:shadow-[0_0_30px_rgba(255,107,107,0.6)] hover:-translate-y-1 hover:bg-white hover:text-coral border-2 border-coral z-30"
@@ -249,9 +274,18 @@ const EventList = () => {
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center h-full z-20 relative p-8 text-center bg-navy-dark">
-                    <FiCalendar className="text-coral text-6xl mb-4" />
-                    <h3 className="text-3xl font-bold text-white mb-2">More Events Coming Soon</h3>
-                    <p className="text-white/80 text-lg">Check out our featured events below.</p>
+                    <img 
+                      src={eventsBg} 
+                      alt="Events coming soon" 
+                      className="absolute inset-0 w-full h-full object-cover z-0" 
+                      style={{ objectPosition: '50% 25%' }}
+                    />
+                    <div className="absolute inset-0 bg-navy/50 z-10"></div>
+                    <div className="relative z-20 flex flex-col items-center">
+                      <FiCalendar className="text-coral text-6xl mb-4" />
+                      <h3 className="text-3xl font-bold text-white mb-2">More Events Coming Soon</h3>
+                      <p className="text-white/80 text-lg">Check out our featured events below.</p>
+                    </div>
                   </div>
                 )}
               </div>
@@ -305,8 +339,14 @@ const EventCard = ({ event, getFirstImage, formatDate }) => {
           <div className="absolute inset-0 bg-navy/10 group-hover:bg-transparent transition-colors"></div>
         </div>
       ) : (
-        <div className="h-56 bg-navy/5 flex items-center justify-center">
-          <FiCalendar className="text-4xl text-navy/20" />
+        <div className="h-56 bg-navy/5 flex items-center justify-center relative overflow-hidden">
+          <img 
+            src={eventsBg} 
+            alt="Event placeholder" 
+            className="absolute inset-0 w-full h-full object-cover opacity-20" 
+            style={{ objectPosition: '50% 25%' }}
+          />
+          <FiCalendar className="text-4xl text-navy/40 relative z-10" />
         </div>
       )}
       <div className="p-6 flex-grow flex flex-col">
