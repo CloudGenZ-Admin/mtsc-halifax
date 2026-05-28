@@ -230,7 +230,7 @@ export default function Publication() {
                   <FaEnvelopeOpenText /> Sign Up
                 </a>
                 <a
-                  href="#"
+                  href="contact"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 bg-[#112A46] text-white px-8 py-4 rounded-xl font-bold hover:bg-[#E05A2B] transition-colors shadow-md cursor-pointer"
