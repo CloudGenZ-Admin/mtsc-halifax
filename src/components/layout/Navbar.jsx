@@ -84,23 +84,23 @@ const SiteHeader = () => {
       }`}
     >
       {/* Header height: Adjusted so 1024px (lg) gets a very tall header for the big tablet logo. Drops back to normal on Desktop (xl:h-28) */}
-      <div className="w-full max-w-[1600px] mx-auto px-4 md:px-6 lg:px-8 flex h-32 sm:h-40 md:h-44 lg:h-48 xl:h-28 items-center justify-between gap-4">
+      <div className="w-full max-w-[1600px] mx-auto px-4 max-[375px]:px-2 md:px-6 lg:px-8 flex h-38 max-[375px]:h-24 sm:h-40 md:h-44 lg:h-48 xl:h-32 items-center justify-between gap-4 max-[375px]:gap-2">
 
         {/* LOGO SECTION */}
-        <Link to="/" className="flex items-center gap-2 sm:gap-4 group shrink-0">
+        <Link to="/" className="flex items-center gap-2 max-[375px]:gap-1 sm:gap-4 group shrink-0">
           <img
             src={logo}
             alt="Mission to Seafarers Logo"
-            /* HUGE on 1024px (lg:h-44). Normal on actual desktop (xl:h-20 2xl:h-24) */
-            className="h-28 sm:h-36 md:h-40 lg:h-44 xl:h-20 2xl:h-24 w-auto shrink-0 object-contain rounded-md group-hover:scale-105 transition-transform"
+            /* HUGE on 1024px (lg:h-44). Normal on actual desktop (xl:h-20 2xl:h-24). Shrunk below 375px */
+            className="h-36 max-[375px]:h-20 sm:h-36 md:h-44 lg:h-46 xl:h-30 2xl:h-30 w-auto shrink-0 object-contain rounded-md group-hover:scale-105 transition-transform"
           />
           <span className="flex flex-col justify-center">
-            {/* Massive text for 1024px (lg:32px). Normal for Desktop (xl:18px 2xl:20px) */}
-            <span className="text-[15px] sm:text-[24px] md:text-[28px] lg:text-[32px] xl:text-[18px] 2xl:text-[20px] font-extrabold text-navy whitespace-nowrap leading-none tracking-tight">
+            {/* Massive text for 1024px (lg:32px). Normal for Desktop (xl:18px 2xl:20px). Shrunk below 375px */}
+            <span className="text-[16px] max-[375px]:text-[13px] sm:text-[24px] md:text-[30px] lg:text-[36px] xl:text-[22px] 2xl:text-[26px] font-extrabold text-navy whitespace-nowrap leading-none tracking-tight">
               Mission to Seafarers
             </span>
-            {/* Massive subtext for 1024px (lg:20px). Normal for Desktop (xl:13px) */}
-            <span className="text-[10px] sm:text-[16px] md:text-[18px] lg:text-[20px] xl:text-[13px] font-bold uppercase tracking-[0.18em] text-coral mt-1 sm:mt-1.5 whitespace-nowrap leading-none">
+            {/* Massive subtext for 1024px (lg:20px). Normal for Desktop (xl:13px). Shrunk below 375px */}
+            <span className="text-[16px] max-[375px]:text-[11px] sm:text-[16px] md:text-[20px] lg:text-[24px] xl:text-[22px] font-bold uppercase tracking-[0.18em] text-coral mt-1 max-[375px]:mt-0.5 sm:mt-1.5 whitespace-nowrap leading-none">
               Halifax
             </span>
           </span>
@@ -169,11 +169,7 @@ const SiteHeader = () => {
             </a>
           </Button>
 
-          <Button asChild variant="outline" size="sm" className="border-navy text-navy hover:bg-navy hover:text-white font-bold whitespace-nowrap text-xs 2xl:text-sm px-3 2xl:px-4 h-10">
-            <Link to="/prayer">
-              Send a Prayer
-            </Link>
-          </Button>
+         
 
           <Button
             onClick={() => setDonateDialogOpen(true)}
@@ -188,9 +184,9 @@ const SiteHeader = () => {
         <button
           aria-label="Toggle menu"
           onClick={() => setOpen((v) => !v)}
-          className="xl:hidden p-2 -mr-2 rounded-md text-navy hover:bg-warm-gray shrink-0 transition-colors"
+          className="xl:hidden p-2 max-[375px]:p-1 -mr-2 rounded-md text-navy hover:bg-warm-gray shrink-0 transition-colors"
         >
-          {open ? <X className="h-8 w-8 md:h-10 md:w-10" /> : <Menu className="h-8 w-8 md:h-10 md:w-10" />}
+          {open ? <X className="h-8 w-8 max-[375px]:h-6 max-[375px]:w-6 md:h-10 md:w-10" /> : <Menu className="h-8 w-8 max-[375px]:h-6 max-[375px]:w-6 md:h-10 md:w-10" />}
         </button>
       </div>
 
@@ -262,11 +258,7 @@ const SiteHeader = () => {
                   Seafarer Parcel Pickup Service
                 </a>
               </Button>
-              <Button asChild variant="outline" className="border-2 border-navy text-navy font-bold w-full justify-center h-12 md:h-16 md:text-lg rounded-xl">
-                <Link to="/prayer">
-                  Send a Prayer
-                </Link>
-              </Button>
+           
               <Button
                 onClick={() => {
                   setDonateDialogOpen(true);

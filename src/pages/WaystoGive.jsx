@@ -500,7 +500,7 @@ export default function WaystoGive() {
                       onClick={() => setActiveModal('workplace')}
                       className="mt-auto inline-flex cursor-pointer items-center gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors w-fit"
                     >
-                      Fill out the form →
+                           Get Your Team Involved →
                     </button>
                   </div>
                 </div>

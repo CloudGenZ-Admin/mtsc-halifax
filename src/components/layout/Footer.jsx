@@ -28,7 +28,7 @@ export default function Footer() {
     { name: 'Sponsors', path: '/WaystoGive' },
     { name: 'Volunteer', path: '/contact' },
     { name: 'Publication', path: '/publication' },
-    { name: 'Prayer', path: '/prayer' },
+    { name: 'Send a Prayer', path: '/prayer' },
     { name: 'Donate', path: '/donate' }
   ];
 
@@ -42,7 +42,7 @@ export default function Footer() {
 
   return (
     // UPDATED: bg-[#233465] -> bg-navy-dark, added text-white/90 for base text
-    <footer className="bg-navy-dark text-white/90 font-sans w-full lg:mt-12 relative">
+    <footer className="bg-navy-dark text-white/90 font-sans w-full  relative">
       <div className="max-w-[1480px] mx-auto px-4 md:px-8 py-8 lg:py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-6">
         
         {/* Column 1: Brand & About */}
