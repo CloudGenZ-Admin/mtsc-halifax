@@ -477,7 +477,7 @@ export default function Publication() {
                   <FaExternalLinkAlt className="text-xl" />
                 </div>
                 <div className="relative z-10 text-center md:text-left">
-                  <h4 className="text-xl font-black mb-1">Participate in the Survey</h4>
+                  <h4 className="text-xl font-black mb-1"></h4>
                   <a
                     href="https://www.seafarershappinessindex.org/"
                     target="_blank"
