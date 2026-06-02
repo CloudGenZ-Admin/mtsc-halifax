@@ -398,11 +398,11 @@ const volunteersGallery = [
                   </p>
                   <div className="flex justify-center gap-8 w-full mt-auto border-t border-white/20 pt-6">
                     <div>
-                      <div className="text-3xl font-black text-[#FFD700]">50+</div>
+                      <div className="text-3xl font-black text-coral">50+</div>
                       <div className="text-[11px] font-bold uppercase tracking-wider text-white/70">Active<br />Volunteers</div>
                     </div>
                     <div>
-                      <div className="text-3xl font-black text-[#FFD700]">1000+</div>
+                      <div className="text-3xl font-black text-coral">1000+</div>
                       <div className="text-[11px] font-bold uppercase tracking-wider text-white/70">Hours<br />Served</div>
                     </div>
                   </div>

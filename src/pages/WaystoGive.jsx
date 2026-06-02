@@ -274,7 +274,7 @@ export default function WaystoGive() {
               ✦ Support Our Mission
             </span>
             <h1 className="text-[clamp(36px,5vw,56px)] font-black text-white leading-[1.1] mb-6 max-w-4xl mx-auto drop-shadow-lg">
-              Get Involved with <span className="text-[#FFD700]">Mission to Seafarers Halifax</span>
+              Get Involved with <span className="text-coral">Mission to Seafarers Halifax</span>
             </h1>
             <p className="text-white/90 text-[18px] max-w-3xl mx-auto leading-relaxed">
               There are many ways to support Mission to Seafarers Halifax and help create a welcoming place for seafarers arriving at the Port of Halifax. Whether you choose to volunteer, donate, provide in-kind support, or partner with us, your support helps ensure that seafarers feel cared for, connected, and welcomed while they are far from home.
