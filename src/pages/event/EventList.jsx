@@ -209,7 +209,7 @@ const EventList = () => {
                                 onError={() => handleSliderImgError(event.id)}
                               />
                             ) : (
-                              <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-[#1C2E6B] to-[#111c42] opacity-90"></div>
+                              <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-[#056398] to-[#033b5b] opacity-90"></div>
                             )}
                             
                             {/* LAYER 1: Dark Overlay so text is readable */}
@@ -281,14 +281,14 @@ const EventList = () => {
                     )}
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-full z-20 relative p-8 text-center bg-[#1C2E6B]">
+                  <div className="flex flex-col items-center justify-center h-full z-20 relative p-8 text-center bg-[#056398]">
                     <img 
                       src={eventsBg} 
                       alt="Events coming soon" 
                       className="absolute inset-0 w-full h-full object-cover z-0" 
                       style={{ objectPosition: '50% 25%' }}
                     />
-                    <div className="absolute inset-0 bg-[#1C2E6B]/80 z-10"></div>
+                    <div className="absolute inset-0 bg-[#056398]/80 z-10"></div>
                     <div className="relative z-20 flex flex-col items-center">
                       <FiCalendar className="text-coral text-6xl mb-4" />
                       <h3 className="text-3xl font-bold text-white mb-2">More Events Coming Soon</h3>
@@ -341,7 +341,7 @@ const EventCard = ({ event, getFirstImage, formatDate }) => {
       className="bg-white rounded-2xl shadow-card hover:shadow-card-hover transition-all overflow-hidden group flex flex-col h-full border border-gray-100"
     >
       {showImage ? (
-        <div className="h-56 overflow-hidden relative bg-gradient-to-br from-[#1C2E6B] to-[#111c42]">
+        <div className="h-56 overflow-hidden relative bg-gradient-to-br from-[#056398] to-[#033b5b]">
           <img
             src={imageUrl}
             alt={event.title}
@@ -351,7 +351,7 @@ const EventCard = ({ event, getFirstImage, formatDate }) => {
           <div className="absolute inset-0 bg-navy/10 group-hover:bg-transparent transition-colors"></div>
         </div>
       ) : (
-        <div className="h-56 bg-gradient-to-br from-[#1C2E6B] to-[#111c42] flex items-center justify-center relative overflow-hidden group-hover:opacity-95 transition-opacity">
+        <div className="h-56 bg-gradient-to-br from-[#056398] to-[#033b5b] flex items-center justify-center relative overflow-hidden group-hover:opacity-95 transition-opacity">
           <FiCalendar className="text-6xl text-white/30 relative z-10 group-hover:scale-110 transition-transform duration-500" />
         </div>
       )}
