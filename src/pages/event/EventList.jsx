@@ -10,9 +10,11 @@ import Reveal from '../../components/common/Reveal';
 // Import the background image
 import eventsBg from '../../assets/WhatsApp Image 2026-05-09 at 12.50.10 AM.jpeg';
 import fallbackImage from '../../assets/fallback.jpg';
+
 const EventList = () => {
   const { allEvents, featuredEvents, loading: eventsLoading } = useEvents();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [sliderImgErrors, setSliderImgErrors] = useState({});
 
   const formatDate = (date) => {
     if (!date) return null;
@@ -67,6 +69,10 @@ const EventList = () => {
     setCurrentSlide((prev) => (prev === 0 ? sliderEvents.length - 1 : prev - 1));
   };
 
+  const handleSliderImgError = (id) => {
+    setSliderImgErrors((prev) => ({ ...prev, [id]: true }));
+  };
+
   // Extract first image from the rich text content
   const getFirstImage = (content) => {
     if (!content) return null;
@@ -81,22 +87,27 @@ const EventList = () => {
         .replace(/&amp;/g, '&');
     }
     
-    const match = searchContent.match(/<img[^>]+src=["']([^"']+)["']/i);
+    // Improved regex to handle optional quotes and spacing
+    const match = searchContent.match(/<img[^>]+src=["']?([^"'\s>]+)["']?/i);
     if (match) return match[1];
     
+    // Deep search through JSON content
     try {
       const parsed = JSON.parse(searchContent);
-      if (parsed.content && Array.isArray(parsed.content)) {
-        for (const node of parsed.content) {
+      const findImg = (nodes) => {
+        if (!nodes || !Array.isArray(nodes)) return null;
+        for (const node of nodes) {
           if (node.type === 'image' && node.attrs?.src) return node.attrs.src;
-          if (node.content && Array.isArray(node.content)) {
-            for (const child of node.content) {
-              if (child.type === 'image' && child.attrs?.src) return child.attrs.src;
-            }
+          if (node.content) {
+            const childImg = findImg(node.content);
+            if (childImg) return childImg;
           }
         }
-      }
+        return null;
+      };
+      return findImg(parsed.content);
     } catch (e) {}
+    
     return null;
   };
 
@@ -179,6 +190,8 @@ const EventList = () => {
                     >
                       {sliderEvents.map((event) => {
                         const imageUrl = getFirstImage(event.content);
+                        const hasImgError = sliderImgErrors[event.id];
+                        const showImage = imageUrl && !hasImgError;
                         const isUpcoming = new Date(event.eventDate) >= new Date(new Date().setHours(0,0,0,0));
                         
                         return (
@@ -187,25 +200,20 @@ const EventList = () => {
                             className="relative h-full overflow-hidden"
                             style={{ width: `${100 / sliderEvents.length}%` }}
                           >
-                            {/* LAYER 0: Background Image */}
-                            {imageUrl ? (
+                            {/* LAYER 0: Background Image OR Gradient Default Fallback */}
+                            {showImage ? (
                               <img 
                                 src={imageUrl} 
                                 alt={event.title} 
                                 className="absolute inset-0 w-full h-full object-cover z-0"
+                                onError={() => handleSliderImgError(event.id)}
                               />
                             ) : (
-                              // Slider Fallback Image
-                              <img 
-                                src={fallbackImage} 
-                                alt={event.title} 
-                                className="absolute inset-0 w-full h-full object-cover z-0"
-                                style={{ objectPosition: '50% 25%' }}
-                              />
+                              <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-[#1C2E6B] to-[#111c42] opacity-90"></div>
                             )}
                             
                             {/* LAYER 1: Dark Overlay so text is readable */}
-                            <div className="absolute inset-0 bg-black/60 z-10"></div>
+                            <div className="absolute inset-0 bg-black/40 z-10"></div>
                             
                             {/* LAYER 2: Text Content & Button */}
                             <div className="absolute inset-0 z-20 flex flex-col justify-center items-center text-center p-6 md:p-12">
@@ -273,14 +281,14 @@ const EventList = () => {
                     )}
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-full z-20 relative p-8 text-center bg-navy-dark">
+                  <div className="flex flex-col items-center justify-center h-full z-20 relative p-8 text-center bg-[#1C2E6B]">
                     <img 
                       src={eventsBg} 
                       alt="Events coming soon" 
                       className="absolute inset-0 w-full h-full object-cover z-0" 
                       style={{ objectPosition: '50% 25%' }}
                     />
-                    <div className="absolute inset-0 bg-navy/50 z-10"></div>
+                    <div className="absolute inset-0 bg-[#1C2E6B]/80 z-10"></div>
                     <div className="relative z-20 flex flex-col items-center">
                       <FiCalendar className="text-coral text-6xl mb-4" />
                       <h3 className="text-3xl font-bold text-white mb-2">More Events Coming Soon</h3>
@@ -322,31 +330,29 @@ const EventList = () => {
 
 // Reusable Event Card
 const EventCard = ({ event, getFirstImage, formatDate }) => {
+  const [imgError, setImgError] = useState(false);
+  
   const imageUrl = getFirstImage(event.content);
+  const showImage = imageUrl && !imgError;
 
   return (
     <Link
       to={`/events/${event.url}`}
       className="bg-white rounded-2xl shadow-card hover:shadow-card-hover transition-all overflow-hidden group flex flex-col h-full border border-gray-100"
     >
-      {imageUrl ? (
-        <div className="h-56 overflow-hidden relative">
+      {showImage ? (
+        <div className="h-56 overflow-hidden relative bg-gradient-to-br from-[#1C2E6B] to-[#111c42]">
           <img
             src={imageUrl}
             alt={event.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            onError={() => setImgError(true)}
           />
           <div className="absolute inset-0 bg-navy/10 group-hover:bg-transparent transition-colors"></div>
         </div>
       ) : (
-        <div className="h-56 bg-navy/5 flex items-center justify-center relative overflow-hidden">
-          <img 
-            src={eventsBg} 
-            alt="Event placeholder" 
-            className="absolute inset-0 w-full h-full object-cover opacity-20" 
-            style={{ objectPosition: '50% 25%' }}
-          />
-          <FiCalendar className="text-4xl text-navy/40 relative z-10" />
+        <div className="h-56 bg-gradient-to-br from-[#1C2E6B] to-[#111c42] flex items-center justify-center relative overflow-hidden group-hover:opacity-95 transition-opacity">
+          <FiCalendar className="text-6xl text-white/30 relative z-10 group-hover:scale-110 transition-transform duration-500" />
         </div>
       )}
       <div className="p-6 flex-grow flex flex-col">
