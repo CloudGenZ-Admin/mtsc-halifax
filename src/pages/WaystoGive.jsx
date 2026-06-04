@@ -42,9 +42,7 @@ import img25 from '../assets/images/image25.png';
 // Sponsor logo array for dynamic rendering (Moved to end section)
 const sponsorLogos = [
   img12, img13, img7, img8, img9,   img19, 
-  img3, 
-  img5, img6, img7, img8, 
-      img2, img14, img15, img16,
+  img3, img5, img6, img7, img8, img2, img14, img15, img16,
   img22, img23, img25, img1,
 ];
 
@@ -176,8 +174,8 @@ export default function WaystoGive() {
   };
 
   // Split logos for visual variety for the final section
-  const generalLogos = sponsorLogos.slice(0, 15);
-  const starLogos = sponsorLogos.slice(15, 25);
+  const generalLogos = sponsorLogos.slice(0, 10);
+  const starLogos = sponsorLogos.slice(10, 20);
 
   return (
     <div className="min-h-screen flex flex-col">
