@@ -23,7 +23,6 @@ import volunteersImg from '../assets/MtS Halifax Center.jpg';
 import img1 from '../assets/images/image1.png';
 import img2 from '../assets/images/image2.png';
 import img3 from '../assets/images/image3.png';
-import img4 from '../assets/images/image4.png';
 import img5 from '../assets/images/image5.png';
 import img6 from '../assets/images/image6.png';
 import img7 from '../assets/images/image7.png';
@@ -36,15 +35,14 @@ import img15 from '../assets/images/image15.png';
 import img16 from '../assets/images/image16.png';
 import img17 from '../assets/images/image17.png';
 import img19 from '../assets/images/image19.png';
-import img20 from '../assets/images/image20.png';
 import img22 from '../assets/images/image22.png';
 import img23 from '../assets/images/image23.png';
 import img25 from '../assets/images/image25.png';
 
 // Sponsor logo array for dynamic rendering (Moved to end section)
 const sponsorLogos = [
-  img12, img13, img7, img8, img9,   img19, img20,
-  img3, img4,
+  img12, img13, img7, img8, img9,   img19, 
+  img3, 
   img5, img6, img7, img8, 
       img2, img14, img15, img16,
   img22, img23, img25, img1,
@@ -98,7 +96,6 @@ const allStarSponsors = [
   "The Halifax Pilots",
   "Halifax Port Authority",
   "Holland America Line",
-  "LeeWay Marine",
   "Logistec Stevedoring",
   "Metcalf & Company",
   "International Sailors’ Society Canada",
