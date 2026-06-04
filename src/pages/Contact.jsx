@@ -84,7 +84,7 @@ const Contact = () => {
 
               {/* Blue Gradient Box */}
               <div className="rounded-2xl bg-gradient-hero text-white p-7 md:p-8 shadow-soft">
-                <h2 className="text-2xl font-extrabold !text-white">Halifax Station</h2>
+                <h2 className="text-2xl font-extrabold !text-white">Halifax Mission</h2>
                 <p className="mt-2 text-white/85 text-sm">Location: 844 Marginal Road, Halifax, Nova Scotia ,</p>
 
                 <ul className="mt-7 space-y-4 text-sm">
@@ -331,7 +331,7 @@ const Contact = () => {
 
           <div className="w-full max-w-[800px] mx-auto px-6 mt-16 text-center text-sm font-medium text-gray-500">
             <p>
-              Mission to Seafarers Halifax operates as part of Mission to Seafarers Canada.<br className="hidden md:block" /> Local volunteer opportunities, station engagement, seafarer support, and community partnerships are coordinated through the Halifax station.
+              Mission to Seafarers Halifax operates as part of Mission to Seafarers Canada.<br className="hidden md:block" /> Local volunteer opportunities, station engagement, seafarer support, and community partnerships are coordinated through the Halifax Mission.
             </p>
           </div>
         </section>

@@ -8,8 +8,8 @@ import Footer from '../../components/layout/Footer';
 import Reveal from '../../components/common/Reveal';
 
 // Import the background image
-import eventsBg from '../../assets/Events.jpeg';
-
+import eventsBg from '../../assets/WhatsApp Image 2026-05-09 at 12.50.10 AM.jpeg';
+import fallbackImage from '../../assets/fallback.jpg';
 const EventList = () => {
   const { allEvents, featuredEvents, loading: eventsLoading } = useEvents();
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -124,7 +124,7 @@ const EventList = () => {
               src={eventsBg} 
               alt="Events" 
               className="w-full h-full object-cover" 
-              style={{ objectPosition: '50% 25%' }} 
+              style={{ objectPosition: '50% 20%' }} 
             />
             <div className="absolute inset-0 bg-navy/40"></div>
           </div>
@@ -197,7 +197,7 @@ const EventList = () => {
                             ) : (
                               // Slider Fallback Image
                               <img 
-                                src={eventsBg} 
+                                src={fallbackImage} 
                                 alt={event.title} 
                                 className="absolute inset-0 w-full h-full object-cover z-0"
                                 style={{ objectPosition: '50% 25%' }}

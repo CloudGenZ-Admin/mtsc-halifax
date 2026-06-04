@@ -8,11 +8,11 @@ import {
 } from 'react-icons/fa';
 
 // Import newly created forms
-import { 
-  Modal, 
-  PartnershipForm, 
-  VolunteerForm, 
-  WorkplaceForm 
+import {
+  Modal,
+  PartnershipForm,
+  VolunteerForm,
+  WorkplaceForm
 } from '../components/forms/WaysToGiveForms';
 
 // Import images
@@ -29,62 +29,92 @@ import img6 from '../assets/images/image6.png';
 import img7 from '../assets/images/image7.png';
 import img8 from '../assets/images/image8.png';
 import img9 from '../assets/images/image9.png';
-import img10 from '../assets/images/image10.png';
-import img11 from '../assets/images/image11.png';
 import img12 from '../assets/images/image12.png';
 import img13 from '../assets/images/image13.png';
 import img14 from '../assets/images/image14.png';
 import img15 from '../assets/images/image15.png';
 import img16 from '../assets/images/image16.png';
 import img17 from '../assets/images/image17.png';
-import img18 from '../assets/images/image18.png';
 import img19 from '../assets/images/image19.png';
 import img20 from '../assets/images/image20.png';
-import img21 from '../assets/images/image21.png';
 import img22 from '../assets/images/image22.png';
 import img23 from '../assets/images/image23.png';
-import img24 from '../assets/images/image24.png';
 import img25 from '../assets/images/image25.png';
 
 // Sponsor logo array for dynamic rendering (Moved to end section)
 const sponsorLogos = [
-  img12, img13, img2, img14, img15, img16, img17, img18, img19, img20, 
-  img21,  img3, img4, 
-  img5, img6, img7, img8, img9, img10, img11 ,img22, img23, img24, img25, img1,
+  img12, img13, img7, img8, img9,   img19, img20,
+  img3, img4,
+  img5, img6, img7, img8, 
+      img2, img14, img15, img16,
+  img22, img23, img25, img1,
 ];
 
 // All sponsors from Sponsors page (TEXT)
 const allSponsors = [
-  "100 Bluenosers Who Care", "AON", "Associated Cargo Specialists", "Atlantic Towing Ltd", 
-  "Atship Services Ltd.", "Atlantic Container Line", "Atlantic Pilotage Authority", 
-  "Blue Water Agencies Ltd.", "CN", "CERES", "Canadian Institute of Marine Engineering", 
-  "Canadian Steamship Lines", "Colley Motorships Ltd.", "Diocese Synod of NS and PEI", 
-  "Edmonds Landscape & Construction Services Ltd", "F.K. Warren Ltd.", "Flying Angel Fund", 
-  "Freight Checkers Union 1342", "Halifax Marriot Habourside Hotel", "Halifax Pilots", 
-  "Halifax Port Authority", "Horizon Maritime Services", "ILA 269 Halifax Long Shoreman's Association", 
-  "Inchcape Shipping Services", "International Sailor's Society Canada", "ITF Seafarer's Trust", 
-  "Logistec Stevedoring", "Maritime World Logistics", "Mark & Dr. Joanne MacDonald", 
-  "Metcalf & Company", "Mothers Union of NS and PEI", "MV Asterix", "NAMMA", "NICOM IT", 
-  "Open Church/Reachout Society for Humanitarian Aid", "Partner International Inc.", 
-  "P & H Milling Group", "PRAXES Medical Group", "PSA HALIFAX", "Protos Shipping Ltd.", 
-  "Quay Marine Associates", "RCR", "Secunda", "Stewart Mckelvey", "The Company of Master Mariners", 
-  "The Shipping Federation of Canada", "TK Foundation", "UNIFOR Marine Workers Union", 
-  "Vanco Farms", "Wallenius Willhelmsen Logistics", "ZIM Integrated Shipping Services Ltd.",
-  "Atlantic Towing Ltd", "Atship Services Ltd", "Atlantic Container Line", 
-  "Atlantic Pilotage Authority", "Blue Water Agencies Ltd.", "Canadian Institute of Marine Engineering", 
-  "Canadian Steamship Lines", "Colley Motorships Ltd", "CN", "Diocese Synod of NS & PE", 
-  "Edmonds Landscape & Construction Services Ltd.", "F.K.Warren Ltd", "The Halifax Pilots", 
-  "Halifax Port Authority", "Hapag Lloyd (Canada) Ltd.", "Holland America Line", "LeeWay Marine", 
-  "Logistec Stevedoring", "Metcalf & Company", "International Sailors' Society Canada", 
-  "Northrop Grumman", "Partner International Inc.", "P & H Milling Group", "Protos Shipping Ltd.", 
-  "Spectacle Group", "Svitzer Canada Ltd.", "Wallenius Willhelmsen Logistics", 
+  "100 Bluenosers Who Care", "AON", "Associated Cargo Specialists", "Atlantic Towing Ltd",
+  "Atship Services Ltd.", "Atlantic Container Line", "Atlantic Pilotage Authority",
+  "Blue Water Agencies Ltd.", "CN", "Canadian Institute of Marine Engineering",
+  "Canadian Steamship Lines", "Colley Motorships Ltd.", "Diocese Synod of NS and PEI",
+  "Edmonds Landscape & Construction Services Ltd", "F.K. Warren Ltd.", "Flying Angel Fund",
+  "Freight Checkers Union 1342", "Halifax Marriot Habourside Hotel", "Halifax Pilots Corporation Ltd",
+  "Halifax Port Authority", "Horizon Maritime Services", "ILA 269 Halifax Long Shoreman's Association",
+  "Inchcape Shipping Services", "International Sailor's Society Canada", "ITF Seafarer's Trust",
+  "Logistec Stevedoring", "Maritime World Logistics",
+  "Metcalf & Company", "Mothers Union of NS and PEI", "MV Asterix", "NAMMA", "NICOM IT",
+  "Open Church/Reachout Society for Humanitarian Aid", "Partner International Inc.",
+  "P & H Milling Group", "PRAXES Medical Group", "PSA HALIFAX", "Protos Shipping Ltd.",
+  "RCR", "Stewart Mckelvey", "The Company of Master Mariners",
+  "The Shipping Federation of Canada", "TK Foundation", "UNIFOR Marine Workers Union",
+  "Wallenius Willhelmsen Logistics", "ZIM Integrated Shipping Services Ltd.",
+  "Atlantic Towing Ltd", "Atship Services Ltd", "Atlantic Container Line",
+  "Atlantic Pilotage Authority", "Blue Water Agencies Ltd.", "Canadian Institute of Marine Engineering",
+  "Canadian Steamship Lines", "Colley Motorships Ltd", "CN", "Diocese Synod of NS & PE",
+  "Edmonds Landscape & Construction Services Ltd.", "F.K.Warren Ltd",
+  "Halifax Port Authority", "Holland America Line", "LeeWay Marine",
+  "Logistec Stevedoring", "Metcalf & Company", "International Sailors' Society Canada",
+  "Northrop Grumman", "Partner International Inc.", "P & H Milling Group", "Protos Shipping Ltd.",
+  "Svitzer Canada Ltd.", "Wallenius Willhelmsen Logistics",
+  "ZIM Integrated Shipping Services Ltd."
+];
+
+const allStarSponsors = [
+  "Atlantic Towing Ltd",
+  "Atship Services Ltd",
+  "Atlantic Container LLine",
+  "Atlantic Pilotage Authority",
+  "Blue Water Agencies Ltd.",
+  "Canadian Institute of Marine Engineering",
+  "Canadian Steamship Lines",
+  "Colley Motorships Ltd",
+  "CN",
+  "Diocese Synod of NS & PE",
+  "Edmonds Landscape & Construction Services Ltd.",
+  "F.K.Warren Ltd",
+  "Leeway Marine",
+  "NAMMA",
+  "AON",
+  "Federal Fleet Services",
+  "The Halifax Pilots",
+  "Halifax Port Authority",
+  "Holland America Line",
+  "LeeWay Marine",
+  "Logistec Stevedoring",
+  "Metcalf & Company",
+  "International Sailors’ Society Canada",
+  "Cathedral of all Saints",
+  "Partner International Inc.",
+  "P & H Milling Group",
+  "Protos Shipping Ltd.",
+  "Svitzer Canada Ltd.",
+  "Wallenius Willhelmsen Logistics",
   "ZIM Integrated Shipping Services Ltd."
 ];
 
 // Remove duplicates for general sponsors
 const uniqueSponsors = [...new Set(allSponsors)];
 // Take top 28 for Star Club members
-const starSponsors = uniqueSponsors.slice(0, 28);
+const starSponsors = allStarSponsors;
 
 const eventsList = [
   { name: "Annual Christmas Luncheon", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/annual-christmas-luncheon" },
@@ -92,10 +122,7 @@ const eventsList = [
   { name: "International Day of the Seafarer", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/international-day-of-the-seafarer" },
   { name: "Mission to Seafarers Halifax Car Rally", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/mission-to-seafarers-halifax-car-rally" },
   { name: "MtS Golf Tournament", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/mts-golf-tournament" },
-  { name: "Sea Sunday", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/sea-sunday" },
   { name: "Take-Out Luncheons", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/takeout-luncheons" },
-  { name: "Toast to Spring", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/toast-to-spring-1" },
-  { name: "Volunteer Appreciation Event", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/volunteer-appreciation-event" },
   { name: "Mission to Seafarers Halifax Cruise Raffle", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/mission-to-seafarers-halifax-cruise-raffle" }
 ];
 
@@ -134,14 +161,14 @@ const CanadaHelpsWidget = ({ pageId, formType }) => {
 };
 
 export default function WaystoGive() {
-  const [activeForm, setActiveForm] = useState(null); 
-  const [activeModal, setActiveModal] = useState(null); 
+  const [activeForm, setActiveForm] = useState(null);
+  const [activeModal, setActiveModal] = useState(null);
   const [selectedEventUrl, setSelectedEventUrl] = useState(eventsList[0].url);
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const donationSectionRef = useRef(null);
 
   const handleScrollToDonate = () => {
-    setActiveForm(null); 
+    setActiveForm(null);
     donationSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -160,7 +187,8 @@ export default function WaystoGive() {
       <Navbar />
 
       {/* --- INJECT ALL ANIMATION STYLES --- */}
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @keyframes marquee {
           0% { transform: translateX(0%); }
           100% { transform: translateX(-50%); }
@@ -211,33 +239,33 @@ export default function WaystoGive() {
       `}} />
 
       {/* --- MODALS --- */}
-      <Modal 
-        isOpen={activeModal === 'sponsorship'} 
-        onClose={() => setActiveModal(null)} 
+      <Modal
+        isOpen={activeModal === 'sponsorship'}
+        onClose={() => setActiveModal(null)}
         title="Partner Through Sponsorship"
       >
         <CanadaHelpsWidget pageId="146459" formType="0" />
       </Modal>
 
-      <Modal 
-        isOpen={activeModal === 'workplace'} 
-        onClose={() => setActiveModal(null)} 
+      <Modal
+        isOpen={activeModal === 'workplace'}
+        onClose={() => setActiveModal(null)}
         title="Workplace Engagement"
       >
         <WorkplaceForm onSubmit={handleFormSubmit} />
       </Modal>
 
-      <Modal 
-        isOpen={activeModal === 'volunteer'} 
-        onClose={() => setActiveModal(null)} 
+      <Modal
+        isOpen={activeModal === 'volunteer'}
+        onClose={() => setActiveModal(null)}
         title="Volunteer & Advocacy"
       >
         <VolunteerForm onSubmit={handleFormSubmit} />
       </Modal>
 
-      <Modal 
-        isOpen={activeModal === 'partnership'} 
-        onClose={() => setActiveModal(null)} 
+      <Modal
+        isOpen={activeModal === 'partnership'}
+        onClose={() => setActiveModal(null)}
         title="Partnership Inquiry"
       >
         <PartnershipForm onSubmit={handleFormSubmit} />
@@ -249,9 +277,9 @@ export default function WaystoGive() {
         title="Purchase Event Tickets"
       >
         <div className="w-full h-[500px] overflow-hidden rounded-xl">
-          <iframe 
-            src={selectedEventUrl} 
-            title="Event Tickets" 
+          <iframe
+            src={selectedEventUrl}
+            title="Event Tickets"
             className="w-full h-full border-0"
           ></iframe>
         </div>
@@ -285,7 +313,7 @@ export default function WaystoGive() {
         {/* Donation Section */}
         <section ref={donationSectionRef} className="py-24 bg-white scroll-mt-20">
           <div className="max-w-[1200px] mx-auto px-7">
-            
+
             <Reveal className="text-center mb-16">
               <span className="inline-block bg-[#E05A2B]/10 text-[#E05A2B] text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-4">
                 <FaDollarSign className="inline mr-1" /> DONATE
@@ -309,7 +337,7 @@ export default function WaystoGive() {
                         <FaHeart className="text-[#E05A2B] text-4xl" />
                       </div>
                     </div>
-                    
+
                     <div className="p-8 md:p-10 flex flex-col flex-grow">
                       <h3 className="text-[24px] font-black text-[#112A46] mb-4 text-center">Monthly Giving</h3>
                       <p className="text-[#5A6C7D] text-[15px] leading-relaxed mb-6 text-center">
@@ -392,7 +420,7 @@ export default function WaystoGive() {
 
                       <div className="mb-6">
                         <label className="block text-[#112A46] font-bold text-[14px] mb-2">Select Event:</label>
-                        <select 
+                        <select
                           value={selectedEventUrl}
                           onChange={(e) => setSelectedEventUrl(e.target.value)}
                           className="w-full bg-[#F8FBFD] border border-[#112A46]/20 rounded-xl px-4 py-3 text-[#112A46] font-medium focus:outline-none focus:border-[#E05A2B]"
@@ -415,13 +443,13 @@ export default function WaystoGive() {
               </div>
             ) : (
               <Reveal className="max-w-4xl mx-auto bg-white rounded-3xl p-6 md:p-10 shadow-2xl border border-[#112A46]/10">
-                <button 
+                <button
                   onClick={() => setActiveForm(null)}
                   className="mb-8 flex items-center cursor-pointer gap-2 text-[#E05A2B] font-bold text-[15px] hover:text-[#c94d23] hover:-translate-x-1 transition-all"
                 >
                   ← Back to Donation Options
                 </button>
-                
+
                 {activeForm === 'monthly' ? (
                   <CanadaHelpsWidget key="form-monthly" pageId="146457" formType="0" />
                 ) : (
@@ -432,7 +460,7 @@ export default function WaystoGive() {
 
             <Reveal delay={200}>
               <p className="text-center text-[#5A6C7D] text-[13px] mt-10 max-w-2xl mx-auto bg-[#F8FBFD] p-4 rounded-xl border border-[#112A46]/5 shadow-sm">
-                All donations are processed through Mission to Seafarers Canada in support of the Halifax station and the national mission to care for seafarers across Canada.
+                All donations are processed through Mission to Seafarers Canada in support of the Halifax Mission and the national mission to care for seafarers across Canada.
               </p>
             </Reveal>
 
@@ -449,7 +477,7 @@ export default function WaystoGive() {
           </div>
 
           <div className="max-w-[1200px] mx-auto px-7 relative z-10">
-            
+
             <Reveal className="text-center mb-16">
               <span className="inline-block bg-[#E05A2B]/10 text-[#E05A2B] text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-4">
                 WAYS TO HELP
@@ -500,7 +528,7 @@ export default function WaystoGive() {
                       onClick={() => setActiveModal('workplace')}
                       className="mt-auto inline-flex cursor-pointer items-center gap-2 text-[#E05A2B] font-bold text-[14px] hover:text-[#c94d23] transition-colors w-fit"
                     >
-                           Get Your Team Involved →
+                      Get Your Team Involved →
                     </button>
                   </div>
                 </div>
@@ -619,50 +647,96 @@ export default function WaystoGive() {
         {/* ======================================================== */}
         {/* AUTO-SCROLLING GENERAL SPONSORS (TEXT) SECTION           */}
         {/* ======================================================== */}
-        <section className="py-24 bg-gradient-to-br from-[#F8FBFD] via-[#EBF4F9] to-[#E0EEF7] overflow-hidden">
+
+
+
+
+
+        <section className="py-24 bg-white overflow-hidden">
           <div className="max-w-[1200px] mx-auto px-7 mb-14">
             <Reveal className="text-center">
-              <FaHeart className="text-[#E05A2B] text-4xl mx-auto mb-4 animate-heartbeat" />
               <h2 className="text-[34px] md:text-[40px] font-black text-[#112A46] mb-4 leading-tight">
-                The Mission to Seafarers Halifax is <br className="hidden md:block"/> grateful to our Sponsors!
+                Our Corporate & Maritime Partners
               </h2>
               <p className="text-[#5A6C7D] max-w-2xl mx-auto text-[17px]">
-                Your generous support ensures we can continue to provide a "home away from home" for seafarers visiting our port.
+                Recognizing the local and international organizations that stand
+                alongside us in supporting seafarers' welfare in Halifax.
               </p>
             </Reveal>
           </div>
 
-          {/* Marquee Wrapper - TEXT NAMES */}
           <div className="w-full relative flex flex-col gap-6">
-            <div className="flex animate-marquee hover:[animation-play-state:paused]">
-              
-              {/* Box 1 */}
-              <div className="flex gap-4 pr-4 pl-4 items-center">
-                {uniqueSponsors.map((sponsorName, index) => (
-                  <div 
-                    key={`txt-gen1-${index}`} 
-                    className="shrink-0 bg-white border border-[#112A46]/10 rounded-full px-8 py-4 flex items-center justify-center text-center shadow-sm hover:shadow-md hover:border-[#E05A2B]/30 hover:-translate-y-1 transition-all group"
+            {/* First Row of Images */}
+            {/* ADDED w-max AND gap-6 to parent for seamless looping */}
+            <div className="flex w-max gap-6 animate-marquee hover:[animation-play-state:paused]">
+              {/* Removed uneven pr-6 pl-6 to keep widths exactly identical */}
+              <div className="flex gap-6 items-center">
+                {generalLogos.map((logo, index) => (
+                  <div
+                    key={`img-gen1-${index}`}
+                    className="shrink-0 w-[240px] h-[140px] bg-white border border-[#112A46]/5 rounded-xl px-6 py-6 flex items-center justify-center text-center shadow-sm hover:shadow-lg hover:border-[#E05A2B]/30 hover:-translate-y-1 transition-all group"
                   >
-                    <span className="text-[15px] font-bold text-[#112A46] whitespace-nowrap">{sponsorName}</span>
+                    <img
+                      src={logo}
+                      alt="Sponsor Logo"
+                      className="max-h-full max-w-full object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                    />
                   </div>
                 ))}
               </div>
-
-              {/* Box 2 (Duplicated for Loop) */}
-              <div className="flex gap-4 pr-4 items-center">
-                {uniqueSponsors.map((sponsorName, index) => (
-                  <div 
-                    key={`txt-gen2-${index}`} 
-                    className="shrink-0 bg-white border border-[#112A46]/10 rounded-full px-8 py-4 flex items-center justify-center text-center shadow-sm hover:shadow-md hover:border-[#E05A2B]/30 hover:-translate-y-1 transition-all group"
+              <div className="flex gap-6 items-center" aria-hidden="true">
+                {generalLogos.map((logo, index) => (
+                  <div
+                    key={`img-gen2-${index}`}
+                    className="shrink-0 w-[240px] h-[140px] bg-white border border-[#112A46]/5 rounded-xl px-6 py-6 flex items-center justify-center text-center shadow-sm hover:shadow-lg hover:border-[#E05A2B]/30 hover:-translate-y-1 transition-all group"
                   >
-                    <span className="text-[15px] font-bold text-[#112A46] whitespace-nowrap">{sponsorName}</span>
+                    <img
+                      src={logo}
+                      alt="Sponsor Logo"
+                      className="max-h-full max-w-full object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                    />
                   </div>
                 ))}
               </div>
+            </div>
 
+            {/* Second Row of Images */}
+            <div className="flex w-max gap-6 animate-marquee-reverse hover:[animation-play-state:paused] mt-4">
+              <div className="flex gap-6 items-center">
+                {starLogos.map((logo, index) => (
+                  <div
+                    key={`img-star1-${index}`}
+                    className="shrink-0 w-[240px] h-[140px] bg-white border border-[#112A46]/5 rounded-xl px-6 py-6 flex items-center justify-center text-center shadow-sm hover:shadow-lg hover:border-[#E05A2B]/30 hover:-translate-y-1 transition-all group"
+                  >
+                    <img
+                      src={logo}
+                      alt="Sponsor Logo"
+                      className="max-h-full max-w-full object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                    />
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-6 items-center" aria-hidden="true">
+                {starLogos.map((logo, index) => (
+                  <div
+                    key={`img-star2-${index}`}
+                    className="shrink-0 w-[240px] h-[140px] bg-white border border-[#112A46]/5 rounded-xl px-6 py-6 flex items-center justify-center text-center shadow-sm hover:shadow-lg hover:border-[#E05A2B]/30 hover:-translate-y-1 transition-all group"
+                  >
+                    <img
+                      src={logo}
+                      alt="Sponsor Logo"
+                      className="max-h-full max-w-full object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
+
+
+
+
 
         {/* Corporate Sponsorship / Community Partners Info */}
         <section className="pt-24 pb-12 bg-white border-t-4 border-[#E05A2B]">
@@ -672,7 +746,7 @@ export default function WaystoGive() {
                 <h2 className="text-[36px] font-black text-[#112A46] leading-tight mb-6">
                   Community & Business Partners
                 </h2>
-                
+
                 {/* Animated Icon Composition instead of image */}
                 <div className="w-full h-[240px] rounded-[32px] bg-gradient-to-br from-[#112A46] to-[#2D5A7B] flex items-center justify-center mb-8 shadow-xl relative overflow-hidden">
                   <FaAnchor className="absolute text-white/5 text-[200px] -right-10 -bottom-10 animate-spin-slow" />
@@ -695,14 +769,14 @@ export default function WaystoGive() {
                 <p className="text-[#5A6C7D] text-[16px] leading-relaxed mb-6">
                   You can support local events, volunteer activities, hospitality, and community awareness initiatives. For customized packages, please complete the partnership inquiry form, and our team will connect with you directly.
                 </p>
-                
+
                 <div className="flex flex-col sm:flex-row gap-4 mt-8">
                   <button
                     onClick={() => setActiveModal('partnership')}
                     className="inline-flex items-center justify-center cursor-pointer gap-2 bg-[#E05A2B] text-white px-6 py-3 rounded-full font-bold text-[14px] hover:bg-[#c94d23] transition-all shadow-md"
                   >
                     <FaBuilding />
-                    Partner with Halifax Station
+                    Partner with Halifax Mission
                   </button>
                   <a
                     href="https://mtsc.ca/contact/"
@@ -721,7 +795,7 @@ export default function WaystoGive() {
                   <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm group-hover:scale-110 transition-transform">
                     <FaHandshake className="text-3xl text-[#E05A2B]" />
                   </div>
-                  <h3 className="text-[18px] font-black text-white mb-3 leading-tight">STAR<br/>Program</h3>
+                  <h3 className="text-[18px] font-black text-white mb-3 leading-tight">STAR<br />Program</h3>
                   <p className="text-[13px] text-white/90 mb-6 leading-relaxed">
                     Join an elite group of recurring sponsors dedicated to seafarer welfare.
                   </p>
@@ -731,7 +805,7 @@ export default function WaystoGive() {
                   <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm group-hover:scale-110 transition-transform">
                     <FaBuilding className="text-3xl text-white" />
                   </div>
-                  <h3 className="text-[18px] font-black text-white mb-3 leading-tight">Corporate<br/>Package</h3>
+                  <h3 className="text-[18px] font-black text-white mb-3 leading-tight">Corporate<br />Package</h3>
                   <p className="text-[13px] text-white/70 mb-6 leading-relaxed">
                     Customized sponsorship packages designed for maximum CSR impact.
                   </p>
@@ -747,7 +821,7 @@ export default function WaystoGive() {
         <section className="pb-24 pt-12 bg-white overflow-hidden">
           <div className="max-w-[1200px] mx-auto px-7">
             <div className="bg-gradient-to-br from-[#F8FBFD] to-[#EBF4F9] rounded-[32px] py-12 border border-[#112A46]/5 shadow-sm relative overflow-hidden">
-              
+
               <Reveal className="text-center px-6 mb-10">
                 <div className="inline-flex items-center justify-center gap-2 text-[#E05A2B] mb-4">
                   <FaStar className="animate-spin-slow" /><FaStar className="text-2xl animate-spin-slow" style={{ animationDirection: 'reverse' }} /><FaStar className="animate-spin-slow" />
@@ -761,12 +835,12 @@ export default function WaystoGive() {
               {/* Star Club Marquee Wrapper - TEXT NAMES */}
               <div className="w-full relative">
                 <div className="flex animate-marquee-reverse hover:[animation-play-state:paused]">
-                  
+
                   {/* Box 1 */}
                   <div className="flex gap-4 pr-4 pl-4 items-center">
                     {starSponsors.map((sponsorName, index) => (
-                      <div 
-                        key={`txt-star1-${index}`} 
+                      <div
+                        key={`txt-star1-${index}`}
                         className="shrink-0 bg-white border border-[#E05A2B]/10 rounded-full px-8 py-4 flex items-center justify-center text-center shadow-sm hover:shadow-md hover:border-[#E05A2B]/40 hover:-translate-y-1 transition-all group"
                       >
                         <span className="text-[15px] font-bold text-[#112A46] whitespace-nowrap flex items-center gap-2">
@@ -780,8 +854,8 @@ export default function WaystoGive() {
                   {/* Box 2 (Duplicated for Loop) */}
                   <div className="flex gap-4 pr-4 items-center">
                     {starSponsors.map((sponsorName, index) => (
-                      <div 
-                        key={`txt-star2-${index}`} 
+                      <div
+                        key={`txt-star2-${index}`}
                         className="shrink-0 bg-white border border-[#E05A2B]/10 rounded-full px-8 py-4 flex items-center justify-center text-center shadow-sm hover:shadow-md hover:border-[#E05A2B]/40 hover:-translate-y-1 transition-all group"
                       >
                         <span className="text-[15px] font-bold text-[#112A46] whitespace-nowrap flex items-center gap-2">
@@ -794,7 +868,7 @@ export default function WaystoGive() {
 
                 </div>
               </div>
-              
+
             </div>
 
             <Reveal className="text-center mt-12">
@@ -806,7 +880,7 @@ export default function WaystoGive() {
                 Become a Sponsor
               </button>
             </Reveal>
-            
+
           </div>
         </section>
 
@@ -850,7 +924,7 @@ export default function WaystoGive() {
                   to="/contact"
                   className="inline-flex items-center gap-2 cursor-pointer bg-transparent border-2 border-white text-white px-6 py-4 rounded-full font-bold text-[14px] hover:bg-white hover:text-[#E05A2B] transition-all"
                 >
-                  Contact Halifax Station
+                  Contact Halifax Mission
                 </Link>
                 <a
                   href="https://www.amazon.ca/hz/wishlist/ls/3C9KTQNHTZ0NM/ref=hz_ls_biz_ex"
@@ -869,86 +943,7 @@ export default function WaystoGive() {
         {/* ======================================================== */}
         {/* NEW AUTO-SCROLLING SPONSOR LOGOS (IMAGES) SECTION IN LAST*/}
         {/* ======================================================== */}
-        <section className="py-24 bg-white overflow-hidden">
-          <div className="max-w-[1200px] mx-auto px-7 mb-14">
-            <Reveal className="text-center">
-              <h2 className="text-[34px] md:text-[40px] font-black text-[#112A46] mb-4 leading-tight">
-                Our Corporate & Maritime Partners
-              </h2>
-              <p className="text-[#5A6C7D] max-w-2xl mx-auto text-[17px]">
-                Recognizing the local and international organizations that stand alongside us in supporting seafarers' welfare in Halifax.
-              </p>
-            </Reveal>
-          </div>
 
-          <div className="w-full relative flex flex-col gap-6">
-            
-            {/* First Row of Images */}
-            <div className="flex animate-marquee hover:[animation-play-state:paused]">
-              <div className="flex gap-6 pr-6 pl-6 items-center">
-                {generalLogos.map((logo, index) => (
-                  <div 
-                    key={`img-gen1-${index}`} 
-                    className="shrink-0 w-[240px] h-[140px] bg-white border border-[#112A46]/5 rounded-xl px-6 py-6 flex items-center justify-center text-center shadow-sm hover:shadow-lg hover:border-[#E05A2B]/30 hover:-translate-y-1 transition-all group"
-                  >
-                    <img 
-                      src={logo} 
-                      alt="Sponsor Logo" 
-                      className="max-h-full max-w-full object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className="flex gap-6 pr-6 items-center">
-                {generalLogos.map((logo, index) => (
-                  <div 
-                    key={`img-gen2-${index}`} 
-                    className="shrink-0 w-[240px] h-[140px] bg-white border border-[#112A46]/5 rounded-xl px-6 py-6 flex items-center justify-center text-center shadow-sm hover:shadow-lg hover:border-[#E05A2B]/30 hover:-translate-y-1 transition-all group"
-                  >
-                    <img 
-                      src={logo} 
-                      alt="Sponsor Logo" 
-                      className="max-h-full max-w-full object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Second Row of Images */}
-            <div className="flex animate-marquee-reverse hover:[animation-play-state:paused] mt-4">
-              <div className="flex gap-6 pr-6 pl-6 items-center">
-                {starLogos.map((logo, index) => (
-                  <div 
-                    key={`img-star1-${index}`} 
-                    className="shrink-0 w-[240px] h-[140px] bg-white border border-[#112A46]/5 rounded-xl px-6 py-6 flex items-center justify-center text-center shadow-sm hover:shadow-lg hover:border-[#E05A2B]/30 hover:-translate-y-1 transition-all group"
-                  >
-                    <img 
-                      src={logo} 
-                      alt="Sponsor Logo" 
-                      className="max-h-full max-w-full object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
-                    />
-                  </div>
-                ))}
-              </div>
-              <div className="flex gap-6 pr-6 items-center">
-                {starLogos.map((logo, index) => (
-                  <div 
-                    key={`img-star2-${index}`} 
-                    className="shrink-0 w-[240px] h-[140px] bg-white border border-[#112A46]/5 rounded-xl px-6 py-6 flex items-center justify-center text-center shadow-sm hover:shadow-lg hover:border-[#E05A2B]/30 hover:-translate-y-1 transition-all group"
-                  >
-                    <img 
-                      src={logo} 
-                      alt="Sponsor Logo" 
-                      className="max-h-full max-w-full object-contain grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-        </section>
 
       </main>
       <Footer />

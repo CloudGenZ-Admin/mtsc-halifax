@@ -260,7 +260,7 @@ export default function Publication() {
                 <h2 className="text-[36px] font-black text-[#112A46] mb-2 drop-shadow-sm">
                   Mission to Seafarers Halifax Flying Angel Newsletters
                 </h2>
-                <p className="text-gray-500 font-medium">Catch up on our latest local updates and stories from the Halifax station.</p>
+                <p className="text-gray-500 font-medium">Catch up on our latest local updates and stories from the Halifax Mission.</p>
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
@@ -757,7 +757,7 @@ export default function Publication() {
                       <h3 className="text-[26px] font-black text-white drop-shadow-md">Stories from the Sea</h3>
                     </div>
                     <p className="text-blue-50/90 text-[16px] leading-relaxed">
-                      Our newsletters share real stories from seafarers, highlighting their unique experiences, daily challenges, and the essential support they receive at our Halifax station.
+                      Our newsletters share real stories from seafarers, highlighting their unique experiences, daily challenges, and the essential support they receive at our Halifax Mission.
                     </p>
                   </div>
                 </div>

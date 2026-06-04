@@ -191,7 +191,7 @@ export default function SeafarerSupport() {
                     <FaBoxOpen className="text-3xl text-[#E05A2B]" />
                   </div>
                   <h3 className="text-xl font-bold text-[#112A46] mb-3">Send or Receive Parcel</h3>
-                  <p className="text-gray-600 font-medium mb-6 flex-grow">Order personal items online and have them delivered safely to our Halifax station for pickup.
+                  <p className="text-gray-600 font-medium mb-6 flex-grow">Order personal items online and have them delivered safely to our Halifax Mission for pickup.
                        Please ensure that all courier and parcel deliveries to the Mission are scheduled within official office hours.
                   </p>
                   <div className="text-[#E05A2B] font-bold text-sm inline-flex items-center gap-2">Parcel Info & Request →</div>
@@ -404,7 +404,7 @@ export default function SeafarerSupport() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               
               <Reveal>
-                <h2 className="text-3xl font-extrabold text-[#112A46] mb-8">Visit the Halifax Station</h2>
+                <h2 className="text-3xl font-extrabold text-[#112A46] mb-8">Visit the Halifax Mission</h2>
                 
                 <div className="space-y-8">
                   <div className="flex gap-4">

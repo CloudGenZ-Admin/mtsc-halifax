@@ -44,8 +44,10 @@ import basketballImg from '../assets/Amenities - Half Court Basketball 2.jpg';
 import loungeImg from '../assets/Amenities - Lounge.jpg';
 import sunDeckImg from '../assets/Amenities - Sun Deck.jpg';
 import freeWifiImg from '../assets/5. Free Wifi.png';
-import Chapal from '../assets/4a. Chapel.jpg';
 import SeafarersLounge from '../assets/4b. Seafarer.jpg';
+import Outdore from '../assets/Outdoor.jpeg';
+import Men from '../assets/Mens.jpeg'
+import Women from '../assets/Women.jpeg'
 
 // Combine Halifax content into London's timeline structure
 const historyBlocks = [
@@ -81,7 +83,7 @@ const historyBlocks = [
         <p>The story of Mission to Seafarers began in 1835 with a simple but powerful act of compassion. While visiting the Bristol Channel in England, a young Anglican clergyman named Rev. John Ashley noticed that seafarers arriving by ship had no one to care for their spiritual or emotional well-being. Moved by their isolation and hardship, he chose to dedicate his life to supporting merchant crews working at sea.</p>
         <p className="mt-4">What started with one chaplain soon inspired a movement. By 1856, similar ministries joined together under the name The Mission to Seamen Afloat, expanding support across multiple ports. Through world wars, economic hardship, and the evolution of global shipping, the Mission continued to grow and adapt.</p>
         <p className="mt-4 font-semibold text-[#112A46] bg-[#F8FBFD] p-4 rounded-lg border-l-4 border-[#E05A2B]">
-          Today, Mission to Seafarers supports seafarers in hundreds of ports across more than 70 countries, serving over a million crew members every year. Though the maritime world has changed dramatically over the last century, one thing has remained constant: our commitment to being a source of hope, care, dignity, and human connection for seafarers and their families.
+          Today, Mission to Seafarers supports seafarers in hundreds of ports across more than 50 countries, serving over a million crew members every year. Though the maritime world has changed dramatically over the last century, one thing has remained constant: our commitment to being a source of hope, care, dignity, and human connection for seafarers and their families.
         </p>
       </>
     ),
@@ -115,22 +117,22 @@ function About() {
     setActiveModal(null);
   };
 
-const volunteersGallery = [
-  { id: 1, img: volunteer1 },
-  { id: 2, img: volunteer2 },
-  { id: 3, img: volunteer3 },
-  { id: 4, img: volunteer4 },
-  { id: 5, img: volunteer5 },
-  { id: 6, img: volunteer6 },
-  { id: 7, img: volunteer7 },
-  { id: 8, img: volunteer8 },
-  { id: 9, img: volunteer9 },
-  { id: 10, img: volunteer10 },
-  { id: 11, img: volunteer11 },
-];
+  const volunteersGallery = [
+    { id: 1, img: volunteer1 },
+    { id: 2, img: volunteer2 },
+    { id: 3, img: volunteer3 },
+    { id: 4, img: volunteer4 },
+    { id: 5, img: volunteer5 },
+    { id: 6, img: volunteer6 },
+    { id: 7, img: volunteer7 },
+    { id: 8, img: volunteer8 },
+    { id: 9, img: volunteer9 },
+    { id: 10, img: volunteer10 },
+    { id: 11, img: volunteer11 },
+  ];
 
   const amenitiesGallery = [
-    { id: 0, img: Chapal, title: 'Chapel' },
+    // { id: 0, img: Chapal, title: 'Chapel' },
     { id: 1, img: loungeImg, title: 'Edmonds Lounge' },
     { id: 2, img: SeafarersLounge, title: 'Seafarers Lounge' },
     { id: 3, img: canteenImg, title: 'Canteen & Souvenir Shop' },
@@ -138,12 +140,14 @@ const volunteersGallery = [
     { id: 5, img: transportImg, title: 'Complimentary Transport' },
     { id: 6, img: bicyclesImg, title: 'Bicycles for Loan' },
     { id: 7, img: basketballImg, title: 'Half Court Basketball' },
-    { id: 8, img: sunDeckImg, title: 'Outdoor Sun Deck' },
+    { id: 8, img: Outdore, title: 'Outdoor Sun Deck And Yard',     },
     { id: 9, img: conferenceImg, title: 'Conference Space' },
-    { id: 10, img: freeWifiImg, title: 'Free WiFi' },
-    { id: 11, img: freeRoomImg, title: 'Men’s and Women’s Free Rooms' },
-    
-   
+    { id: 10, img: Men, title: 'Men’s Free Room' },
+    { id: 11, img: Women, title: 'Women’s Free Room' },
+    { id: 12, img: freeWifiImg, title: 'Free WiFi' },
+    // { id: 11, img: freeRoomImg, title: 'Men’s and Women’s Free Rooms' },
+
+
   ];
 
   const carouselRef = useRef(null);
@@ -167,9 +171,9 @@ const volunteersGallery = [
       <Navbar />
 
       {/* Volunteer Modal */}
-      <Modal 
-        isOpen={activeModal === 'volunteer'} 
-        onClose={() => setActiveModal(null)} 
+      <Modal
+        isOpen={activeModal === 'volunteer'}
+        onClose={() => setActiveModal(null)}
         title="Volunteer Application"
       >
         <VolunteerForm onSubmit={handleFormSubmit} />
@@ -340,13 +344,13 @@ const volunteersGallery = [
             {/* Featured Leader - Helen */}
             <Reveal>
               <div className="grid lg:grid-cols-12 gap-12 items-center mb-12 bg-[#F8FBFD] border border-gray-100 p-8 md:p-12 rounded-3xl shadow-sm hover:shadow-lg transition-shadow">
-               <div className="lg:col-span-5 flex justify-center">
-  <img
-    src={helecncircle}
-    alt="Helen Glenn"
-    className="w-full max-w-sm rounded-full shadow-md object-cover aspect-square object-top border-4 border-white"
-  />
-</div>
+                <div className="lg:col-span-5 flex justify-center">
+                  <img
+                    src={helecncircle}
+                    alt="Helen Glenn"
+                    className="w-full max-w-sm rounded-full shadow-md object-cover aspect-square object-top border-4 border-white"
+                  />
+                </div>
                 <div className="lg:col-span-7">
                   <h2 className="text-2xl md:text-3xl font-extrabold text-[#112A46] leading-tight">
                     Station Manager
@@ -384,7 +388,7 @@ const volunteersGallery = [
                   <h3 className="text-2xl font-bold text-[#112A46]">Joseph Loot</h3>
                   <p className="text-[#E05A2B] font-bold uppercase text-sm mt-2 mb-4 tracking-wider">Assistant Manager</p>
                   <p className="text-gray-600 leading-relaxed font-medium">
-                    Joseph supports the daily operations of the Halifax station and helps create a welcoming environment for seafarers visiting the port.Supporting outreach, station activities, and practical services to ensure seafarers in Halifax receive care, connection, and assistance during their stay. His dedication and calm presence help make the station a trusted place for many visiting crews.
+                    Joseph supports the daily operations of the Halifax Mission and helps create a welcoming environment for seafarers visiting the port.Supporting outreach, station activities, and practical services to ensure seafarers in Halifax receive care, connection, and assistance during their stay. His dedication and calm presence help make the station a trusted place for many visiting crews.
                   </p>
                 </div>
 
@@ -519,8 +523,8 @@ const volunteersGallery = [
                   <p className="text-white/80 leading-relaxed font-medium mb-6">
                     Whether you can help occasionally or become part of ongoing outreach efforts, there are many ways to get involved and support seafarers visiting Halifax.
                   </p>
-                  
-                  <button 
+
+                  <button
                     onClick={() => setActiveModal('volunteer')}
                     className="inline-flex cursor-pointer items-center justify-center bg-[#E05A2B] hover:bg-[#c94d22] text-white font-bold shadow-lg h-12 px-8 rounded-full text-[15px] transition-colors"
                   >
@@ -534,6 +538,7 @@ const volunteersGallery = [
         </section>
 
 
+        {/* CAROUSEL SECTION: AMENITIES */}
         {/* CAROUSEL SECTION: AMENITIES */}
         <section className="py-20 bg-white overflow-hidden">
           <div className="w-full max-w-[1200px] px-6 mx-auto">
@@ -566,19 +571,31 @@ const volunteersGallery = [
                   style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
                   <style dangerouslySetInnerHTML={{ __html: `div::-webkit-scrollbar { display: none; }` }} />
-                  {amenitiesGallery.map((item) => (
-                    <div
-                      key={item.id}
-                      className="relative flex flex-col overflow-hidden rounded-3xl bg-[#112A46] border border-gray-100 shadow-md shrink-0 snap-center sm:snap-start w-[85%] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
-                    >
-                      <div className="aspect-[2/3] w-full overflow-hidden">
-                        <img src={item.img} alt={item.title} className="w-full h-full object-cover" draggable="false" />
-                      </div>
-                      <div className="p-5 text-center flex-grow flex items-center justify-center">
-                        <h3 className="text-white font-bold text-[15px] leading-tight">{item.title}</h3>
-                      </div>
-                    </div>
-                  ))}
+{amenitiesGallery.map((item) => (
+  <div
+    key={item.id}
+    /* Cards ki width thodi adjust ki hai taki lambe dabbe screen par premium lagein */
+    className="relative flex flex-col overflow-hidden rounded-3xl bg-[#112A46] border border-gray-100 shadow-md shrink-0 snap-center sm:snap-start w-[75%] sm:w-[calc(45%-12px)] lg:w-[calc(30%-16px)]"
+  >
+    {/* MAGIC TRICK: aspect-[3/4] (Portrait Box). 
+        Kyunki aapki zyada images 1240x1600 aur 3072x4080 ki hain (jo lambi hain), 
+        Toh ye dabbe ka size unko 100% PERFECTLY fit karega bina zoom kiye! */}
+    <div className="relative w-full aspect-[5/4] overflow-hidden bg-[#112A46]">
+      
+      <img 
+        src={item.img} 
+        alt={item.title} 
+        /* Ab image zoom-in nahi hogi, balki pure lambe dabbe me fit baith jayegi */
+        className={`absolute inset-0 w-full h-full object-cover ${item.focus || 'object-center'}`} 
+        draggable="false" 
+      />
+      
+    </div>
+    <div className="p-5 text-center flex-grow flex items-center justify-center min-h-[80px]">
+      <h3 className="text-white font-bold text-[15px] leading-tight">{item.title}</h3>
+    </div>
+  </div>
+))}
                 </div>
               </div>
             </Reveal>

@@ -369,7 +369,7 @@ export default function Home() {
               </div>
 
               <div className="text-center text-[#666666] text-[16px] leading-relaxed max-w-[800px] mx-auto mb-10">
-                <p>As the Halifax station develops, it continues to take shape around what seafarers need during their time ashore. As the Halifax station grows, we are creating a space</p>
+                <p>As the Halifax Mission develops, it continues to take shape around what seafarers need during their time ashore. As the Halifax Mission grows, we are creating a space</p>
               </div>
 
               <div className="flex flex-wrap justify-center gap-4">
@@ -418,7 +418,7 @@ export default function Home() {
                       </svg>
                     </a>
                     <a href="/contact" className="inline-flex items-center justify-center bg-transparent border-2 border-[#2d3580] text-[#2d3580] px-8 py-3.5 rounded-full font-bold text-[14px] hover:bg-[#2d3580] hover:text-white shadow-lg transition-all">
-                      Contact the Halifax Station
+                      Contact the Halifax Mission
                     </a>
                   </div>
                 </div>
@@ -481,7 +481,7 @@ export default function Home() {
                   Help Us Welcome Seafarers to Halifax
                 </p>
                 <p className="text-[#5A6C7D] text-[17px] max-w-[800px] mx-auto">
-                  There are many ways to support the Halifax station and the seafarers we serve.
+                  There are many ways to support the Halifax Mission and the seafarers we serve.
                 </p>
               </div>
 
@@ -517,7 +517,7 @@ export default function Home() {
                     onClick={() => setIsDonateModalOpen(true)}
                     className="inline-flex justify-center cursor-pointer bg-[#112A46] text-white px-7 py-3 rounded-full font-bold text-[14px] hover:bg-[#0d1f35] shadow-md transition-all"
                   >
-                    Support the Halifax Station
+                    Support the Halifax Mission
                   </button>
                   <a
                     href="https://mtsc.ca/"
@@ -601,7 +601,7 @@ export default function Home() {
                     <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
                   </button>
                   <p className="text-sm text-[#666666] cursor-pointer italic text-center">
-                    Small note: All donations are processed through Mission to Seafarers Canada in support of the Halifax station and the wider mission across Canada.
+                    Small note: All donations are processed through Mission to Seafarers Canada in support of the Halifax Mission and the wider mission across Canada.
                   </p>
                 </div>
 
@@ -752,7 +752,7 @@ export default function Home() {
                     <div className="absolute inset-0 bg-[#2d3580]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 pointer-events-none"></div>
                     <img
                       src={img}
-                      alt={`Halifax Station Glimpse ${idx + 1}`}
+                      alt={`Halifax Mission Glimpse ${idx + 1}`}
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       loading="lazy"
                       draggable="false"
@@ -817,7 +817,7 @@ export default function Home() {
                 A Place to Rest Along the Atlantic Gateway
               </h2>
               <p className="text-[#5A6C7D] text-[16px] mb-8 font-medium">
-                The Halifax station continues to grow as a welcoming and peaceful place where seafarers can:
+                The Halifax Mission continues to grow as a welcoming and peaceful place where seafarers can:
               </p>
               <ul className="space-y-5 mb-10">
                 {[
@@ -870,7 +870,7 @@ export default function Home() {
 
               <div className="flex flex-wrap justify-center gap-5">
                 <a href="/contact" className="inline-flex justify-center items-center bg-transparent border-2 border-[#2d3580] text-[#2d3580] px-9 py-4 rounded-full font-bold text-[14px] hover:bg-[#2d3580] hover:text-white shadow-sm transition-all">
-                  Contact the Halifax Station
+                  Contact the Halifax Mission
                 </a>
                 <button
                   onClick={() => setIsDonateModalOpen(true)}

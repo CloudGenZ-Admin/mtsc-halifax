@@ -107,7 +107,7 @@ export default function Hero() {
                   to="/contact" 
                   className="inline-flex justify-center items-center px-8 py-3.5 bg-coral text-white font-bold rounded-lg shadow-lg hover:shadow-xl hover:bg-coral-light hover:-translate-y-0.5 transition-all w-full sm:w-auto text-center"
                 >
-                  Contact the Halifax Station <ArrowRight className="ml-2 h-5 w-5" />
+                  Contact the Halifax Mission <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
                 
                 {/* CHANGED: Swapped Link for a button to trigger the Modal popup */}
@@ -126,7 +126,7 @@ export default function Hero() {
               <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] lg:aspect-[4/5] border-4 border-white/40 animate-float-slow">
                 <img
                   src={heroImg}
-                  alt="Mission to Seafarers Halifax Station and Staff"
+                  alt="Mission to Seafarers Halifax Mission and Staff"
                   className="absolute inset-0 w-full h-full object-cover"
                   loading="lazy"
                 />
