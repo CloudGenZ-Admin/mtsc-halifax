@@ -455,7 +455,7 @@ export default function WaystoGive() {
 
             <Reveal delay={200}>
               <p className="text-center text-[#5A6C7D] text-[13px] mt-10 max-w-2xl mx-auto bg-[#F8FBFD] p-4 rounded-xl border border-[#112A46]/5 shadow-sm">
-                All donations are processed goes to support Halifax Mission to care for seafarers.
+              Every donation made through this page directly supports Mission to Seafarers Halifax, helping us provide care, practical assistance, and a welcoming community for seafarers visiting the Port of Halifax.
               </p>
             </Reveal>
 

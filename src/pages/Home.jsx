@@ -601,7 +601,7 @@ export default function Home() {
                     <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
                   </button>
                   <p className="text-sm text-[#666666] cursor-pointer italic text-center">
-                    All donations are processed goes to support Halifax Mission to care for seafarers.
+                    Every donation made through this page directly supports Mission to Seafarers Halifax, helping us provide care, practical assistance, and a welcoming community for seafarers visiting the Port of Halifax.
                   </p>
                 </div>
 
