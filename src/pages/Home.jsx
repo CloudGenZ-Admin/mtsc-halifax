@@ -601,7 +601,7 @@ export default function Home() {
                     <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
                   </button>
                   <p className="text-sm text-[#666666] cursor-pointer italic text-center">
-                    Small note: All donations are processed through Mission to Seafarers Canada in support of the Halifax Mission and the wider mission across Canada.
+                    All donations are processed goes to support Halifax Mission to care for seafarers.
                   </p>
                 </div>
 
