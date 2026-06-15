@@ -9,7 +9,6 @@ import Reveal from '../../components/common/Reveal';
 
 // Import the background image
 import eventsBg from '../../assets/WhatsApp Image 2026-05-09 at 12.50.10 AM.jpeg';
-import fallbackImage from '../../assets/fallback.jpg';
 
 const EventList = () => {
   const { allEvents, featuredEvents, loading: eventsLoading } = useEvents();
@@ -176,7 +175,7 @@ const EventList = () => {
                 <p className="text-text-mid mt-2 ml-5">Our top ongoing and upcoming events</p>
               </div>
               
-              <div className="relative w-full h-[450px] md:h-[500px] rounded-2xl overflow-hidden shadow-card">
+              <div className="relative w-full h-[450px] md:h-[500px] rounded-2xl overflow-hidden shadow-card bg-gradient-to-br from-[#004a7c] to-[#002d54]">
                 
                 {sliderEvents.length > 0 ? (
                   <div className="relative w-full h-full">
@@ -197,10 +196,10 @@ const EventList = () => {
                         return (
                           <div 
                             key={event.id} 
-                            className="relative h-full overflow-hidden"
+                            className="relative h-full overflow-hidden bg-gradient-to-br from-[#004a7c] to-[#002d54]"
                             style={{ width: `${100 / sliderEvents.length}%` }}
                           >
-                            {/* LAYER 0: Background Image OR Gradient Default Fallback */}
+                            {/* LAYER 0: Background Image OR Deep Blue Gradient Fallback */}
                             {showImage ? (
                               <img 
                                 src={imageUrl} 
@@ -209,7 +208,7 @@ const EventList = () => {
                                 onError={() => handleSliderImgError(event.id)}
                               />
                             ) : (
-                              <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-[#056398] to-[#033b5b] opacity-90"></div>
+                              <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-[#004a7c] to-[#002d54]"></div>
                             )}
                             
                             {/* LAYER 1: Dark Overlay so text is readable */}
@@ -281,14 +280,7 @@ const EventList = () => {
                     )}
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center h-full z-20 relative p-8 text-center bg-[#056398]">
-                    <img 
-                      src={eventsBg} 
-                      alt="Events coming soon" 
-                      className="absolute inset-0 w-full h-full object-cover z-0" 
-                      style={{ objectPosition: '50% 25%' }}
-                    />
-                    <div className="absolute inset-0 bg-[#056398]/80 z-10"></div>
+                  <div className="flex flex-col items-center justify-center h-full z-20 relative p-8 text-center bg-gradient-to-br from-[#004a7c] to-[#002d54]">
                     <div className="relative z-20 flex flex-col items-center">
                       <FiCalendar className="text-coral text-6xl mb-4" />
                       <h3 className="text-3xl font-bold text-white mb-2">More Events Coming Soon</h3>
@@ -341,7 +333,7 @@ const EventCard = ({ event, getFirstImage, formatDate }) => {
       className="bg-white rounded-2xl shadow-card hover:shadow-card-hover transition-all overflow-hidden group flex flex-col h-full border border-gray-100"
     >
       {showImage ? (
-        <div className="h-56 overflow-hidden relative bg-gradient-to-br from-[#056398] to-[#033b5b]">
+        <div className="h-56 overflow-hidden relative bg-gradient-to-br from-[#004a7c] to-[#002d54]">
           <img
             src={imageUrl}
             alt={event.title}
@@ -351,7 +343,7 @@ const EventCard = ({ event, getFirstImage, formatDate }) => {
           <div className="absolute inset-0 bg-navy/10 group-hover:bg-transparent transition-colors"></div>
         </div>
       ) : (
-        <div className="h-56 bg-gradient-to-br from-[#056398] to-[#033b5b] flex items-center justify-center relative overflow-hidden group-hover:opacity-95 transition-opacity">
+        <div className="h-56 bg-gradient-to-br from-[#004a7c] to-[#002d54] flex items-center justify-center relative overflow-hidden group-hover:opacity-95 transition-opacity">
           <FiCalendar className="text-6xl text-white/30 relative z-10 group-hover:scale-110 transition-transform duration-500" />
         </div>
       )}

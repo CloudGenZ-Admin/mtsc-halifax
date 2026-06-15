@@ -113,8 +113,6 @@ const starSponsors = allStarSponsors;
 
 const eventsList = [
   { name: "Annual Christmas Luncheon", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/annual-christmas-luncheon" },
-  { name: "Christmas Shoebox", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/christmas-shoebox" },
-  { name: "International Day of the Seafarer", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/international-day-of-the-seafarer" },
   { name: "Mission to Seafarers Halifax Car Rally", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/mission-to-seafarers-halifax-car-rally" },
   { name: "MtS Golf Tournament", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/mts-golf-tournament" },
   { name: "Take-Out Luncheons", url: "https://www.canadahelps.org/en/charities/missions-to-seamen-maritimes/events/takeout-luncheons" },

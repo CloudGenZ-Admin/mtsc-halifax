@@ -413,7 +413,7 @@ export default function SeafarerSupport() {
                     </div>
                     <div>
                       <h4 className="font-bold text-[#112A46] text-lg mb-1">Civic Address</h4>
-                      <p className="text-gray-600 font-medium">844 Marginal Road, Halifax, Nova Scotia<br/>Situated across from Pier 24 in the Halifax Seaport area.</p>
+                      <p className="text-gray-600 font-medium">844 Marginal Road, Halifax NS B3H 2P7, Nova Scotia<br/>Situated across from Pier 24 in the Halifax Seaport area.</p>
                       <h4 className="font-bold text-[#112A46] text-lg mt-4 mb-1">Mailing Address</h4>
                       <p className="text-gray-600 font-medium">P.O. Box 27114, Halifax, NS B3H 4M8</p>
                     </div>
