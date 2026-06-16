@@ -3,7 +3,7 @@ import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/common/Reveal';
 import { 
-  FaPrayingHands, FaWater, FaCompass, FaGlobe, FaPaperPlane, FaCheckCircle, FaQuoteLeft 
+  FaPrayingHands, FaGlobe, FaPaperPlane, FaCheckCircle, FaQuoteLeft 
 } from 'react-icons/fa';
 
 // Import the local image provided
@@ -34,6 +34,7 @@ export default function Prayer() {
   
   // State: Submitted Prayers List
   const [prayersList, setPrayersList] = useState([]);
+  const [expandedPrayers, setExpandedPrayers] = useState({});
 
   // Fetch Prayers on Component Mount
   useEffect(() => {
@@ -155,52 +156,6 @@ export default function Prayer() {
           </div>
         </section>
 
-        {/* Prayers Grid Section */}
-        <section className="py-24 bg-warm-gray border-y border-coral/10">
-          <div className="max-w-[1200px] mx-auto px-7">
-            <Reveal className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Prayer 1 */}
-              <div className="bg-white rounded-3xl p-8 md:p-10 shadow-card hover:shadow-card-hover hover:-translate-y-1.5 transition-all border-t-4 border-coral relative overflow-hidden group">
-                <FaWater className="absolute -bottom-4 -right-4 text-[100px] text-coral-pale opacity-50 group-hover:scale-110 transition-transform" />
-                <div className="relative z-10">
-                  <h3 className="text-xl font-black text-navy mb-5 leading-tight">Prayer for Seafarers to Find Safe Passage</h3>
-                  <p className="text-navy font-bold mb-2">Dear Lord,</p>
-                  <p className="text-text-mid text-[15px] leading-relaxed italic">
-                    As our seafarers embark on their journeys...
-                  </p>
-                  <p className="text-navy font-bold mt-4">Amen.</p>
-                </div>
-              </div>
-
-              {/* Prayer 2 */}
-              <div className="bg-white rounded-3xl p-8 md:p-10 shadow-card hover:shadow-card-hover hover:-translate-y-1.5 transition-all border-t-4 border-navy relative overflow-hidden group">
-                <FaPrayingHands className="absolute -bottom-4 -right-4 text-[100px] text-warm-gray opacity-50 group-hover:scale-110 transition-transform" />
-                <div className="relative z-10">
-                  <h3 className="text-xl font-black text-navy mb-5 leading-tight">Prayer for Seafarers to Stay Strong in Storms</h3>
-                  <p className="text-navy font-bold mb-2">Dear Heavenly Father,</p>
-                  <p className="text-text-mid text-[15px] leading-relaxed italic">
-                    In the face of tempestuous seas...
-                  </p>
-                  <p className="text-navy font-bold mt-4">Amen.</p>
-                </div>
-              </div>
-
-              {/* Prayer 3 */}
-              <div className="bg-white rounded-3xl p-8 md:p-10 shadow-card hover:shadow-card-hover hover:-translate-y-1.5 transition-all border-t-4 border-teal relative overflow-hidden group">
-                <FaCompass className="absolute -bottom-4 -right-4 text-[100px] text-coral-pale opacity-50 group-hover:scale-110 transition-transform" />
-                <div className="relative z-10">
-                  <h3 className="text-xl font-black text-navy mb-5 leading-tight">Prayer for Seafarers to Navigate with Faith</h3>
-                  <p className="text-navy font-bold mb-2">Dear God,</p>
-                  <p className="text-text-mid text-[15px] leading-relaxed italic">
-                    As seafarers navigate the vast expanse...
-                  </p>
-                  <p className="text-navy font-bold mt-4">Amen.</p>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
         {/* Prayer Request Form Section */}
         <section className="pt-24 pb-12 bg-white">
           <div className="max-w-[1000px] mx-auto px-7">
@@ -316,19 +271,29 @@ export default function Prayer() {
 
               {prayersList.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {prayersList.map((prayer) => (
-                    // h-full added to card container
+                  {prayersList.map((prayer) => {
+                    const isExpanded = expandedPrayers[prayer.id];
+                    const text = formatPrayerText(prayer.prayerRequest);
+                    const isLong = text.length > 200;
+                    
+                    return (
                     <div key={prayer.id} className="bg-warm-gray rounded-2xl p-7 relative border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
                       <FaQuoteLeft className="text-coral/20 text-3xl absolute top-6 right-6" />
                       
-                      {/* IMPORTANT FIX: Separated flex-grow into a wrapper DIV */}
                       <div className="flex-grow flex flex-col mb-6 relative z-10">
-                        <p className="text-text-mid text-[15px] leading-relaxed italic break-words line-clamp-5">
-                          "{formatPrayerText(prayer.prayerRequest)}"
+                        <p className={`text-text-mid text-[15px] leading-relaxed italic break-words ${!isExpanded && isLong ? 'line-clamp-5' : ''}`}>
+                          "{text}"
                         </p>
+                        {isLong && (
+                          <button
+                            onClick={() => setExpandedPrayers(prev => ({ ...prev, [prayer.id]: !prev[prayer.id] }))}
+                            className="text-coral font-bold text-[13px] mt-2 hover:text-coral-light transition-colors self-start cursor-pointer"
+                          >
+                            {isExpanded ? 'Read less' : 'Read more'}
+                          </button>
+                        )}
                       </div>
                       
-                      {/* mt-auto pushes footer perfectly to the bottom */}
                       <div className="border-t border-gray-200 pt-4 flex justify-between items-center mt-auto">
                         <div>
                           <h4 className="text-navy font-bold text-[14px]">
@@ -343,7 +308,8 @@ export default function Prayer() {
                         <FaPrayingHands className="text-coral/60 text-xl flex-shrink-0" />
                       </div>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="text-center bg-gray-50 rounded-2xl p-10 border border-gray-100">
