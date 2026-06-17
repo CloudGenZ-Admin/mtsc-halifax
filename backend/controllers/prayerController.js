@@ -6,7 +6,7 @@ export const getPublicPrayers = async (req, res, next) => {
   try {
     const prayers = await Prayer.findAll({
       where: { isApproved: true },
-      order: [['createdAt', 'DESC']], // Naye prayers sabse upar
+      order: [['createdAt', 'DESC']],
     });
     res.json(prayers);
   } catch (error) {

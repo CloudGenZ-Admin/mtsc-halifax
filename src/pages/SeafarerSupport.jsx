@@ -20,15 +20,36 @@ const SupportModal = ({ isOpen, onClose, title, onSubmit }) => {
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API delay for realistic UX
-    setTimeout(() => {
+    const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfMbXAK0YerhuvvLkkn3oeAxI-VsltG2jw-zeNTW3fyr9QwWg/formResponse";
+    
+   
+    const formData = new FormData(e.target);
+    const urlEncodedData = new URLSearchParams(formData).toString();
+
+    try {
+      await fetch(GOOGLE_FORM_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: urlEncodedData
+      });
+      
+      // Success
       setIsSubmitting(false);
-      onSubmit(); // Call parent function
-    }, 1200);
+      e.target.reset(); 
+      onSubmit(); 
+      
+    } catch (error) {
+      console.error("Error submitting form", error);
+      setIsSubmitting(false);
+      onSubmit(); 
+    }
   };
 
   return (
@@ -43,21 +64,25 @@ const SupportModal = ({ isOpen, onClose, title, onSubmit }) => {
         <h3 className="text-2xl font-extrabold text-[#112A46] mb-6 pr-8">{title}</h3>
         
         <form onSubmit={handleSubmit} className="space-y-4">
+          
+       
+          <input type="hidden" name="entry.632021124" value={title} />
+
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-1">Full Name</label>
-            <input required type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#E05A2B] focus:ring-1 focus:ring-[#E05A2B] bg-gray-50" placeholder="Enter your name" />
+            <input required type="text" name="entry.571671666" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#E05A2B] focus:ring-1 focus:ring-[#E05A2B] bg-gray-50" placeholder="Enter your name" />
           </div>
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-1">Ship Name</label>
-            <input required type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#E05A2B] focus:ring-1 focus:ring-[#E05A2B] bg-gray-50" placeholder="e.g., MV Atlantic" />
+            <input required type="text" name="entry.1510172243" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#E05A2B] focus:ring-1 focus:ring-[#E05A2B] bg-gray-50" placeholder="e.g., MV Atlantic" />
           </div>
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-1">Contact Method (WhatsApp Number or Email)</label>
-            <input required type="text" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#E05A2B] focus:ring-1 focus:ring-[#E05A2B] bg-gray-50" placeholder="+1 234 567 8900" />
+            <input required type="text" name="entry.122220513" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#E05A2B] focus:ring-1 focus:ring-[#E05A2B] bg-gray-50" placeholder="+1 234 567 8900" />
           </div>
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-1">How can we help?</label>
-            <textarea required rows="3" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#E05A2B] focus:ring-1 focus:ring-[#E05A2B] bg-gray-50 resize-none" placeholder="Short message..."></textarea>
+            <textarea required rows="3" name="entry.922287811" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#E05A2B] focus:ring-1 focus:ring-[#E05A2B] bg-gray-50 resize-none" placeholder="Short message..."></textarea>
           </div>
           <button 
             type="submit" 
