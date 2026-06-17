@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import ImageGallery from './ImageGallery';
+import { resolveUploadUrl } from '../../services/uploadService';
 
 const TiptapRender = ({ content }) => {
   const renderedContent = useMemo(() => {
@@ -45,7 +46,8 @@ const TiptapRender = ({ content }) => {
                 } else if (attr.name.startsWith('data-')) {
                   props[attr.name] = attr.value;
                 } else if (['href', 'src', 'alt', 'target', 'rel'].includes(attr.name)) {
-                  props[attr.name] = attr.value;
+                  // Resolve relative upload paths for src attributes
+                  props[attr.name] = attr.name === 'src' ? resolveUploadUrl(attr.value) : attr.value;
                 }
               });
             } catch (e) {
@@ -116,7 +118,16 @@ const TiptapRender = ({ content }) => {
 
               if (isHtmlBlock) {
                 flushImages();
-                const htmlContent = node.getAttribute('data-html-content') || node.innerHTML;
+                let htmlContent = node.getAttribute('data-html-content') || node.innerHTML;
+                
+                // Decode HTML entities if necessary
+                htmlContent = htmlContent.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+
+                // Find any src="/uploads/..." in the raw HTML and prepend the backend URL
+                htmlContent = htmlContent.replace(/src=["'](\/uploads\/[^"']+)["']/g, (match, path) => {
+                  return `src="${resolveUploadUrl(path)}"`;
+                });
+
                 result.push(
                   <div
                     key={i++}
@@ -168,7 +179,7 @@ const TiptapRender = ({ content }) => {
                   ? node.getAttribute('src') 
                   : (node.childNodes[0] && node.childNodes[0].getAttribute('src'));
                 if (src) {
-                  imageBuffer.push(src);
+                  imageBuffer.push(resolveUploadUrl(src));
                 }
               } else {
                 flushImages();

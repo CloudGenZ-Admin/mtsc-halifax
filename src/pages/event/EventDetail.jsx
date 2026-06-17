@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useEvents } from '../../context/EventsContext';
 import TiptapRender from '../../components/event/TiptapRender';
+import { resolveUploadUrl } from '../../services/uploadService';
 import { FiArrowLeft, FiCalendar } from 'react-icons/fi';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
@@ -73,7 +74,7 @@ const EventDetail = () => {
         // Collect consecutive images
         if (block.type === 'image' && block.data?.file?.url) {
           imageBuffer.push({
-            url: block.data.file.url,
+            url: resolveUploadUrl(block.data.file.url),
             caption: block.data.caption
           });
           return;
