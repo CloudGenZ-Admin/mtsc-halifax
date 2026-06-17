@@ -3,8 +3,8 @@ import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/common/Reveal';
 import {
-  FaWhatsapp, FaShip, FaBoxOpen, FaUserTie, FaHandsHelping, 
-  FaTshirt, FaBus, FaCheckCircle, FaMapMarkerAlt, FaClock, 
+  FaWhatsapp, FaShip, FaBoxOpen, FaUserTie, FaHandsHelping,
+  FaTshirt, FaBus, FaCheckCircle, FaMapMarkerAlt, FaClock,
   FaPhoneAlt, FaEnvelope, FaGlobe, FaAnchor
 } from 'react-icons/fa';
 
@@ -23,49 +23,46 @@ const SupportModal = ({ isOpen, onClose, title, onSubmit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfMbXAK0YerhuvvLkkn3oeAxI-VsltG2jw-zeNTW3fyr9QwWg/formResponse";
-    
+
    
     const formData = new FormData(e.target);
-    const urlEncodedData = new URLSearchParams(formData).toString();
 
     try {
+    
       await fetch(GOOGLE_FORM_URL, {
         method: "POST",
         mode: "no-cors",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: urlEncodedData
+        body: formData
       });
-      
+
       // Success
       setIsSubmitting(false);
-      e.target.reset(); 
-      onSubmit(); 
-      
+      e.target.reset(); // Clear the form fields
+      onSubmit(); // Triggers the success toast
+
     } catch (error) {
       console.error("Error submitting form", error);
       setIsSubmitting(false);
-      onSubmit(); 
+      onSubmit();
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-[#112A46]/80 backdrop-blur-sm">
       <div className="bg-white rounded-3xl w-full max-w-lg p-6 md:p-8 relative shadow-2xl overflow-y-auto max-h-[90vh]">
-        <button 
+        <button
           onClick={onClose}
           className="absolute top-4 right-6 text-gray-400 hover:text-[#E05A2B] text-3xl font-light transition-colors cursor-pointer"
         >
           ×
         </button>
         <h3 className="text-2xl font-extrabold text-[#112A46] mb-6 pr-8">{title}</h3>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
-          
-       
+
+
           <input type="hidden" name="entry.632021124" value={title} />
 
           <div>
@@ -84,8 +81,8 @@ const SupportModal = ({ isOpen, onClose, title, onSubmit }) => {
             <label className="block text-sm font-bold text-gray-700 mb-1">How can we help?</label>
             <textarea required rows="3" name="entry.922287811" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-[#E05A2B] focus:ring-1 focus:ring-[#E05A2B] bg-gray-50 resize-none" placeholder="Short message..."></textarea>
           </div>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={isSubmitting}
             className={`w-full text-white font-bold py-4 rounded-xl shadow-md mt-4 transition-colors cursor-pointer ${isSubmitting ? 'bg-gray-400' : 'bg-[#E05A2B] hover:bg-[#c94d23]'}`}
           >
@@ -101,7 +98,7 @@ const SupportModal = ({ isOpen, onClose, title, onSubmit }) => {
 };
 
 export default function SeafarerSupport() {
-  const [activeModal, setActiveModal] = useState(null); 
+  const [activeModal, setActiveModal] = useState(null);
   const [toastMessage, setToastMessage] = useState(null); // Toast state
 
   useEffect(() => {
@@ -112,7 +109,7 @@ export default function SeafarerSupport() {
     setActiveModal(null); // Close the modal
     // Show toast message
     setToastMessage("Thank You! Your request has been successfully sent. We will be in touch with you shortly.");
-    
+
     // Auto hide toast after 5 seconds
     setTimeout(() => {
       setToastMessage(null);
@@ -135,8 +132,8 @@ export default function SeafarerSupport() {
             <h4 className="text-[#112A46] font-extrabold text-sm mb-1">Success</h4>
             <p className="text-gray-600 text-sm leading-relaxed">{toastMessage}</p>
           </div>
-          <button 
-            onClick={() => setToastMessage(null)} 
+          <button
+            onClick={() => setToastMessage(null)}
             className="text-gray-400 hover:text-gray-600 text-lg cursor-pointer transition-colors"
           >
             ×
@@ -151,7 +148,7 @@ export default function SeafarerSupport() {
       <SupportModal isOpen={activeModal === 'transport'} onClose={() => setActiveModal(null)} title="Transportation Request" onSubmit={handleFormSubmit} />
 
       <main className="flex-grow">
-        
+
         {/* ================= HERO SECTION (Updated to match About Page) ================= */}
         <section className="relative pt-12 pb-16 md:pt-16 md:pb-16 min-h-[40vh] flex flex-col justify-center overflow-hidden ">
           <div className="absolute inset-0 z-0">
@@ -165,7 +162,7 @@ export default function SeafarerSupport() {
                 <FaAnchor className="text-[#FFD700]" /> For Visiting Crews
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 max-w-4xl mx-auto">
-                Support While You’re in <br className="hidden md:block"/> Halifax Harbour
+                Support While You’re in <br className="hidden md:block" /> Halifax Harbour
               </h1>
               <p className="text-lg md:text-xl text-white/90 leading-relaxed font-medium max-w-3xl mx-auto mb-10">
                 Wherever you are from, you are welcome here. Mission to Seafarers Halifax is here to support you with practical help, connection, hospitality, and care while your ship is visiting the Port of Halifax.
@@ -196,7 +193,7 @@ export default function SeafarerSupport() {
             </Reveal>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              
+
               {/* Card 1 */}
               <Reveal>
                 <div onClick={() => setActiveModal('shipVisit')} className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#E05A2B]/30 transition-all cursor-pointer group h-full flex flex-col">
@@ -217,7 +214,7 @@ export default function SeafarerSupport() {
                   </div>
                   <h3 className="text-xl font-bold text-[#112A46] mb-3">Send or Receive Parcel</h3>
                   <p className="text-gray-600 font-medium mb-6 flex-grow">Order personal items online and have them delivered safely to our Halifax Mission for pickup.
-                       Please ensure that all courier and parcel deliveries to the Mission are scheduled within official office hours.
+                    Please ensure that all courier and parcel deliveries to the Mission are scheduled within official office hours.
                   </p>
                   <div className="text-[#E05A2B] font-bold text-sm inline-flex items-center gap-2">Parcel Info & Request →</div>
                 </a>
@@ -231,7 +228,7 @@ export default function SeafarerSupport() {
                   </div>
                   <h3 className="text-xl font-bold text-white mb-3">Message the Chaplain</h3>
                   <p className="text-white/70 font-medium mb-6 flex-grow">Need someone to talk to? We are here to listen and support you confidentially.</p>
-                  <div className="text-[#25D366] font-bold text-sm inline-flex items-center gap-2"><FaWhatsapp className="text-lg"/> WhatsApp Us Now</div>
+                  <div className="text-[#25D366] font-bold text-sm inline-flex items-center gap-2"><FaWhatsapp className="text-lg" /> WhatsApp Us Now</div>
                 </a>
               </Reveal>
 
@@ -322,10 +319,10 @@ export default function SeafarerSupport() {
             <Reveal>
               <h2 className="text-3xl md:text-4xl font-extrabold mb-16">Getting Support is Simple</h2>
             </Reveal>
-            
+
             <div className="grid md:grid-cols-3 gap-12 relative max-w-4xl mx-auto">
               <div className="hidden md:block absolute top-10 left-20 right-20 h-1 bg-white/10 z-0"></div>
-              
+
               {[
                 { step: "1", title: "Choose", desc: "Select the service or support you need from our dashboard above." },
                 { step: "2", title: "Request", desc: "Fill out a short request form or message our team." },
@@ -411,7 +408,7 @@ export default function SeafarerSupport() {
             <Reveal>
               <h2 className="text-3xl md:text-4xl font-black mb-4">Need Urgent Assistance?</h2>
               <p className="text-white/90 text-lg mb-8 font-medium">Contact us directly by phone or WhatsApp for immediate support.</p>
-              
+
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="tel:+19024227790" className="bg-white text-[#E05A2B] px-8 py-4 rounded-xl font-black text-lg flex items-center justify-center gap-3 shadow-lg hover:bg-gray-100 transition-colors cursor-pointer">
                   <FaPhoneAlt /> Call Station
@@ -427,10 +424,10 @@ export default function SeafarerSupport() {
         <section className="py-20 bg-[#F8FBFD] cursor-default">
           <div className="max-w-[1200px] mx-auto px-6">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              
+
               <Reveal>
                 <h2 className="text-3xl font-extrabold text-[#112A46] mb-8">Visit the Halifax Mission</h2>
-                
+
                 <div className="space-y-8">
                   <div className="flex gap-4">
                     <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100">
@@ -438,7 +435,7 @@ export default function SeafarerSupport() {
                     </div>
                     <div>
                       <h4 className="font-bold text-[#112A46] text-lg mb-1">Civic Address</h4>
-                      <p className="text-gray-600 font-medium">844 Marginal Road, Halifax NS B3H 2P7, Nova Scotia<br/>Situated across from Pier 24 in the Halifax Seaport area.</p>
+                      <p className="text-gray-600 font-medium">844 Marginal Road, Halifax NS B3H 2P7, Nova Scotia<br />Situated across from Pier 24 in the Halifax Seaport area.</p>
                       <h4 className="font-bold text-[#112A46] text-lg mt-4 mb-1">Mailing Address</h4>
                       <p className="text-gray-600 font-medium">P.O. Box 27114, Halifax, NS B3H 4M8</p>
                     </div>
@@ -462,13 +459,13 @@ export default function SeafarerSupport() {
 
               <Reveal delay={100}>
                 <div className="h-[400px] w-full rounded-3xl overflow-hidden shadow-lg border-4 border-white cursor-pointer">
-                  <iframe 
+                  <iframe
                     title="Mission to Seafarers Halifax Map"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2839.2629471138245!2d-63.56839968446387!3d44.63248697909985!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4b5a2233f28325db%3A0xc3c5dd3b603eb61!2s844%20Marginal%20Rd%2C%20Halifax%2C%20NS%20B3H%204M8!5e0!3m2!1sen!2sca!4v1615560123456!5m2!1sen!2sca" 
-                    width="100%" 
-                    height="100%" 
-                    style={{ border: 0 }} 
-                    allowFullScreen="" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2839.2629471138245!2d-63.56839968446387!3d44.63248697909985!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4b5a2233f28325db%3A0xc3c5dd3b603eb61!2s844%20Marginal%20Rd%2C%20Halifax%2C%20NS%20B3H%204M8!5e0!3m2!1sen!2sca!4v1615560123456!5m2!1sen!2sca"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
                     loading="lazy">
                   </iframe>
                 </div>
