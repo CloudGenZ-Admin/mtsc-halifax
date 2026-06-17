@@ -6,6 +6,7 @@ import { FaTicketAlt } from 'react-icons/fa';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import Reveal from '../../components/common/Reveal';
+import { resolveUploadUrl } from '../../services/uploadService';
 
 // Import the background image
 import eventsBg from '../../assets/WhatsApp Image 2026-05-09 at 12.50.10 AM.jpeg';
@@ -88,7 +89,7 @@ const EventList = () => {
     
     // Improved regex to handle optional quotes and spacing
     const match = searchContent.match(/<img[^>]+src=["']?([^"'\s>]+)["']?/i);
-    if (match) return match[1];
+    if (match) return resolveUploadUrl(match[1]);
     
     // Deep search through JSON content
     try {
@@ -96,7 +97,7 @@ const EventList = () => {
       const findImg = (nodes) => {
         if (!nodes || !Array.isArray(nodes)) return null;
         for (const node of nodes) {
-          if (node.type === 'image' && node.attrs?.src) return node.attrs.src;
+          if (node.type === 'image' && node.attrs?.src) return resolveUploadUrl(node.attrs.src);
           if (node.content) {
             const childImg = findImg(node.content);
             if (childImg) return childImg;

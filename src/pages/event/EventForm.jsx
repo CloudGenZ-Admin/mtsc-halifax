@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { eventService } from '../../services/eventService';
 import { authService } from '../../services/authService';
+import { prepareContentForEditor, prepareContentForSave } from '../../services/uploadService';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import TiptapEditor from '../../components/event/TiptapEditor';
@@ -45,7 +46,7 @@ const EventForm = () => {
       setFormData({
         title: data.title,
         url: data.url,
-        content: data.content || '',
+        content: prepareContentForEditor(data.content || ''),
         eventDate: data.eventDate ? new Date(data.eventDate) : null,
         isFeatured: data.isFeatured,
       });
@@ -65,6 +66,7 @@ const EventForm = () => {
     try {
       const eventData = {
         ...formData,
+        content: prepareContentForSave(formData.content),
         eventDate: formData.eventDate ? formData.eventDate.toISOString() : null,
       };
 

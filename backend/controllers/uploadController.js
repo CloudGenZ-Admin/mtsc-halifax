@@ -28,8 +28,7 @@ export const uploadFile = async (req, res, next) => {
       fs.unlinkSync(inputPath);
     }
 
-    const baseUrl = process.env.BASE_URL || `http://localhost:${process.env.PORT || 5000}`;
-    const url = `${baseUrl}/uploads/${finalFilename}`;
+    const url = `/uploads/${finalFilename}`;
 
     res.json({
       success: true,
