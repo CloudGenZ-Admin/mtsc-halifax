@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/common/Reveal';
@@ -16,40 +16,17 @@ import josephImg from '../assets/Josefloot.jpg';
 
 const SupportModal = ({ isOpen, onClose, title, onSubmit }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const formRef = useRef(null);
 
   if (!isOpen) return null;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfMbXAK0YerhuvvLkkn3oeAxI-VsltG2jw-zeNTW3fyr9QwWg/formResponse";
-    
-   
-    const formData = new FormData(e.target);
-    const urlParams = new URLSearchParams();
-    
-    for (let [key, value] of formData.entries()) {
-      urlParams.append(key, value);
-    }
+  const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfMbXAK0YerhuvvLkkn3oeAxI-VsltG2jw-zeNTW3fyr9QwWg/formResponse";
 
-    try {
-     
-      await fetch(GOOGLE_FORM_URL, {
-        method: "POST",
-        mode: "no-cors",
-        body: urlParams
-      });
-      
-      // Success
+  const handleIframeLoad = () => {
+    if (isSubmitting) {
       setIsSubmitting(false);
-      e.target.reset(); // Clear the form fields
+      if (formRef.current) formRef.current.reset(); // Clear the form fields
       onSubmit(); // Triggers the success toast
-      
-    } catch (error) {
-      console.error("Error submitting form", error);
-      setIsSubmitting(false);
-      onSubmit(); // Force success UI even if browser hides the network success
     }
   };
 
@@ -64,7 +41,21 @@ const SupportModal = ({ isOpen, onClose, title, onSubmit }) => {
         </button>
         <h3 className="text-2xl font-extrabold text-[#112A46] mb-6 pr-8">{title}</h3>
         
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <iframe
+          name="hidden_iframe_modal"
+          id="hidden_iframe_modal"
+          style={{ display: 'none' }}
+          onLoad={handleIframeLoad}
+        ></iframe>
+
+        <form 
+          ref={formRef}
+          action={GOOGLE_FORM_URL}
+          method="POST"
+          target="hidden_iframe_modal"
+          onSubmit={() => setIsSubmitting(true)} 
+          className="space-y-4"
+        >
           
           {/* HIDDEN INPUT FOR TITLE/REQUEST TYPE */}
           <input type="hidden" name="entry.632021124" value={title} />
