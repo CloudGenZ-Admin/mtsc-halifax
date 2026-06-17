@@ -14,22 +14,42 @@ import volunteersImg from '../assets/MtS Halifax Center.jpg';
 import helenImg from '../assets/HelenCircle.jpg';
 import josephImg from '../assets/Josefloot.jpg';
 
-
 const SupportModal = ({ isOpen, onClose, title, onSubmit }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
 
- 
-  const handleFormSubmit = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setIsSubmitting(true);
+    
+    const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfMbXAK0YerhuvvLkkn3oeAxI-VsltG2jw-zeNTW3fyr9QwWg/formResponse";
+    
    
-  };
+    const formData = new FormData(e.target);
+    const urlParams = new URLSearchParams();
+    
+    for (let [key, value] of formData.entries()) {
+      urlParams.append(key, value);
+    }
 
-  const handleIframeLoad = () => {
-    if (isSubmitting) {
+    try {
+     
+      await fetch(GOOGLE_FORM_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: urlParams
+      });
+      
+      // Success
       setIsSubmitting(false);
-      onSubmit(); 
+      e.target.reset(); // Clear the form fields
+      onSubmit(); // Triggers the success toast
+      
+    } catch (error) {
+      console.error("Error submitting form", error);
+      setIsSubmitting(false);
+      onSubmit(); // Force success UI even if browser hides the network success
     }
   };
 
@@ -44,22 +64,7 @@ const SupportModal = ({ isOpen, onClose, title, onSubmit }) => {
         </button>
         <h3 className="text-2xl font-extrabold text-[#112A46] mb-6 pr-8">{title}</h3>
         
-        {/* 🔴 MAGIC TRICK: Hidden Iframe. Form iske andar submit hoga, redirect nahi hoga */}
-        <iframe 
-          name="hidden_iframe" 
-          id="hidden_iframe" 
-          style={{ display: 'none' }} 
-          onLoad={handleIframeLoad}
-        ></iframe>
-        
-     
-        <form 
-          action="https://docs.google.com/forms/d/e/1FAIpQLSfMbXAK0YerhuvvLkkn3oeAxI-VsltG2jw-zeNTW3fyr9QwWg/formResponse" 
-          method="POST" 
-          target="hidden_iframe"
-          onSubmit={handleFormSubmit}
-          className="space-y-4"
-        >
+        <form onSubmit={handleSubmit} className="space-y-4">
           
           {/* HIDDEN INPUT FOR TITLE/REQUEST TYPE */}
           <input type="hidden" name="entry.632021124" value={title} />
@@ -148,7 +153,7 @@ export default function SeafarerSupport() {
 
       <main className="flex-grow">
         
-        {/* ================= HERO SECTION (Updated to match About Page) ================= */}
+        {/* ================= HERO SECTION ================= */}
         <section className="relative pt-12 pb-16 md:pt-16 md:pb-16 min-h-[40vh] flex flex-col justify-center overflow-hidden ">
           <div className="absolute inset-0 z-0">
             <img src={portHalifaxImg} alt="Halifax Harbour" className="w-full h-full object-cover" />
@@ -167,7 +172,6 @@ export default function SeafarerSupport() {
                 Wherever you are from, you are welcome here. Mission to Seafarers Halifax is here to support you with practical help, connection, hospitality, and care while your ship is visiting the Port of Halifax.
               </p>
 
-              {/* Action Buttons with cursor-pointer */}
               <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
                 <button onClick={() => setActiveModal('shipVisit')} className="w-full sm:w-auto px-8 py-4 bg-[#E05A2B] hover:bg-[#c94d23] text-white font-extrabold rounded-xl shadow-lg transition-transform hover:-translate-y-1 cursor-pointer">
                   Request a Ship Visit
@@ -193,7 +197,6 @@ export default function SeafarerSupport() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               
-              {/* Card 1 */}
               <Reveal>
                 <div onClick={() => setActiveModal('shipVisit')} className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#E05A2B]/30 transition-all cursor-pointer group h-full flex flex-col">
                   <div className="w-16 h-16 bg-[#FDF0EC] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -205,7 +208,6 @@ export default function SeafarerSupport() {
                 </div>
               </Reveal>
 
-              {/* Card 2 - Direct link to parcel service */}
               <Reveal delay={100}>
                 <a href="https://parcelservice.mtsc.ca/login" target="_blank" rel="noopener noreferrer" className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#E05A2B]/30 transition-all cursor-pointer group h-full flex flex-col block">
                   <div className="w-16 h-16 bg-[#FDF0EC] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -219,7 +221,6 @@ export default function SeafarerSupport() {
                 </a>
               </Reveal>
 
-              {/* Card 3 (WhatsApp Direct) */}
               <Reveal delay={200}>
                 <a href="https://wa.me/19029893388" target="_blank" rel="noreferrer" className="bg-[#112A46] rounded-3xl p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group h-full flex flex-col block">
                   <div className="w-16 h-16 bg-[#25D366]/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -231,7 +232,6 @@ export default function SeafarerSupport() {
                 </a>
               </Reveal>
 
-              {/* Card 4 */}
               <Reveal>
                 <div onClick={() => setActiveModal('support')} className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#E05A2B]/30 transition-all cursor-pointer group h-full flex flex-col">
                   <div className="w-16 h-16 bg-[#FDF0EC] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -243,7 +243,6 @@ export default function SeafarerSupport() {
                 </div>
               </Reveal>
 
-              {/* Card 5 */}
               <Reveal delay={100}>
                 <div onClick={() => setActiveModal('clothing')} className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#E05A2B]/30 transition-all cursor-pointer group h-full flex flex-col">
                   <div className="w-16 h-16 bg-[#FDF0EC] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -255,7 +254,6 @@ export default function SeafarerSupport() {
                 </div>
               </Reveal>
 
-              {/* Card 6 */}
               <Reveal delay={200}>
                 <div onClick={() => setActiveModal('transport')} className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#E05A2B]/30 transition-all cursor-pointer group h-full flex flex-col">
                   <div className="w-16 h-16 bg-[#FDF0EC] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -312,7 +310,7 @@ export default function SeafarerSupport() {
           </div>
         </section>
 
-        {/* ================= HOW IT WORKS (3 STEPS) ================= */}
+        {/* ================= HOW IT WORKS ================= */}
         <section className="py-24 bg-[#112A46] text-white cursor-default">
           <div className="max-w-[1200px] mx-auto px-6 text-center">
             <Reveal>
@@ -339,7 +337,7 @@ export default function SeafarerSupport() {
           </div>
         </section>
 
-        {/* ================= MEET YOUR TEAM & LANGUAGE ================= */}
+        {/* ================= MEET YOUR TEAM ================= */}
         <section className="py-20 bg-white border-b border-gray-100">
           <div className="max-w-[1200px] mx-auto px-6">
             <Reveal className="text-center mb-16">
@@ -350,7 +348,6 @@ export default function SeafarerSupport() {
             </Reveal>
 
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
-              {/* Helen */}
               <Reveal delay={100}>
                 <div className="flex items-center gap-6 bg-[#F8FBFD] p-6 rounded-3xl border border-gray-100 cursor-default">
                   <div className="w-24 h-24 rounded-full overflow-hidden shrink-0 border-4 border-white shadow-md">
@@ -367,7 +364,6 @@ export default function SeafarerSupport() {
                 </div>
               </Reveal>
 
-              {/* Joseph */}
               <Reveal delay={200}>
                 <div className="flex items-center gap-6 bg-[#F8FBFD] p-6 rounded-3xl border border-gray-100 cursor-default">
                   <div className="w-24 h-24 rounded-full overflow-hidden shrink-0 border-4 border-white shadow-md bg-[#EAE6DF] flex items-center justify-center">
@@ -385,7 +381,6 @@ export default function SeafarerSupport() {
               </Reveal>
             </div>
 
-            {/* Language Box */}
             <Reveal>
               <div className="bg-[#E05A2B]/10 border border-[#E05A2B]/20 rounded-3xl p-8 max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left cursor-default">
                 <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm">
@@ -397,7 +392,6 @@ export default function SeafarerSupport() {
                 </div>
               </div>
             </Reveal>
-
           </div>
         </section>
 
