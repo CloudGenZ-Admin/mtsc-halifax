@@ -62,39 +62,34 @@ export function EventsProvider({ children }) {
     const existing = allEvents.find(event => event.url === url);
     if (existing) return existing;
     
-    // If events are still loading, wait a bit — they might arrive soon
-    // But if they're loaded and the event isn't there, fetch individually
-    if (!loading) {
-      try {
-        const event = await eventService.getEventByUrl(url);
-        if (event) {
-          // Add formatted date
-          const eventWithDate = {
-            ...event,
-            formattedDate: new Date(event.eventDate).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })
-          };
-          
-          // Add to our local list so future lookups are instant
-          setAllEvents(prev => {
-            const alreadyExists = prev.some(e => e.id === event.id);
-            return alreadyExists ? prev : [...prev, eventWithDate];
-          });
-          
-          return eventWithDate;
-        }
-        return event;
-      } catch (err) {
-        console.error(`Failed to fetch event ${url}:`, err);
-        return null;
+    // Always fetch individually if not found in cache
+    try {
+      const event = await eventService.getEventByUrl(url);
+      if (event) {
+        // Add formatted date
+        const eventWithDate = {
+          ...event,
+          formattedDate: event.eventDate ? new Date(event.eventDate).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          }) : null
+        };
+        
+        // Add to our local list so future lookups are instant
+        setAllEvents(prev => {
+          const alreadyExists = prev.some(e => e.id === event.id);
+          return alreadyExists ? prev : [...prev, eventWithDate];
+        });
+        
+        return eventWithDate;
       }
+      return null;
+    } catch (err) {
+      console.error(`Failed to fetch event ${url}:`, err);
+      return null;
     }
-    
-    return null;
-  }, [allEvents, loading]);
+  }, [allEvents]);
 
   const value = {
     allEvents,

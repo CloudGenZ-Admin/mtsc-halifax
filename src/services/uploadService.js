@@ -20,7 +20,8 @@ export const resolveUploadUrl = (path) => {
  */
 export const prepareContentForEditor = (htmlContent) => {
   if (!htmlContent) return htmlContent;
-  return htmlContent.replace(/src=["'](\/uploads\/[^"']+)["']/g, `src="${BACKEND_URL}$1"`);
+  // Match normal quotes and HTML-escaped quotes to ensure we catch all image URLs
+  return htmlContent.replace(/src=(["']|&quot;)\/?(uploads\/[^"'&]+)\1/g, `src=$1${BACKEND_URL}/$2$1`);
 };
 
 /**
@@ -29,8 +30,12 @@ export const prepareContentForEditor = (htmlContent) => {
  */
 export const prepareContentForSave = (htmlContent) => {
   if (!htmlContent) return htmlContent;
+  
+  // Escape BACKEND_URL for use in RegExp
+  const safeBackendUrl = BACKEND_URL.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  
   // Replace the specific BACKEND_URL prefix with just the relative path
-  return htmlContent.replace(new RegExp(`src=["']${BACKEND_URL}(/uploads/[^"']+)["']`, 'g'), 'src="$1"');
+  return htmlContent.replace(new RegExp(`src=(["']|&quot;)${safeBackendUrl}/?(uploads/[^"'&]+)\\1`, 'g'), 'src=$1/$2$1');
 };
 
 export const uploadService = {

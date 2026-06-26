@@ -490,7 +490,7 @@ export default function Home() {
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
                   {[
                     "Volunteer at the station or during local events",
-                    "Donate snacks, refreshments, gift cards, furniture, or supplies",
+                    "Donate snacks, refreshments, gift cards, or supplies",
                     "Support haircut and wellness services for seafarers",
                     "Help furnish and create a welcoming station space",
                     "Support a local project or event",
