@@ -353,7 +353,7 @@ function About() {
                 </div>
                 <div className="lg:col-span-7">
                   <h2 className="text-2xl md:text-3xl font-extrabold text-[#112A46] leading-tight">
-                    Station Manager
+                    Mission Manager
                   </h2>
                   <h3 className="mt-4 text-lg font-bold text-[#E05A2B] uppercase tracking-wider">
                     HELEN GLENN

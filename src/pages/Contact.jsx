@@ -192,7 +192,7 @@ const Contact = () => {
                   <div className="space-y-3">
                     <div className="bg-white p-3.5 rounded-xl border border-red-100 shadow-sm">
                       <div className="font-bold text-[#112A46] text-xs uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <User className="h-3.5 w-3.5 text-[#E05A2B]" /> Helen Glenn, Station Manager
+                        <User className="h-3.5 w-3.5 text-[#E05A2B]" /> Helen Glenn, Mission Manager
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         <a href="https://wa.me/19024561658" className="flex items-center justify-center gap-1.5 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 font-bold py-2.5 rounded-lg transition-colors text-xs">

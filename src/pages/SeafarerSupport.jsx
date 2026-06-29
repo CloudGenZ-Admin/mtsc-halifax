@@ -346,7 +346,7 @@ export default function SeafarerSupport() {
                   </div>
                   <div>
                     <h3 className="text-xl font-extrabold text-[#112A46]">Helen Glenn</h3>
-                    <p className="text-[#E05A2B] font-bold text-sm uppercase mb-2">Station Manager</p>
+                    <p className="text-[#E05A2B] font-bold text-sm uppercase mb-2">Mission Manager</p>
                     <div className="flex gap-3">
                       <a href="https://wa.me/19024561658" className="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"><FaWhatsapp /></a>
                       <a href="mailto:hglenn@missiontoseafarershalifax.ca" className="w-10 h-10 rounded-full bg-[#112A46] text-white flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"><FaEnvelope /></a>
