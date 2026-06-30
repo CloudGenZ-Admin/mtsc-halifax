@@ -92,25 +92,57 @@ const ButtonBlock = Node.create({
   name: 'buttonBlock',
   group: 'block',
   atom: true,
+  draggable: true,
   addAttributes() {
     return {
       text: { default: 'Click here' },
       href: { default: '#' },
       variant: { default: 'filled' }, // filled | outline
-      align: { default: 'center' },
     };
   },
   parseHTML() {
-    return [{ tag: 'div[data-button-block]' }];
-  },
-  renderHTML({ node }) {
-    const { text, href, variant, align } = node.attrs;
-    const style = variant === 'filled'
-      ? 'display:inline-block;background:#e05a2b;color:#fff;border:2px solid #e05a2b;padding:10px 28px;border-radius:8px;font-weight:700;text-decoration:none;'
-      : 'display:inline-block;background:transparent;color:#e05a2b;border:2px solid #e05a2b;padding:10px 28px;border-radius:8px;font-weight:700;text-decoration:none;';
-    return ['div', { 'data-button-block': true, style: `text-align:${align};margin:1.5rem 0;` },
-      ['a', { href, style }, text],
+    return [
+      { tag: 'div[data-button-block]' },
+      { tag: 'a[data-button-block]' },
     ];
+  },
+  renderHTML({ HTMLAttributes, node }) {
+    const { text, href, variant } = node.attrs;
+    const btnStyle = variant === 'filled'
+      ? 'display:inline-block;background:#e05a2b;color:#fff;border:2px solid #e05a2b;padding:8px 24px;border-radius:8px;font-weight:700;text-decoration:none;'
+      : 'display:inline-block;background:transparent;color:#e05a2b;border:2px solid #e05a2b;padding:8px 24px;border-radius:8px;font-weight:700;text-decoration:none;';
+    return ['div', mergeAttributes({ 'data-button-block': true, style: 'margin:1rem 0;' }, HTMLAttributes),
+      ['a', { href, style: btnStyle, target: '_blank', rel: 'noopener noreferrer' }, text],
+    ];
+  },
+  addNodeView() {
+    return ({ node }) => {
+      const dom = document.createElement('div');
+      dom.setAttribute('data-button-block', 'true');
+      const a = document.createElement('a');
+      dom.appendChild(a);
+
+      const applyAttrs = (n) => {
+        const { text, href, variant } = n.attrs;
+        const align = n.attrs.textAlign || 'center';
+        dom.style.cssText = `margin:1rem 0; text-align:${align};`;
+        a.href = href;
+        a.textContent = text;
+        a.style.cssText = variant === 'filled'
+          ? 'display:inline-block;background:#e05a2b;color:#fff;border:2px solid #e05a2b;padding:8px 24px;border-radius:8px;font-weight:700;text-decoration:none;pointer-events:none;cursor:default;'
+          : 'display:inline-block;background:transparent;color:#e05a2b;border:2px solid #e05a2b;padding:8px 24px;border-radius:8px;font-weight:700;text-decoration:none;pointer-events:none;cursor:default;';
+      };
+      applyAttrs(node);
+
+      return {
+        dom,
+        update(updatedNode) {
+          if (updatedNode.type.name !== 'buttonBlock') return false;
+          applyAttrs(updatedNode);
+          return true;
+        },
+      };
+    };
   },
 });
 
@@ -356,7 +388,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between p-4 border-b">
           <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+          <button type="button" onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
         </div>
         <div className="p-4">{children}</div>
       </div>
@@ -365,7 +397,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
 };
 
 // ── Toolbar ──────────────────────────────────────────────────────────────────
-const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
+const Toolbar = ({ editor, onImageUpload, onAudioUpload, onDocUpload }) => {
   const [linkModal, setLinkModal] = useState(false);
   const [linkUrl, setLinkUrl] = useState('');
   const [videoModal, setVideoModal] = useState(false);
@@ -392,6 +424,10 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
   }, []);
 
   if (!editor) return null;
+
+  const handleAlign = (alignment) => {
+    editor.chain().focus().setTextAlign(alignment).run();
+  };
 
   const openLinkModal = () => {
     const prev = editor.getAttributes('link').href || '';
@@ -451,10 +487,13 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
 
   const applyButton = () => {
     if (buttonData.text && buttonData.href) {
-      editor.chain().focus().insertContent({
-        type: 'buttonBlock',
-        attrs: { text: buttonData.text, href: buttonData.href, variant: buttonData.variant, align: 'center' },
-      }).run();
+      editor.chain().focus().insertContent([
+        {
+          type: 'buttonBlock',
+          attrs: { text: buttonData.text, href: buttonData.href, variant: buttonData.variant },
+        },
+        { type: 'paragraph' },
+      ]).run();
     }
     setButtonModal(false);
   };
@@ -567,10 +606,10 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
 
       {/* Alignment */}
       <ToolGroup>
-        <Btn onClick={() => editor.chain().focus().setTextAlign('left').run()} active={editor.isActive({ textAlign: 'left' })} title="Left">⬅</Btn>
-        <Btn onClick={() => editor.chain().focus().setTextAlign('center').run()} active={editor.isActive({ textAlign: 'center' })} title="Center">↔</Btn>
-        <Btn onClick={() => editor.chain().focus().setTextAlign('right').run()} active={editor.isActive({ textAlign: 'right' })} title="Right">➡</Btn>
-        <Btn onClick={() => editor.chain().focus().setTextAlign('justify').run()} active={editor.isActive({ textAlign: 'justify' })} title="Justify">☰</Btn>
+        <Btn onClick={() => handleAlign('left')} active={editor.isActive({ textAlign: 'left' })} title="Left">⬅</Btn>
+        <Btn onClick={() => handleAlign('center')} active={editor.isActive({ textAlign: 'center' })} title="Center">↔</Btn>
+        <Btn onClick={() => handleAlign('right')} active={editor.isActive({ textAlign: 'right' })} title="Right">➡</Btn>
+        <Btn onClick={() => handleAlign('justify')} active={editor.isActive({ textAlign: 'justify' })} title="Justify">☰</Btn>
       </ToolGroup>
 
       <Sep />
@@ -611,6 +650,7 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
       <ToolGroup>
         <Btn onClick={() => onImageUpload()} active={false} title="Upload Image">🖼 Image</Btn>
         <Btn onClick={() => onAudioUpload()} active={false} title="Upload Audio">🎵 Audio</Btn>
+        <Btn onClick={() => onDocUpload()} active={false} title="Upload Document">📄 Doc</Btn>
         <Btn onClick={openVideoModal} active={false} title="YouTube / Vimeo">▶ Video</Btn>
       </ToolGroup>
 
@@ -664,8 +704,8 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
           onKeyDown={(e) => e.key === 'Enter' && applyLink()}
         />
         <div className="flex gap-2 mt-4">
-          <button onClick={applyLink} className="flex-1 bg-coral text-white px-4 py-2 rounded-lg hover:bg-coral-dark transition-colors">Apply</button>
-          <button onClick={() => setLinkModal(false)} className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
+          <button type="button" onClick={applyLink} className="flex-1 bg-coral text-white px-4 py-2 rounded-lg hover:bg-coral-dark transition-colors">Apply</button>
+          <button type="button" onClick={() => setLinkModal(false)} className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
         </div>
       </Modal>
 
@@ -679,8 +719,8 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
           onKeyDown={(e) => e.key === 'Enter' && applyVideo()}
         />
         <div className="flex gap-2 mt-4">
-          <button onClick={applyVideo} className="flex-1 bg-coral text-white px-4 py-2 rounded-lg hover:bg-coral-dark transition-colors">Insert</button>
-          <button onClick={() => setVideoModal(false)} className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
+          <button type="button" onClick={applyVideo} className="flex-1 bg-coral text-white px-4 py-2 rounded-lg hover:bg-coral-dark transition-colors">Insert</button>
+          <button type="button" onClick={() => setVideoModal(false)} className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
         </div>
       </Modal>
 
@@ -702,8 +742,8 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
           />
         </div>
         <div className="flex gap-2 mt-4">
-          <button onClick={applySection} className="flex-1 bg-coral text-white px-4 py-2 rounded-lg hover:bg-coral-dark transition-colors">Insert</button>
-          <button onClick={() => setSectionModal(false)} className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
+          <button type="button" onClick={applySection} className="flex-1 bg-coral text-white px-4 py-2 rounded-lg hover:bg-coral-dark transition-colors">Insert</button>
+          <button type="button" onClick={() => setSectionModal(false)} className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
         </div>
       </Modal>
 
@@ -733,12 +773,14 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
             <label className="block text-sm font-medium text-gray-700 mb-1">Style</label>
             <div className="flex gap-2">
               <button
+                type="button"
                 onClick={() => setButtonData({ ...buttonData, variant: 'filled' })}
                 className={`flex-1 px-4 py-2 rounded-lg border-2 transition-colors ${buttonData.variant === 'filled' ? 'bg-coral text-white border-coral' : 'bg-white text-gray-700 border-gray-300'}`}
               >
                 Filled
               </button>
               <button
+                type="button"
                 onClick={() => setButtonData({ ...buttonData, variant: 'outline' })}
                 className={`flex-1 px-4 py-2 rounded-lg border-2 transition-colors ${buttonData.variant === 'outline' ? 'bg-coral text-white border-coral' : 'bg-white text-gray-700 border-gray-300'}`}
               >
@@ -748,8 +790,8 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
           </div>
         </div>
         <div className="flex gap-2 mt-4">
-          <button onClick={applyButton} className="flex-1 bg-coral text-white px-4 py-2 rounded-lg hover:bg-coral-dark transition-colors">Insert</button>
-          <button onClick={() => setButtonModal(false)} className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
+          <button type="button" onClick={applyButton} className="flex-1 bg-coral text-white px-4 py-2 rounded-lg hover:bg-coral-dark transition-colors">Insert</button>
+          <button type="button" onClick={() => setButtonModal(false)} className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
         </div>
       </Modal>
 
@@ -777,8 +819,8 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
           </div>
         </div>
         <div className="flex gap-2 mt-4">
-          <button onClick={applyEmbed} className="flex-1 bg-coral text-white px-4 py-2 rounded-lg hover:bg-coral-dark transition-colors">Insert</button>
-          <button onClick={() => setEmbedModal(false)} className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
+          <button type="button" onClick={applyEmbed} className="flex-1 bg-coral text-white px-4 py-2 rounded-lg hover:bg-coral-dark transition-colors">Insert</button>
+          <button type="button" onClick={() => setEmbedModal(false)} className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">Cancel</button>
         </div>
       </Modal>
 
@@ -810,6 +852,9 @@ const Toolbar = ({ editor, onImageUpload, onAudioUpload }) => {
 const TiptapEditor = ({ initialContent, onChange, editable = true }) => {
   const imageInputRef = useRef(null);
   const audioInputRef = useRef(null);
+  const docInputRef = useRef(null);
+  const [docUrlModal, setDocUrlModal] = useState(false);
+  const [uploadedDocUrl, setUploadedDocUrl] = useState('');
 
   const editor = useEditor({
     extensions: [
@@ -825,7 +870,7 @@ const TiptapEditor = ({ initialContent, onChange, editable = true }) => {
       TableRow,
       TableHeader,
       TableCell,
-      TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      TextAlign.configure({ types: ['heading', 'paragraph', 'buttonBlock'] }),
       TaskList,
       TaskItem.configure({ nested: true }),
       Placeholder.configure({ placeholder: 'Start writing your event content...' }),
@@ -855,6 +900,7 @@ const TiptapEditor = ({ initialContent, onChange, editable = true }) => {
 
   const handleImageUpload = () => imageInputRef.current?.click();
   const handleAudioUpload = () => audioInputRef.current?.click();
+  const handleDocUpload = () => docInputRef.current?.click();
 
   const onImageFile = async (e) => {
     const file = e.target.files?.[0];
@@ -889,16 +935,63 @@ const TiptapEditor = ({ initialContent, onChange, editable = true }) => {
     e.target.value = '';
   };
 
+  const onDocFile = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file || !editor) return;
+    const t = toast.loading('Uploading document...');
+    try {
+      const { url } = await uploadService.uploadFile(file);
+      console.log("zoro",url);
+      
+      setUploadedDocUrl(url);
+      setDocUrlModal(true);
+      toast.success('Document uploaded', { id: t });
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Upload failed';
+      toast.error(`Document upload failed: ${msg}`, { id: t });
+    }
+    e.target.value = '';
+  };
+
   return (
     <div className="tiptap-wrapper rounded-lg border border-gray-300 overflow-visible">
       {editable && (
         <>
-          <Toolbar editor={editor} onImageUpload={handleImageUpload} onAudioUpload={handleAudioUpload} />
+          <Toolbar editor={editor} onImageUpload={handleImageUpload} onAudioUpload={handleAudioUpload} onDocUpload={handleDocUpload} />
           <input ref={imageInputRef} type="file" accept="image/*" className="hidden" onChange={onImageFile} />
           <input ref={audioInputRef} type="file" accept="audio/*" className="hidden" onChange={onAudioFile} />
+          <input ref={docInputRef} type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv" className="hidden" onChange={onDocFile} />
         </>
       )}
       <EditorContent editor={editor} className="tiptap-content" />
+
+      <Modal isOpen={docUrlModal} onClose={() => setDocUrlModal(false)} title="Document Uploaded">
+        <div className="space-y-3">
+          <p className="text-sm text-gray-700">Your document has been successfully uploaded. You can copy the URL below:</p>
+          <div className="flex gap-2">
+            <input 
+              type="text" 
+              readOnly 
+              value={uploadedDocUrl} 
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-coral bg-gray-50"
+            />
+            <button 
+              type="button"
+              onClick={() => {
+                navigator.clipboard.writeText(uploadedDocUrl);
+                toast.success('URL copied to clipboard!');
+              }}
+              className="bg-gray-200 px-3 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+              title="Copy URL"
+            >
+              Copy
+            </button>
+          </div>
+        </div>
+        <div className="flex gap-2 mt-4">
+          <button type="button" onClick={() => setDocUrlModal(false)} className="w-full bg-coral text-white px-4 py-2 rounded-lg hover:bg-coral-dark transition-colors">Close</button>
+        </div>
+      </Modal>
     </div>
   );
 };
