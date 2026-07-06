@@ -1,0 +1,108 @@
+{
+  "Hero Section": {
+    "hero_eyebrow": { "type": "Text", "config": { "label": "Hero Eyebrow (e.g. ✦ Support Our Mission)" } },
+    "hero_title": { "type": "Text", "config": { "label": "Hero Title (e.g. Get Involved with )" } },
+    "hero_title_coral": { "type": "Text", "config": { "label": "Hero Title Coral Highlight (e.g. Mission to Seafarers Halifax)" } },
+    "hero_subtitle": { "type": "Text", "config": { "label": "Hero Subtitle" } },
+    "hero_bg_image": { "type": "Image", "config": { "label": "Hero Background Image" } }
+  },
+  "Donate Section": {
+    "donate_eyebrow": { "type": "Text", "config": { "label": "Donate Eyebrow" } },
+    "donate_title": { "type": "Text", "config": { "label": "Donate Section Title" } },
+    "donate_subtitle": { "type": "Text", "config": { "label": "Donate Section Subtitle" } },
+    "monthly_title": { "type": "Text", "config": { "label": "Monthly Giving Card Title" } },
+    "monthly_desc": { "type": "Text", "config": { "label": "Monthly Giving Card Description" } },
+    "monthly_tier_1": { "type": "Text", "config": { "label": "Monthly Tier 1 Text" } },
+    "monthly_tier_2": { "type": "Text", "config": { "label": "Monthly Tier 2 Text" } },
+    "monthly_tier_3": { "type": "Text", "config": { "label": "Monthly Tier 3 Text" } },
+    "monthly_btn_text": { "type": "Text", "config": { "label": "Monthly Giving Button Text" } },
+    "onetime_title": { "type": "Text", "config": { "label": "One-Time Gift Card Title" } },
+    "onetime_desc": { "type": "Text", "config": { "label": "One-Time Gift Card Description" } },
+    "onetime_btn_text": { "type": "Text", "config": { "label": "One-Time Gift Button Text" } },
+    "events_title": { "type": "Text", "config": { "label": "Event Tickets Card Title" } },
+    "events_desc": { "type": "Text", "config": { "label": "Event Tickets Card Description" } },
+    "events_btn_text": { "type": "Text", "config": { "label": "Event Tickets Button Text" } },
+    "events_list": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "event_name": { "type": "Text", "config": { "label": "Event Name" } },
+          "event_url": { "type": "Text", "config": { "label": "Event Ticket URL (CanadaHelps embed URL)" } }
+        },
+        "label": "Events Ticket List"
+      }
+    },
+    "donate_footer_text": { "type": "Text", "config": { "label": "Donate Footer Note" } }
+  },
+  "Ways to Help Cards": {
+    "help_eyebrow": { "type": "Text", "config": { "label": "Section Eyebrow (WAYS TO HELP)" } },
+    "help_title": { "type": "Text", "config": { "label": "Section Title" } },
+    "help_cards": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "card_title": { "type": "Text", "config": { "label": "Card Title" } },
+          "card_desc": { "type": "Text", "config": { "label": "Card Description / Subtitle" } },
+          "icon_type": { "type": "Text", "config": { "label": "Icon Type (handshake, building, bullhorn, users, anchor, gift)" } },
+          "button_text": { "type": "Text", "config": { "label": "Button Text" } },
+          "button_link": { "type": "Text", "config": { "label": "Button Action or Link (e.g. modal:sponsorship or https://...)" } },
+          "bullet_1": { "type": "Text", "config": { "label": "Bullet Point 1" } },
+          "bullet_2": { "type": "Text", "config": { "label": "Bullet Point 2" } },
+          "bullet_3": { "type": "Text", "config": { "label": "Bullet Point 3" } },
+          "bullet_4": { "type": "Text", "config": { "label": "Bullet Point 4" } }
+        },
+        "label": "Ways to Help Cards"
+      }
+    }
+  },
+  "Corporate Partners Carousel": {
+    "partners_title": { "type": "Text", "config": { "label": "Partners Marquee Section Title" } },
+    "partners_subtitle": { "type": "Text", "config": { "label": "Partners Marquee Subtitle" } },
+    "partner_logos": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "logo": { "type": "Image", "config": { "label": "Partner Logo Image" } },
+          "partner_name": { "type": "Text", "config": { "label": "Optional Partner Name" } }
+        },
+        "label": "Partner Logos Marquee Images"
+      }
+    }
+  },
+  "Community & Business Partners": {
+    "community_title": { "type": "Text", "config": { "label": "Section Title" } },
+    "community_desc_1": { "type": "Text", "config": { "label": "Paragraph 1" } },
+    "community_desc_2": { "type": "Text", "config": { "label": "Paragraph 2" } },
+    "btn_partner_text": { "type": "Text", "config": { "label": "Partner Button Text" } },
+    "btn_national_text": { "type": "Text", "config": { "label": "National Partnerships Button Text" } },
+    "btn_national_link": { "type": "Text", "config": { "label": "National Partnerships Link URL" } },
+    "star_card_title": { "type": "Text", "config": { "label": "STAR Program Box Title" } },
+    "star_card_desc": { "type": "Text", "config": { "label": "STAR Program Box Description" } },
+    "corp_card_title": { "type": "Text", "config": { "label": "Corporate Package Box Title" } },
+    "corp_card_desc": { "type": "Text", "config": { "label": "Corporate Package Box Description" } }
+  },
+  "Star Club Members Carousel": {
+    "star_club_title": { "type": "Text", "config": { "label": "Star Club Section Title" } },
+    "star_club_subtitle": { "type": "Text", "config": { "label": "Star Club Section Subtitle" } },
+    "btn_sponsor_now_text": { "type": "Text", "config": { "label": "Become a Sponsor Button Text" } },
+    "star_club_members": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "member_name": { "type": "Text", "config": { "label": "Star Club Member Name" } }
+        },
+        "label": "Star Club Marquee Names"
+      }
+    }
+  },
+  "Final Call to Action": {
+    "cta_title": { "type": "Text", "config": { "label": "CTA Section Title" } },
+    "cta_desc": { "type": "Text", "config": { "label": "CTA Section Description" } },
+    "cta_bg_image": { "type": "Image", "config": { "label": "CTA Background Image" } },
+    "btn_donate_text": { "type": "Text", "config": { "label": "Donate Now Button Text" } },
+    "btn_volunteer_text": { "type": "Text", "config": { "label": "Become a Volunteer Button Text" } },
+    "btn_contact_text": { "type": "Text", "config": { "label": "Contact Mission Button Text" } },
+    "btn_wishlist_text": { "type": "Text", "config": { "label": "Gift from Wishlist Button Text" } },
+    "btn_wishlist_link": { "type": "Text", "config": { "label": "Wishlist Link URL" } }
+  }
+}

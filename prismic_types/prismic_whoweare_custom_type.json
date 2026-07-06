@@ -1,0 +1,91 @@
+{
+  "Hero Section": {
+    "hero_eyebrow": { "type": "Text", "config": { "label": "Hero Eyebrow" } },
+    "hero_title": { "type": "Text", "config": { "label": "Hero Title" } },
+    "hero_subtitle": { "type": "Text", "config": { "label": "Hero Subtitle" } }
+  },
+  "Our Story Timeline": {
+    "story_eyebrow": { "type": "Text", "config": { "label": "Story Eyebrow" } },
+    "story_title": { "type": "Text", "config": { "label": "Story Title" } },
+    "story_description": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Story Description" } },
+    "history_blocks": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "era": { "type": "Text", "config": { "label": "Era / Year Badge (e.g. The Gateway)" } },
+          "title": { "type": "Text", "config": { "label": "Block Title" } },
+          "content": { "type": "StructuredText", "config": { "multi": "paragraph,strong,em", "label": "Block Paragraphs" } },
+          "image": { "type": "Image", "config": { "label": "Block Image" } }
+        },
+        "label": "History Timeline Blocks"
+      }
+    }
+  },
+  "Our Impact": {
+    "impact_eyebrow": { "type": "Text", "config": { "label": "Impact Eyebrow" } },
+    "impact_title": { "type": "Text", "config": { "label": "Impact Title" } },
+    "impact_description": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Impact Description" } },
+    "services_list": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "service_text": { "type": "Text", "config": { "label": "Service Item Text" } }
+        },
+        "label": "Services List Checklist"
+      }
+    },
+    "looking_ahead_title": { "type": "Text", "config": { "label": "Looking Ahead Title" } },
+    "looking_ahead_paragraphs": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Looking Ahead Paragraphs" } },
+    "looking_ahead_quote": { "type": "StructuredText", "config": { "multi": "paragraph,em,strong", "label": "Looking Ahead Footer Quote" } }
+  },
+  "Station Leadership": {
+    "team_eyebrow": { "type": "Text", "config": { "label": "Team Eyebrow" } },
+    "team_title": { "type": "Text", "config": { "label": "Team Title" } },
+    "team_description": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Team Description" } },
+    "leader_1_role": { "type": "Text", "config": { "label": "Leader 1 Role" } },
+    "leader_1_name": { "type": "Text", "config": { "label": "Leader 1 Name" } },
+    "leader_1_bio": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Leader 1 Bio" } },
+    "leader_1_image": { "type": "Image", "config": { "label": "Leader 1 Photo" } },
+    "leader_2_name": { "type": "Text", "config": { "label": "Leader 2 Name" } },
+    "leader_2_role": { "type": "Text", "config": { "label": "Leader 2 Role" } },
+    "leader_2_bio": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Leader 2 Bio" } },
+    "leader_2_image": { "type": "Image", "config": { "label": "Leader 2 Photo" } },
+    "volunteers_card_title": { "type": "Text", "config": { "label": "Volunteers Card Title" } },
+    "volunteers_card_description": { "type": "Text", "config": { "label": "Volunteers Card Description" } },
+    "volunteers_active_count": { "type": "Text", "config": { "label": "Active Volunteers Count (e.g. 50+)" } },
+    "volunteers_hours_count": { "type": "Text", "config": { "label": "Hours Served Count (e.g. 1000+)" } }
+  },
+  "Volunteers Gallery": {
+    "gallery_section_title": { "type": "Text", "config": { "label": "Gallery Section Title" } },
+    "gallery_section_description": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Gallery Section Description" } },
+    "community_care_title": { "type": "Text", "config": { "label": "Community Care Title" } },
+    "community_care_subtext": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Community Care Subtext (e.g. Our volunteers come from...)" } },
+    "community_care_description": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Community Care Description" } },
+    "stat_box_1_number": { "type": "Text", "config": { "label": "Stat Box 1 Number (e.g. 30+)" } },
+    "stat_box_1_label": { "type": "Text", "config": { "label": "Stat Box 1 Label" } },
+    "stat_box_1_desc": { "type": "Text", "config": { "label": "Stat Box 1 Description" } },
+    "stat_box_2_number": { "type": "Text", "config": { "label": "Stat Box 2 Number (e.g. 1,000+)" } },
+    "stat_box_2_label": { "type": "Text", "config": { "label": "Stat Box 2 Label" } },
+    "stat_box_2_desc": { "type": "Text", "config": { "label": "Stat Box 2 Description" } },
+    "thank_you_title": { "type": "Text", "config": { "label": "Thank You Title" } },
+    "thank_you_text": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Thank You Paragraphs" } },
+    "volunteer_cta_title": { "type": "Text", "config": { "label": "Volunteer CTA Title" } },
+    "volunteer_cta_text": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Volunteer CTA Paragraphs" } },
+    "volunteer_button_text": { "type": "Text", "config": { "label": "Volunteer Button Text" } }
+  },
+  "Facilities": {
+    "facilities_eyebrow": { "type": "Text", "config": { "label": "Facilities Eyebrow" } },
+    "facilities_title": { "type": "Text", "config": { "label": "Facilities Title" } },
+    "facilities_description": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Facilities Description" } }
+  },
+  "How Structure Works": {
+    "structure_title": { "type": "Text", "config": { "label": "Structure Section Title" } },
+    "structure_subtitle": { "type": "Text", "config": { "label": "Structure Subtitle" } },
+    "canada_card_title": { "type": "Text", "config": { "label": "Canada Card Title" } },
+    "canada_card_text": { "type": "Text", "config": { "label": "Canada Card Text" } },
+    "halifax_card_title": { "type": "Text", "config": { "label": "Halifax Card Title" } },
+    "halifax_card_text": { "type": "Text", "config": { "label": "Halifax Card Text" } },
+    "structure_footer_quote": { "type": "Text", "config": { "label": "Structure Footer Quote" } },
+    "structure_button_text": { "type": "Text", "config": { "label": "Structure Button Text" } }
+  }
+}

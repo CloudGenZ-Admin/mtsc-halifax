@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react"; 
 import { Link } from "react-router-dom";
+import { PrismicRichText } from "@prismicio/react";
+import { client } from "../../prismicio";
 
 // Images
 import heroImg from '../../assets/WhatsApp Image 2026-05-09 at 12.35.02 AM.jpeg';
@@ -8,6 +10,18 @@ import skyline from '../../assets/halifax-skyline.png';
 import seaBg from '../../assets/sea1.jpg'; 
 
 export default function Hero() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    client.getSingle("home_page")
+      .then((document) => {
+        setData(document.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching Prismic home_page:", error);
+      });
+  }, []);
+
   // State to handle modal visibility
   const [isDonateModalOpen, setIsDonateModalOpen] = useState(false);
 
@@ -75,15 +89,15 @@ export default function Hero() {
                   loading="lazy"
                 />
                 <span className="inline-flex items-center gap-1.5 bg-white/60 backdrop-blur px-3 py-1.5 rounded-md font-bold text-sm text-coral border border-white/50 shadow-sm">
-                  ✦ A local presence. Part of something larger.
+                  {data?.eyebrow_badge || "✦ A local presence. Part of something larger."}
                 </span>
               </div>
 
               {/* Main Headline */}
               <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-navy leading-[1.1] mb-6">
-                Mission to <br className="hidden sm:block" />
+                {data?.title_line_1 || "Mission to"} <br className="hidden sm:block" />
                 <span className="relative inline-block text-coral mt-2 sm:mt-0 whitespace-nowrap">
-                  Seafarers Halifax
+                  {data?.title_line_2 || "Seafarers Halifax"}
                   {/* Coral Underline Curve */}
                   <svg className="absolute -bottom-2 left-0 w-full" height="10" viewBox="0 0 200 10" preserveAspectRatio="none">
                     <path d="M2 7 Q50 1, 100 5 T198 4" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
@@ -93,12 +107,22 @@ export default function Hero() {
               
               {/* Paragraphs */}
               <div className="text-lg md:text-xl text-navy/90 leading-relaxed max-w-xl font-medium space-y-4">
-                <strong className="text-navy font-bold text-xl md:text-2xl block mb-6">
-                  At the Port of Halifax, seafarers arrive after time at sea, sometimes for days, weeks and even months. Mission to Seafarers Halifax is here during that window.
-                </strong>
-                <p>
-                  With practical support. <br /> With a place to step off the vessel. <br /> With people to speak to while they are ashore. As part of Mission to Seafarers Canada, this work is connected to a global network supporting seafarers in ports around the world.
-                </p>
+                <div className="text-navy font-bold text-xl md:text-2xl block mb-6">
+                  {data?.hero_strong_text?.[0]?.text ? (
+                    <PrismicRichText field={data.hero_strong_text} />
+                  ) : (
+                    "At the Port of Halifax, seafarers arrive after time at sea, sometimes for days, weeks and even months. Mission to Seafarers Halifax is here during that window."
+                  )}
+                </div>
+                <div className="[&>p]:mb-4">
+                  {data?.hero_paragraph?.[0]?.text ? (
+                    <PrismicRichText field={data.hero_paragraph} />
+                  ) : (
+                    <p>
+                      With practical support. <br /> With a place to step off the vessel. <br /> With people to speak to while they are ashore. As part of Mission to Seafarers Canada, this work is connected to a global network supporting seafarers in ports around the world.
+                    </p>
+                  )}
+                </div>
               </div>
 
               {/* Action Buttons: Full width on mobile, inline on desktop */}
@@ -125,8 +149,8 @@ export default function Hero() {
               {/* Image Container with fixed aspect ratio to prevent stretching */}
               <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] lg:aspect-[4/5] border-4 border-white/40 animate-float-slow">
                 <img
-                  src={heroImg}
-                  alt="Mission to Seafarers Halifax Mission and Staff"
+                  src={data?.hero_image?.url || heroImg}
+                  alt={data?.hero_image?.alt || "Mission to Seafarers Halifax Mission and Staff"}
                   className="absolute inset-0 w-full h-full object-cover"
                   loading="lazy"
                 />
@@ -136,7 +160,7 @@ export default function Hero() {
               {/* Floating Legacy Badge */}
               <div className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 lg:top-8 lg:-right-8 bg-coral text-white rounded-full h-24 w-24 sm:h-28 sm:w-28 flex flex-col items-center justify-center shadow-xl rotate-[12deg] border-4 border-white z-20 animate-float-fast">
                 <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider opacity-90">Legacy</span>
-                <span className="text-2xl sm:text-3xl font-black leading-none my-0.5">85+</span>
+                <span className="text-2xl sm:text-3xl font-black leading-none my-0.5">{data?.legacy_years || "85+"}</span>
                 <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider opacity-90">Years</span>
               </div>
             </div>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/common/Reveal';
+import { client } from '../prismicio';
 import {
   FaHeart, FaBuilding, FaBullhorn, FaHandshake, FaAnchor, FaShip, FaStar, FaGift, FaUsers, FaDollarSign
 } from 'react-icons/fa';
@@ -158,7 +159,25 @@ export default function WaystoGive() {
   const [activeModal, setActiveModal] = useState(null);
   const [selectedEventUrl, setSelectedEventUrl] = useState(eventsList[0].url);
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
+  const [data, setData] = useState(null);
   const donationSectionRef = useRef(null);
+
+  useEffect(() => {
+    async function fetchPrismicData() {
+      try {
+        const res = await client.getSingle('waystogive');
+        if (res && res.data) {
+          setData(res.data);
+          if (res.data.events_list && res.data.events_list.length > 0 && res.data.events_list[0].event_url) {
+            setSelectedEventUrl(res.data.events_list[0].event_url);
+          }
+        }
+      } catch (err) {
+        console.log("Prismic fetch error or doc not found, using fallbacks:", err);
+      }
+    }
+    fetchPrismicData();
+  }, []);
 
   const handleScrollToDonate = () => {
     setActiveForm(null);
@@ -172,8 +191,21 @@ export default function WaystoGive() {
   };
 
   // Split logos for visual variety for the final section
-  const generalLogos = sponsorLogos.slice(0, 10);
-  const starLogos = sponsorLogos.slice(10, 20);
+  const prismicLogos = data?.partner_logos?.length > 0
+    ? data.partner_logos.map(l => l.logo?.url).filter(Boolean)
+    : [];
+  const activeLogos = prismicLogos.length > 0 ? prismicLogos : sponsorLogos;
+  const halfIdx = Math.ceil(activeLogos.length / 2);
+  const generalLogos = activeLogos.slice(0, halfIdx);
+  const starLogos = activeLogos.slice(halfIdx);
+
+  const activeStarNames = data?.star_club_members?.length > 0
+    ? data.star_club_members.map(m => m.member_name).filter(Boolean)
+    : starSponsors;
+
+  const activeEvents = data?.events_list?.length > 0
+    ? data.events_list.map(e => ({ name: e.event_name, url: e.event_url }))
+    : eventsList;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -283,7 +315,7 @@ export default function WaystoGive() {
         <section className="relative pt-24 pb-32 overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img
-              src={portHalifaxImg}
+              src={data?.hero_bg_image?.url || portHalifaxImg}
               alt="Port of Halifax"
               className="w-full h-full object-cover"
             />
@@ -292,13 +324,25 @@ export default function WaystoGive() {
 
           <div className="max-w-[1200px] mx-auto px-7 relative z-10 text-center">
             <span className="inline-block bg-white/20 backdrop-blur-sm text-white text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-5 border border-white/30">
-              ✦ Support Our Mission
+              {data?.hero_eyebrow || "✦ Support Our Mission"}
             </span>
             <h1 className="text-[clamp(36px,5vw,56px)] font-black text-white leading-[1.1] mb-6 max-w-4xl mx-auto drop-shadow-lg">
-              Get Involved with <span className="text-coral">Mission to Seafarers Halifax</span>
+              {data?.hero_title ? (
+                data?.hero_title_coral ? (
+                  <>{data.hero_title}<span className="text-coral">{data.hero_title_coral}</span></>
+                ) : data.hero_title.includes('Mission to Seafarers Halifax') ? (
+                  <>
+                    {data.hero_title.split('Mission to Seafarers Halifax')[0]}
+                    <span className="text-coral">Mission to Seafarers Halifax</span>
+                    {data.hero_title.split('Mission to Seafarers Halifax')[1]}
+                  </>
+                ) : data.hero_title
+              ) : (
+                <>Get Involved with <span className="text-coral">Mission to Seafarers Halifax</span></>
+              )}
             </h1>
             <p className="text-white/90 text-[18px] max-w-3xl mx-auto leading-relaxed">
-              There are many ways to support Mission to Seafarers Halifax and help create a welcoming place for seafarers arriving at the Port of Halifax. Whether you choose to volunteer, donate, provide in-kind support, or partner with us, your support helps ensure that seafarers feel cared for, connected, and welcomed while they are far from home.
+              {data?.hero_subtitle || "There are many ways to support Mission to Seafarers Halifax and help create a welcoming place for seafarers arriving at the Port of Halifax. Whether you choose to volunteer, donate, provide in-kind support, or partner with us, your support helps ensure that seafarers feel cared for, connected, and welcomed while they are far from home."}
             </p>
           </div>
         </section>
@@ -309,13 +353,13 @@ export default function WaystoGive() {
 
             <Reveal className="text-center mb-16">
               <span className="inline-block bg-[#E05A2B]/10 text-[#E05A2B] text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-4">
-                <FaDollarSign className="inline mr-1" /> DONATE
+                <FaDollarSign className="inline mr-1" /> {data?.donate_eyebrow || "DONATE"}
               </span>
               <h2 className="text-[clamp(32px,4vw,48px)] font-black text-[#112A46] mb-4">
-                Donate – Help Care for Seafarers
+                {data?.donate_title || "Donate – Help Care for Seafarers"}
               </h2>
               <p className="text-[#5A6C7D] text-[17px] max-w-2xl mx-auto leading-relaxed">
-                Every gift helps us provide hospitality, practical support, transportation, Wi-Fi, refreshments, haircuts, and a welcoming place for seafarers visiting Halifax.
+                {data?.donate_subtitle || "Every gift helps us provide hospitality, practical support, transportation, Wi-Fi, refreshments, haircuts, and a welcoming place for seafarers visiting Halifax."}
               </p>
             </Reveal>
 
@@ -332,9 +376,9 @@ export default function WaystoGive() {
                     </div>
 
                     <div className="p-8 md:p-10 flex flex-col flex-grow">
-                      <h3 className="text-[24px] font-black text-[#112A46] mb-4 text-center">Monthly Giving</h3>
+                      <h3 className="text-[24px] font-black text-[#112A46] mb-4 text-center">{data?.monthly_title || "Monthly Giving"}</h3>
                       <p className="text-[#5A6C7D] text-[15px] leading-relaxed mb-6 text-center">
-                        Become a monthly donor and help provide ongoing care and support for seafarers throughout the year. Monthly gifts help us plan ahead.
+                        {data?.monthly_desc || "Become a monthly donor and help provide ongoing care and support for seafarers throughout the year. Monthly gifts help us plan ahead."}
                       </p>
 
                       <div className="space-y-3 mb-8 flex-grow">
@@ -342,19 +386,19 @@ export default function WaystoGive() {
                           <div className="w-6 h-6 bg-[#E05A2B]/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                             <span className="text-[#E05A2B] text-xs font-black">$15</span>
                           </div>
-                          <span className="text-[#112A46] text-[13px] font-medium">/month can help provide refreshments and hospitality</span>
+                          <span className="text-[#112A46] text-[13px] font-medium">{data?.monthly_tier_1 ? data.monthly_tier_1.replace(/^\$15\s*/, '') : "/month can help provide refreshments and hospitality"}</span>
                         </div>
                         <div className="flex items-start gap-3 bg-[#F8FBFD] rounded-xl p-4 border border-[#112A46]/5">
                           <div className="w-6 h-6 bg-[#E05A2B]/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                             <span className="text-[#E05A2B] text-xs font-black">$25</span>
                           </div>
-                          <span className="text-[#112A46] text-[13px] font-medium">/month can help support transportation and communication</span>
+                          <span className="text-[#112A46] text-[13px] font-medium">{data?.monthly_tier_2 ? data.monthly_tier_2.replace(/^\$25\s*/, '') : "/month can help support transportation and communication"}</span>
                         </div>
                         <div className="flex items-start gap-3 bg-[#F8FBFD] rounded-xl p-4 border border-[#112A46]/5">
                           <div className="w-6 h-6 bg-[#E05A2B]/10 rounded-full flex items-center justify-center shrink-0 mt-0.5">
                             <span className="text-[#E05A2B] text-xs font-black">$50</span>
                           </div>
-                          <span className="text-[#112A46] text-[13px] font-medium">/month can help provide care, comfort, and practical assistance</span>
+                          <span className="text-[#112A46] text-[13px] font-medium">{data?.monthly_tier_3 ? data.monthly_tier_3.replace(/^\$50\s*/, '') : "/month can help provide care, comfort, and practical assistance"}</span>
                         </div>
                       </div>
 
@@ -362,7 +406,7 @@ export default function WaystoGive() {
                         onClick={() => setActiveForm('monthly')}
                         className="inline-flex cursor-pointer items-center justify-center gap-2 bg-[#112A46] text-white px-8 py-4 rounded-full font-bold text-[15px] hover:bg-[#1a3a5f] transition-all shadow-lg hover:shadow-xl w-full"
                       >
-                        Become a Monthly Donor
+                        {data?.monthly_btn_text || "Become a Monthly Donor"}
                       </button>
                     </div>
                   </div>
@@ -379,16 +423,16 @@ export default function WaystoGive() {
                     </div>
 
                     <div className="p-8 md:p-10 flex flex-col flex-grow">
-                      <h3 className="text-[24px] font-black text-[#112A46] mb-4 text-center">One-Time Gift</h3>
+                      <h3 className="text-[24px] font-black text-[#112A46] mb-4 text-center">{data?.onetime_title || "One-Time Gift"}</h3>
                       <p className="text-[#5A6C7D] text-[16px] leading-relaxed mb-8 flex-grow text-center">
-                        Make a one-time donation to support Mission to Seafarers Halifax and the work of Mission to Seafarers Canada. Your gift can help create a welcoming station space, support local programs, and care for seafarers when they arrive in Halifax.
+                        {data?.onetime_desc || "Make a one-time donation to support Mission to Seafarers Halifax and the work of Mission to Seafarers Canada. Your gift can help create a welcoming station space, support local programs, and care for seafarers when they arrive in Halifax."}
                       </p>
 
                       <button
                         onClick={() => setActiveForm('onetime')}
                         className="inline-flex cursor-pointer items-center justify-center gap-2 bg-[#E05A2B] text-white px-8 py-4 rounded-full font-bold text-[15px] hover:bg-[#c94d23] transition-all shadow-lg hover:shadow-xl w-full mt-auto"
                       >
-                        Make a One-Time Gift
+                        {data?.onetime_btn_text || "Make a One-Time Gift"}
                       </button>
                     </div>
                   </div>
@@ -406,9 +450,9 @@ export default function WaystoGive() {
                     </div>
 
                     <div className="p-8 md:p-10 flex flex-col flex-grow">
-                      <h3 className="text-[24px] font-black text-[#112A46] mb-4 text-center">Purchase Event Tickets</h3>
+                      <h3 className="text-[24px] font-black text-[#112A46] mb-4 text-center">{data?.events_title || "Purchase Event Tickets"}</h3>
                       <p className="text-[#5A6C7D] text-[16px] leading-relaxed mb-6 flex-grow text-center">
-                        Join us at our upcoming events! Select an event from the list below and purchase your tickets to show your support.
+                        {data?.events_desc || "Join us at our upcoming events! Select an event from the list below and purchase your tickets to show your support."}
                       </p>
 
                       <div className="mb-6">
@@ -418,7 +462,7 @@ export default function WaystoGive() {
                           onChange={(e) => setSelectedEventUrl(e.target.value)}
                           className="w-full bg-[#F8FBFD] border border-[#112A46]/20 rounded-xl px-4 py-3 text-[#112A46] font-medium focus:outline-none focus:border-[#E05A2B]"
                         >
-                          {eventsList.map((event, idx) => (
+                          {activeEvents.map((event, idx) => (
                             <option key={idx} value={event.url}>{event.name}</option>
                           ))}
                         </select>
@@ -428,7 +472,7 @@ export default function WaystoGive() {
                         onClick={() => setIsEventModalOpen(true)}
                         className="inline-flex cursor-pointer items-center justify-center gap-2 bg-[#E05A2B] text-white px-8 py-4 rounded-full font-bold text-[15px] hover:bg-[#c94d23] transition-all shadow-lg hover:shadow-xl w-full"
                       >
-                        Get Tickets
+                        {data?.events_btn_text || "Get Tickets"}
                       </button>
                     </div>
                   </div>
@@ -453,7 +497,7 @@ export default function WaystoGive() {
 
             <Reveal delay={200}>
               <p className="text-center text-[#5A6C7D] text-[13px] mt-10 max-w-2xl mx-auto bg-[#F8FBFD] p-4 rounded-xl border border-[#112A46]/5 shadow-sm">
-              Every donation made through this page directly supports Mission to Seafarers Halifax, helping us provide care, practical assistance, and a welcoming community for seafarers visiting the Port of Halifax.
+              {data?.donate_footer_text || "Every donation made through this page directly supports Mission to Seafarers Halifax, helping us provide care, practical assistance, and a welcoming community for seafarers visiting the Port of Halifax."}
               </p>
             </Reveal>
 
@@ -473,10 +517,10 @@ export default function WaystoGive() {
 
             <Reveal className="text-center mb-16">
               <span className="inline-block bg-[#E05A2B]/10 text-[#E05A2B] text-[13px] font-extrabold tracking-wide px-4 py-1.5 rounded-full mb-4">
-                WAYS TO HELP
+                {data?.help_eyebrow || "WAYS TO HELP"}
               </span>
               <h2 className="text-[clamp(32px,4vw,48px)] font-black text-[#112A46] mb-4">
-                Choose How You Would Like to Support
+                {data?.help_title || "Choose How You Would Like to Support"}
               </h2>
             </Reveal>
 
@@ -649,11 +693,10 @@ export default function WaystoGive() {
           <div className="max-w-[1200px] mx-auto px-7 mb-14">
             <Reveal className="text-center">
               <h2 className="text-[34px] md:text-[40px] font-black text-[#112A46] mb-4 leading-tight">
-                Our Corporate & Maritime Partners
+                {data?.partners_title || "Our Corporate & Maritime Partners"}
               </h2>
               <p className="text-[#5A6C7D] max-w-2xl mx-auto text-[17px]">
-                Recognizing the local and international organizations that stand
-                alongside us in supporting seafarers' welfare in Halifax.
+                {data?.partners_subtitle || "Recognizing the local and international organizations that stand alongside us in supporting seafarers' welfare in Halifax."}
               </p>
             </Reveal>
           </div>
@@ -737,7 +780,7 @@ export default function WaystoGive() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <Reveal>
                 <h2 className="text-[36px] font-black text-[#112A46] leading-tight mb-6">
-                  Community & Business Partners
+                  {data?.community_title || "Community & Business Partners"}
                 </h2>
 
                 {/* Animated Icon Composition instead of image */}
@@ -757,10 +800,10 @@ export default function WaystoGive() {
                 </div>
 
                 <p className="text-[#5A6C7D] text-[16px] leading-relaxed mb-4">
-                  We welcome support from local businesses, organizations, schools, faith communities, and community groups. Partnering with the Mission will provide your organization with extraordinary and rewarding relationship opportunities.
+                  {data?.community_desc_1 || "We welcome support from local businesses, organizations, schools, faith communities, and community groups. Partnering with the Mission will provide your organization with extraordinary and rewarding relationship opportunities."}
                 </p>
                 <p className="text-[#5A6C7D] text-[16px] leading-relaxed mb-6">
-                  You can support local events, volunteer activities, hospitality, and community awareness initiatives. For customized packages, please complete the partnership inquiry form, and our team will connect with you directly.
+                  {data?.community_desc_2 || "You can support local events, volunteer activities, hospitality, and community awareness initiatives. For customized packages, please complete the partnership inquiry form, and our team will connect with you directly."}
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 mt-8">
@@ -769,16 +812,16 @@ export default function WaystoGive() {
                     className="inline-flex items-center justify-center cursor-pointer gap-2 bg-[#E05A2B] text-white px-6 py-3 rounded-full font-bold text-[14px] hover:bg-[#c94d23] transition-all shadow-md"
                   >
                     <FaBuilding />
-                    Partner with Halifax Mission
+                    {data?.btn_partner_text || "Partner with Halifax Mission"}
                   </button>
                   <a
-                    href="https://mtsc.ca/contact/"
+                    href={data?.btn_national_link || "https://mtsc.ca/contact/"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center cursor-pointer gap-2 bg-[#112A46] text-white px-6 py-3 rounded-full font-bold text-[14px] hover:bg-[#1a3a5f] transition-all shadow-md"
                   >
                     <FaShip />
-                    National Partnerships
+                    {data?.btn_national_text || "National Partnerships"}
                   </a>
                 </div>
               </Reveal>
@@ -788,9 +831,9 @@ export default function WaystoGive() {
                   <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm group-hover:scale-110 transition-transform">
                     <FaHandshake className="text-3xl text-[#E05A2B]" />
                   </div>
-                  <h3 className="text-[18px] font-black text-white mb-3 leading-tight">STAR<br />Program</h3>
+                  <h3 className="text-[18px] font-black text-white mb-3 leading-tight whitespace-pre-line">{data?.star_card_title || "STAR\nProgram"}</h3>
                   <p className="text-[13px] text-white/90 mb-6 leading-relaxed">
-                    Join an elite group of recurring sponsors dedicated to seafarer welfare.
+                    {data?.star_card_desc || "Join an elite group of recurring sponsors dedicated to seafarer welfare."}
                   </p>
                 </div>
 
@@ -798,9 +841,9 @@ export default function WaystoGive() {
                   <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-5 shadow-sm group-hover:scale-110 transition-transform">
                     <FaBuilding className="text-3xl text-white" />
                   </div>
-                  <h3 className="text-[18px] font-black text-white mb-3 leading-tight">Corporate<br />Package</h3>
+                  <h3 className="text-[18px] font-black text-white mb-3 leading-tight whitespace-pre-line">{data?.corp_card_title || "Corporate\nPackage"}</h3>
                   <p className="text-[13px] text-white/70 mb-6 leading-relaxed">
-                    Customized sponsorship packages designed for maximum CSR impact.
+                    {data?.corp_card_desc || "Customized sponsorship packages designed for maximum CSR impact."}
                   </p>
                 </div>
               </Reveal>
@@ -819,9 +862,9 @@ export default function WaystoGive() {
                 <div className="inline-flex items-center justify-center gap-2 text-[#E05A2B] mb-4">
                   <FaStar className="animate-spin-slow" /><FaStar className="text-2xl animate-spin-slow" style={{ animationDirection: 'reverse' }} /><FaStar className="animate-spin-slow" />
                 </div>
-                <h3 className="text-[32px] font-black text-[#112A46] mb-4">Star Club Members</h3>
+                <h3 className="text-[32px] font-black text-[#112A46] mb-4">{data?.star_club_title || "Star Club Members"}</h3>
                 <p className="text-[#5A6C7D] max-w-2xl mx-auto text-[16px] font-medium">
-                  THANK YOU to our elite sponsors without whom we could not offer our service.
+                  {data?.star_club_subtitle || "THANK YOU to our elite sponsors without whom we could not offer our service."}
                 </p>
               </Reveal>
 
@@ -831,7 +874,7 @@ export default function WaystoGive() {
 
                   {/* Box 1 */}
                   <div className="flex gap-4 pr-4 pl-4 items-center">
-                    {starSponsors.map((sponsorName, index) => (
+                    {activeStarNames.map((sponsorName, index) => (
                       <div
                         key={`txt-star1-${index}`}
                         className="shrink-0 bg-white border border-[#E05A2B]/10 rounded-full px-8 py-4 flex items-center justify-center text-center shadow-sm hover:shadow-md hover:border-[#E05A2B]/40 hover:-translate-y-1 transition-all group"
@@ -846,7 +889,7 @@ export default function WaystoGive() {
 
                   {/* Box 2 (Duplicated for Loop) */}
                   <div className="flex gap-4 pr-4 items-center">
-                    {starSponsors.map((sponsorName, index) => (
+                    {activeStarNames.map((sponsorName, index) => (
                       <div
                         key={`txt-star2-${index}`}
                         className="shrink-0 bg-white border border-[#E05A2B]/10 rounded-full px-8 py-4 flex items-center justify-center text-center shadow-sm hover:shadow-md hover:border-[#E05A2B]/40 hover:-translate-y-1 transition-all group"
@@ -870,7 +913,7 @@ export default function WaystoGive() {
                 className="inline-flex items-center gap-2 bg-[#E05A2B] cursor-pointer text-white px-8 py-4 rounded-full font-bold text-[15px] hover:bg-[#c94d23] transition-all shadow-lg hover:shadow-xl"
               >
                 <FaHandshake />
-                Become a Sponsor
+                {data?.btn_sponsor_now_text || "Become a Sponsor"}
               </button>
             </Reveal>
 
@@ -881,7 +924,7 @@ export default function WaystoGive() {
         <section className="relative py-24 overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img
-              src={volunteersImg}
+              src={data?.cta_bg_image?.url || volunteersImg}
               alt="MTSC Halifax"
               className="w-full h-full object-cover"
             />
@@ -892,10 +935,10 @@ export default function WaystoGive() {
             <Reveal>
               <FaHeart className="text-white text-5xl mx-auto mb-6 opacity-90 animate-heartbeat" />
               <h2 className="text-[clamp(32px,4vw,48px)] font-black text-white mb-6 leading-tight">
-                Every Act of Kindness Makes a Difference
+                {data?.cta_title || "Every Act of Kindness Makes a Difference"}
               </h2>
               <p className="text-white/90 text-[18px] max-w-3xl mx-auto leading-relaxed mb-10">
-                From a warm drink and a haircut to a monthly donation or a few hours of volunteering, every act of support helps remind seafarers that they are not alone.
+                {data?.cta_desc || "From a warm drink and a haircut to a monthly donation or a few hours of volunteering, every act of support helps remind seafarers that they are not alone."}
               </p>
 
               <div className="flex flex-wrap justify-center gap-4">
@@ -904,29 +947,29 @@ export default function WaystoGive() {
                   className="inline-flex items-center gap-2 cursor-pointer bg-white text-[#E05A2B] px-6 py-4 rounded-full font-bold text-[14px] hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl"
                 >
                   <FaDollarSign />
-                  Donate Now
+                  {data?.btn_donate_text || "Donate Now"}
                 </button>
                 <button
                   onClick={() => setActiveModal('volunteer')}
                   className="inline-flex items-center gap-2 cursor-pointer bg-white text-[#E05A2B] px-6 py-4 rounded-full font-bold text-[14px] hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl"
                 >
                   <FaUsers />
-                  Become a Volunteer
+                  {data?.btn_volunteer_text || "Become a Volunteer"}
                 </button>
                 <Link
                   to="/contact"
                   className="inline-flex items-center gap-2 cursor-pointer bg-transparent border-2 border-white text-white px-6 py-4 rounded-full font-bold text-[14px] hover:bg-white hover:text-[#E05A2B] transition-all"
                 >
-                  Contact Halifax Mission
+                  {data?.btn_contact_text || "Contact Halifax Mission"}
                 </Link>
                 <a
-                  href="https://www.amazon.ca/hz/wishlist/ls/3C9KTQNHTZ0NM/ref=hz_ls_biz_ex"
+                  href={data?.btn_wishlist_link || "https://www.amazon.ca/hz/wishlist/ls/3C9KTQNHTZ0NM/ref=hz_ls_biz_ex"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-transparent border-2 border-white text-white px-6 py-4 rounded-full font-bold text-[14px] hover:bg-white hover:text-[#E05A2B] transition-all"
                 >
                   <FaGift />
-                  Gift from Wishlist
+                  {data?.btn_wishlist_text || "Gift from Wishlist"}
                 </a>
               </div>
             </Reveal>

@@ -1,0 +1,93 @@
+{
+  "Hero Section": {
+    "hero_badge": { "type": "Text", "config": { "label": "Hero Badge (e.g. For Visiting Crews)" } },
+    "hero_title": { "type": "Text", "config": { "label": "Hero Title" } },
+    "hero_subtitle": { "type": "Text", "config": { "label": "Hero Subtitle" } },
+    "hero_image": { "type": "Image", "config": { "label": "Hero Background Image" } },
+    "btn_ship_visit_text": { "type": "Text", "config": { "label": "Ship Visit Button Text" } },
+    "btn_services_text": { "type": "Text", "config": { "label": "Explore Services Button Text" } },
+    "btn_whatsapp_text": { "type": "Text", "config": { "label": "WhatsApp Button Text" } },
+    "btn_whatsapp_link": { "type": "Text", "config": { "label": "WhatsApp Button Link" } }
+  },
+  "Services Dashboard": {
+    "services_title": { "type": "Text", "config": { "label": "Services Section Title" } },
+    "services_subtitle": { "type": "Text", "config": { "label": "Services Section Subtitle" } },
+    "support_services": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "icon_type": { "type": "Text", "config": { "label": "Icon Type (ship, parcel, chaplain, support, clothing, transport)" } },
+          "title": { "type": "Text", "config": { "label": "Service Title" } },
+          "description": { "type": "Text", "config": { "label": "Service Description" } },
+          "button_text": { "type": "Text", "config": { "label": "Button Text" } },
+          "button_link": { "type": "Text", "config": { "label": "Button Link or Action (e.g. modal:shipVisit or https://...)" } }
+        },
+        "label": "Support Services Cards"
+      }
+    }
+  },
+  "Our Commitment": {
+    "reassurance_image": { "type": "Image", "config": { "label": "Reassurance Section Image" } },
+    "reassurance_overlay_title": { "type": "Text", "config": { "label": "Image Overlay Title (e.g. You Are Not Alone.)" } },
+    "commitment_eyebrow": { "type": "Text", "config": { "label": "Commitment Eyebrow" } },
+    "commitment_title": { "type": "Text", "config": { "label": "Commitment Title" } },
+    "commitment_description": { "type": "Text", "config": { "label": "Commitment Description" } },
+    "commitment_checklist": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "item_text": { "type": "Text", "config": { "label": "Checklist Item Text" } }
+        },
+        "label": "Commitment Checklist Items"
+      }
+    }
+  },
+  "How It Works": {
+    "how_it_works_title": { "type": "Text", "config": { "label": "Section Title" } },
+    "how_it_works_steps": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "step_number": { "type": "Text", "config": { "label": "Step Number (1, 2, 3)" } },
+          "step_title": { "type": "Text", "config": { "label": "Step Title" } },
+          "step_desc": { "type": "Text", "config": { "label": "Step Description" } }
+        },
+        "label": "How It Works Steps"
+      }
+    }
+  },
+  "Meet Your Team": {
+    "team_title": { "type": "Text", "config": { "label": "Team Section Title" } },
+    "team_subtitle": { "type": "Text", "config": { "label": "Team Section Subtitle" } },
+    "leader_1_name": { "type": "Text", "config": { "label": "Leader 1 Name" } },
+    "leader_1_role": { "type": "Text", "config": { "label": "Leader 1 Role" } },
+    "leader_1_image": { "type": "Image", "config": { "label": "Leader 1 Photo" } },
+    "leader_1_whatsapp": { "type": "Text", "config": { "label": "Leader 1 WhatsApp Link" } },
+    "leader_1_email": { "type": "Text", "config": { "label": "Leader 1 Email" } },
+    "leader_2_name": { "type": "Text", "config": { "label": "Leader 2 Name" } },
+    "leader_2_role": { "type": "Text", "config": { "label": "Leader 2 Role" } },
+    "leader_2_image": { "type": "Image", "config": { "label": "Leader 2 Photo" } },
+    "leader_2_whatsapp": { "type": "Text", "config": { "label": "Leader 2 WhatsApp Link" } },
+    "leader_2_email": { "type": "Text", "config": { "label": "Leader 2 Email" } },
+    "welcoming_box_title": { "type": "Text", "config": { "label": "Welcoming Box Title" } },
+    "welcoming_box_text": { "type": "Text", "config": { "label": "Welcoming Box Text" } }
+  },
+  "Urgent Assistance & Location": {
+    "urgent_title": { "type": "Text", "config": { "label": "Urgent Assistance Title" } },
+    "urgent_subtitle": { "type": "Text", "config": { "label": "Urgent Assistance Subtitle" } },
+    "btn_call_text": { "type": "Text", "config": { "label": "Call Station Button Text" } },
+    "btn_call_link": { "type": "Text", "config": { "label": "Call Station Phone Link" } },
+    "btn_urgent_whatsapp_text": { "type": "Text", "config": { "label": "Urgent WhatsApp Button Text" } },
+    "btn_urgent_whatsapp_link": { "type": "Text", "config": { "label": "Urgent WhatsApp Link" } },
+    "visit_section_title": { "type": "Text", "config": { "label": "Visit Section Title" } },
+    "civic_address_title": { "type": "Text", "config": { "label": "Civic Address Title" } },
+    "civic_address_text": { "type": "Text", "config": { "label": "Civic Address Text" } },
+    "mailing_address_title": { "type": "Text", "config": { "label": "Mailing Address Title" } },
+    "mailing_address_text": { "type": "Text", "config": { "label": "Mailing Address Text" } },
+    "hours_title": { "type": "Text", "config": { "label": "Hours Title" } },
+    "mon_sat_hours": { "type": "Text", "config": { "label": "Mon-Sat Hours Text" } },
+    "sunday_hours": { "type": "Text", "config": { "label": "Sunday Hours Text" } },
+    "hours_note": { "type": "Text", "config": { "label": "Hours Note Text" } },
+    "map_embed_url": { "type": "Text", "config": { "label": "Google Maps Embed URL" } }
+  }
+}

@@ -7,6 +7,9 @@ import Hero from '../components/sections/Hero';
 import Stats from '../components/sections/Stats';
 import Reveal from '../components/common/Reveal';
 
+import { PrismicRichText } from '@prismicio/react';
+import { client } from '../prismicio';
+
 // Import Events API Context
 import { useEvents } from '../context/EventsContext';
 
@@ -128,6 +131,18 @@ const extractText = (content, overview) => {
 };
 
 export default function Home() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    client.getSingle("home_page")
+      .then((document) => {
+        setData(document.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching Prismic home_page in Home:", error);
+      });
+  }, []);
+
   // Use featuredEvents instead of allEvents
   const { featuredEvents, loading } = useEvents();
 
@@ -199,22 +214,32 @@ export default function Home() {
                 <div className="flex justify-center mb-5">
                   <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#e05a2b]">
                     <span className="block h-[1px] w-8 bg-[#e05a2b]"></span>
-                    How We Help
+                    {data?.intro_eyebrow || "How We Help"}
                   </span>
                 </div>
 
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#2d3580] leading-tight">
-                  How We Support the World’s Seafarers in Canada
+                  {data?.intro_title || "How We Support the World’s Seafarers in Canada"}
                 </h2>
 
-                <p className="mt-5 text-base md:text-lg text-[#666666]">
-                  As part of a 160+ year legacy, we provide practical, emotional, and community-based support for seafarers while they are in port ensuring no one feels alone.
-                </p>
+                <div className="mt-5 text-base md:text-lg text-[#666666] [&>p]:m-0">
+                  {data?.intro_subtitle?.[0]?.text ? (
+                    <PrismicRichText field={data.intro_subtitle} />
+                  ) : (
+                    <p>As part of a 160+ year legacy, we provide practical, emotional, and community-based support for seafarers while they are in port ensuring no one feels alone.</p>
+                  )}
+                </div>
 
                 <div className="mt-8 text-base md:text-lg text-[#666666] leading-relaxed space-y-5">
-                  <p>Mission to Seafarers Canada provides the national leadership, fund development, partnerships, and support that strengthen stations across the country.</p>
-                  <p>At the Port of Halifax, that work becomes direct.</p>
-                  <p>Here, we offer seafarers a welcoming place where they can rest, connect with loved ones, access practical help, receive a haircut, and know that they are not alone.</p>
+                  {data?.intro_paragraphs?.[0]?.text ? (
+                    <PrismicRichText field={data.intro_paragraphs} />
+                  ) : (
+                    <>
+                      <p>Mission to Seafarers Canada provides the national leadership, fund development, partnerships, and support that strengthen stations across the country.</p>
+                      <p>At the Port of Halifax, that work becomes direct.</p>
+                      <p>Here, we offer seafarers a welcoming place where they can rest, connect with loved ones, access practical help, receive a haircut, and know that they are not alone.</p>
+                    </>
+                  )}
                 </div>
 
               </div>
@@ -235,16 +260,20 @@ export default function Home() {
                   </svg>
                 </span>
                 <p className="mt-8 text-[12px] md:text-[14px] font-extrabold uppercase tracking-[0.2em] text-[#e05a2b]">
-                  At the Station
+                  {data?.service_1_eyebrow || "At the Station"}
                 </p>
                 <h3 className="mt-3 text-2xl md:text-3xl lg:text-[34px] font-extrabold leading-tight text-[#2d3580]">
-                  Community Connection
+                  {data?.service_1_title || "Community Connection"}
                 </h3>
-                <p className="mt-5 text-base md:text-lg lg:text-[19px] leading-relaxed flex-1 text-[#666666]">
-                  Refreshments and a comfortable place to sit, pause, and reconnect with loved ones in a welcoming station space.
-                </p>
+                <div className="mt-5 text-base md:text-lg lg:text-[19px] leading-relaxed flex-1 text-[#666666] [&>p]:m-0">
+                  {data?.service_1_description?.[0]?.text ? (
+                    <PrismicRichText field={data.service_1_description} />
+                  ) : (
+                    <p>Refreshments and a comfortable place to sit, pause, and reconnect with loved ones in a welcoming station space.</p>
+                  )}
+                </div>
                 <a href="/contact" className="mt-10 inline-flex items-center gap-2 text-base md:text-lg font-extrabold text-[#e05a2b] hover:gap-3 transition-all">
-                  Come Visit Us at the Station
+                  {data?.service_1_link_text || "Come Visit Us at the Station"}
                   <svg className="h-5 w-5 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                   </svg>
@@ -259,16 +288,20 @@ export default function Home() {
                   </svg>
                 </span>
                 <p className="mt-8 text-[12px] md:text-[14px] font-extrabold uppercase tracking-[0.2em] text-[#e05a2b]">
-                  Logistics
+                  {data?.service_2_eyebrow || "Logistics"}
                 </p>
                 <h3 className="mt-3 text-2xl md:text-3xl lg:text-[34px] font-extrabold leading-tight text-[#2d3580]">
-                  Seafarers Parcel Pickup Service
+                  {data?.service_2_title || "Seafarers Parcel Pickup Service"}
                 </h3>
-                <p className="mt-5 text-base md:text-lg lg:text-[19px] leading-relaxed flex-1 text-[#666666]">
-                  Order essentials online and have them delivered securely to our station for pickup when you dock.
-                </p>
+                <div className="mt-5 text-base md:text-lg lg:text-[19px] leading-relaxed flex-1 text-[#666666] [&>p]:m-0">
+                  {data?.service_2_description?.[0]?.text ? (
+                    <PrismicRichText field={data.service_2_description} />
+                  ) : (
+                    <p>Order essentials online and have them delivered securely to our station for pickup when you dock.</p>
+                  )}
+                </div>
                 <a href="https://parcelservice.mtsc.ca/" target="_blank" rel="noopener noreferrer" className="mt-10 inline-flex items-center gap-2 text-base md:text-lg font-extrabold text-[#e05a2b] hover:gap-3 transition-all">
-                  Send Your Parcel
+                  {data?.service_2_link_text || "Send Your Parcel"}
                   <svg className="h-5 w-5 md:h-6 md:w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                   </svg>
@@ -279,7 +312,7 @@ export default function Home() {
           </div>
         </section>
 
-        <Stats />
+        <Stats data={data} />
 
         {/* ----------------- LOCAL IN PRESENCE ----------------- */}
         <section className="bg-[#FDF0EC] py-20 md:py-28 overflow-hidden">
@@ -289,28 +322,34 @@ export default function Home() {
               <div className="flex mb-5">
                 <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#e05a2b]">
                   <span className="block h-[1px] w-8 bg-[#e05a2b]"></span>
-                  Our Network
+                  {data?.network_eyebrow || "Our Network"}
                 </span>
               </div>
 
-              <h2 className="text-[clamp(32px,4vw,48px)] font-black text-[#112A46] mb-5 leading-tight">
-                Local In Presence.<br />Connected In Purpose.
+              <h2 className="text-[clamp(32px,4vw,48px)] font-black text-[#112A46] mb-5 leading-tight whitespace-pre-line">
+                {data?.network_title || "Local In Presence.\nConnected In Purpose."}
               </h2>
               <p className="text-[18px] font-bold text-[#E05A2B] mb-6">
-                Practical support for those in port and a community effort that ensures no seafarer is alone.
+                {data?.network_subtitle || "Practical support for those in port and a community effort that ensures no seafarer is alone."}
               </p>
-              <div className="text-[#5A6C7D] text-[16px] leading-relaxed space-y-5">
-                <p>Mission to Seafarers Canada provides national leadership, partnerships, fundraising support, and shared resources that help strengthen stations across the country. In Halifax, Mission to Seafarers Halifax serves as a welcoming place of care and connection for seafarers arriving at one of Canada’s busiest ports.</p>
-                <p>At the Port of Halifax, that mission becomes personal.</p>
-                <p>Here, seafarers can find a warm and welcoming space to rest, connect with loved ones, access practical support, receive transportation assistance, enjoy refreshments, participate in community activities, and know they are not alone while far from home.</p>
+              <div className="text-[#5A6C7D] text-[16px] leading-relaxed space-y-5 [&>p]:m-0 [&>p+p]:mt-5">
+                {data?.network_paragraphs?.[0]?.text ? (
+                  <PrismicRichText field={data.network_paragraphs} />
+                ) : (
+                  <>
+                    <p>Mission to Seafarers Canada provides national leadership, partnerships, fundraising support, and shared resources that help strengthen stations across the country. In Halifax, Mission to Seafarers Halifax serves as a welcoming place of care and connection for seafarers arriving at one of Canada’s busiest ports.</p>
+                    <p>At the Port of Halifax, that mission becomes personal.</p>
+                    <p>Here, seafarers can find a warm and welcoming space to rest, connect with loved ones, access practical support, receive transportation assistance, enjoy refreshments, participate in community activities, and know they are not alone while far from home.</p>
+                  </>
+                )}
               </div>
             </Reveal>
             <Reveal className="order-1 md:order-2">
               <div className="rounded-[24px] overflow-hidden shadow-2xl relative">
                 <div className="absolute inset-0 bg-[#112A46]/10 z-10"></div>
                 <img
-                  src={volunteerImg}
-                  alt="Volunteer and Seafarer Support"
+                  src={data?.network_image?.url || volunteerImg}
+                  alt={data?.network_image?.alt || "Volunteer and Seafarer Support"}
                   className="w-full h-[400px] lg:h-[500px] object-cover"
                 />
               </div>
@@ -326,15 +365,15 @@ export default function Home() {
                 <div className="flex justify-center mb-5">
                   <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#e05a2b]">
                     <span className="block h-[1px] w-8 bg-[#e05a2b]"></span>
-                    Station Services
+                    {data?.station_eyebrow || "Station Services"}
                   </span>
                 </div>
 
                 <h2 className="text-[clamp(32px,4vw,48px)] font-black text-[#2d3580] mb-5 leading-tight">
-                  Supporting Seafarers in Halifax
+                  {data?.station_title || "Supporting Seafarers in Halifax"}
                 </h2>
                 <p className="text-[18px] font-bold text-[#e05a2b] max-w-[800px] mx-auto mb-4">
-                  As part of a 160+ year legacy, Seafarers visiting the Port of Halifax can access
+                  {data?.station_subtitle || "As part of a 160+ year legacy, Seafarers visiting the Port of Halifax can access"}
                 </p>
               </div>
 
@@ -345,18 +384,18 @@ export default function Home() {
 
                 <div className="flex flex-wrap justify-center gap-6 md:gap-10 max-w-[1200px] mx-auto">
                   {[
-                    { i: Ship, t: "Friendly ship visits and hospitality" },
-                    { i: MapPin, t: "Transportation and local guidance" },
-                    { i: HomeIcon, t: "Access to a welcoming station space" },
-                    { i: Wifi, t: "Wi-Fi & Communication Tools" },
-                    { i: Users, t: "Refreshments and a comfortable place to sit, pause, and reconnect with loved ones" },
-                    { i: HeartHandshake, t: "Emotional and spiritual support, if requested" },
-                    { i: LifeBuoy, t: "Help during times of stress, isolation, or uncertainty" },
-                    { i: Package, t: "Access to local services" },
-                    { i: ShieldCheck, t: "Clothing bank" },
-                  ].map(({ i: Icon, t }) => (
+                    { i: Ship, t: data?.station_services_list?.[0]?.service_name || "Friendly ship visits and hospitality" },
+                    { i: MapPin, t: data?.station_services_list?.[1]?.service_name || "Transportation and local guidance" },
+                    { i: HomeIcon, t: data?.station_services_list?.[2]?.service_name || "Access to a welcoming station space" },
+                    { i: Wifi, t: data?.station_services_list?.[3]?.service_name || "Wi-Fi & Communication Tools" },
+                    { i: Users, t: data?.station_services_list?.[4]?.service_name || "Refreshments and a comfortable place to sit, pause, and reconnect with loved ones" },
+                    { i: HeartHandshake, t: data?.station_services_list?.[5]?.service_name || "Emotional and spiritual support, if requested" },
+                    { i: LifeBuoy, t: data?.station_services_list?.[6]?.service_name || "Help during times of stress, isolation, or uncertainty" },
+                    { i: Package, t: data?.station_services_list?.[7]?.service_name || "Access to local services" },
+                    { i: ShieldCheck, t: data?.station_services_list?.[8]?.service_name || "Clothing bank" },
+                  ].map(({ i: Icon, t }, idx) => (
                     <div
-                      key={t}
+                      key={idx}
                       className="flex flex-col items-center justify-center w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full bg-white shadow-xl transition-transform hover:-translate-y-1.5 p-4 sm:p-6 md:p-8"
                     >
                       <Icon className="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 text-[#2d3580] mb-3 sm:mb-4" strokeWidth={1.5} />
@@ -368,8 +407,12 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="text-center text-[#666666] text-[16px] leading-relaxed max-w-[800px] mx-auto mb-10">
-                <p>As the Halifax Mission develops, it continues to take shape around what seafarers need during their time ashore. As the Halifax Mission grows, we are creating a space</p>
+              <div className="text-center text-[#666666] text-[16px] leading-relaxed max-w-[800px] mx-auto mb-10 [&>p]:m-0">
+                {data?.station_footer_text?.[0]?.text ? (
+                  <PrismicRichText field={data.station_footer_text} />
+                ) : (
+                  <p>As the Halifax Mission develops, it continues to take shape around what seafarers need during their time ashore. As the Halifax Mission grows, we are creating a space</p>
+                )}
               </div>
 
               <div className="flex flex-wrap justify-center gap-4">
@@ -394,20 +437,33 @@ export default function Home() {
                   <div className="flex mb-5">
                     <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#e05a2b]">
                       <span className="block h-[1px] w-8 bg-[#e05a2b]"></span>
-                      A Small Service That Makes a Big Difference
+                      {data?.clothing_eyebrow || "A Small Service That Makes a Big Difference"}
                     </span>
                   </div>
 
                   <h2 className="mt-5 text-3xl md:text-4xl font-extrabold text-[#2d3580] leading-tight">
-                    Clothing Bank
+                    {data?.clothing_title || "Clothing Bank"}
                   </h2>
 
-                  <div className="mt-5 text-base md:text-lg text-[#666666] leading-relaxed space-y-5">
-                    <p>After extended periods at sea, small things can feel significant.</p>
-                    <p>At Mission to Seafarers Halifax, we maintain a small clothing bank where seafarers can access warm clothing and essential items, including jackets, gloves, hats, and other seasonal necessities while visiting the Port of Halifax.</p>
-                    <p className="italic text-sm text-[#666666]">
-                      Clothing support can be arranged in advance by seafarers, ship agents, or crew representatives. Availability is based on current inventory, volunteer capacity, and ship schedules.
-                    </p>
+                  <div className="mt-5 text-base md:text-lg text-[#666666] leading-relaxed space-y-5 [&>p]:m-0 [&>p+p]:mt-5">
+                    {data?.clothing_paragraphs?.[0]?.text ? (
+                      <PrismicRichText field={data.clothing_paragraphs} />
+                    ) : (
+                      <>
+                        <p>After extended periods at sea, small things can feel significant.</p>
+                        <p>At Mission to Seafarers Halifax, we maintain a small clothing bank where seafarers can access warm clothing and essential items, including jackets, gloves, hats, and other seasonal necessities while visiting the Port of Halifax.</p>
+                      </>
+                    )}
+                    
+                    {data?.clothing_disclaimer?.[0]?.text ? (
+                      <div className="italic text-sm text-[#666666] mt-5 [&>p]:m-0">
+                        <PrismicRichText field={data.clothing_disclaimer} />
+                      </div>
+                    ) : (
+                      <p className="italic text-sm text-[#666666] mt-5">
+                        Clothing support can be arranged in advance by seafarers, ship agents, or crew representatives. Availability is based on current inventory, volunteer capacity, and ship schedules.
+                      </p>
+                    )}
                   </div>
 
                   <div className="mt-8 flex flex-wrap gap-4">
@@ -443,20 +499,26 @@ export default function Home() {
               <div className="flex justify-center mb-5">
                 <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#e05a2b]">
                   <span className="block h-[1px] w-8 bg-[#e05a2b]"></span>
-                  Our Impact
+                  {data?.impact_eyebrow || "Our Impact"}
                 </span>
               </div>
 
               <h2 className="text-[clamp(32px,4vw,48px)] font-black text-[#112A46] mb-5 leading-tight">
-                Why Halifax Matters
+                {data?.impact_title || "Why Halifax Matters"}
               </h2>
               <p className="text-[18px] md:text-[20px] font-bold text-[#E05A2B] mb-8">
-                Welcoming Seafarers at the Port of Halifax
+                {data?.impact_subtitle || "Welcoming Seafarers at the Port of Halifax"}
               </p>
-              <div className="text-[#5A6C7D] text-[17px] leading-relaxed space-y-5">
-                <p>Halifax is one of Canada’s most important and historic ports, welcoming seafarers from around the world who help keep global trade and our communities moving every day. Many arrive with limited time ashore and few opportunities to rest, reconnect, or access support while in port.</p>
-                <p>Mission to Seafarers Halifax ensures that, when they arrive here, they are met with dignity, compassion, and a welcoming place of care and connection.</p>
-                <p>Mission to Seafarers Halifax operates locally, supported nationally, and connected globally through a network serving seafarers in more than 200 ports worldwide.</p>
+              <div className="text-[#5A6C7D] text-[17px] leading-relaxed space-y-5 [&>p]:m-0 [&>p+p]:mt-5">
+                {data?.impact_paragraphs?.[0]?.text ? (
+                  <PrismicRichText field={data.impact_paragraphs} />
+                ) : (
+                  <>
+                    <p>Halifax is one of Canada’s most important and historic ports, welcoming seafarers from around the world who help keep global trade and our communities moving every day. Many arrive with limited time ashore and few opportunities to rest, reconnect, or access support while in port.</p>
+                    <p>Mission to Seafarers Halifax ensures that, when they arrive here, they are met with dignity, compassion, and a welcoming place of care and connection.</p>
+                    <p>Mission to Seafarers Halifax operates locally, supported nationally, and connected globally through a network serving seafarers in more than 200 ports worldwide.</p>
+                  </>
+                )}
               </div>
             </Reveal>
           </div>
@@ -470,31 +532,35 @@ export default function Home() {
                 <div className="flex justify-center mb-5">
                   <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#e05a2b]">
                     <span className="block h-[1px] w-8 bg-[#e05a2b]"></span>
-                    Support Us
+                    {data?.involved_eyebrow || "Support Us"}
                   </span>
                 </div>
 
                 <h2 className="text-[clamp(32px,4vw,48px)] font-black text-[#112A46] mb-5 leading-tight">
-                  Get Involved
+                  {data?.involved_title || "Get Involved"}
                 </h2>
                 <p className="text-[18px] md:text-[20px] font-bold text-[#E05A2B] mb-4">
-                  Help Us Welcome Seafarers to Halifax
+                  {data?.involved_subtitle || "Help Us Welcome Seafarers to Halifax"}
                 </p>
-                <p className="text-[#5A6C7D] text-[17px] max-w-[800px] mx-auto">
-                  There are many ways to support the Halifax Mission and the seafarers we serve.
-                </p>
+                <div className="text-[#5A6C7D] text-[17px] max-w-[800px] mx-auto [&>p]:m-0">
+                  {data?.involved_description?.[0]?.text ? (
+                    <PrismicRichText field={data.involved_description} />
+                  ) : (
+                    <p>There are many ways to support the Halifax Mission and the seafarers we serve.</p>
+                  )}
+                </div>
               </div>
 
               <div className="bg-white p-8 md:p-14 rounded-[32px] shadow-xl max-w-[900px] mx-auto mb-10 border-t-[6px] border-[#E05A2B]">
                 <h3 className="text-[22px] font-black text-[#112A46] mb-6">You can:</h3>
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
                   {[
-                    "Volunteer at the station or during local events",
-                    "Donate snacks, refreshments, gift cards, or supplies",
-                    "Support haircut and wellness services for seafarers",
-                    "Help furnish and create a welcoming station space",
-                    "Support a local project or event",
-                    "Become a community or business partner"
+                    data?.involvement_list?.[0]?.list_item_text || "Volunteer at the station or during local events",
+                    data?.involvement_list?.[1]?.list_item_text || "Donate snacks, refreshments, gift cards, or supplies",
+                    data?.involvement_list?.[2]?.list_item_text || "Support haircut and wellness services for seafarers",
+                    data?.involvement_list?.[3]?.list_item_text || "Help furnish and create a welcoming station space",
+                    data?.involvement_list?.[4]?.list_item_text || "Support a local project or event",
+                    data?.involvement_list?.[5]?.list_item_text || "Become a community or business partner"
                   ].map((item, index) => (
                     <li key={index} className="flex items-start gap-3">
                       <svg className="w-6 h-6 text-[#E05A2B] shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
@@ -504,9 +570,13 @@ export default function Home() {
                 </ul>
 
                 <div className="bg-[#FDF0EC]/80 p-6 rounded-2xl border border-[#E05A2B]/20 mb-10">
-                  <p className="text-[#112A46] font-semibold text-[15px] italic text-center">
-                    For major donations, national sponsorships, monthly giving, and larger corporate partnerships, please connect with Mission to Seafarers Canada.
-                  </p>
+                  <div className="text-[#112A46] font-semibold text-[15px] italic text-center [&>p]:m-0">
+                    {data?.involved_footer_text?.[0]?.text ? (
+                      <PrismicRichText field={data.involved_footer_text} />
+                    ) : (
+                      <p>For major donations, national sponsorships, monthly giving, and larger corporate partnerships, please connect with Mission to Seafarers Canada.</p>
+                    )}
+                  </div>
                 </div>
 
                 <div className="flex flex-wrap justify-center gap-4">
@@ -543,15 +613,19 @@ export default function Home() {
                 <div className="flex justify-center mb-5">
                   <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#e05a2b]">
                     <span className="block h-[1px] w-8 bg-[#e05a2b]"></span>
-                    Help Care for Seafarers
+                    {data?.donate_eyebrow || "Help Care for Seafarers"}
                   </span>
                 </div>
                 <h2 className="text-[clamp(36px,5vw,56px)] font-black text-[#2d3580] mb-6 leading-tight">
-                  Donate
+                  {data?.donate_title || "Donate"}
                 </h2>
-                <p className="text-[#666666] text-[18px] md:text-[20px] leading-relaxed mb-6">
-                  Every gift helps us provide hospitality, transportation, Wi-Fi, refreshments, haircuts, and a welcoming place for seafarers visiting Halifax.
-                </p>
+                <div className="text-[#666666] text-[18px] md:text-[20px] leading-relaxed mb-6 [&>p]:m-0">
+                  {data?.donate_subtitle?.[0]?.text ? (
+                    <PrismicRichText field={data.donate_subtitle} />
+                  ) : (
+                    <p>Every gift helps us provide hospitality, transportation, Wi-Fi, refreshments, haircuts, and a welcoming place for seafarers visiting Halifax.</p>
+                  )}
+                </div>
                 <p className="text-[#2d3580] font-extrabold text-[18px] md:text-[20px]">
                   You can choose to:
                 </p>
@@ -565,18 +639,18 @@ export default function Home() {
                   <svg className="h-10 w-10 text-white mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
-                  <p className="text-[12px] font-extrabold uppercase tracking-widest text-white/85 mb-2">Recurring Giving</p>
+                  <p className="text-[12px] font-extrabold uppercase tracking-widest text-white/85 mb-2">{data?.donate_card_1_eyebrow || "Recurring Giving"}</p>
                   <h3 className="text-3xl cursor-pointer md:text-4xl font-black text-white leading-tight mb-4">
-                    Become a monthly donor
+                    {data?.donate_card_1_title || "Become a monthly donor"}
                   </h3>
                   <p className="text-white/90 text-[16px] md:text-[18px] leading-relaxed mb-8 flex-1">
-                    Support Mission to Seafarers Halifax  through Mission to Seafarers Canada
+                    {data?.donate_card_1_description || "Support Mission to Seafarers Halifax  through Mission to Seafarers Canada"}
                   </p>
                   <button
                     onClick={() => setIsDonateModalOpen(true)}
                     className="w-full bg-white cursor-pointer text-[#e05a2b] hover:bg-white/90 font-bold h-14 rounded-xl flex items-center justify-center transition-colors text-[16px]"
                   >
-                    Become a Monthly Donor
+                    {data?.donate_card_1_button || "Become a Monthly Donor"}
                     <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
                   </button>
                 </div>
@@ -586,23 +660,27 @@ export default function Home() {
                   <svg className="h-10 w-10 text-[#e05a2b] mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                   </svg>
-                  <p className="text-[12px] font-extrabold uppercase tracking-widest text-[#e05a2b] mb-2">One-Time Gift</p>
+                  <p className="text-[12px] font-extrabold uppercase tracking-widest text-[#e05a2b] mb-2">{data?.donate_card_2_eyebrow || "One-Time Gift"}</p>
                   <h3 className="text-3xl md:text-4xl font-black text-[#2d3580] leading-tight mb-4">
-                    Make a one-time gift
+                    {data?.donate_card_2_title || "Make a one-time gift"}
                   </h3>
                   <p className="text-[#666666] text-[16px] md:text-[18px] leading-relaxed mb-8 flex-1">
-                    Support Mission to Seafarers Halifax  through Mission to Seafarers Canada
+                    {data?.donate_card_2_description || "Support Mission to Seafarers Halifax  through Mission to Seafarers Canada"}
                   </p>
                   <button
                     onClick={() => setIsDonateModalOpen(true)}
                     className="w-full bg-[#2d3580] cursor-pointer hover:bg-[#1c2e6b] text-white font-bold h-14 rounded-xl flex items-center justify-center transition-colors text-[16px] mb-6"
                   >
-                    Make a One-Time Gift
+                    {data?.donate_card_2_button || "Make a One-Time Gift"}
                     <svg className="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
                   </button>
-                  <p className="text-sm text-[#666666] cursor-pointer italic text-center">
-                    Every donation made through this page directly supports Mission to Seafarers Halifax, helping us provide care, practical assistance, and a welcoming community for seafarers visiting the Port of Halifax.
-                  </p>
+                  <div className="text-sm text-[#666666] cursor-pointer italic text-center [&>p]:m-0">
+                    {data?.donate_disclaimer?.[0]?.text ? (
+                      <PrismicRichText field={data.donate_disclaimer} />
+                    ) : (
+                      <p>Every donation made through this page directly supports Mission to Seafarers Halifax, helping us provide care, practical assistance, and a welcoming community for seafarers visiting the Port of Halifax.</p>
+                    )}
+                  </div>
                 </div>
 
               </div>
@@ -773,28 +851,28 @@ export default function Home() {
               <div className="flex mb-5">
                 <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#e05a2b]">
                   <span className="block h-[1px] w-8 bg-[#e05a2b]"></span>
-                  Our Services
+                  {data?.services_eyebrow || "Our Services"}
                 </span>
               </div>
 
               <h2 className="text-[clamp(26px,3vw,34px)] font-black text-[#112A46] mb-6 leading-tight">
-                How We Support Seafarers in Halifax
+                {data?.services_title || "How We Support Seafarers in Halifax"}
               </h2>
               <p className="text-[#5A6C7D] text-[16px] mb-8 font-medium">
-                Mission to Seafarers Halifax offers practical, emotional, and spiritual support to seafarers visiting the Port of Halifax, including:
+                {data?.services_subtitle || "Mission to Seafarers Halifax offers practical, emotional, and spiritual support to seafarers visiting the Port of Halifax, including:"}
               </p>
               <ul className="space-y-5">
                 {[
-                  "Friendly ship visits across Halifax Harbour",
-                  "Transportation and local guidance while in port",
-                  "Wi-Fi and communication support to reconnect with loved ones",
-                  "Refreshments and a welcoming place to rest between voyages",
-                  "Emotional and spiritual support, when requested",
-                  "Support during times of stress, isolation, or uncertainty",
-                  "Access to local services, seasonal clothing, and community resources",
-                  "Seafarers Parcel Pickup Service",
-                  "Hospitality and care through volunteers and local partnerships",
-                  "Recreational amenities including bikes, billiards, darts, and basketball"
+                  data?.services_list?.[0]?.service_item || "Friendly ship visits across Halifax Harbour",
+                  data?.services_list?.[1]?.service_item || "Transportation and local guidance while in port",
+                  data?.services_list?.[2]?.service_item || "Wi-Fi and communication support to reconnect with loved ones",
+                  data?.services_list?.[3]?.service_item || "Refreshments and a welcoming place to rest between voyages",
+                  data?.services_list?.[4]?.service_item || "Emotional and spiritual support, when requested",
+                  data?.services_list?.[5]?.service_item || "Support during times of stress, isolation, or uncertainty",
+                  data?.services_list?.[6]?.service_item || "Access to local services, seasonal clothing, and community resources",
+                  data?.services_list?.[7]?.service_item || "Seafarers Parcel Pickup Service",
+                  data?.services_list?.[8]?.service_item || "Hospitality and care through volunteers and local partnerships",
+                  data?.services_list?.[9]?.service_item || "Recreational amenities including bikes, billiards, darts, and basketball"
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-4 text-[#112A46] font-semibold text-[15px]">
                     <svg className="w-6 h-6 text-[#E05A2B] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -809,24 +887,24 @@ export default function Home() {
               <div className="flex mb-5">
                 <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#e05a2b]">
                   <span className="block h-[1px] w-8 bg-[#e05a2b]"></span>
-                  The Station Space
+                  {data?.station_space_eyebrow || "The Station Space"}
                 </span>
               </div>
 
               <h2 className="text-[clamp(26px,3vw,34px)] font-black text-[#112A46] mb-6 leading-tight">
-                A Place to Rest Along the Atlantic Gateway
+                {data?.station_space_title || "A Place to Rest Along the Atlantic Gateway"}
               </h2>
               <p className="text-[#5A6C7D] text-[16px] mb-8 font-medium">
-                The Halifax Mission continues to grow as a welcoming and peaceful place where seafarers can:
+                {data?.station_space_subtitle || "The Halifax Mission continues to grow as a welcoming and peaceful place where seafarers can:"}
               </p>
               <ul className="space-y-5 mb-10">
                 {[
-                  "Sit and rest while ashore",
-                  "Access communication tools and internet",
-                  "Spend time away from the vessel",
-                  "Connect with volunteers and local community members",
-                  "Experience hospitality rooted in Halifax’s maritime tradition",
-                  "Find a moment of calm along one of Canada’s busiest Atlantic gateways"
+                  data?.station_space_list?.[0]?.space_item || "Sit and rest while ashore",
+                  data?.station_space_list?.[1]?.space_item || "Access communication tools and internet",
+                  data?.station_space_list?.[2]?.space_item || "Spend time away from the vessel",
+                  data?.station_space_list?.[3]?.space_item || "Connect with volunteers and local community members",
+                  data?.station_space_list?.[4]?.space_item || "Experience hospitality rooted in Halifax's maritime tradition",
+                  data?.station_space_list?.[5]?.space_item || "Find a moment of calm along one of Canada's busiest Atlantic gateways"
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-4 text-[#112A46] font-semibold text-[15px]">
                     <svg className="w-6 h-6 text-[#E05A2B] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
@@ -835,9 +913,13 @@ export default function Home() {
                 ))}
               </ul>
               <div className="bg-[#FDF0EC] p-6 rounded-2xl border-l-[6px] border-[#E05A2B]">
-                <p className="text-[#112A46] font-bold text-[15px] italic leading-relaxed">
-                  As the station continues to grow, services and programming will expand to better support the needs of seafarers visiting Halifax from around the world.
-                </p>
+                <div className="text-[#112A46] font-bold text-[15px] italic leading-relaxed [&>p]:m-0">
+                  {data?.station_space_disclaimer?.[0]?.text ? (
+                    <PrismicRichText field={data.station_space_disclaimer} />
+                  ) : (
+                    <p>As the station continues to grow, services and programming will expand to better support the needs of seafarers visiting Halifax from around the world.</p>
+                  )}
+                </div>
               </div>
             </Reveal>
 
@@ -851,21 +933,27 @@ export default function Home() {
               <div className="flex justify-center mb-5">
                 <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#e05a2b]">
                   <span className="block h-[1px] w-8 bg-[#e05a2b]"></span>
-                  Our Mission
+                  {data?.mission_eyebrow || "Our Mission"}
                 </span>
               </div>
 
               <h2 className="text-[clamp(32px,4vw,48px)] font-black text-[#2d3580] mb-5 leading-tight">
-                A Harbour of Welcome on Canada’s East Coast
+                {data?.mission_title || "A Harbour of Welcome on Canada’s East Coast"}
               </h2>
               <p className="text-[18px] md:text-[22px] font-bold text-[#e05a2b] mb-10">
-                Support Halifax. Strengthen Canada’s Seafarer Network. Care Across the World.
+                {data?.mission_subtitle || "Support Halifax. Strengthen Canada’s Seafarer Network. Care Across the World."}
               </p>
 
-              <div className="text-[#666666] text-[17px] leading-relaxed space-y-6 mb-12 max-w-[850px] mx-auto">
-                <p>Rooted in one of Canada’s most historic and active ports, Mission to Seafarers Halifax serves as a place of care, connection, and hospitality for seafarers arriving on the Atlantic coast.</p>
-                <p>Local volunteers, churches, maritime partners, and community supporters help sustain the work happening here in Halifax, while national partnerships and donations strengthen Mission to Seafarers Canada’s growing network across the country.</p>
-                <p>Whether you volunteer, donate, provide services, or partner with us, you are helping create a welcoming harbour for seafarers far from home and supporting a mission connected to ports around the world.</p>
+              <div className="text-[#666666] text-[17px] leading-relaxed space-y-6 mb-12 max-w-[850px] mx-auto [&>p]:m-0 [&>p+p]:mt-6">
+                {data?.mission_paragraphs?.[0]?.text ? (
+                  <PrismicRichText field={data.mission_paragraphs} />
+                ) : (
+                  <>
+                    <p>Rooted in one of Canada’s most historic and active ports, Mission to Seafarers Halifax serves as a place of care, connection, and hospitality for seafarers arriving on the Atlantic coast.</p>
+                    <p>Local volunteers, churches, maritime partners, and community supporters help sustain the work happening here in Halifax, while national partnerships and donations strengthen Mission to Seafarers Canada’s growing network across the country.</p>
+                    <p>Whether you volunteer, donate, provide services, or partner with us, you are helping create a welcoming harbour for seafarers far from home and supporting a mission connected to ports around the world.</p>
+                  </>
+                )}
               </div>
 
               <div className="flex flex-wrap justify-center gap-5">
@@ -890,39 +978,39 @@ export default function Home() {
               <div className="flex justify-center mb-5">
                 <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#e05a2b]">
                   <span className="block h-[1px] w-8 bg-[#e05a2b]"></span>
-                  Community
+                  {data?.community_eyebrow || "Community"}
                 </span>
               </div>
 
-              <h2 className="text-[34px] font-black text-navy text-center mb-10">Join or Host an Event for Us</h2>
+              <h2 className="text-[34px] font-black text-navy text-center mb-10">{data?.community_title || "Join or Host an Event for Us"}</h2>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
                   {
                     image: prayerWallImg,
-                    title: 'Prayer Wall',
-                    desc: "Share a prayer, read messages, and find strength and connection.",
-                    link: '/prayer'
+                    title: data?.community_cards?.[0]?.card_title || 'Prayer Wall',
+                    desc: data?.community_cards?.[0]?.card_description || "Share a prayer, read messages, and find strength and connection.",
+                    link: data?.community_cards?.[0]?.card_link || '/prayer'
                   },
                   {
                     image: happySeaImg,
                     brand: 'Happy@Sea',
-                    title: 'Get 24/7 Help',
-                    desc: "Chat 24/7, book rides, get essentials, explore well-being resources.",
+                    title: data?.community_cards?.[1]?.card_title || 'Get 24/7 Help',
+                    desc: data?.community_cards?.[1]?.card_description || "Chat 24/7, book rides, get essentials, explore well-being resources.",
                     accent: true,
-                    link: '/contact'
+                    link: data?.community_cards?.[1]?.card_link || '/contact'
                   },
                   {
                     image: newsletterImg,
-                    title: 'Newsletter',
-                    desc: "Get local port news, seafarer support, and more.",
-                    link: '/publication'
+                    title: data?.community_cards?.[2]?.card_title || 'Newsletter',
+                    desc: data?.community_cards?.[2]?.card_description || "Get local port news, seafarer support, and more.",
+                    link: data?.community_cards?.[2]?.card_link || '/publication'
                   },
                   {
                     image: eventCalendarImg,
-                    title: 'Join or Host an Event for Us',
-                    desc: "Honour a loved one by creating a fundraising page.",
-                    link: '/events'
+                    title: data?.community_cards?.[3]?.card_title || 'Join or Host an Event for Us',
+                    desc: data?.community_cards?.[3]?.card_description || "Honour a loved one by creating a fundraising page.",
+                    link: data?.community_cards?.[3]?.card_link || '/events'
                   }
                 ].map((card, i) => (
                   <a

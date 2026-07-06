@@ -1,0 +1,113 @@
+{
+  "hero_badge": "For Visiting Crews",
+  "hero_title": "Support While You’re in Halifax Harbour",
+  "hero_subtitle": "Wherever you are from, you are welcome here. Mission to Seafarers Halifax is here to support you with practical help, connection, hospitality, and care while your ship is visiting the Port of Halifax.",
+  "btn_ship_visit_text": "Request a Ship Visit",
+  "btn_services_text": "Explore Services",
+  "btn_whatsapp_text": "Message on WhatsApp",
+  "btn_whatsapp_link": "https://wa.me/+19029893388",
+  "services_title": "How Can We Help You Today?",
+  "services_subtitle": "Select a service below to request assistance quickly.",
+  "support_services": [
+    {
+      "icon_type": "ship",
+      "title": "Request a Ship Visit",
+      "description": "Our volunteers and chaplaincy team can visit your ship while you are in port.",
+      "button_text": "Fill Request Form →",
+      "button_link": "modal:shipVisit"
+    },
+    {
+      "icon_type": "parcel",
+      "title": "Send or Receive Parcel",
+      "description": "Order personal items online and have them delivered safely to our Halifax Mission for pickup. Please ensure that all courier and parcel deliveries to the Mission are scheduled within official office hours.",
+      "button_text": "Parcel Info & Request →",
+      "button_link": "https://parcelservice.mtsc.ca/login"
+    },
+    {
+      "icon_type": "chaplain",
+      "title": "Message the Chaplain",
+      "description": "Need someone to talk to? We are here to listen and support you confidentially.",
+      "button_text": "WhatsApp Us Now",
+      "button_link": "https://wa.me/19029893388"
+    },
+    {
+      "icon_type": "support",
+      "title": "Request Support",
+      "description": "We can assist with practical, emotional, transportation, or local support needs while your vessel is visiting the Port of Halifax.",
+      "button_text": "General Support Form →",
+      "button_link": "modal:support"
+    },
+    {
+      "icon_type": "clothing",
+      "title": "Clothing & Essentials",
+      "description": "Access seasonal clothing, gloves, jackets, hygiene items, and practical essentials during your time in port.",
+      "button_text": "Request Assistance →",
+      "button_link": "modal:clothing"
+    },
+    {
+      "icon_type": "transport",
+      "title": "Transport & Guidance",
+      "description": "Need help getting around Halifax or finding local services? Our team may be able to assist.",
+      "button_text": "Transportation Request →",
+      "button_link": "modal:transport"
+    }
+  ],
+  "reassurance_overlay_title": "You Are Not Alone.",
+  "commitment_eyebrow": "Our Commitment",
+  "commitment_title": "Every day, seafarers from around the world arrive in Halifax.",
+  "commitment_description": "Every day, seafarers from around the world arrive in Halifax after long journeys at sea. Whether you are here for a few hours or several days, our team is here to welcome and support you.",
+  "commitment_checklist": [
+    { "item_text": "Friendly conversation & hospitality" },
+    { "item_text": "Free Wi-Fi & communication support" },
+    { "item_text": "Transportation assistance" },
+    { "item_text": "Emotional & spiritual care" },
+    { "item_text": "Practical support while in port" },
+    { "item_text": "Access to local resources" }
+  ],
+  "how_it_works_title": "Getting Support is Simple",
+  "how_it_works_steps": [
+    {
+      "step_number": "1",
+      "step_title": "Choose",
+      "step_desc": "Select the service or support you need from our dashboard above."
+    },
+    {
+      "step_number": "2",
+      "step_title": "Request",
+      "step_desc": "Fill out a short request form or message our team."
+    },
+    {
+      "step_number": "3",
+      "step_title": "Connect",
+      "step_desc": "Our volunteers or station team will contact you shortly."
+    }
+  ],
+  "team_title": "A Friendly Face While Far From Home",
+  "team_subtitle": "Our volunteers, chaplaincy team, and station staff are here to welcome you, listen, and support you during your time in Halifax.",
+  "leader_1_name": "Helen Glenn",
+  "leader_1_role": "Mission Manager",
+  "leader_1_whatsapp": "https://wa.me/19024561658",
+  "leader_1_email": "mailto:hglenn@missiontoseafarershalifax.ca",
+  "leader_2_name": "Joseph Loot",
+  "leader_2_role": "Assistant Manager",
+  "leader_2_whatsapp": "https://wa.me/19029893388",
+  "leader_2_email": "mailto:jloot@missiontoseafarershalifax.ca",
+  "welcoming_box_title": "We Welcome Seafarers from Around the World",
+  "welcoming_box_text": "Mission to Seafarers Halifax supports seafarers of all nationalities, cultures, and faiths. If English is not your first language, we will do our best to support you and help you feel comfortable during your visit.",
+  "urgent_title": "Need Urgent Assistance?",
+  "urgent_subtitle": "Contact us directly by phone or WhatsApp for immediate support.",
+  "btn_call_text": "Call Station",
+  "btn_call_link": "tel:+19024227790",
+  "btn_urgent_whatsapp_text": "WhatsApp Team",
+  "btn_urgent_whatsapp_link": "https://wa.me/19024561658",
+  "visit_section_title": "Visit the Halifax Mission",
+  "civic_address_title": "Civic Address",
+  "civic_address_text": "844 Marginal Road, Halifax NS B3H 2P7, Nova Scotia\nSituated across from Pier 24 in the Halifax Seaport area.",
+  "mailing_address_title": "Mailing Address",
+  "mailing_address_text": "P.O. Box 27114, Halifax, NS B3H 4M8",
+  "hours_title": "General Station Hours",
+  "mon_sat_hours": "Mon - Sat: 10:00 AM – 4:00 PM",
+  "sunday_hours": "Sunday: Generally Closed",
+  "hours_note": "Note: Ship visits and seafarer support may still occur outside regular station hours depending on vessel schedules.",
+  "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2839.2629471138245!2d-63.56839968446387!3d44.63248697909985!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4b5a2233f28325db%3A0xc3c5dd3b603eb61!2s844%20Marginal%20Rd%2C%20Halifax%2C%20NS%20B3H%204M8!5e0!3m2!1sen!2sca!4v1615560123456!5m2!1sen!2sca"
+}

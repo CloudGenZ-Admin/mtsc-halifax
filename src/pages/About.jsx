@@ -7,6 +7,9 @@ import {
   FaCheckCircle, FaChevronLeft, FaChevronRight, FaHeart
 } from 'react-icons/fa';
 
+import { client } from '../prismicio';
+import { PrismicRichText } from '@prismicio/react';
+
 // Import newly added forms
 import { Modal, VolunteerForm } from '../components/forms/WaysToGiveForms';
 
@@ -104,7 +107,19 @@ const historyBlocks = [
 ];
 
 function About() {
+  const [data, setData] = useState(null);
   const [activeModal, setActiveModal] = useState(null);
+
+  // Fetch Prismic data for whoweare
+  useEffect(() => {
+    client.getSingle("whoweare")
+      .then((document) => {
+        setData(document.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching Prismic whoweare in About:", error);
+      });
+  }, []);
 
   // Scroll to top on mount
   useEffect(() => {
@@ -194,13 +209,13 @@ function About() {
 
           <div className="w-full max-w-[1200px] mx-auto px-6 relative z-10 text-center">
             <span className="inline-block text-[#E05A2B] font-bold tracking-widest uppercase text-sm mb-4">
-              About Mission to Seafarers Halifax
+              {data?.hero_eyebrow || "About Mission to Seafarers Halifax"}
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight max-w-4xl mx-auto mb-6">
-              A Harbour of Care on Canada’s Atlantic Coast
+              {data?.hero_title || "A Harbour of Care on Canada’s Atlantic Coast"}
             </h1>
             <p className="text-lg md:text-xl text-white/80 leading-relaxed font-medium max-w-3xl mx-auto">
-              For generations, the Port of Halifax has stood as one of Canada’s most important gateways to the world. Ships arrive daily carrying the goods that sustain communities, industries, hospitals, businesses, and families across the country.
+              {data?.hero_subtitle || "For generations, the Port of Halifax has stood as one of Canada’s most important gateways to the world. Ships arrive daily carrying the goods that sustain communities, industries, hospitals, businesses, and families across the country."}
             </p>
           </div>
         </section>
@@ -209,25 +224,31 @@ function About() {
         <section className="py-24 bg-[#F8FBFD] overflow-hidden">
           <div className="w-full max-w-[1200px] px-6 mx-auto">
             <div className="max-w-3xl mx-auto text-center mb-20">
-              <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm">Our Story</span>
+              <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm">
+                {data?.story_eyebrow || "Our Story"}
+              </span>
               <h2 className="mt-4 text-3xl md:text-5xl font-extrabold text-[#112A46] leading-tight">
-                Behind every vessel is a crew.
+                {data?.story_title || "Behind every vessel is a crew."}
               </h2>
-              <p className="mt-6 text-gray-600 text-sm leading-relaxed font-medium">
-                seafarers who spend months away from home, crossing oceans to keep global trade moving.
-                Mission to Seafarers Halifax exists to ensure that when those seafarers arrive in Halifax, they are not alone.
-                Whether visiting for only a few hours or several days, many crew members arrive exhausted, isolated, and disconnected from loved ones. Limited shore leave, demanding schedules, and long periods at sea can take a significant emotional and physical toll.
-                At our station and through ship visits across Halifax Harbour, we provide a welcoming place where seafarers can rest, reconnect with family, receive practical support, and experience kindness far from home.
-                Sometimes support means helping a crew member make their first video call home in weeks. Sometimes it means offering warm winter clothing after arriving from sea in harsh Atlantic weather. Sometimes it simply means listening.
-
-              </p>
+              <div className="mt-6 text-gray-600 text-sm leading-relaxed font-medium space-y-4">
+                {data?.story_description?.length > 0 ? (
+                  <PrismicRichText field={data.story_description} />
+                ) : (
+                  <>
+                    <p>seafarers who spend months away from home, crossing oceans to keep global trade moving. Mission to Seafarers Halifax exists to ensure that when those seafarers arrive in Halifax, they are not alone.</p>
+                    <p>Whether visiting for only a few hours or several days, many crew members arrive exhausted, isolated, and disconnected from loved ones. Limited shore leave, demanding schedules, and long periods at sea can take a significant emotional and physical toll.</p>
+                    <p>At our station and through ship visits across Halifax Harbour, we provide a welcoming place where seafarers can rest, reconnect with family, receive practical support, and experience kindness far from home.</p>
+                    <p>Sometimes support means helping a crew member make their first video call home in weeks. Sometimes it means offering warm winter clothing after arriving from sea in harsh Atlantic weather. Sometimes it simply means listening.</p>
+                  </>
+                )}
+              </div>
             </div>
 
             <div className="space-y-20 md:space-y-32 relative max-w-6xl mx-auto">
               {/* Vertical connecting line for desktop */}
               <div className="hidden md:block absolute left-1/2 top-4 bottom-4 w-[2px] bg-[#E05A2B]/20 -translate-x-1/2"></div>
 
-              {historyBlocks.map((block, idx) => (
+              {(data?.history_blocks?.length > 0 ? data.history_blocks : historyBlocks).map((block, idx) => (
                 <Reveal key={idx}>
                   <div className={`relative flex flex-col md:flex-row items-center gap-10 md:gap-16 lg:gap-24 ${idx % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
 
@@ -240,7 +261,7 @@ function About() {
                     <div className="w-full md:w-1/2 relative group">
                       <div className="aspect-[3/3] rounded-3xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500 border-4 border-white">
                         <img
-                          src={block.img}
+                          src={block.image?.url || block.img || historyBlocks[idx]?.img || volunteersImg}
                           alt={block.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                         />
@@ -261,7 +282,7 @@ function About() {
                       <h3 className="text-2xl md:text-3xl font-extrabold text-[#112A46]">{block.title}</h3>
 
                       <div className="text-gray-600 text-[16px] leading-relaxed space-y-4 font-medium">
-                        {block.content}
+                        {Array.isArray(block.content) ? <PrismicRichText field={block.content} /> : block.content}
                       </div>
                     </div>
                   </div>
@@ -276,27 +297,37 @@ function About() {
           <div className="w-full max-w-[1200px] px-6 mx-auto">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <Reveal>
-                <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm">Our Impact</span>
+                <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm">
+                  {data?.impact_eyebrow || "Our Impact"}
+                </span>
                 <h2 className="mt-4 text-3xl md:text-4xl font-extrabold text-[#112A46] leading-tight mb-6">
-                  Supporting Seafarers in Halifax Today
+                  {data?.impact_title || "Supporting Seafarers in Halifax Today"}
                 </h2>
-                <p className="text-gray-600 text-[16px] leading-relaxed font-medium mb-6">
-                  Every interaction matters. Volunteers regularly meet crews who have spent months at sea without stepping onto land. Others arrive carrying the stress of uncertain contracts, fatigue, isolation, or the emotional weight of being away from family for extended periods. For many seafarers, even a small moment of kindness can make a lasting difference.
-                </p>
+                <div className="text-gray-600 text-[16px] leading-relaxed font-medium mb-6 space-y-4">
+                  {data?.impact_description?.length > 0 ? (
+                    <PrismicRichText field={data.impact_description} />
+                  ) : (
+                    <p>
+                      Every interaction matters. Volunteers regularly meet crews who have spent months at sea without stepping onto land. Others arrive carrying the stress of uncertain contracts, fatigue, isolation, or the emotional weight of being away from family for extended periods. For many seafarers, even a small moment of kindness can make a lasting difference.
+                    </p>
+                  )}
+                </div>
                 <p className="text-[#112A46] font-bold text-lg mb-6">Our services include:</p>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  {[
-                    "Friendly ship visits across Halifax Harbour",
-                    "Transportation and local guidance",
-                    "Wi-Fi and communication support",
-                    "Seasonal clothing and essential items",
-                    "Refreshments and hospitality",
-                    "Emotional and spiritual care",
-                    "Seafarers Parcel Pickup Service",
-                    "Community connection and advocacy",
-                    "Recreational amenities including bikes, billiards, darts, and basketball"
-
-                  ].map((service, index) => (
+                  {(data?.services_list?.length > 0
+                    ? data.services_list.map(item => item.service_text)
+                    : [
+                        "Friendly ship visits across Halifax Harbour",
+                        "Transportation and local guidance",
+                        "Wi-Fi and communication support",
+                        "Seasonal clothing and essential items",
+                        "Refreshments and hospitality",
+                        "Emotional and spiritual care",
+                        "Seafarers Parcel Pickup Service",
+                        "Community connection and advocacy",
+                        "Recreational amenities including bikes, billiards, darts, and basketball"
+                      ]
+                  ).map((service, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <FaCheckCircle className="text-[#E05A2B] text-[16px] mt-0.5 shrink-0" />
                       <span className="text-gray-700 text-[15px] font-semibold">{service}</span>
@@ -306,19 +337,32 @@ function About() {
               </Reveal>
               <Reveal delay={100}>
                 <div className="bg-[#112A46] p-10 rounded-3xl text-white shadow-xl">
-                  <h3 className="text-2xl font-extrabold mb-4">Looking Ahead</h3>
-                  <p className="text-white/80 leading-relaxed mb-6">
-                    As Mission to Seafarers Halifax continues to grow, so does our vision for the future. We are building more than a station. We are building a welcoming maritime hub where seafarers can find rest, support, connection, and community while visiting Halifax.
-                  </p>
-                  <p className="text-white/80 leading-relaxed mb-6">
-                    Through volunteers, partnerships, churches, donors, and national collaboration, we hope to continue expanding services and outreach that respond to the evolving needs of seafarers visiting Canada’s Atlantic coast.
-                  </p>
-                  <p className="text-[#f48c6f] font-bold italic">
-                    Every donation, volunteer hour, partnership, and act of kindness helps strengthen this mission.
-                    Because behind every ship entering Halifax Harbour is a crew of people who deserve to feel seen, valued, and cared for.
-                    Our team
-
-                  </p>
+                  <h3 className="text-2xl font-extrabold mb-4">{data?.looking_ahead_title || "Looking Ahead"}</h3>
+                  <div className="text-white/80 leading-relaxed mb-6 space-y-4">
+                    {data?.looking_ahead_paragraphs?.length > 0 ? (
+                      <PrismicRichText field={data.looking_ahead_paragraphs} />
+                    ) : (
+                      <>
+                        <p>
+                          As Mission to Seafarers Halifax continues to grow, so does our vision for the future. We are building more than a station. We are building a welcoming maritime hub where seafarers can find rest, support, connection, and community while visiting Halifax.
+                        </p>
+                        <p>
+                          Through volunteers, partnerships, churches, donors, and national collaboration, we hope to continue expanding services and outreach that respond to the evolving needs of seafarers visiting Canada’s Atlantic coast.
+                        </p>
+                      </>
+                    )}
+                  </div>
+                  <div className="text-[#f48c6f] font-bold italic space-y-2">
+                    {data?.looking_ahead_quote?.length > 0 ? (
+                      <PrismicRichText field={data.looking_ahead_quote} />
+                    ) : (
+                      <p>
+                        Every donation, volunteer hour, partnership, and act of kindness helps strengthen this mission.
+                        Because behind every ship entering Halifax Harbour is a crew of people who deserve to feel seen, valued, and cared for.
+                        Our team
+                      </p>
+                    )}
+                  </div>
                 </div>
               </Reveal>
             </div>
@@ -329,16 +373,23 @@ function About() {
         <section className="py-20 md:py-28 bg-white">
           <div className="w-full max-w-[1200px] px-6 mx-auto">
             <div className="text-center mb-16">
-              <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm">Station Leadership</span>
+              <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm">
+                {data?.team_eyebrow || "Station Leadership"}
+              </span>
               <h2 className="mt-4 text-3xl md:text-4xl font-extrabold text-[#112A46] leading-tight">
-                The People Behind the Welcome
+                {data?.team_title || "The People Behind the Welcome"}
               </h2>
-              <p className="text-gray-600 max-w-3xl mx-auto mt-4 text-sm leading-relaxed">
-                Guided by our Board of Directors and supported by dedicated staff and volunteers, Mission to Seafarers Halifax works to create a welcoming and supportive environment for seafarers visiting Canada’s Atlantic gateway.
-                Whether through ship visits, station hospitality, transportation support, outreach, or simply offering a listening ear, every interaction is rooted in compassion, dignity, and care.
-                Together, our board, staff, and volunteers help ensure that seafarers arriving in Halifax feel seen, supported, and connected while far from home.
-
-              </p>
+              <div className="text-gray-600 max-w-3xl mx-auto mt-4 text-sm leading-relaxed space-y-4">
+                {data?.team_description?.length > 0 ? (
+                  <PrismicRichText field={data.team_description} />
+                ) : (
+                  <p>
+                    Guided by our Board of Directors and supported by dedicated staff and volunteers, Mission to Seafarers Halifax works to create a welcoming and supportive environment for seafarers visiting Canada’s Atlantic gateway.
+                    Whether through ship visits, station hospitality, transportation support, outreach, or simply offering a listening ear, every interaction is rooted in compassion, dignity, and care.
+                    Together, our board, staff, and volunteers help ensure that seafarers arriving in Halifax feel seen, supported, and connected while far from home.
+                  </p>
+                )}
+              </div>
             </div>
 
             {/* Featured Leader - Helen */}
@@ -346,28 +397,34 @@ function About() {
               <div className="grid lg:grid-cols-12 gap-12 items-center mb-12 bg-[#F8FBFD] border border-gray-100 p-8 md:p-12 rounded-3xl shadow-sm hover:shadow-lg transition-shadow">
                 <div className="lg:col-span-5 flex justify-center">
                   <img
-                    src={helecncircle}
+                    src={data?.leader_1_image?.url || helecncircle}
                     alt="Helen Glenn"
                     className="w-full max-w-sm rounded-full shadow-md object-cover aspect-square object-top border-4 border-white"
                   />
                 </div>
                 <div className="lg:col-span-7">
                   <h2 className="text-2xl md:text-3xl font-extrabold text-[#112A46] leading-tight">
-                    Mission Manager
+                    {data?.leader_1_role || "Mission Manager"}
                   </h2>
                   <h3 className="mt-4 text-lg font-bold text-[#E05A2B] uppercase tracking-wider">
-                    HELEN GLENN
+                    {data?.leader_1_name || "HELEN GLENN"}
                   </h3>
                   <div className="mt-6 space-y-4 text-base md:text-lg text-gray-600 leading-relaxed">
-                    <p>
-                      Helen leads Mission to Seafarers Halifax with compassion, warmth, and a deep commitment to the welfare of seafarers visiting the Port of Halifax.
-                    </p>
-                    <p>
-                      Through leadership, outreach, volunteer coordination, and community engagement, she helps ensure that every seafarer who connects with the station experiences hospitality, practical support, and a welcoming place of care while ashore.
-                    </p>
-                    <p>
-                      Helen continues to play an important role in strengthening Halifax’s maritime community and advancing the Mission’s work across the region.
-                    </p>
+                    {data?.leader_1_bio?.length > 0 ? (
+                      <PrismicRichText field={data.leader_1_bio} />
+                    ) : (
+                      <>
+                        <p>
+                          Helen leads Mission to Seafarers Halifax with compassion, warmth, and a deep commitment to the welfare of seafarers visiting the Port of Halifax.
+                        </p>
+                        <p>
+                          Through leadership, outreach, volunteer coordination, and community engagement, she helps ensure that every seafarer who connects with the station experiences hospitality, practical support, and a welcoming place of care while ashore.
+                        </p>
+                        <p>
+                          Helen continues to play an important role in strengthening Halifax’s maritime community and advancing the Mission’s work across the region.
+                        </p>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -380,33 +437,39 @@ function About() {
 
                   <div className="w-40 h-40 mx-auto rounded-full shadow-md mb-6 overflow-hidden border-4 border-white flex justify-center items-center bg-[#DCD2B9]">
                     <img
-                      src={josephImg}
+                      src={data?.leader_2_image?.url || josephImg}
                       alt="Joseph"
                       className="w-[98%] max-w-none h-auto"
                     />
                   </div>
-                  <h3 className="text-2xl font-bold text-[#112A46]">Joseph Loot</h3>
-                  <p className="text-[#E05A2B] font-bold uppercase text-sm mt-2 mb-4 tracking-wider">Assistant Manager</p>
-                  <p className="text-gray-600 leading-relaxed font-medium">
-                    Joseph supports the daily operations of the Halifax Mission and helps create a welcoming environment for seafarers visiting the port.Supporting outreach, station activities, and practical services to ensure seafarers in Halifax receive care, connection, and assistance during their stay. His dedication and calm presence help make the station a trusted place for many visiting crews.
-                  </p>
+                  <h3 className="text-2xl font-bold text-[#112A46]">{data?.leader_2_name || "Joseph Loot"}</h3>
+                  <p className="text-[#E05A2B] font-bold uppercase text-sm mt-2 mb-4 tracking-wider">{data?.leader_2_role || "Assistant Manager"}</p>
+                  <div className="text-gray-600 leading-relaxed font-medium space-y-2">
+                    {data?.leader_2_bio?.length > 0 ? (
+                      <PrismicRichText field={data.leader_2_bio} />
+                    ) : (
+                      <p>
+                        Joseph supports the daily operations of the Halifax Mission and helps create a welcoming environment for seafarers visiting the port.Supporting outreach, station activities, and practical services to ensure seafarers in Halifax receive care, connection, and assistance during their stay. His dedication and calm presence help make the station a trusted place for many visiting crews.
+                      </p>
+                    )}
+                  </div>
                 </div>
 
                 <div className="flex flex-col items-center text-center bg-gradient-to-br from-[#112A46] to-[#1a3a5f] text-white rounded-3xl p-10 shadow-lg">
                   <div className="w-20 h-20 bg-[#E05A2B] rounded-full flex items-center justify-center mb-6 shadow-lg">
                     <FaHeart className="text-white text-3xl" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-4">Our Volunteers</h3>
+                  <h3 className="text-2xl font-bold text-white mb-4">{data?.volunteers_card_title || "Our Volunteers"}</h3>
                   <p className="text-white/80 leading-relaxed font-medium mb-6">
-                    Behind every ship visit, warm meal, ride into the city, care package, or friendly conversation is a volunteer helping make it possible.
+                    {data?.volunteers_card_description || "Behind every ship visit, warm meal, ride into the city, care package, or friendly conversation is a volunteer helping make it possible."}
                   </p>
                   <div className="flex justify-center gap-8 w-full mt-auto border-t border-white/20 pt-6">
                     <div>
-                      <div className="text-3xl font-black text-coral">50+</div>
+                      <div className="text-3xl font-black text-coral">{data?.volunteers_active_count || "50+"}</div>
                       <div className="text-[11px] font-bold uppercase tracking-wider text-white/70">Active<br />Volunteers</div>
                     </div>
                     <div>
-                      <div className="text-3xl font-black text-coral">1000+</div>
+                      <div className="text-3xl font-black text-coral">{data?.volunteers_hours_count || "1000+"}</div>
                       <div className="text-[11px] font-bold uppercase tracking-wider text-white/70">Hours<br />Served</div>
                     </div>
                   </div>
@@ -423,18 +486,24 @@ function About() {
           <div className="w-full max-w-[1200px] px-6 mx-auto">
             <Reveal className="text-center mb-12">
               <h2 className="mt-4 text-[32px] md:text-4xl font-extrabold text-[#112A46] mb-6">
-                The Heart of the Mission | Our Volunteers
+                {data?.gallery_section_title || "The Heart of the Mission | Our Volunteers"}
               </h2>
               <div className="text-gray-600 text-[16px] max-w-3xl mx-auto leading-relaxed font-medium space-y-4">
-                <p>
-                  Behind every ship visit, warm meal, ride into the city, care package, or friendly conversation is a volunteer helping make it possible.
-                </p>
-                <p>
-                  Mission to Seafarers Halifax is powered by a compassionate network of volunteers who generously give their time, skills, and energy to support seafarers arriving at the Port of Halifax.
-                </p>
-                <p>
-                  Some volunteers greet seafarers at the station. Others help coordinate transportation, organize seasonal programs, prepare hospitality spaces, assist with outreach, or participate in ship visits across Halifax Harbour.
-                </p>
+                {data?.gallery_section_description?.length > 0 ? (
+                  <PrismicRichText field={data.gallery_section_description} />
+                ) : (
+                  <>
+                    <p>
+                      Behind every ship visit, warm meal, ride into the city, care package, or friendly conversation is a volunteer helping make it possible.
+                    </p>
+                    <p>
+                      Mission to Seafarers Halifax is powered by a compassionate network of volunteers who generously give their time, skills, and energy to support seafarers arriving at the Port of Halifax.
+                    </p>
+                    <p>
+                      Some volunteers greet seafarers at the station. Others help coordinate transportation, organize seasonal programs, prepare hospitality spaces, assist with outreach, or participate in ship visits across Halifax Harbour.
+                    </p>
+                  </>
+                )}
               </div>
             </Reveal>
 
@@ -481,54 +550,78 @@ function About() {
             <Reveal delay={200} className="mt-16">
               <div className="text-center max-w-4xl mx-auto space-y-12">
                 <div className="text-gray-600 text-[16px] leading-relaxed font-medium space-y-4">
-                  <p>
-                    Many simply offer something equally meaningful: human connection.
-                  </p>
-                  <p>
-                    For crew members who may spend months away from family and home, those moments of kindness and conversation can leave a lasting impact.
-                  </p>
+                  {data?.community_care_description?.length > 0 ? (
+                    <PrismicRichText field={data.community_care_description} />
+                  ) : (
+                    <>
+                      <p>
+                        Many simply offer something equally meaningful: human connection.
+                      </p>
+                      <p>
+                        For crew members who may spend months away from family and home, those moments of kindness and conversation can leave a lasting impact.
+                      </p>
+                    </>
+                  )}
                 </div>
 
                 <div>
-                  <h3 className="text-2xl md:text-3xl font-extrabold text-[#112A46] mb-4">A Community of Care</h3>
-                  <p className="text-gray-600 text-[16px] leading-relaxed font-medium max-w-3xl mx-auto">
-                    Our volunteers come from diverse backgrounds but share one common purpose: to ensure seafarers visiting Halifax feel welcomed, respected, and supported. Their commitment reflects the spirit of Halifax’s maritime community and the long-standing tradition of caring for those who work at sea.
-                  </p>
+                  <h3 className="text-2xl md:text-3xl font-extrabold text-[#112A46] mb-4">{data?.community_care_title || "A Community of Care"}</h3>
+                  <div className="text-gray-600 text-[16px] leading-relaxed font-medium max-w-3xl mx-auto space-y-4">
+                    {data?.community_care_subtext?.length > 0 ? (
+                      <PrismicRichText field={data.community_care_subtext} />
+                    ) : (
+                      <p>
+                        Our volunteers come from diverse backgrounds but share one common purpose: to ensure seafarers visiting Halifax feel welcomed, respected, and supported. Their commitment reflects the spirit of Halifax’s maritime community and the long-standing tradition of caring for those who work at sea.
+                      </p>
+                    )}
+                  </div>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
                   <div className="bg-white border border-gray-100 p-8 rounded-3xl shadow-sm">
-                    <div className="text-4xl font-extrabold text-[#E05A2B] mb-2">30+</div>
-                    <div className="text-lg font-bold text-[#112A46] uppercase tracking-wider mb-2">Active Volunteers</div>
+                    <div className="text-4xl font-extrabold text-[#E05A2B] mb-2">{data?.stat_box_1_number || "30+"}</div>
+                    <div className="text-lg font-bold text-[#112A46] uppercase tracking-wider mb-2">{data?.stat_box_1_label || "Active Volunteers"}</div>
                     <p className="text-gray-600 text-sm font-medium">
-                      Supporting ship visits, hospitality, outreach, transportation, and station programs
+                      {data?.stat_box_1_desc || "Supporting ship visits, hospitality, outreach, transportation, and station programs"}
                     </p>
                   </div>
                   <div className="bg-white border border-gray-100 p-8 rounded-3xl shadow-sm">
-                    <div className="text-4xl font-extrabold text-[#E05A2B] mb-2">1,000+</div>
-                    <div className="text-lg font-bold text-[#112A46] uppercase tracking-wider mb-2">Volunteer Hours Served</div>
+                    <div className="text-4xl font-extrabold text-[#E05A2B] mb-2">{data?.stat_box_2_number || "1,000+"}</div>
+                    <div className="text-lg font-bold text-[#112A46] uppercase tracking-wider mb-2">{data?.stat_box_2_label || "Volunteer Hours Served"}</div>
                     <p className="text-gray-600 text-sm font-medium">
-                      Dedicated annually to supporting seafarers visiting Halifax
+                      {data?.stat_box_2_desc || "Dedicated annually to supporting seafarers visiting Halifax"}
                     </p>
                   </div>
                 </div>
 
                 <div className="bg-[#112A46] p-10 md:p-14 rounded-3xl shadow-xl text-left text-white max-w-3xl mx-auto">
-                  <h3 className="text-2xl font-extrabold mb-4 text-[#E05A2B]">Thank You</h3>
-                  <p className="text-white/80 leading-relaxed font-medium mb-8">
-                    To every volunteer, supporter, maritime partner, church community, and donor who helps sustain this mission: thank you. Your compassion and generosity continue to make Mission to Seafarers Halifax a place of welcome, care, and connection for seafarers from around the world.
-                  </p>
+                  <h3 className="text-2xl font-extrabold mb-4 text-[#E05A2B]">{data?.thank_you_title || "Thank You"}</h3>
+                  <div className="text-white/80 leading-relaxed font-medium mb-8 space-y-4">
+                    {data?.thank_you_text?.length > 0 ? (
+                      <PrismicRichText field={data.thank_you_text} />
+                    ) : (
+                      <p>
+                        To every volunteer, supporter, maritime partner, church community, and donor who helps sustain this mission: thank you. Your compassion and generosity continue to make Mission to Seafarers Halifax a place of welcome, care, and connection for seafarers from around the world.
+                      </p>
+                    )}
+                  </div>
 
-                  <h3 className="text-2xl font-extrabold mb-4 text-[#E05A2B]">Interested in Volunteering?</h3>
-                  <p className="text-white/80 leading-relaxed font-medium mb-6">
-                    Whether you can help occasionally or become part of ongoing outreach efforts, there are many ways to get involved and support seafarers visiting Halifax.
-                  </p>
+                  <h3 className="text-2xl font-extrabold mb-4 text-[#E05A2B]">{data?.volunteer_cta_title || "Interested in Volunteering?"}</h3>
+                  <div className="text-white/80 leading-relaxed font-medium mb-6 space-y-4">
+                    {data?.volunteer_cta_text?.length > 0 ? (
+                      <PrismicRichText field={data.volunteer_cta_text} />
+                    ) : (
+                      <p>
+                        Whether you can help occasionally or become part of ongoing outreach efforts, there are many ways to get involved and support seafarers visiting Halifax.
+                      </p>
+                    )}
+                  </div>
 
                   <button
                     onClick={() => setActiveModal('volunteer')}
                     className="inline-flex cursor-pointer items-center justify-center bg-[#E05A2B] hover:bg-[#c94d22] text-white font-bold shadow-lg h-12 px-8 rounded-full text-[15px] transition-colors"
                   >
-                    Volunteer Application
+                    {data?.volunteer_button_text || "Volunteer Application"}
                   </button>
                 </div>
               </div>
@@ -543,11 +636,21 @@ function About() {
         <section className="py-20 bg-white overflow-hidden">
           <div className="w-full max-w-[1200px] px-6 mx-auto">
             <Reveal className="text-center mb-12">
-              <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm">Our Facilities</span>
-              <h2 className="mt-4 text-[32px] md:text-4xl font-extrabold text-[#112A46] mb-4">Comfort & Care for Seafarers</h2>
-              <p className="text-gray-600 text-[16px] max-w-2xl mx-auto leading-relaxed font-medium">
-                We offer a variety of amenities designed to provide a relaxing and welcoming environment for seafarers arriving in the Port of Halifax.
-              </p>
+              <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm">
+                {data?.facilities_eyebrow || "Our Facilities"}
+              </span>
+              <h2 className="mt-4 text-[32px] md:text-4xl font-extrabold text-[#112A46] mb-4">
+                {data?.facilities_title || "Comfort & Care for Seafarers"}
+              </h2>
+              <div className="text-gray-600 text-[16px] max-w-2xl mx-auto leading-relaxed font-medium space-y-4">
+                {data?.facilities_description?.length > 0 ? (
+                  <PrismicRichText field={data.facilities_description} />
+                ) : (
+                  <p>
+                    We offer a variety of amenities designed to provide a relaxing and welcoming environment for seafarers arriving in the Port of Halifax.
+                  </p>
+                )}
+              </div>
             </Reveal>
 
             <Reveal delay={100}>
@@ -610,37 +713,41 @@ function About() {
           <div className="w-full max-w-[1200px] px-6 mx-auto">
             <div className="text-center max-w-3xl mx-auto">
               <h2 className="mt-4 text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#112A46] leading-tight">
-                How the Structure Works
+                {data?.structure_title || "How the Structure Works"}
               </h2>
               <p className="mt-2 text-gray-600 text-[14px] max-w-2xl mx-auto leading-relaxed font-medium">
-                One Mission. Many Hands. Shared Care.” with “How the Structure Works”
+                {data?.structure_subtitle || "One Mission. Many Hands. Shared Care.” with “How the Structure Works”"}
               </p>
             </div>
 
             <div className="mt-14 grid md:grid-cols-2 gap-8 max-w-4xl mx-auto relative">
               <div className="rounded-3xl bg-white border border-gray-100 p-10 shadow-sm hover:shadow-lg transition-all text-center">
                 <p className="text-gray-600 leading-relaxed font-medium text-lg">
-                  <strong className="text-[#112A46] block text-2xl mb-4 font-extrabold">Mission to Seafarers Canada</strong>
-                  provides the national foundation, leadership, and support.
+                  <strong className="text-[#112A46] block text-2xl mb-4 font-extrabold">
+                    {data?.canada_card_title || "Mission to Seafarers Canada"}
+                  </strong>
+                  {data?.canada_card_text || "provides the national foundation, leadership, and support."}
                 </p>
               </div>
               <div className="rounded-3xl bg-white border border-gray-100 p-10 shadow-sm hover:shadow-lg transition-all text-center">
                 <p className="text-gray-600 leading-relaxed font-medium text-lg">
-                  <strong className="text-[#112A46] block text-2xl mb-4 font-extrabold">Mission to Seafarers Halifax</strong>
-                  brings that mission to life locally at the Port of Halifax.
+                  <strong className="text-[#112A46] block text-2xl mb-4 font-extrabold">
+                    {data?.halifax_card_title || "Mission to Seafarers Halifax"}
+                  </strong>
+                  {data?.halifax_card_text || "brings that mission to life locally at the Port of Halifax."}
                 </p>
               </div>
             </div>
 
             <div className="mt-12 max-w-3xl mx-auto text-center">
               <p className="text-xl font-bold text-[#E05A2B] leading-relaxed italic mb-8">
-                Together, ensure that every seafarer who comes through Halifax is not only seen, but cared for.
+                {data?.structure_footer_quote || "Together, ensure that every seafarer who comes through Halifax is not only seen, but cared for."}
               </p>
               <button
                 onClick={() => setActiveModal('volunteer')}
                 className="inline-flex cursor-pointer items-center justify-center bg-[#E05A2B] hover:bg-[#c94d22] text-white font-bold shadow-lg h-14 px-8 rounded-md text-lg transition-colors"
               >
-                Become a Volunteer
+                {data?.structure_button_text || "Become a Volunteer"}
               </button>
             </div>
           </div>

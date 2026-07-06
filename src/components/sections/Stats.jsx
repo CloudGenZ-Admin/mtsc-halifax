@@ -17,7 +17,7 @@ const StatCard = ({ icon: Icon, target, label, prefix = "", suffix = "", startAn
   );
 };
 
-export default function Stats() {
+export default function Stats({ data }) {
   const [ref, isVisible] = useIntersectionObserver({ threshold: 0.3 });
 
   return (
@@ -25,21 +25,52 @@ export default function Stats() {
       <div className="max-w-[1200px] mx-auto px-7" ref={ref}>
         <Reveal className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="relative rounded-[20px] overflow-hidden aspect-[4/3]">
-            <img src="https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=600&q=85" alt="Ships" className="w-full h-full object-cover" />
+            <img src={data?.stats_image?.url || "https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=600&q=85"} alt={data?.stats_image?.alt || "Ships"} className="w-full h-full object-cover" />
             <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur rounded-xl p-4 px-5">
-              <span className="block text-[44px] font-black text-coral leading-none">90%</span>
-              <span className="block text-[13px] font-semibold text-navy mt-1">of world's goods<br/>transported by sea</span>
+              <span className="block text-[44px] font-black text-coral leading-none">{data?.stats_percentage || "90%"}</span>
+              <span className="block text-[13px] font-semibold text-navy mt-1 max-w-[135px] leading-[1.3] whitespace-pre-line">
+                {data?.stats_percentage_label?.[0]?.text ? (
+                  data.stats_percentage_label[0].text.replace(" goods ", " goods\n")
+                ) : (
+                  <>of world's goods<br/>transported by sea</>
+                )}
+              </span>
             </div>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {/* Updated with PDF Data */}
-            <StatCard icon={FaShip} target={2312} label="Total Ship Visits" startAnimation={isVisible} />
-            <StatCard icon={FaUsers} target={11160} label="Total Mission Visitors" startAnimation={isVisible} />
-            <StatCard icon={FaGlobe} target={8586} label="Total Transports" startAnimation={isVisible} />
-            
-            {/* Kept original 4th card to maintain your grid layout without adding new concepts */}
-           <StatCard icon={FaHistory} target={117} prefix="+" suffix="%" label="Visitor Growth (2022-2025)" startAnimation={isVisible} />
+            <StatCard 
+              icon={FaShip} 
+              target={data?.stats_list?.[0]?.stat_number ?? 2312} 
+              prefix={data?.stats_list?.[0]?.stat_prefix || ""}
+              suffix={data?.stats_list?.[0]?.stat_suffix || ""}
+              label={data?.stats_list?.[0]?.stat_label || "Total Ship Visits"} 
+              startAnimation={isVisible} 
+            />
+            <StatCard 
+              icon={FaUsers} 
+              target={data?.stats_list?.[1]?.stat_number ?? 11160} 
+              prefix={data?.stats_list?.[1]?.stat_prefix || ""}
+              suffix={data?.stats_list?.[1]?.stat_suffix || ""}
+              label={data?.stats_list?.[1]?.stat_label || "Total Mission Visitors"} 
+              startAnimation={isVisible} 
+            />
+            <StatCard 
+              icon={FaGlobe} 
+              target={data?.stats_list?.[2]?.stat_number ?? 8586} 
+              prefix={data?.stats_list?.[2]?.stat_prefix || ""}
+              suffix={data?.stats_list?.[2]?.stat_suffix || ""}
+              label={data?.stats_list?.[2]?.stat_label || "Total Transports"} 
+              startAnimation={isVisible} 
+            />
+            <StatCard 
+              icon={FaHistory} 
+              target={data?.stats_list?.[3]?.stat_number ?? 117} 
+              prefix={data?.stats_list?.[3]?.stat_prefix || "+"} 
+              suffix={data?.stats_list?.[3]?.stat_suffix || "%"} 
+              label={data?.stats_list?.[3]?.stat_label || "Visitor Growth (2022-2025)"} 
+              startAnimation={isVisible} 
+            />
           </div>
         </Reveal>
       </div>

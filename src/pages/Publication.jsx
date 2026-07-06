@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/common/Reveal';
+import { client } from '../prismicio';
 import {
   FaFilePdf, FaExternalLinkAlt, FaBookOpen, FaChartBar,
   FaSmile, FaLeaf, FaShip, FaShieldAlt, FaBrain, FaEnvelopeOpenText,
@@ -52,6 +53,7 @@ import faSpring2026 from '../assets/pdf/FlyingAngel/MtS-Spring-2026-Newsletter_D
 
 export default function Publication() {
   const location = useLocation();
+  const [data, setData] = useState(null);
   
   // States for toggling archives
   const [showArchivesHalifax, setShowArchivesHalifax] = useState(false);
@@ -59,6 +61,20 @@ export default function Publication() {
   const [showArchivesFoghorn, setShowArchivesFoghorn] = useState(false);
   const [showArchivesEsg, setShowArchivesEsg] = useState(false);
   const [showArchivesSafety, setShowArchivesSafety] = useState(false);
+
+  useEffect(() => {
+    async function fetchPrismicData() {
+      try {
+        const res = await client.getSingle('publication');
+        if (res && res.data) {
+          setData(res.data);
+        }
+      } catch (err) {
+        console.warn('Prismic publication fetch failed, using fallback:', err);
+      }
+    }
+    fetchPrismicData();
+  }, []);
 
   useEffect(() => {
     if (location.hash) {
@@ -73,8 +89,16 @@ export default function Publication() {
     }
   }, [location]);
 
+  // Helper to extract PDF URL from either a String or a Prismic Link object
+  const getPdfUrl = (field, fallback) => {
+    if (!field) return fallback;
+    if (typeof field === 'string' && field.trim() !== '') return field;
+    if (typeof field === 'object' && field.url && field.url.trim() !== '') return field.url;
+    return fallback;
+  };
+
   // 1. Halifax Newsletters Data
-  const halifaxNewslettersData = [
+  const staticHalifax = [
     { title: "Spring 2026", href: faSpring2026 },
     { title: "Fall 2025", href: faFall2025 },
     { title: "Summer 2025", href: faSummer2025 },
@@ -92,11 +116,20 @@ export default function Publication() {
     { title: "Summer 2021", href: faSummer2021 },
     { title: "Spring 2021", href: faSpring2021 }
   ];
+  const halifaxNewslettersData = (data?.halifax_newsletters && data.halifax_newsletters.length > 0)
+    ? data.halifax_newsletters.map(item => {
+        const match = staticHalifax.find(s => s.title.toLowerCase().trim() === (item.title || '').toLowerCase().trim());
+        return {
+          title: item.title || match?.title || "Newsletter",
+          href: getPdfUrl(item.pdf_url, match?.href || "#")
+        };
+      })
+    : staticHalifax;
   const currentHalifax = halifaxNewslettersData.filter(item => item.title.includes('2026'));
   const archiveHalifax = halifaxNewslettersData.filter(item => !item.title.includes('2026'));
 
   // 2. Happiness Reports Data
-  const happinessReportsData = [
+  const staticHappiness = [
     { title: "Quarter 1 2026 Report", href: shiQ1_2026 },
     { title: "Quarter 3 2025 Report", href: shiQ3_2025 },
     { title: "Quarter 2 2025 Report", href: shiQ2_2025 },
@@ -106,28 +139,64 @@ export default function Publication() {
     { title: "Quarter 2 2024 Report", href: shiQ2_2024 },
     { title: "Quarter 1 2024 Report", href: shiQ1_2024 }
   ];
+  const happinessReportsData = (data?.happiness_reports && data.happiness_reports.length > 0)
+    ? data.happiness_reports.map(item => {
+        const match = staticHappiness.find(s => s.title.toLowerCase().trim() === (item.title || '').toLowerCase().trim());
+        return {
+          title: item.title || match?.title || "Report",
+          href: getPdfUrl(item.pdf_url, match?.href || "#")
+        };
+      })
+    : staticHappiness;
   const currentHappiness = happinessReportsData.filter(item => item.title.includes('2026'));
   const archiveHappiness = happinessReportsData.filter(item => !item.title.includes('2026'));
 
   // 3. Foghorn Reports Data
-  const foghornReportsData = [
+  const staticFoghorn = [
     { title: "July 2025", href: foghornJuly2025 },
     { title: "February 2025", href: foghornFeb2025 }
   ];
+  const foghornReportsData = (data?.foghorn_reports && data.foghorn_reports.length > 0)
+    ? data.foghorn_reports.map(item => {
+        const match = staticFoghorn.find(s => s.title.toLowerCase().trim() === (item.title || '').toLowerCase().trim());
+        return {
+          title: item.title || match?.title || "Report",
+          href: getPdfUrl(item.pdf_url, match?.href || "#")
+        };
+      })
+    : staticFoghorn;
   const currentFoghorn = foghornReportsData.filter(item => item.title.includes('2026'));
   const archiveFoghorn = foghornReportsData.filter(item => !item.title.includes('2026'));
 
   // 4. ESG Strategy Data
-  const esgStrategyData = [
+  const staticEsg = [
     { title: "MtS ESG Strategy 2023", href: esgStrategy }
   ];
+  const esgStrategyData = (data?.esg_reports && data.esg_reports.length > 0)
+    ? data.esg_reports.map(item => {
+        const match = staticEsg.find(s => s.title.toLowerCase().trim() === (item.title || '').toLowerCase().trim());
+        return {
+          title: item.title || match?.title || "Strategy",
+          href: getPdfUrl(item.pdf_url, match?.href || "#")
+        };
+      })
+    : staticEsg;
   const currentEsg = esgStrategyData.filter(item => item.title.includes('2026'));
   const archiveEsg = esgStrategyData.filter(item => !item.title.includes('2026'));
 
   // 5. Marine Safety Data
-  const marineSafetyData = [
+  const staticSafety = [
     { title: "Port of Halifax Marine Safety Handbook, May 2025", href: marineSafetyHandbook }
   ];
+  const marineSafetyData = (data?.safety_handbooks && data.safety_handbooks.length > 0)
+    ? data.safety_handbooks.map(item => {
+        const match = staticSafety.find(s => s.title.toLowerCase().trim() === (item.title || '').toLowerCase().trim());
+        return {
+          title: item.title || match?.title || "Handbook",
+          href: getPdfUrl(item.pdf_url, match?.href || "#")
+        };
+      })
+    : staticSafety;
   const currentSafety = marineSafetyData.filter(item => item.title.includes('2026'));
   const archiveSafety = marineSafetyData.filter(item => !item.title.includes('2026'));
 
@@ -230,13 +299,13 @@ export default function Publication() {
               className="inline-flex items-center gap-2 bg-gradient-to-r from-[#E05A2B] to-[#F2784B] text-white text-[13px] font-black tracking-wide px-5 py-2 rounded-full mb-5 border border-white/20 shadow-[0_0_20px_rgba(224,90,43,0.4)] uppercase"
               style={{ animation: 'float-soft 4s ease-in-out infinite' }}
             >
-              <FaBookOpen /> Resources & Archives
+              <FaBookOpen /> {data?.hero_badge || "Resources & Archives"}
             </span>
             <h1 className="text-[clamp(36px,5vw,56px)] font-black text-white leading-[1.1] mb-6 max-w-4xl mx-auto drop-shadow-2xl">
-              Our <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E05A2B] to-[#ff9770]">Publications</span> & Reports
+              {data?.hero_title || "Our"}{' '}<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E05A2B] to-[#ff9770]">{data?.hero_title_coral || "Publications"}</span>{' '}{data?.hero_title_suffix || "& Reports"}
             </h1>
             <p className="text-white/80 text-lg max-w-2xl mx-auto font-medium drop-shadow-md">
-              Explore our latest newsletters, happiness indexes, marine safety guidelines, and vital research supporting global seafarers.
+              {data?.hero_subtitle || "Explore our latest newsletters, happiness indexes, marine safety guidelines, and vital research supporting global seafarers."}
             </p>
           </div>
         </section>
@@ -258,9 +327,9 @@ export default function Publication() {
             <Reveal>
               <div className="border-l-4 border-[#E05A2B] pl-6 mb-12">
                 <h2 className="text-[36px] font-black text-[#112A46] mb-2 drop-shadow-sm">
-                  Mission to Seafarers Halifax Flying Angel Newsletters
+                  {data?.halifax_title || "Mission to Seafarers Halifax Flying Angel Newsletters"}
                 </h2>
-                <p className="text-gray-500 font-medium">Catch up on our latest local updates and stories from the Halifax Mission.</p>
+                <p className="text-gray-500 font-medium">{data?.halifax_subtitle || "Catch up on our latest local updates and stories from the Halifax Mission."}</p>
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
@@ -275,7 +344,7 @@ export default function Publication() {
                   className="flex items-center justify-center gap-2 bg-white/80 backdrop-blur-md text-[#112A46] border-2 border-[#112A46] px-8 py-3.5 rounded-xl font-bold hover:border-[#E05A2B] hover:text-white hover:bg-[#E05A2B] hover:-translate-y-1 transition-all duration-300 shadow-lg cursor-pointer group"
                 >
                   <FaBookOpen className="group-hover:scale-110 transition-transform" /> 
-                  {showArchivesHalifax ? "Hide Archives" : "Halifax Newsletter Archives"}
+                  {showArchivesHalifax ? "Hide Archives" : (data?.btn_halifax_archive_text || "Halifax Newsletter Archives")}
                 </button>
               </div>
 
@@ -310,39 +379,39 @@ export default function Publication() {
               />
               
               <div className="relative z-10 max-w-2xl">
-                <div className="inline-block bg-[#E05A2B]/10 text-[#E05A2B] px-4 py-1.5 rounded-full font-bold text-sm mb-4">Global Reach</div>
-                <h2 className="text-[36px] font-black text-[#112A46] mb-4 leading-tight">
-                  Mission to Seafarers<br/>The Sea Newsletters
+                <div className="inline-block bg-[#E05A2B]/10 text-[#E05A2B] px-4 py-1.5 rounded-full font-bold text-sm mb-4">{data?.sea_badge || "Global Reach"}</div>
+                <h2 className="text-[36px] font-black text-[#112A46] mb-4 leading-tight whitespace-pre-line">
+                  {data?.sea_title || "Mission to Seafarers\nThe Sea Newsletters"}
                 </h2>
                 <p className="text-gray-600 text-[18px] font-medium leading-relaxed">
-                  To sign up and have the latest issue sent directly to your inbox with news from Canada and around the world, choose an option below.
+                  {data?.sea_description || "To sign up and have the latest issue sent directly to your inbox with news from Canada and around the world, choose an option below."}
                 </p>
               </div>
 
               <div className="relative z-10 flex flex-col w-full md:w-auto shrink-0 gap-4">
                 <a
-                  href="https://www.missiontoseafarers.org/the-sea"
+                  href={data?.btn_sea_global_link || "https://www.missiontoseafarers.org/the-sea"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#E05A2B] to-[#F2784B] text-white px-8 py-4 rounded-xl font-bold hover:shadow-[0_10px_25px_rgba(224,90,43,0.4)] hover:-translate-y-1 transition-all duration-300 cursor-pointer group"
                 >
-                  <FaEnvelopeOpenText className="group-hover:-translate-y-1 group-hover:scale-110 transition-all" /> Global Sign Up
+                  <FaEnvelopeOpenText className="group-hover:-translate-y-1 group-hover:scale-110 transition-all" /> {data?.btn_sea_global_text || "Global Sign Up"}
                 </a>
                 <a
-                  href="contact"
+                  href={data?.btn_sea_canada_link || "contact"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-3 bg-[#112A46] text-white px-8 py-4 rounded-xl font-bold hover:bg-[#1a3a5f] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group"
                 >
-                  <FaEnvelopeOpenText className="group-hover:-translate-y-1 group-hover:scale-110 transition-all" /> Canada Newsletter
+                  <FaEnvelopeOpenText className="group-hover:-translate-y-1 group-hover:scale-110 transition-all" /> {data?.btn_sea_canada_text || "Canada Newsletter"}
                 </a>
                 <a
-                  href="https://www.missiontoseafarers.org/the-sea-archive"
+                  href={data?.btn_sea_archive_link || "https://www.missiontoseafarers.org/the-sea-archive"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-3 bg-white text-[#112A46] border-2 border-gray-200 px-8 py-4 rounded-xl font-bold hover:border-[#112A46] hover:bg-gray-50 hover:shadow-md transition-all duration-300 cursor-pointer"
                 >
-                  <FaBookOpen /> Archive Copies
+                  <FaBookOpen /> {data?.btn_sea_archive_text || "Archive Copies"}
                 </a>
               </div>
             </Reveal>
@@ -368,22 +437,22 @@ export default function Publication() {
                 </div>
                 
                 <h2 className="text-[20px] md:text-[46px] font-black text-white mb-6 leading-tight drop-shadow-lg tracking-tight">
-                 Mission to Seafarers Flying Angel News <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E05A2B] to-[#ff9770]">(FAN)</span>
+                 {data?.fan_title_prefix || "Mission to Seafarers Flying Angel News"}{' '}<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E05A2B] to-[#ff9770]">{data?.fan_title_coral || "(FAN)"}</span>
                 </h2>
                 
                 <p className="text-blue-100 text-[18px] md:text-[20px] mb-0 leading-relaxed font-medium max-w-xl">
-                     To receive a free copy of the FAN, sign up here.
+                     {data?.fan_description || "To receive a free copy of the FAN, sign up here."}
                 </p>
               </div>
 
               <div className="relative z-10 md:w-1/3 flex justify-center md:justify-end w-full">
                 <a
-                  href="https://www.missiontoseafarers.org/fan"
+                  href={data?.btn_fan_signup_link || "https://www.missiontoseafarers.org/fan"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-3 bg-gradient-to-r from-[#E05A2B] to-[#F2784B] text-white px-10 py-5 rounded-2xl font-black text-[18px] shadow-[0_15px_35px_rgba(224,90,43,0.4)] hover:shadow-[0_20px_45px_rgba(224,90,43,0.6)] hover:-translate-y-2 transition-all duration-300 w-full md:w-auto text-center cursor-pointer border border-white/20 group/btn"
                 >
-                  Sign Up Now <FaExternalLinkAlt className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                  {data?.btn_fan_signup_text || "Sign Up Now"} <FaExternalLinkAlt className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
                 </a>
               </div>
             </Reveal>
@@ -406,19 +475,19 @@ export default function Publication() {
                   <FaChartBar className="text-2xl" />
                 </div>
                 <h2 className="text-[36px] font-black text-[#112A46] mb-4 leading-tight">
-                  MtS Halifax Statistics
+                  {data?.stats_title || "MtS Halifax Statistics"}
                 </h2>
                 <p className="text-gray-600 text-[17px] leading-relaxed font-medium mb-8">
-                  Statistics include the frequency count of three categories: (1) seafarers visiting the Mission Centre; (2) volunteer and staff visits to ships; and, (3) seafarers provided with transport to and from the port and desired destination in Halifax and Dartmouth. Data are presented in actual counts and tables, showcasing monthly and annual comparisons.
+                  {data?.stats_description || "Statistics include the frequency count of three categories: (1) seafarers visiting the Mission Centre; (2) volunteer and staff visits to ships; and, (3) seafarers provided with transport to and from the port and desired destination in Halifax and Dartmouth. Data are presented in actual counts and tables, showcasing monthly and annual comparisons."}
                 </p>
                 <a
-                  href={mtsHalifaxStats}
+                  href={getPdfUrl(data?.stats_pdf_url, mtsHalifaxStats)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-3 text-white bg-gradient-to-r from-[#112A46] to-[#1a3a5f] px-8 py-4 rounded-xl font-bold text-[16px] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group cursor-pointer"
                 >
                   <FaChartBar className="text-xl group-hover:scale-110 transition-transform" /> 
-                  View Latest Statistics
+                  {data?.btn_stats_text || "View Latest Statistics"}
                   <FaExternalLinkAlt className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform text-sm" />
                 </a>
               </div>
@@ -438,10 +507,10 @@ export default function Publication() {
               <div className="border-l-4 border-[#E05A2B] pl-6 mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
                   <h2 className="text-[36px] font-black text-[#112A46] mb-2 flex items-center gap-4">
-                    Seafarers Happiness Index 
+                    {data?.happiness_title || "Seafarers Happiness Index"} 
                     <FaSmile className="text-[#E05A2B] filter drop-shadow-md" style={{ animation: 'heartbeat 2.5s infinite' }} />
                   </h2>
-                  <p className="text-gray-500 font-medium">Measuring the wellbeing of seafarers worldwide across various categories.</p>
+                  <p className="text-gray-500 font-medium">{data?.happiness_subtitle || "Measuring the wellbeing of seafarers worldwide across various categories."}</p>
                 </div>
               </div>
 
@@ -457,7 +526,7 @@ export default function Publication() {
                   className="flex items-center justify-center gap-2 bg-white/80 backdrop-blur-md text-[#E05A2B] border-2 border-[#E05A2B]/30 px-8 py-3.5 rounded-xl font-bold hover:border-[#E05A2B] hover:bg-[#E05A2B] hover:text-white hover:-translate-y-1 transition-all duration-300 shadow-lg cursor-pointer group"
                 >
                   <FaBookOpen className="group-hover:-rotate-12 transition-transform" /> 
-                  {showArchivesHappiness ? "Hide Archives" : "Happiness Index Archives"}
+                  {showArchivesHappiness ? "Hide Archives" : (data?.btn_happiness_archive_text || "Happiness Index Archives")}
                 </button>
               </div>
 
@@ -479,12 +548,12 @@ export default function Publication() {
                 <div className="relative z-10 text-center md:text-left">
                   <h4 className="text-xl font-black mb-1"></h4>
                   <a
-                    href="https://www.seafarershappinessindex.org/"
+                    href={data?.happiness_survey_link || "https://www.seafarershappinessindex.org/"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-medium text-blue-200 hover:text-white transition-colors cursor-pointer text-[16px] underline underline-offset-4 decoration-blue-200/50 hover:decoration-white"
                   >
-                    Read link to the survey and access the full archive of Reports here.
+                    {data?.happiness_survey_text || "Read link to the survey and access the full archive of Reports here."}
                   </a>
                 </div>
               </div>
@@ -509,9 +578,9 @@ export default function Publication() {
                 />
               </div>
               <h2 className="text-[36px] font-black text-[#112A46] mb-4">
-                Mission to Seafarers ESG Strategy
+                {data?.esg_title || "Mission to Seafarers ESG Strategy"}
               </h2>
-              <p className="text-gray-600 mb-10 font-medium">Read about our commitment to Environmental, Social, and Governance principles.</p>
+              <p className="text-gray-600 mb-10 font-medium">{data?.esg_subtitle || "Read about our commitment to Environmental, Social, and Governance principles."}</p>
               
               <div className="flex flex-col gap-5">
                 {currentEsg.map((item, idx) => (
@@ -525,7 +594,7 @@ export default function Publication() {
                   className="flex items-center justify-center gap-2 bg-white text-green-700 border-2 border-green-600/30 px-8 py-3.5 rounded-xl font-bold hover:border-green-600 hover:bg-green-600 hover:text-white hover:-translate-y-1 transition-all duration-300 shadow-md cursor-pointer group"
                 >
                   <FaBookOpen className="group-hover:scale-110 transition-transform" /> 
-                  {showArchivesEsg ? "Hide Archives" : "ESG Strategy Archives"}
+                  {showArchivesEsg ? "Hide Archives" : (data?.btn_esg_archive_text || "ESG Strategy Archives")}
                 </button>
               </div>
 
@@ -667,40 +736,37 @@ export default function Publication() {
             <Reveal>
               <div className="border-l-4 border-[#112A46] pl-6 mb-12">
                 <h2 className="text-[36px] font-black text-[#112A46] mb-2 drop-shadow-sm">
-                  Industry Resources & Certifications
+                  {data?.industry_title || "Industry Resources & Certifications"}
                 </h2>
-                <p className="text-gray-500 font-medium">Important links for marine training, qualifications, and career building.</p>
+                <p className="text-gray-500 font-medium">{data?.industry_subtitle || "Important links for marine training, qualifications, and career building."}</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <a
-                  href="https://tc.canada.ca/en/marine-transportation/marine-training-certification-individuals/foreign-other-qualifications-skills-recognition/canadian-endorsement-attesting-recognition-foreign-certificate-through-reciprocal-arrangement"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-white/90 backdrop-blur-md border border-gray-200 rounded-2xl p-6 flex items-center justify-between shadow-sm hover:shadow-[0_20px_40px_rgba(17,42,70,0.1)] hover:border-[#E05A2B] hover:-translate-y-2 transition-all duration-300 group w-full relative overflow-hidden"
-                >
-                  <div className="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-[#E05A2B] to-[#112A46] scale-y-0 group-hover:scale-y-100 transition-transform origin-top duration-300"></div>
-                  <span className="font-bold text-[16px] text-[#112A46] group-hover:text-[#E05A2B] transition-colors leading-relaxed pr-6 relative z-10">
-                    Canada Recognition of Foreign Seafarers’ STCW Certificate
-                  </span>
-                  <div className="bg-[#112A46]/5 p-3.5 rounded-xl group-hover:bg-[#E05A2B] transition-colors relative z-10">
-                    <FaExternalLinkAlt className="text-[#112A46]/50 group-hover:text-white text-xl shrink-0 transition-all group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  </div>
-                </a>
-
-                <a
-                  href="https://imagine-marine.ca/about-us"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-white/90 backdrop-blur-md border border-gray-200 rounded-2xl p-6 flex items-center justify-between shadow-sm hover:shadow-[0_20px_40px_rgba(17,42,70,0.1)] hover:border-[#E05A2B] hover:-translate-y-2 transition-all duration-300 group w-full relative overflow-hidden"
-                >
-                  <div className="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-[#E05A2B] to-[#112A46] scale-y-0 group-hover:scale-y-100 transition-transform origin-top duration-300"></div>
-                  <span className="font-bold text-[16px] text-[#112A46] group-hover:text-[#E05A2B] transition-colors leading-relaxed pr-6 relative z-10">
-                    Canadian Marine Careers Foundation
-                  </span>
-                  <div className="bg-[#112A46]/5 p-3.5 rounded-xl group-hover:bg-[#E05A2B] transition-colors relative z-10">
-                    <FaExternalLinkAlt className="text-[#112A46]/50 group-hover:text-white text-xl shrink-0 transition-all group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  </div>
-                </a>
+                {((data?.industry_cards && data.industry_cards.length > 0) ? data.industry_cards : [
+                  {
+                    card_title: "Canada Recognition of Foreign Seafarers’ STCW Certificate",
+                    card_url: "https://tc.canada.ca/en/marine-transportation/marine-training-certification-individuals/foreign-other-qualifications-skills-recognition/canadian-endorsement-attesting-recognition-foreign-certificate-through-reciprocal-arrangement"
+                  },
+                  {
+                    card_title: "Canadian Marine Careers Foundation",
+                    card_url: "https://imagine-marine.ca/about-us"
+                  }
+                ]).map((card, idx) => (
+                  <a
+                    key={idx}
+                    href={card.card_url || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white/90 backdrop-blur-md border border-gray-200 rounded-2xl p-6 flex items-center justify-between shadow-sm hover:shadow-[0_20px_40px_rgba(17,42,70,0.1)] hover:border-[#E05A2B] hover:-translate-y-2 transition-all duration-300 group w-full relative overflow-hidden"
+                  >
+                    <div className="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-[#E05A2B] to-[#112A46] scale-y-0 group-hover:scale-y-100 transition-transform origin-top duration-300"></div>
+                    <span className="font-bold text-[16px] text-[#112A46] group-hover:text-[#E05A2B] transition-colors leading-relaxed pr-6 relative z-10">
+                      {card.card_title || "Resource"}
+                    </span>
+                    <div className="bg-[#112A46]/5 p-3.5 rounded-xl group-hover:bg-[#E05A2B] transition-colors relative z-10">
+                      <FaExternalLinkAlt className="text-[#112A46]/50 group-hover:text-white text-xl shrink-0 transition-all group-hover:translate-x-1 group-hover:-translate-y-1" />
+                    </div>
+                  </a>
+                ))}
               </div>
             </Reveal>
           </div>
@@ -730,10 +796,10 @@ export default function Publication() {
                 <FaAnchor className="text-white text-4xl" />
               </div>
               <h2 className="text-[clamp(36px,5vw,52px)] font-black text-white mb-6 drop-shadow-2xl">
-                Connecting Seafarers to the World
+                {data?.story_title || "Connecting Seafarers to the World"}
               </h2>
               <p className="text-blue-100/90 text-[20px] max-w-3xl mx-auto leading-relaxed drop-shadow-md font-medium">
-                Through our publications, we keep seafarers, supporters, and maritime communities informed, advocated for, and connected.
+                {data?.story_subtitle || "Through our publications, we keep seafarers, supporters, and maritime communities informed, advocated for, and connected."}
               </p>
             </Reveal>
 
@@ -744,7 +810,7 @@ export default function Publication() {
                   <div className="aspect-[16/10] overflow-hidden relative">
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
                     <img
-                      src={seafarersOnDeck}
+                      src={data?.card_1_image?.url || seafarersOnDeck}
                       alt="Seafarers working on deck"
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     />
@@ -754,10 +820,10 @@ export default function Publication() {
                       <div className="w-12 h-12 bg-gradient-to-br from-[#E05A2B] to-[#F2784B] rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-12 transition-transform duration-300">
                         <FaBookOpen className="text-white text-xl" />
                       </div>
-                      <h3 className="text-[26px] font-black text-white drop-shadow-md">Stories from the Sea</h3>
+                      <h3 className="text-[26px] font-black text-white drop-shadow-md">{data?.card_1_title || "Stories from the Sea"}</h3>
                     </div>
                     <p className="text-blue-50/90 text-[16px] leading-relaxed">
-                      Our newsletters share real stories from seafarers, highlighting their unique experiences, daily challenges, and the essential support they receive at our Halifax Mission.
+                      {data?.card_1_desc || "Our newsletters share real stories from seafarers, highlighting their unique experiences, daily challenges, and the essential support they receive at our Halifax Mission."}
                     </p>
                   </div>
                 </div>
@@ -768,7 +834,7 @@ export default function Publication() {
                   <div className="aspect-[16/10] overflow-hidden relative">
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
                     <img
-                      src={captainOnline}
+                      src={data?.card_2_image?.url || captainOnline}
                       alt="Captain accessing online resources"
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     />
@@ -778,10 +844,10 @@ export default function Publication() {
                       <div className="w-12 h-12 bg-gradient-to-br from-[#E05A2B] to-[#F2784B] rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-12 transition-transform duration-300">
                         <FaChartBar className="text-white text-xl" />
                       </div>
-                      <h3 className="text-[26px] font-black text-white drop-shadow-md">Research & Insights</h3>
+                      <h3 className="text-[26px] font-black text-white drop-shadow-md">{data?.card_2_title || "Research & Insights"}</h3>
                     </div>
                     <p className="text-blue-50/90 text-[16px] leading-relaxed">
-                      Through happiness surveys, statistics, and deeply researched reports, we continuously track seafarer wellbeing and strongly advocate for better conditions at sea.
+                      {data?.card_2_desc || "Through happiness surveys, statistics, and deeply researched reports, we continuously track seafarer wellbeing and strongly advocate for better conditions at sea."}
                     </p>
                   </div>
                 </div>
@@ -798,25 +864,25 @@ export default function Publication() {
                   style={{ animation: 'float-soft 4s ease-in-out infinite' }} 
                 />
                 <h3 className="text-[32px] font-black text-white mb-6 relative z-10 drop-shadow-lg">
-                  Stay Informed About Seafarer Welfare
+                  {data?.cta_box_title || "Stay Informed About Seafarer Welfare"}
                 </h3>
                 <p className="text-blue-100/90 text-[18px] mb-10 leading-relaxed relative z-10 font-medium">
-                  Our publications provide invaluable insights into the daily lives of seafarers and the vital, life-saving work being done to support them in ports around the globe.
+                  {data?.cta_box_desc || "Our publications provide invaluable insights into the daily lives of seafarers and the vital, life-saving work being done to support them in ports around the globe."}
                 </p>
                 <div className="flex flex-wrap justify-center gap-5 relative z-10">
                   <a
-                    href="#halifax-newsletters"
+                    href={data?.btn_cta_1_link || "#halifax-newsletters"}
                     className="inline-flex items-center gap-3 bg-gradient-to-r from-[#E05A2B] to-[#F2784B] text-white px-10 py-4 rounded-full font-bold text-[16px] hover:shadow-[0_15px_30px_rgba(224,90,43,0.5)] hover:-translate-y-1 transition-all duration-300 cursor-pointer"
                   >
-                    <FaBookOpen /> Read Our Newsletters
+                    <FaBookOpen /> {data?.btn_cta_1_text || "Read Our Newsletters"}
                   </a>
                   <a
-                    href="https://www.missiontoseafarers.org/the-sea"
+                    href={data?.btn_cta_2_link || "https://www.missiontoseafarers.org/the-sea"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-3 bg-transparent text-white border-2 border-white/50 px-10 py-4 rounded-full font-bold text-[16px] hover:bg-white hover:text-[#112A46] hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
                   >
-                    <FaExternalLinkAlt /> Subscribe to The Sea
+                    <FaExternalLinkAlt /> {data?.btn_cta_2_text || "Subscribe to The Sea"}
                   </a>
                 </div>
               </div>

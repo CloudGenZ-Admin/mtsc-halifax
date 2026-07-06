@@ -1,0 +1,141 @@
+{
+  "Hero Section": {
+    "hero_badge": { "type": "Text", "config": { "label": "Hero Badge (e.g. Resources & Archives)" } },
+    "hero_title": { "type": "Text", "config": { "label": "Hero Title Prefix (e.g. Our )" } },
+    "hero_title_coral": { "type": "Text", "config": { "label": "Hero Title Coral Highlight (e.g. Publications)" } },
+    "hero_title_suffix": { "type": "Text", "config": { "label": "Hero Title Suffix (e.g. & Reports)" } },
+    "hero_subtitle": { "type": "Text", "config": { "label": "Hero Subtitle" } },
+    "hero_bg_image": { "type": "Image", "config": { "label": "Hero Background Image" } }
+  },
+  "Halifax Newsletters": {
+    "halifax_title": { "type": "Text", "config": { "label": "Section Title" } },
+    "halifax_subtitle": { "type": "Text", "config": { "label": "Section Subtitle" } },
+    "btn_halifax_archive_text": { "type": "Text", "config": { "label": "Archive Toggle Button Text" } },
+    "halifax_newsletters": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "title": { "type": "Text", "config": { "label": "Newsletter Title (e.g. Spring 2026)" } },
+          "pdf_url": { "type": "Link", "config": { "label": "PDF File (Upload or Select from Media Library)", "select": "media" } }
+        },
+        "label": "Halifax Newsletters List"
+      }
+    }
+  },
+  "The Sea Newsletters": {
+    "sea_badge": { "type": "Text", "config": { "label": "Section Badge (e.g. Global Reach)" } },
+    "sea_title": { "type": "Text", "config": { "label": "Section Title" } },
+    "sea_description": { "type": "Text", "config": { "label": "Section Description" } },
+    "btn_sea_global_text": { "type": "Text", "config": { "label": "Global Sign Up Button Text" } },
+    "btn_sea_global_link": { "type": "Text", "config": { "label": "Global Sign Up Link URL" } },
+    "btn_sea_canada_text": { "type": "Text", "config": { "label": "Canada Newsletter Button Text" } },
+    "btn_sea_canada_link": { "type": "Text", "config": { "label": "Canada Newsletter Link URL" } },
+    "btn_sea_archive_text": { "type": "Text", "config": { "label": "Archive Copies Button Text" } },
+    "btn_sea_archive_link": { "type": "Text", "config": { "label": "Archive Copies Link URL" } }
+  },
+  "Flying Angel News FAN": {
+    "fan_title_prefix": { "type": "Text", "config": { "label": "FAN Title Prefix" } },
+    "fan_title_coral": { "type": "Text", "config": { "label": "FAN Title Coral Highlight" } },
+    "fan_description": { "type": "Text", "config": { "label": "FAN Description" } },
+    "btn_fan_signup_text": { "type": "Text", "config": { "label": "Sign Up Button Text" } },
+    "btn_fan_signup_link": { "type": "Text", "config": { "label": "Sign Up Link URL" } }
+  },
+  "MtS Halifax Statistics": {
+    "stats_title": { "type": "Text", "config": { "label": "Section Title" } },
+    "stats_description": { "type": "Text", "config": { "label": "Section Description" } },
+    "btn_stats_text": { "type": "Text", "config": { "label": "View Statistics Button Text" } },
+    "stats_pdf_url": { "type": "Link", "config": { "label": "Statistics PDF File (Upload or Select from Media Library)", "select": "media" } }
+  },
+  "Seafarers Happiness Index": {
+    "happiness_title": { "type": "Text", "config": { "label": "Section Title" } },
+    "happiness_subtitle": { "type": "Text", "config": { "label": "Section Subtitle" } },
+    "btn_happiness_archive_text": { "type": "Text", "config": { "label": "Archive Toggle Button Text" } },
+    "happiness_reports": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "title": { "type": "Text", "config": { "label": "Report Title (e.g. Quarter 1 2026 Report)" } },
+          "pdf_url": { "type": "Link", "config": { "label": "PDF File (Upload or Select from Media Library)", "select": "media" } }
+        },
+        "label": "Happiness Reports List"
+      }
+    },
+    "happiness_survey_text": { "type": "Text", "config": { "label": "Survey Footer Banner Text" } },
+    "happiness_survey_link": { "type": "Text", "config": { "label": "Survey Footer Banner URL" } }
+  },
+  "ESG Strategy": {
+    "esg_title": { "type": "Text", "config": { "label": "Section Title" } },
+    "esg_subtitle": { "type": "Text", "config": { "label": "Section Subtitle" } },
+    "btn_esg_archive_text": { "type": "Text", "config": { "label": "Archive Toggle Button Text" } },
+    "esg_reports": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "title": { "type": "Text", "config": { "label": "Report Title" } },
+          "pdf_url": { "type": "Link", "config": { "label": "PDF File (Upload or Select from Media Library)", "select": "media" } }
+        },
+        "label": "ESG Strategy Reports List"
+      }
+    }
+  },
+  "The Foghorn": {
+    "foghorn_title": { "type": "Text", "config": { "label": "Section Title" } },
+    "foghorn_subtitle": { "type": "Text", "config": { "label": "Section Subtitle" } },
+    "btn_foghorn_archive_text": { "type": "Text", "config": { "label": "Archive Toggle Button Text" } },
+    "foghorn_reports": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "title": { "type": "Text", "config": { "label": "Report Title (e.g. July 2025)" } },
+          "pdf_url": { "type": "Link", "config": { "label": "PDF File (Upload or Select from Media Library)", "select": "media" } }
+        },
+        "label": "Foghorn Reports List"
+      }
+    }
+  },
+  "Marine Safety Handbook": {
+    "safety_title": { "type": "Text", "config": { "label": "Section Title" } },
+    "safety_subtitle": { "type": "Text", "config": { "label": "Section Subtitle" } },
+    "btn_safety_archive_text": { "type": "Text", "config": { "label": "Archive Toggle Button Text" } },
+    "safety_handbooks": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "title": { "type": "Text", "config": { "label": "Handbook Title" } },
+          "pdf_url": { "type": "Link", "config": { "label": "PDF File (Upload or Select from Media Library)", "select": "media" } }
+        },
+        "label": "Marine Safety Handbooks List"
+      }
+    }
+  },
+  "Industry Resources": {
+    "industry_title": { "type": "Text", "config": { "label": "Section Title" } },
+    "industry_subtitle": { "type": "Text", "config": { "label": "Section Subtitle" } },
+    "industry_cards": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "card_title": { "type": "Text", "config": { "label": "Resource Title" } },
+          "card_url": { "type": "Text", "config": { "label": "Resource Link URL" } }
+        },
+        "label": "Industry Resources Cards"
+      }
+    }
+  },
+  "Storytelling & Final CTA": {
+    "story_title": { "type": "Text", "config": { "label": "Storytelling Section Title" } },
+    "story_subtitle": { "type": "Text", "config": { "label": "Storytelling Section Subtitle" } },
+    "card_1_title": { "type": "Text", "config": { "label": "Card 1 Title (Stories from the Sea)" } },
+    "card_1_desc": { "type": "Text", "config": { "label": "Card 1 Description" } },
+    "card_1_image": { "type": "Image", "config": { "label": "Card 1 Image" } },
+    "card_2_title": { "type": "Text", "config": { "label": "Card 2 Title (Research & Insights)" } },
+    "card_2_desc": { "type": "Text", "config": { "label": "Card 2 Description" } },
+    "card_2_image": { "type": "Image", "config": { "label": "Card 2 Image" } },
+    "cta_box_title": { "type": "Text", "config": { "label": "Bottom CTA Box Title" } },
+    "cta_box_desc": { "type": "Text", "config": { "label": "Bottom CTA Box Description" } },
+    "btn_cta_1_text": { "type": "Text", "config": { "label": "CTA Button 1 Text" } },
+    "btn_cta_1_link": { "type": "Text", "config": { "label": "CTA Button 1 Link" } },
+    "btn_cta_2_text": { "type": "Text", "config": { "label": "CTA Button 2 Text" } },
+    "btn_cta_2_link": { "type": "Text", "config": { "label": "CTA Button 2 Link" } }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "Hero Section": {
+    "hero_badge": { "type": "Text", "config": { "label": "Hero Badge Text (e.g. Contact)" } },
+    "hero_title": { "type": "Text", "config": { "label": "Hero Main Title" } },
+    "hero_subtitle": { "type": "Text", "config": { "label": "Hero Subtitle" } },
+    "hero_bg_image": { "type": "Image", "config": { "label": "Hero Background Image" } }
+  },
+  "Halifax Mission Box": {
+    "mission_title": { "type": "Text", "config": { "label": "Box Title (e.g. Halifax Mission)" } },
+    "location_subtitle": { "type": "Text", "config": { "label": "Location Subtitle" } },
+    "civic_address": { "type": "Text", "config": { "label": "Civic Address Line" } },
+    "civic_address_note": { "type": "Text", "config": { "label": "Civic Address Location Note" } },
+    "mailing_address": { "type": "Text", "config": { "label": "Mailing Address Line" } },
+    "email_address": { "type": "Text", "config": { "label": "Main Station Email" } },
+    "telephone": { "type": "Text", "config": { "label": "Main Station Telephone Display Text" } },
+    "whatsapp_number": { "type": "Text", "config": { "label": "WhatsApp Display Number" } },
+    "whatsapp_url": { "type": "Text", "config": { "label": "WhatsApp Link URL (https://wa.me/...)" } }
+  },
+  "General Station Hours Box": {
+    "hours_title": { "type": "Text", "config": { "label": "Hours Box Title" } },
+    "hours_note": { "type": "Text", "config": { "label": "General Hours Note" } },
+    "hours_day": { "type": "Text", "config": { "label": "Day Display (e.g. Sunday)" } },
+    "hours_status": { "type": "Text", "config": { "label": "Status Badge (e.g. Generally Closed)" } },
+    "hours_description": { "type": "Text", "config": { "label": "Status Explanation Text" } },
+    "hours_footer_italic": { "type": "Text", "config": { "label": "Bottom Italic Disclaimer" } }
+  },
+  "Urgent Assistance Box": {
+    "urgent_title": { "type": "Text", "config": { "label": "Urgent Assistance Title" } },
+    "urgent_subtitle": { "type": "Text", "config": { "label": "Urgent Assistance Subtitle" } },
+    "urgent_main_phone_text": { "type": "Text", "config": { "label": "Main Station Button Text" } },
+    "urgent_main_phone_url": { "type": "Text", "config": { "label": "Main Station Phone Tel URL (tel:+19024227790)" } },
+    "manager_1_name": { "type": "Text", "config": { "label": "Manager 1 Title/Name (Helen Glenn)" } },
+    "manager_1_whatsapp_text": { "type": "Text", "config": { "label": "Manager 1 WhatsApp Display Text" } },
+    "manager_1_whatsapp_url": { "type": "Text", "config": { "label": "Manager 1 WhatsApp Link URL" } },
+    "manager_1_email": { "type": "Text", "config": { "label": "Manager 1 Email Address" } },
+    "manager_2_name": { "type": "Text", "config": { "label": "Manager 2 Title/Name (Joseph Loot)" } },
+    "manager_2_whatsapp_text": { "type": "Text", "config": { "label": "Manager 2 WhatsApp Display Text" } },
+    "manager_2_whatsapp_url": { "type": "Text", "config": { "label": "Manager 2 WhatsApp Link URL" } },
+    "manager_2_email": { "type": "Text", "config": { "label": "Manager 2 Email Address" } }
+  },
+  "Contact Form Settings": {
+    "form_title": { "type": "Text", "config": { "label": "Form Heading" } },
+    "form_subtitle": { "type": "Text", "config": { "label": "Form Description / Subtitle" } },
+    "form_success_message": { "type": "Text", "config": { "label": "Form Submission Success Message" } },
+    "form_action_url": { "type": "Text", "config": { "label": "Google Form Action Endpoint URL" } },
+    "interest_options": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "option_label": { "type": "Text", "config": { "label": "Dropdown Option Label" } }
+        },
+        "label": "Form 'I am interested in' Dropdown Options"
+      }
+    }
+  },
+  "Footer Disclaimer & Map": {
+    "footer_note": { "type": "Text", "config": { "label": "Bottom Disclaimer Paragraph" } },
+    "google_map_embed_url": { "type": "Text", "config": { "label": "Google Map Embed Iframe SRC URL" } }
+  }
+}

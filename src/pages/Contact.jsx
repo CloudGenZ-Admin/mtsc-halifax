@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import { Mail, Phone, MapPin, Clock, Send, MessageCircle, Mailbox, CheckCircle2, AlertCircle, User } from "lucide-react";
+import { client } from '../prismicio';
 
 import centerImage from '../assets/MtS Halifax Center.jpg';
 
@@ -16,6 +17,7 @@ const interests = [
 ];
 
 const Contact = () => {
+  const [data, setData] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const formRef = useRef(null);
@@ -24,6 +26,26 @@ const Contact = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    async function fetchPrismicData() {
+      try {
+        const res = await client.getSingle('contact');
+        if (res && res.data) {
+          setData(res.data);
+        }
+      } catch (err) {
+        console.warn('Prismic contact fetch failed, using fallback:', err);
+      }
+    }
+    fetchPrismicData();
+  }, []);
+
+  const interestsList = (data?.interest_options && data.interest_options.length > 0)
+    ? data.interest_options.map(i => i.option_label || "Other")
+    : interests;
+
+  const heroBg = data?.hero_bg_image?.url || centerImage;
 
   // This handles the iframe finishing its load (meaning Google received the data)
   const handleIframeLoad = () => {
@@ -52,25 +74,24 @@ const Contact = () => {
           {/* Background Image & Overlays */}
           <div className="absolute inset-0 z-0">
             <img
-              src={centerImage}
+              src={heroBg}
               alt="Contact Background"
               className="w-full h-full object-cover object-center opacity-30 mix-blend-overlay"
             />
-            {/* <div className="absolute inset-0 bg-gradient-to-t from-[#233373] via-[#233373]/70 to-[#233373]/40" /> */}
           </div>
 
           {/* Hero Content */}
           <div className="w-full max-w-[1200px] mx-auto relative z-10 text-center px-6">
             <div className="mb-6 flex justify-center">
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E05A2B]/20 text-[#f48c6f] text-xs font-extrabold uppercase tracking-widest border border-[#E05A2B]/30">
-                <Mail className="w-4 h-4 text-[#f48c6f]" /> Contact
+                <Mail className="w-4 h-4 text-[#f48c6f]" /> {data?.hero_badge || "Contact"}
               </span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6">
-              Contact Mission to Seafarers Halifax
+              {data?.hero_title || "Contact Mission to Seafarers Halifax"}
             </h1>
             <p className="text-lg md:text-xl text-white/80 leading-relaxed font-medium max-w-3xl mx-auto">
-              We would love to hear from you.
+              {data?.hero_subtitle || "We would love to hear from you."}
             </p>
           </div>
         </section>
@@ -84,8 +105,8 @@ const Contact = () => {
 
               {/* Blue Gradient Box */}
               <div className="rounded-2xl bg-gradient-hero text-white p-7 md:p-8 shadow-soft">
-                <h2 className="text-2xl font-extrabold !text-white">Halifax Mission</h2>
-                <p className="mt-2 text-white/85 text-sm">Location: 844 Marginal Road, Halifax, Nova Scotia ,</p>
+                <h2 className="text-2xl font-extrabold !text-white">{data?.mission_title || "Halifax Mission"}</h2>
+                <p className="mt-2 text-white/85 text-sm">{data?.location_subtitle || "Location: 844 Marginal Road, Halifax, Nova Scotia ,"}</p>
 
                 <ul className="mt-7 space-y-4 text-sm">
                   <li className="flex gap-3.5">
@@ -94,8 +115,8 @@ const Contact = () => {
                     </span>
                     <span>
                       <span className="block text-white/60 text-[11px] uppercase font-bold tracking-widest">Civic Address</span>
-                      844 Marginal Road, Halifax, Nova Scotia , B3H0A1<br />
-                      <span className="text-white/80 text-xs">Situated across from Pier 24 in the Halifax Seaport area.</span>
+                      {data?.civic_address || "844 Marginal Road, Halifax, Nova Scotia , B3H0A1"}<br />
+                      <span className="text-white/80 text-xs">{data?.civic_address_note || "Situated across from Pier 24 in the Halifax Seaport area."}</span>
                     </span>
                   </li>
                   <li className="flex gap-3.5">
@@ -104,7 +125,7 @@ const Contact = () => {
                     </span>
                     <span>
                       <span className="block text-white/60 text-[11px] uppercase font-bold tracking-widest">Mailing Address</span>
-                      P.O. Box 27114, Halifax, NS B3H 4M8
+                      {data?.mailing_address || "P.O. Box 27114, Halifax, NS B3H 4M8"}
                     </span>
                   </li>
                   <li className="flex gap-3.5">
@@ -113,8 +134,8 @@ const Contact = () => {
                     </span>
                     <span className="break-all">
                       <span className="block text-white/60 text-[11px] uppercase font-bold tracking-widest">Email</span>
-                      <a href="mailto:hglenn@missiontoseafarershalifax.ca" className="text-white hover:text-[#f48c6f] transition-colors underline">
-                        hglenn@missiontoseafarershalifax.ca
+                      <a href={`mailto:${data?.email_address || "hglenn@missiontoseafarershalifax.ca"}`} className="text-white hover:text-[#f48c6f] transition-colors underline">
+                        {data?.email_address || "hglenn@missiontoseafarershalifax.ca"}
                       </a>
                     </span>
                   </li>
@@ -124,8 +145,8 @@ const Contact = () => {
                     </span>
                     <span>
                       <span className="block text-white/60 text-[11px] uppercase font-bold tracking-widest">Telephone</span>
-                      <a href="tel:+19024227790" className="text-white hover:text-[#f48c6f] transition-colors underline">
-                        +1 902-422-7790
+                      <a href={`tel:${(data?.telephone || "+1 902-422-7790").replace(/[^0-9+]/g, '')}`} className="text-white hover:text-[#f48c6f] transition-colors underline">
+                        {data?.telephone || "+1 902-422-7790"}
                       </a>
                     </span>
                   </li>
@@ -135,8 +156,8 @@ const Contact = () => {
                     </span>
                     <span>
                       <span className="block text-white/60 text-[11px] uppercase font-bold tracking-widest">WhatsApp / Mobile</span>
-                      <a href="https://wa.me/19024561658" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#f48c6f] transition-colors underline">
-                        +1 902-456-1658
+                      <a href={data?.whatsapp_url || "https://wa.me/19024561658"} target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#f48c6f] transition-colors underline">
+                        {data?.whatsapp_number || "+1 902-456-1658"}
                       </a>
                     </span>
                   </li>
@@ -147,30 +168,30 @@ const Contact = () => {
               <div className="rounded-2xl border bg-warm-gray-contact p-6 text-sm text-text-mid leading-relaxed">
                 <div className="flex items-center gap-2 mb-3">
                   <Clock className="h-5 w-5 text-[#E05A2B]" />
-                  <h3 className="text-base font-extrabold text-[#112A46]">General Station Hours</h3>
+                  <h3 className="text-base font-extrabold text-[#112A46]">{data?.hours_title || "General Station Hours"}</h3>
                 </div>
                 <p className="mb-4 font-medium">
-                  Hours may vary depending on ship arrivals, vessel schedules, and volunteer availability.
+                  {data?.hours_note || "Hours may vary depending on ship arrivals, vessel schedules, and volunteer availability."}
                 </p>
                 <ul className="space-y-2 mb-4 font-medium">
                   <li className="flex items-start justify-between gap-3 py-2">
                     <span className="text-[#112A46] font-medium min-w-[80px]">
-                      Sunday
+                      {data?.hours_day || "Sunday"}
                     </span>
 
                     <div className="flex flex-col items-end gap-1 text-right">
                       <span className="inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-gray-500">
-                        Generally Closed
+                        {data?.hours_status || "Generally Closed"}
                       </span>
 
                       <span className="max-w-[240px] text-xs leading-relaxed text-gray-500">
-                        Hours may occasionally change depending on ship schedules at port.
+                        {data?.hours_description || "Hours may occasionally change depending on ship schedules at port."}
                       </span>
                     </div>
                   </li>
                 </ul>
                 <p className="text-xs italic text-gray-500">
-                  Ship visits and seafarer support may still occur outside regular station hours.
+                  {data?.hours_footer_italic || "Ship visits and seafarer support may still occur outside regular station hours."}
                 </p>
               </div>
 
@@ -178,28 +199,28 @@ const Contact = () => {
               <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-gray-800 leading-relaxed shadow-sm">
                 <div className="flex items-center gap-2 mb-3">
                   <AlertCircle className="h-5 w-5 text-red-600" />
-                  <h3 className="text-base font-extrabold text-red-700">Need Urgent Assistance?</h3>
+                  <h3 className="text-base font-extrabold text-red-700">{data?.urgent_title || "Need Urgent Assistance?"}</h3>
                 </div>
                 <p className="mb-5 font-medium text-red-900/80">
-                  Contact us directly by phone or WhatsApp for immediate support.
+                  {data?.urgent_subtitle || "Contact us directly by phone or WhatsApp for immediate support."}
                 </p>
 
                 <div className="space-y-4">
-                  <a href="tel:+19024227790" className="flex items-center justify-center gap-2 w-full bg-white border border-red-200 text-red-700 font-bold py-3.5 px-4 rounded-xl shadow-sm hover:bg-red-100 transition-colors">
-                    <Phone className="h-5 w-5" /> Main Station: +1 902-422-7790
+                  <a href={data?.urgent_main_phone_url || "tel:+19024227790"} className="flex items-center justify-center gap-2 w-full bg-white border border-red-200 text-red-700 font-bold py-3.5 px-4 rounded-xl shadow-sm hover:bg-red-100 transition-colors">
+                    <Phone className="h-5 w-5" /> {data?.urgent_main_phone_text || "Main Station: +1 902-422-7790"}
                   </a>
 
                   <div className="space-y-3">
                     <div className="bg-white p-3.5 rounded-xl border border-red-100 shadow-sm">
                       <div className="font-bold text-[#112A46] text-xs uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <User className="h-3.5 w-3.5 text-[#E05A2B]" /> Helen Glenn, Mission Manager
+                        <User className="h-3.5 w-3.5 text-[#E05A2B]" /> {data?.manager_1_name || "Helen Glenn, Mission Manager"}
                       </div>
                       <div className="grid grid-cols-2 gap-2">
-                        <a href="https://wa.me/19024561658" className="flex items-center justify-center gap-1.5 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 font-bold py-2.5 rounded-lg transition-colors text-xs">
-                          <MessageCircle className="h-4 w-4" /> +1 902-456-1658
+                        <a href={data?.manager_1_whatsapp_url || "https://wa.me/19024561658"} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1.5 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 font-bold py-2.5 rounded-lg transition-colors text-xs">
+                          <MessageCircle className="h-4 w-4" /> {data?.manager_1_whatsapp_text || "+1 902-456-1658"}
                         </a>
                         {/* Using mailto: prefix to open directly in the email application */}
-                        <a href="mailto:hglenn@missiontoseafarershalifax.ca" className="flex items-center justify-center gap-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 font-bold py-2.5 rounded-lg transition-colors text-xs truncate px-2">
+                        <a href={`mailto:${data?.manager_1_email || "hglenn@missiontoseafarershalifax.ca"}`} className="flex items-center justify-center gap-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 font-bold py-2.5 rounded-lg transition-colors text-xs truncate px-2">
                           <Mail className="h-4 w-4 shrink-0" /> Email
                         </a>
                       </div>
@@ -207,14 +228,14 @@ const Contact = () => {
 
                     <div className="bg-white p-3.5 rounded-xl border border-red-100 shadow-sm">
                       <div className="font-bold text-[#112A46] text-xs uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                        <User className="h-3.5 w-3.5 text-[#E05A2B]" /> Joseph Loot, Assistant Manager
+                        <User className="h-3.5 w-3.5 text-[#E05A2B]" /> {data?.manager_2_name || "Joseph Loot, Assistant Manager"}
                       </div>
                       <div className="grid grid-cols-2 gap-2">
-                        <a href="https://wa.me/19029893388" className="flex items-center justify-center gap-1.5 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 font-bold py-2.5 rounded-lg transition-colors text-xs">
-                          <MessageCircle className="h-4 w-4" /> +1 902-989-3388
+                        <a href={data?.manager_2_whatsapp_url || "https://wa.me/19029893388"} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1.5 bg-[#25D366]/10 text-[#25D366] hover:bg-[#25D366]/20 font-bold py-2.5 rounded-lg transition-colors text-xs">
+                          <MessageCircle className="h-4 w-4" /> {data?.manager_2_whatsapp_text || "+1 902-989-3388"}
                         </a>
                         {/* Using mailto: prefix to open directly in the email application */}
-                        <a href="mailto:jloot@missiontoseafarershalifax.ca" className="flex items-center justify-center gap-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 font-bold py-2.5 rounded-lg transition-colors text-xs truncate px-2">
+                        <a href={`mailto:${data?.manager_2_email || "jloot@missiontoseafarershalifax.ca"}`} className="flex items-center justify-center gap-1.5 bg-gray-100 text-gray-600 hover:bg-gray-200 font-bold py-2.5 rounded-lg transition-colors text-xs truncate px-2">
                           <Mail className="h-4 w-4 shrink-0" /> Email
                         </a>
                       </div>
@@ -228,11 +249,11 @@ const Contact = () => {
             <div className="lg:col-span-7  rounded-2xl bg-[#f9fafb] border border-gray-100 p-6 md:p-8 shadow-[0_8px_30px_rgba(17,42,70,.05)] space-y-5">
               <div className="flex items-center gap-2 mb-2">
                 <Send className="h-6 w-6 text-[#E05A2B]" />
-                <h2 className="text-xl md:text-3xl font-extrabold text-[#112A46]">Send Us a Message</h2>
+                <h2 className="text-xl md:text-3xl font-extrabold text-[#112A46]">{data?.form_title || "Send Us a Message"}</h2>
               </div>
 
               <p className="text-gray-600 font-medium leading-relaxed pb-4 border-b border-gray-200">
-                Whether you are a seafarer, volunteer, supporter, donor, or community partner, we welcome your questions and inquiries.
+                {data?.form_subtitle || "Whether you are a seafarer, volunteer, supporter, donor, or community partner, we welcome your questions and inquiries."}
               </p>
 
               {/* Success Message Banner */}
@@ -240,7 +261,7 @@ const Contact = () => {
                 <div className="flex items-center gap-3 bg-green-50 text-green-700 p-4 rounded-lg border border-green-200 mb-4 animate-in fade-in slide-in-from-top-2">
                   <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0" />
                   <p className="text-sm font-medium">
-                    Your inquiry has been successfully sent. We will be in touch with you shortly.
+                    {data?.form_success_message || "Your inquiry has been successfully sent. We will be in touch with you shortly."}
                   </p>
                 </div>
               )}
@@ -256,7 +277,7 @@ const Contact = () => {
               <form
                 ref={formRef}
                 className="space-y-5"
-                action="https://docs.google.com/forms/d/e/1FAIpQLSdDRLf8Fjde4Y-q1oUmoa_5JAbmAFp5TeG0RV3qjyVL3Aabhg/formResponse"
+                action={data?.form_action_url || "https://docs.google.com/forms/d/e/1FAIpQLSdDRLf8Fjde4Y-q1oUmoa_5JAbmAFp5TeG0RV3qjyVL3Aabhg/formResponse"}
                 method="POST"
                 target="hidden_iframe"
                 onSubmit={() => setIsSubmitting(true)}
@@ -300,7 +321,7 @@ const Contact = () => {
                       className={inputClasses}
                     >
                       <option value="" className="cursor-pointer" disabled>Select an option...</option>
-                      {interests.map((i) => (
+                      {interestsList.map((i) => (
                         <option key={i} value={i}>{i}</option>
                       ))}
                     </select>
@@ -331,7 +352,11 @@ const Contact = () => {
 
           <div className="w-full max-w-[800px] mx-auto px-6 mt-16 text-center text-sm font-medium text-gray-500">
             <p>
-              Mission to Seafarers Halifax operates as part of Mission to Seafarers Canada.<br className="hidden md:block" /> Local volunteer opportunities, station engagement, seafarer support, and community partnerships are coordinated through the Halifax Mission.
+              {data?.footer_note || (
+                <>
+                  Mission to Seafarers Halifax operates as part of Mission to Seafarers Canada.<br className="hidden md:block" /> Local volunteer opportunities, station engagement, seafarer support, and community partnerships are coordinated through the Halifax Mission.
+                </>
+              )}
             </p>
           </div>
         </section>
@@ -339,7 +364,7 @@ const Contact = () => {
         {/* Map Section */}
         <section className="w-full h-[450px] bg-gray-200 relative border-t border-gray-200">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2839.293424683058!2d-63.56860368425113!3d44.6318359790998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4b5a223631f45025%3A0xc47eeb09f06a0302!2s844%20Marginal%20Rd%2C%20Halifax%2C%20NS%20B3H%202P7%2C%20Canada!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus"
+            src={data?.google_map_embed_url || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2839.293424683058!2d-63.56860368425113!3d44.6318359790998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4b5a223631f45025%3A0xc47eeb09f06a0302!2s844%20Marginal%20Rd%2C%20Halifax%2C%20NS%20B3H%202P7%2C%20Canada!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus"}
             width="100%"
             height="100%"
             style={{ border: 0 }}
