@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
@@ -132,38 +132,64 @@ function About() {
     setActiveModal(null);
   };
 
-  const volunteersGallery = [
-    { id: 1, img: volunteer1 },
-    { id: 2, img: volunteer2 },
-    { id: 3, img: volunteer3 },
-    { id: 4, img: volunteer4 },
-    { id: 5, img: volunteer5 },
-    { id: 6, img: volunteer6 },
-    { id: 7, img: volunteer7 },
-    { id: 8, img: volunteer8 },
-    { id: 9, img: volunteer9 },
-    { id: 10, img: volunteer10 },
-    { id: 11, img: volunteer11 },
-  ];
+  const volunteersGallery = useMemo(() => {
+    if (data?.volunteers_gallery && data.volunteers_gallery.length > 0) {
+      const prismicImgs = data.volunteers_gallery
+        .map((item, idx) => {
+          if (!item.gallery_image?.url) return null;
+          return {
+            id: `prismic-${idx}`,
+            img: item.gallery_image.url,
+            title: item.image_caption || "Volunteer"
+          };
+        })
+        .filter(Boolean);
+      if (prismicImgs.length > 0) return prismicImgs;
+    }
+    return [
+      { id: 1, img: volunteer1 },
+      { id: 2, img: volunteer2 },
+      { id: 3, img: volunteer3 },
+      { id: 4, img: volunteer4 },
+      { id: 5, img: volunteer5 },
+      { id: 6, img: volunteer6 },
+      { id: 7, img: volunteer7 },
+      { id: 8, img: volunteer8 },
+      { id: 9, img: volunteer9 },
+      { id: 10, img: volunteer10 },
+      { id: 11, img: volunteer11 },
+    ];
+  }, [data?.volunteers_gallery]);
 
-  const amenitiesGallery = [
-    // { id: 0, img: Chapal, title: 'Chapel' },
-    { id: 1, img: loungeImg, title: 'Edmonds Lounge' },
-    { id: 2, img: SeafarersLounge, title: 'Seafarers Lounge' },
-    { id: 3, img: canteenImg, title: 'Canteen & Souvenir Shop' },
-    { id: 4, img: chapelImg, title: 'Chapel & Prayer Room' },
-    { id: 5, img: transportImg, title: 'Complimentary Transport' },
-    { id: 6, img: bicyclesImg, title: 'Bicycles for Loan' },
-    { id: 7, img: basketballImg, title: 'Half Court Basketball' },
-    { id: 8, img: Outdore, title: 'Outdoor Sun Deck And Yard',     },
-    { id: 9, img: conferenceImg, title: 'Conference Space' },
-    { id: 10, img: Men, title: 'Men’s Free Room' },
-    { id: 11, img: Women, title: 'Women’s Free Room' },
-    { id: 12, img: freeWifiImg, title: 'Free WiFi' },
-    // { id: 11, img: freeRoomImg, title: 'Men’s and Women’s Free Rooms' },
-
-
-  ];
+  const amenitiesGallery = useMemo(() => {
+    if (data?.amenities_gallery && data.amenities_gallery.length > 0) {
+      const prismicImgs = data.amenities_gallery
+        .map((item, idx) => {
+          if (!item.amenity_image?.url) return null;
+          return {
+            id: `prismic-amenity-${idx}`,
+            img: item.amenity_image.url,
+            title: item.amenity_title || "Station Amenity"
+          };
+        })
+        .filter(Boolean);
+      if (prismicImgs.length > 0) return prismicImgs;
+    }
+    return [
+      { id: 1, img: loungeImg, title: 'Edmonds Lounge' },
+      { id: 2, img: SeafarersLounge, title: 'Seafarers Lounge' },
+      { id: 3, img: canteenImg, title: 'Canteen & Souvenir Shop' },
+      { id: 4, img: chapelImg, title: 'Chapel & Prayer Room' },
+      { id: 5, img: transportImg, title: 'Complimentary Transport' },
+      { id: 6, img: bicyclesImg, title: 'Bicycles for Loan' },
+      { id: 7, img: basketballImg, title: 'Half Court Basketball' },
+      { id: 8, img: Outdore, title: 'Outdoor Sun Deck And Yard' },
+      { id: 9, img: conferenceImg, title: 'Conference Space' },
+      { id: 10, img: Men, title: 'Men’s Free Room' },
+      { id: 11, img: Women, title: 'Women’s Free Room' },
+      { id: 12, img: freeWifiImg, title: 'Free WiFi' },
+    ];
+  }, [data?.amenities_gallery]);
 
   const carouselRef = useRef(null);
   const volunteerCarouselRef = useRef(null);

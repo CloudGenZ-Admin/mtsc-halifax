@@ -58,6 +58,16 @@
   "Volunteers Gallery": {
     "gallery_section_title": { "type": "Text", "config": { "label": "Gallery Section Title" } },
     "gallery_section_description": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Gallery Section Description" } },
+    "volunteers_gallery": {
+      "type": "Group",
+      "config": {
+        "label": "Volunteers Gallery Slider",
+        "fields": {
+          "gallery_image": { "type": "Image", "config": { "label": "Volunteer Photo" } },
+          "image_caption": { "type": "Text", "config": { "label": "Photo Caption (Optional)" } }
+        }
+      }
+    },
     "community_care_title": { "type": "Text", "config": { "label": "Community Care Title" } },
     "community_care_subtext": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Community Care Subtext (e.g. Our volunteers come from...)" } },
     "community_care_description": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Community Care Description" } },
@@ -76,7 +86,17 @@
   "Facilities": {
     "facilities_eyebrow": { "type": "Text", "config": { "label": "Facilities Eyebrow" } },
     "facilities_title": { "type": "Text", "config": { "label": "Facilities Title" } },
-    "facilities_description": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Facilities Description" } }
+    "facilities_description": { "type": "StructuredText", "config": { "multi": "paragraph", "label": "Facilities Description" } },
+    "amenities_gallery": {
+      "type": "Group",
+      "config": {
+        "label": "Facilities Amenities Gallery",
+        "fields": {
+          "amenity_image": { "type": "Image", "config": { "label": "Amenity Photo" } },
+          "amenity_title": { "type": "Text", "config": { "label": "Amenity Title / Name" } }
+        }
+      }
+    }
   },
   "How Structure Works": {
     "structure_title": { "type": "Text", "config": { "label": "Structure Section Title" } },

@@ -134,13 +134,26 @@ export default function Home() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    client.getSingle("home_page")
-      .then((document) => {
-        setData(document.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching Prismic home_page in Home:", error);
-      });
+    async function fetchHomeData() {
+      try {
+        const doc = await client.getSingle("home");
+        if (doc && doc.data) {
+          setData(doc.data);
+          return;
+        }
+      } catch (err) {
+        // Fallback to trying "home_page"
+      }
+      try {
+        const doc2 = await client.getSingle("home_page");
+        if (doc2 && doc2.data) {
+          setData(doc2.data);
+        }
+      } catch (error) {
+        console.warn("Could not fetch Prismic home or home_page in Home, using local fallbacks:", error);
+      }
+    }
+    fetchHomeData();
   }, []);
 
   // Use featuredEvents instead of allEvents
@@ -167,15 +180,23 @@ export default function Home() {
     };
   }, [isDonateModalOpen]);
 
-  // Gallery images array
-  const galleryImages = [
-    moment1a, moment2a, moment2b, moment2c, moment2d,
-    moment2e, moment2f, moment2g, moment2h, moment2i, 
-    moment2j, moment2k, moment2l, moment2m, moment2n, 
-    moment2o, moment2p, moment2q, moment2r, moment2s, 
-    moment2t, moment2u, moment2v, moment2w, moment2x,
-    moment2y, moment2z
-  ];
+  // Gallery images array (dynamic from Prismic with fallback to local images)
+  const galleryImages = useMemo(() => {
+    if (data?.moments_slider && data.moments_slider.length > 0) {
+      const prismicImgs = data.moments_slider
+        .map(item => item.slider_image?.url)
+        .filter(Boolean);
+      if (prismicImgs.length > 0) return prismicImgs;
+    }
+    return [
+      moment1a, moment2a, moment2b, moment2c, moment2d,
+      moment2e, moment2f, moment2g, moment2h, moment2i, 
+      moment2j, moment2k, moment2l, moment2m, moment2n, 
+      moment2o, moment2p, moment2q, moment2r, moment2s, 
+      moment2t, moment2u, moment2v, moment2w, moment2x,
+      moment2y, moment2z
+    ];
+  }, [data?.moments_slider]);
 
   // Process API Events (Sort by Newest, fallback to createdAt if eventDate is null)
   const sortedEvents = useMemo(() => {
@@ -774,12 +795,15 @@ export default function Home() {
                   <div className="flex mb-4">
                     <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-[#e05a2b]">
                       <span className="block h-[1px] w-8 bg-[#e05a2b]"></span>
-                      Station Life
+                      {data?.moments_eyebrow || "Station Life"}
                     </span>
                   </div>
                   <h2 className="text-3xl md:text-4xl font-extrabold text-[#2d3580] leading-tight">
-                    Moments from Halifax
+                    {data?.moments_title || "Moments from Halifax"}
                   </h2>
+                  {data?.moments_subtitle && (
+                    <p className="mt-2 text-gray-600 font-medium">{data.moments_subtitle}</p>
+                  )}
                 </div>
 
                 {/* Slider Navigation Buttons */}

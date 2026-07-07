@@ -1,0 +1,620 @@
+{
+  "Main" : {
+    "eyebrow_badge" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Eyebrow Badge"
+      }
+    },
+    "title_line_1" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Title Line 1"
+      }
+    },
+    "title_line_2" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Title Line 2"
+      }
+    },
+    "hero_strong_text" : {
+      "type" : "StructuredText",
+      "config" : {
+        "label" : "Hero Strong Text",
+        "multi" : "paragraph,strong,em"
+      }
+    },
+    "hero_paragraph" : {
+      "type" : "StructuredText",
+      "config" : {
+        "label" : "Hero Paragraph",
+        "multi" : "paragraph,strong,em"
+      }
+    },
+    "hero_image" : {
+      "type" : "Image",
+      "config" : {
+        "label" : "Hero Image"
+      }
+    },
+    "legacy_years" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Legacy Years"
+      }
+    }
+  },
+  "Intro Section" : {
+    "intro_eyebrow" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Intro Eyebrow"
+      }
+    },
+    "intro_title" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Intro Title"
+      }
+    },
+    "intro_subtitle" : {
+      "type" : "StructuredText",
+      "config" : {
+        "label" : "Intro Subtitle",
+        "multi" : "paragraph,strong,em"
+      }
+    },
+    "intro_paragraphs" : {
+      "type" : "StructuredText",
+      "config" : {
+        "label" : "Intro Paragraphs",
+        "multi" : "paragraph,strong,em"
+      }
+    }
+  },
+  "Service Highlights" : {
+    "service_1_eyebrow" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Service 1 Eyebrow"
+      }
+    },
+    "service_1_title" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Service 1 Title"
+      }
+    },
+    "service_1_description" : {
+      "type" : "StructuredText",
+      "config" : {
+        "label" : "Service 1 Description",
+        "multi" : "paragraph"
+      }
+    },
+    "service_1_link_text" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Service 1 Link Text"
+      }
+    },
+    "service_2_eyebrow" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Service 2 Eyebrow"
+      }
+    },
+    "service_2_title" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Service 2 Title"
+      }
+    },
+    "service_2_description" : {
+      "type" : "StructuredText",
+      "config" : {
+        "label" : "Service 2 Description",
+        "multi" : "paragraph"
+      }
+    },
+    "service_2_link_text" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Service 2 Link Text"
+      }
+    }
+  },
+  "Our Network" : {
+    "network_eyebrow" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Network Eyebrow"
+      }
+    },
+    "network_title" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Network Title"
+      }
+    },
+    "network_subtitle" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Network Subtitle"
+      }
+    },
+    "network_paragraphs" : {
+      "type" : "StructuredText",
+      "config" : {
+        "label" : "Network Paragraphs",
+        "multi" : "paragraph,strong,em"
+      }
+    },
+    "network_image" : {
+      "type" : "Image",
+      "config" : {
+        "label" : "Network Image"
+      }
+    }
+  },
+  "Station Services" : {
+    "station_eyebrow" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Station Eyebrow"
+      }
+    },
+    "station_title" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Station Title"
+      }
+    },
+    "station_subtitle" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Station Subtitle"
+      }
+    },
+    "station_services_list" : {
+      "type" : "Group",
+      "config" : {
+        "label" : "Services List",
+        "fields" : {
+          "service_name" : {
+            "type" : "Text",
+            "config" : {
+              "label" : "Service Name"
+            }
+          }
+        }
+      }
+    },
+    "station_footer_text" : {
+      "type" : "StructuredText",
+      "config" : {
+        "label" : "Station Footer Text",
+        "multi" : "paragraph"
+      }
+    }
+  },
+  "Clothing Bank" : {
+    "clothing_eyebrow" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Clothing Eyebrow"
+      }
+    },
+    "clothing_title" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Clothing Title"
+      }
+    },
+    "clothing_paragraphs" : {
+      "type" : "StructuredText",
+      "config" : {
+        "label" : "Clothing Paragraphs",
+        "multi" : "paragraph,strong,em"
+      }
+    },
+    "clothing_disclaimer" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Clothing Disclaimer"
+      }
+    }
+  },
+  "Our Impact" : {
+    "impact_eyebrow" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Impact Eyebrow"
+      }
+    },
+    "impact_title" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Impact Title"
+      }
+    },
+    "impact_subtitle" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Impact Subtitle"
+      }
+    },
+    "impact_paragraphs" : {
+      "type" : "StructuredText",
+      "config" : {
+        "label" : "Impact Paragraphs",
+        "multi" : "paragraph,strong,em"
+      }
+    }
+  },
+  "Get Involved" : {
+    "involved_eyebrow" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Involved Eyebrow"
+      }
+    },
+    "involved_title" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Involved Title"
+      }
+    },
+    "involved_subtitle" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Involved Subtitle"
+      }
+    },
+    "involved_description" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Involved Description"
+      }
+    },
+    "involved_list" : {
+      "type" : "Group",
+      "config" : {
+        "label" : "Involvement List",
+        "fields" : {
+          "item_text" : {
+            "type" : "Text",
+            "config" : {
+              "label" : "List Item Text"
+            }
+          }
+        }
+      }
+    },
+    "involved_footer_text" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Involved Footer Text"
+      }
+    }
+  },
+  "Donate" : {
+    "donate_eyebrow" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Donate Eyebrow"
+      }
+    },
+    "donate_title" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Donate Title"
+      }
+    },
+    "donate_description" : {
+      "type" : "StructuredText",
+      "config" : {
+        "label" : "Donate Description",
+        "multi" : "paragraph,strong,em"
+      }
+    },
+    "donate_paragraphs" : {
+      "type" : "StructuredText",
+      "config" : {
+        "label" : "Donate Paragraphs",
+        "multi" : "paragraph,strong,em"
+      }
+    },
+    "donate_card_1_eyebrow" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Donate Card 1 Eyebrow"
+      }
+    },
+    "donate_card_1_title" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Donate Card 1 Title"
+      }
+    },
+    "donate_card_1_description" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Donate Card 1 Description"
+      }
+    },
+    "donate_card_1_button" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Donate Card 1 Button"
+      }
+    },
+    "donate_card_2_eyebrow" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Donate Card 2 Eyebrow"
+      }
+    },
+    "donate_card_2_title" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Donate Card 2 Title"
+      }
+    },
+    "donate_card_2_description" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Donate Card 2 Description"
+      }
+    },
+    "donate_card_2_button" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Donate Card 2 Button"
+      }
+    },
+    "donate_disclaimer" : {
+      "type" : "StructuredText",
+      "config" : {
+        "label" : "Donate Disclaimer",
+        "multi" : "paragraph,strong,em"
+      }
+    }
+  },
+  "Our Services" : {
+    "services_eyebrow" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Services Eyebrow"
+      }
+    },
+    "services_title" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Services Title"
+      }
+    },
+    "services_subtitle" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Services Subtitle"
+      }
+    },
+    "services_list" : {
+      "type" : "Group",
+      "config" : {
+        "label" : "Services List",
+        "fields" : {
+          "service_item" : {
+            "type" : "Text",
+            "config" : {
+              "label" : "Service Item"
+            }
+          }
+        }
+      }
+    }
+  },
+  "The Station Space" : {
+    "station_space_eyebrow" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Station Space Eyebrow"
+      }
+    },
+    "station_space_title" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Station Space Title"
+      }
+    },
+    "station_space_subtitle" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Station Space Subtitle"
+      }
+    },
+    "station_space_list" : {
+      "type" : "Group",
+      "config" : {
+        "label" : "Station Space List",
+        "fields" : {
+          "space_item" : {
+            "type" : "Text",
+            "config" : {
+              "label" : "Space Item"
+            }
+          }
+        }
+      }
+    },
+    "station_space_disclaimer" : {
+      "type" : "StructuredText",
+      "config" : {
+        "label" : "Station Space Disclaimer",
+        "multi" : "paragraph,strong,em"
+      }
+    }
+  },
+  "Our Mission" : {
+    "mission_eyebrow" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Mission Eyebrow"
+      }
+    },
+    "mission_title" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Mission Title"
+      }
+    },
+    "mission_subtitle" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Mission Subtitle"
+      }
+    },
+    "mission_paragraphs" : {
+      "type" : "StructuredText",
+      "config" : {
+        "label" : "Mission Paragraphs",
+        "multi" : "paragraph,strong,em"
+      }
+    }
+  },
+  "Moments from Halifax" : {
+    "moments_eyebrow" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Moments Eyebrow"
+      }
+    },
+    "moments_title" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Moments Title"
+      }
+    },
+    "moments_slider" : {
+      "type" : "Group",
+      "config" : {
+        "label" : "Moments Image Slider",
+        "fields" : {
+          "slider_image" : {
+            "type" : "Image",
+            "config" : {
+              "label" : "Slider Image"
+            }
+          },
+          "image_caption" : {
+            "type" : "Text",
+            "config" : {
+              "label" : "Image Caption (Optional)"
+            }
+          }
+        }
+      }
+    }
+  },
+  "Community" : {
+    "community_eyebrow" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Community Eyebrow"
+      }
+    },
+    "community_title" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Community Title"
+      }
+    },
+    "community_cards" : {
+      "type" : "Group",
+      "config" : {
+        "label" : "Community Cards",
+        "fields" : {
+          "card_title" : {
+            "type" : "Text",
+            "config" : {
+              "label" : "Card Title"
+            }
+          },
+          "card_description" : {
+            "type" : "Text",
+            "config" : {
+              "label" : "Card Description"
+            }
+          },
+          "card_link" : {
+            "type" : "Text",
+            "config" : {
+              "label" : "Card Link"
+            }
+          },
+          "card_image" : {
+            "type" : "Image",
+            "config" : {
+              "label" : "Card Image"
+            }
+          }
+        }
+      }
+    }
+  },
+  "Stats Section" : {
+    "stats_image" : {
+      "type" : "Image",
+      "config" : {
+        "label" : "Stats Left Image"
+      }
+    },
+    "stats_percentage" : {
+      "type" : "Text",
+      "config" : {
+        "label" : "Stats Percentage (e.g. 90%)"
+      }
+    },
+    "stats_percentage_label" : {
+      "type" : "StructuredText",
+      "config" : {
+        "label" : "Stats Percentage Label",
+        "multi" : "paragraph"
+      }
+    },
+    "stats_list" : {
+      "type" : "Group",
+      "config" : {
+        "label" : "Stats Cards List",
+        "fields" : {
+          "stat_number" : {
+            "type" : "Number",
+            "config" : {
+              "label" : "Stat Target Number"
+            }
+          },
+          "stat_prefix" : {
+            "type" : "Text",
+            "config" : {
+              "label" : "Stat Prefix (e.g. +)"
+            }
+          },
+          "stat_suffix" : {
+            "type" : "Text",
+            "config" : {
+              "label" : "Stat Suffix (e.g. %)"
+            }
+          },
+          "stat_label" : {
+            "type" : "Text",
+            "config" : {
+              "label" : "Stat Label"
+            }
+          }
+        }
+      }
+    }
+  }
+}
