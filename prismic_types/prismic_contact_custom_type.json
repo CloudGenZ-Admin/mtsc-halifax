@@ -19,9 +19,11 @@
   "General Station Hours Box": {
     "hours_title": { "type": "Text", "config": { "label": "Hours Box Title" } },
     "hours_note": { "type": "Text", "config": { "label": "General Hours Note" } },
-    "hours_day": { "type": "Text", "config": { "label": "Day Display (e.g. Sunday)" } },
-    "hours_status": { "type": "Text", "config": { "label": "Status Badge (e.g. Generally Closed)" } },
-    "hours_description": { "type": "Text", "config": { "label": "Status Explanation Text" } },
+    "hours_weekday_label": { "type": "Text", "config": { "label": "Weekday Label (e.g. Monday – Saturday)" } },
+    "hours_weekday_time": { "type": "Text", "config": { "label": "Weekday Hours (e.g. 10:00 AM – 5:00 PM)" } },
+    "hours_sunday_label": { "type": "Text", "config": { "label": "Sunday Label (e.g. Sunday)" } },
+    "hours_sunday_status": { "type": "Text", "config": { "label": "Sunday Status Badge (e.g. Generally Closed)" } },
+    "hours_sunday_description": { "type": "Text", "config": { "label": "Sunday Status Explanation Text" } },
     "hours_footer_italic": { "type": "Text", "config": { "label": "Bottom Italic Disclaimer" } }
   },
   "Urgent Assistance Box": {
