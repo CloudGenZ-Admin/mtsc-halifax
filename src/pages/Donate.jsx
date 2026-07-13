@@ -99,7 +99,7 @@ export default function Donate() {
               {/* Responsive CanadaHelps Iframe */}
               <div className="w-full bg-gray-50 rounded-2xl border border-gray-100 overflow-hidden shadow-inner flex justify-center">
                 <iframe 
-                  src="https://www.canadahelps.org/en/dn/42880" 
+                  src="https://www.canadahelps.org/en/dn/146457" 
                   title="CanadaHelps Secure Donation Form"
                   /* The height changes automatically: super tall on phones (1400px), tall on tablets (1200px), normal on desktop (950px) */
                   className="w-full max-w-[800px] h-[1400px] md:h-[1200px] lg:h-[950px] border-none block bg-transparent"

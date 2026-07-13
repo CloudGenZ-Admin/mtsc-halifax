@@ -207,7 +207,7 @@ export default function Footer() {
           <div className="flex-1 overflow-hidden p-2 sm:p-4 md:p-6 lg:p-8 bg-gray-50/80 flex flex-col">
             <div className="w-full flex-1 bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm relative">
               <iframe
-                src="https://www.canadahelps.org/en/dn/42880"
+                src="https://www.canadahelps.org/en/dn/146457"
                 title="CanadaHelps Secure Donation Form"
                 className="absolute inset-0 w-full h-full border-none bg-transparent"
                 allow="payment"
