@@ -269,7 +269,7 @@ export default function WaystoGive() {
         onClose={() => setActiveModal(null)}
         title="Partner Through Sponsorship"
       >
-        <CanadaHelpsWidget pageId="146459" formType="0" />
+        <CanadaHelpsWidget pageId="146457" formType="0" />
       </Modal>
 
       <Modal
@@ -490,7 +490,7 @@ export default function WaystoGive() {
                 {activeForm === 'monthly' ? (
                   <CanadaHelpsWidget key="form-monthly" pageId="146457" formType="0" />
                 ) : (
-                  <CanadaHelpsWidget key="form-onetime" pageId="42880" formType="0" />
+                  <CanadaHelpsWidget key="form-onetime" pageId="146457" formType="0" />
                 )}
               </Reveal>
             )}
