@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { eventService } from '../../services/eventService';
 import { authService } from '../../services/authService';
 import toast, { Toaster } from 'react-hot-toast';
+import { formatDate } from '../../utils/dateUtils';
 
 const AdminDashboard = () => {
   const [events, setEvents] = useState([]);
@@ -25,7 +26,7 @@ const AdminDashboard = () => {
       const data = await eventService.getAllEvents();
       setEvents(data);
     } catch (error) {
-      console.error('Error fetching events:', error);
+      toast.error('Failed to fetch events');
     } finally {
       setLoading(false);
     }
@@ -68,22 +69,14 @@ const AdminDashboard = () => {
     navigate('/admin/login');
   };
 
-  const formatDate = (date) => {
-    if (!date) return 'No date';
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    });
-  };
-
   // Filter events based on search query
   const filteredEvents = events.filter(event => {
     const query = searchQuery.toLowerCase();
+    const formattedEventDate = formatDate(event.eventDate) || '';
     return (
       event.title.toLowerCase().includes(query) ||
       event.url.toLowerCase().includes(query) ||
-      formatDate(event.eventDate).toLowerCase().includes(query)
+      formattedEventDate.toLowerCase().includes(query)
     );
   });
 
@@ -236,8 +229,8 @@ const AdminDashboard = () => {
                         <code className="bg-warm-gray px-2 py-0.5 rounded text-xs break-all">/{event.url}</code>
                       </p>
                       <div className="flex flex-wrap gap-3 text-xs text-text-mid">
-                        <p><span className="font-semibold">Event:</span> {formatDate(event.eventDate)}</p>
-                        <p><span className="font-semibold">Created:</span> {formatDate(event.createdAt)}</p>
+                        <p><span className="font-semibold">Event:</span> {formatDate(event.eventDate) || 'No date'}</p>
+                        <p><span className="font-semibold">Created:</span> {formatDate(event.createdAt) || 'No date'}</p>
                       </div>
                     </div>
                   </div>

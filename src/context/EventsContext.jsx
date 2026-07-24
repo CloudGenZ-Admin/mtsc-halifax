@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { eventService } from '../services/eventService';
+import { formatDate } from '../utils/dateUtils';
 
 const EventsContext = createContext();
 
@@ -24,11 +25,7 @@ export function EventsProvider({ children }) {
           .filter(event => event.eventDate)
           .map(event => ({
             ...event,
-            formattedDate: new Date(event.eventDate).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })
+            formattedDate: formatDate(event.eventDate)
           }));
         
         setFeaturedEvents(featured);
@@ -69,11 +66,7 @@ export function EventsProvider({ children }) {
         // Add formatted date
         const eventWithDate = {
           ...event,
-          formattedDate: event.eventDate ? new Date(event.eventDate).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          }) : null
+          formattedDate: formatDate(event.eventDate)
         };
         
         // Add to our local list so future lookups are instant

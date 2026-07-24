@@ -6,6 +6,7 @@ import { resolveUploadUrl } from '../../services/uploadService';
 import { FiArrowLeft, FiCalendar } from 'react-icons/fi';
 import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
+import { formatDate } from '../../utils/dateUtils';
 
 const EventDetail = () => {
   const { url } = useParams();
@@ -28,15 +29,6 @@ const EventDetail = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const formatDate = (date) => {
-    if (!date) return null;
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
   };
 
   const renderContent = (content) => {

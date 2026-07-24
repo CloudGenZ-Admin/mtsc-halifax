@@ -7,6 +7,7 @@ import Navbar from '../../components/layout/Navbar';
 import Footer from '../../components/layout/Footer';
 import Reveal from '../../components/common/Reveal';
 import { resolveUploadUrl } from '../../services/uploadService';
+import { formatDate, parseEventDate } from '../../utils/dateUtils';
 
 // Import the background image
 import eventsBg from '../../assets/WhatsApp Image 2026-05-09 at 12.50.10 AM.jpeg';
@@ -15,15 +16,6 @@ const EventList = () => {
   const { allEvents, featuredEvents, loading: eventsLoading } = useEvents();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [sliderImgErrors, setSliderImgErrors] = useState({});
-
-  const formatDate = (date) => {
-    if (!date) return null;
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
 
   // 1. FILTER FOR TOP 3 LATEST FEATURED EVENTS (Ongoing & Upcoming)
   const sliderEvents = useMemo(() => {
@@ -37,8 +29,8 @@ const EventList = () => {
 
     // Filter for ongoing and upcoming events
     const upcoming = sourceEvents
-      .filter((event) => event.eventDate && new Date(event.eventDate) >= today)
-      .sort((a, b) => new Date(a.eventDate) - new Date(b.eventDate));
+      .filter((event) => event.eventDate && parseEventDate(event.eventDate) >= today)
+      .sort((a, b) => (parseEventDate(a.eventDate) || 0) - (parseEventDate(b.eventDate) || 0));
 
     // If we have upcoming events, take the top 3
     if (upcoming.length > 0) {
@@ -47,7 +39,7 @@ const EventList = () => {
 
     // Fallback: If no future events exist, just grab the 3 latest featured events 
     return [...sourceEvents]
-      .sort((a, b) => new Date(b.eventDate || 0) - new Date(a.eventDate || 0))
+      .sort((a, b) => (parseEventDate(b.eventDate) || 0) - (parseEventDate(a.eventDate) || 0))
       .slice(0, 3);
   }, [allEvents, featuredEvents]);
 
@@ -192,7 +184,7 @@ const EventList = () => {
                         const imageUrl = getFirstImage(event.content);
                         const hasImgError = sliderImgErrors[event.id];
                         const showImage = imageUrl && !hasImgError;
-                        const isUpcoming = new Date(event.eventDate) >= new Date(new Date().setHours(0,0,0,0));
+                        const isUpcoming = parseEventDate(event.eventDate) >= new Date(new Date().setHours(0,0,0,0));
                         
                         return (
                           <div 

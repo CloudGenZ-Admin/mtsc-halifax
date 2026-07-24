@@ -13,6 +13,8 @@ import { client } from '../prismicio';
 // Import Events API Context
 import { useEvents } from '../context/EventsContext';
 
+import { parseEventDate } from '../utils/dateUtils';
+
 // Import local images for the "Join Our Community" section
 import findPortImg from '../assets/img/footer-find-port_1.png';
 import prayerWallImg from '../assets/img/footer-prayer-wall.png';
@@ -203,8 +205,8 @@ export default function Home() {
     if (!featuredEvents || featuredEvents.length === 0) return [];
     
     return [...featuredEvents].sort((a, b) => {
-      const dateA = new Date(a.eventDate || a.createdAt || 0);
-      const dateB = new Date(b.eventDate || b.createdAt || 0);
+      const dateA = parseEventDate(a.eventDate) || new Date(a.createdAt || 0);
+      const dateB = parseEventDate(b.eventDate) || new Date(b.createdAt || 0);
       return dateB - dateA;
     });
   }, [featuredEvents]);
