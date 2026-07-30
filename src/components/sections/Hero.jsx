@@ -1,31 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react"; 
 import { Link } from "react-router-dom";
-import { PrismicRichText } from "@prismicio/react";
-import { client } from "../../prismicio";
+import { getMediaUrl } from "../../services/payloadApi";
 
-// Images
-import heroImg from '../../assets/WhatsApp Image 2026-05-09 at 12.35.02 AM.jpeg';
-import skyline from '../../assets/halifax-skyline.png'; 
 import seaBg from '../../assets/sea1.jpg'; 
 
-export default function Hero() {
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    client.getSingle("home_page")
-      .then((document) => {
-        setData(document.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching Prismic home_page:", error);
-      });
-  }, []);
-
-  // State to handle modal visibility
+export default function Hero({ data }) {
   const [isDonateModalOpen, setIsDonateModalOpen] = useState(false);
 
-  // Prevent background scrolling when the modal is open
   useEffect(() => {
     if (isDonateModalOpen) {
       document.body.style.overflow = 'hidden';
@@ -33,15 +15,28 @@ export default function Hero() {
       document.body.style.overflow = 'unset';
     }
     
-    // Cleanup on unmount
     return () => {
       document.body.style.overflow = 'unset';
     };
   }, [isDonateModalOpen]);
 
+  const skylineUrl = getMediaUrl(data?.skyline_image, null);
+  const heroImageUrl = getMediaUrl(data?.hero_image, null);
+
+  const eyebrowBadge = data?.eyebrow_badge;
+  const titleLine1 = data?.title_line_1;
+  const titleLine2 = data?.title_line_2;
+  const heroStrongText = data?.hero_strong_text;
+  const heroParagraph = data?.hero_paragraph;
+  const badgeNumber = data?.hero_badge_number;
+  const badgeText1 = data?.hero_badge_text_1;
+  const badgeText2 = data?.hero_badge_text_2;
+  const contactBtnText = data?.hero_contact_button_text;
+  const contactBtnUrl = data?.hero_contact_button_url || "/contact";
+  const donateBtnText = data?.hero_donate_button_text;
+
   return (
     <>
-      {/* Embedded CSS for the floating animations to work out-of-the-box */}
       <style>{`
         @keyframes float-slow {
           0%, 100% { transform: translateY(0); }
@@ -63,17 +58,13 @@ export default function Hero() {
         className="relative w-full min-h-[85vh] flex items-center overflow-hidden bg-cover bg-center bg-no-repeat bg-white"
         style={{ backgroundImage: `url("${seaBg}")` }}
       >
-        {/* 1. Background Overlay: Lightens the sea image so text is readable */}
         <div className="absolute inset-0 w-full h-full bg-white/70 backdrop-blur-[2px] z-0" />
 
-        {/* Decorative colored blobs (optional, adds modern touch) */}
         <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-coral/10 blur-3xl z-0" />
         <div className="absolute top-1/3 -left-20 h-72 w-72 rounded-full bg-navy/10 blur-3xl z-0" />
 
-        {/* 2. Responsive Container: Forces safe margins on mobile, max-width on desktop */}
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
           
-          {/* 3. CSS Grid: 1 column on mobile, 2 columns on desktop (lg) */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
             {/* LEFT COLUMN: Text Content */}
@@ -81,89 +72,108 @@ export default function Hero() {
               
               {/* Skyline & Eyebrow Badge */}
               <div className="mb-6 flex flex-col items-start">
-                <img
-                  src={skyline}
-                  alt="Halifax Skyline"
-                  aria-hidden="true"
-                  className="w-32 md:w-40 mb-2 opacity-80 animate-float-fast"
-                  loading="lazy"
-                />
-                <span className="inline-flex items-center gap-1.5 bg-white/60 backdrop-blur px-3 py-1.5 rounded-md font-bold text-sm text-coral border border-white/50 shadow-sm">
-                  {data?.eyebrow_badge || "✦ A local presence. Part of something larger."}
-                </span>
+                {skylineUrl && (
+                  <img
+                    src={skylineUrl}
+                    alt="Halifax Skyline"
+                    aria-hidden="true"
+                    className="w-32 md:w-40 mb-2 opacity-80 animate-float-fast object-contain"
+                    loading="lazy"
+                  />
+                )}
+                {eyebrowBadge && (
+                  <span className="inline-flex items-center gap-1.5 bg-white/60 backdrop-blur px-3 py-1.5 rounded-md font-bold text-sm text-coral border border-white/50 shadow-sm">
+                    {eyebrowBadge}
+                  </span>
+                )}
               </div>
 
               {/* Main Headline */}
-              <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-navy leading-[1.1] mb-6">
-                {data?.title_line_1 || "Mission to"} <br className="hidden sm:block" />
-                <span className="relative inline-block text-coral mt-2 sm:mt-0 whitespace-nowrap">
-                  {data?.title_line_2 || "Seafarers Halifax"}
-                  {/* Coral Underline Curve */}
-                  <svg className="absolute -bottom-2 left-0 w-full" height="10" viewBox="0 0 200 10" preserveAspectRatio="none">
-                    <path d="M2 7 Q50 1, 100 5 T198 4" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
-                  </svg>
-                </span>
-              </h1>
+              {(titleLine1 || titleLine2) && (
+                <h1 className="text-4xl sm:text-5xl lg:text-[3.5rem] font-extrabold text-navy leading-[1.1] mb-6">
+                  {titleLine1} {titleLine1 && titleLine2 && <br className="hidden sm:block" />}
+                  {titleLine2 && (
+                    <span className="relative inline-block text-coral mt-2 sm:mt-0 whitespace-nowrap">
+                      {titleLine2}
+                      <svg className="absolute -bottom-2 left-0 w-full" height="10" viewBox="0 0 200 10" preserveAspectRatio="none">
+                        <path d="M2 7 Q50 1, 100 5 T198 4" stroke="currentColor" strokeWidth="3" strokeLinecap="round" fill="none" />
+                      </svg>
+                    </span>
+                  )}
+                </h1>
+              )}
               
               {/* Paragraphs */}
               <div className="text-lg md:text-xl text-navy/90 leading-relaxed max-w-xl font-medium space-y-4">
-                <div className="text-navy font-bold text-xl md:text-2xl block mb-6">
-                  {data?.hero_strong_text?.[0]?.text ? (
-                    <PrismicRichText field={data.hero_strong_text} />
-                  ) : (
-                    "At the Port of Halifax, seafarers arrive after time at sea, sometimes for days, weeks and even months. Mission to Seafarers Halifax is here during that window."
-                  )}
-                </div>
-                <div className="[&>p]:mb-4">
-                  {data?.hero_paragraph?.[0]?.text ? (
-                    <PrismicRichText field={data.hero_paragraph} />
-                  ) : (
-                    <p>
-                      With practical support. <br /> With a place to step off the vessel. <br /> With people to speak to while they are ashore. As part of Mission to Seafarers Canada, this work is connected to a global network supporting seafarers in ports around the world.
-                    </p>
-                  )}
-                </div>
+                {heroStrongText && (
+                  <div className="text-navy font-bold text-xl md:text-2xl block mb-6">
+                    {heroStrongText}
+                  </div>
+                )}
+                {heroParagraph && (
+                  <div className="[&>p]:mb-4">
+                    <p className="whitespace-pre-line">{heroParagraph}</p>
+                  </div>
+                )}
               </div>
 
-              {/* Action Buttons: Full width on mobile, inline on desktop */}
+              {/* Action Buttons */}
               <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-4 w-full sm:w-auto">
-                <Link 
-                  to="/contact" 
-                  className="inline-flex justify-center items-center px-8 py-3.5 bg-coral text-white font-bold rounded-lg shadow-lg hover:shadow-xl hover:bg-coral-light hover:-translate-y-0.5 transition-all w-full sm:w-auto text-center"
-                >
-                  Contact the Halifax Mission <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
+                {contactBtnText && (
+                  <Link 
+                    to={contactBtnUrl} 
+                    className="inline-flex justify-center items-center px-8 py-3.5 bg-coral text-white font-bold rounded-lg shadow-lg hover:shadow-xl hover:bg-coral-light hover:-translate-y-0.5 transition-all w-full sm:w-auto text-center"
+                  >
+                    {contactBtnText} <ArrowRight className="ml-2 h-5 w-5" />
+                  </Link>
+                )}
                 
-                {/* CHANGED: Swapped Link for a button to trigger the Modal popup */}
-                <button 
-                  onClick={() => setIsDonateModalOpen(true)}
-                  className="inline-flex justify-center items-center px-8 py-3.5 bg-white/50 backdrop-blur border-2 border-navy text-navy font-bold rounded-lg hover:bg-navy hover:text-white hover:-translate-y-0.5 transition-all w-full sm:w-auto text-center cursor-pointer"
-                >
-                  Donate
-                </button>
+                {donateBtnText && (
+                  <button 
+                    onClick={() => setIsDonateModalOpen(true)}
+                    className="inline-flex justify-center items-center px-8 py-3.5 bg-white/50 backdrop-blur border-2 border-navy text-navy font-bold rounded-lg hover:bg-navy hover:text-white hover:-translate-y-0.5 transition-all w-full sm:w-auto text-center cursor-pointer"
+                  >
+                    {donateBtnText}
+                  </button>
+                )}
               </div>
             </div>
 
             {/* RIGHT COLUMN: Image */}
-            <div className="relative w-full max-w-md mx-auto lg:max-w-none order-2">
-              {/* Image Container with fixed aspect ratio to prevent stretching */}
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] lg:aspect-[4/5] border-4 border-white/40 animate-float-slow">
-                <img
-                  src={data?.hero_image?.url || heroImg}
-                  alt={data?.hero_image?.alt || "Mission to Seafarers Halifax Mission and Staff"}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/40 to-transparent" />
-              </div>
+            {heroImageUrl && (
+              <div className="relative w-full max-w-md mx-auto lg:max-w-none order-2">
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] lg:aspect-[4/5] border-4 border-white/40 animate-float-slow">
+                  <img
+                    src={heroImageUrl}
+                    alt="Mission to Seafarers Halifax Mission and Staff"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-navy-dark/40 to-transparent" />
+                </div>
 
-              {/* Floating Legacy Badge */}
-              <div className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 lg:top-8 lg:-right-8 bg-coral text-white rounded-full h-24 w-24 sm:h-28 sm:w-28 flex flex-col items-center justify-center shadow-xl rotate-[12deg] border-4 border-white z-20 animate-float-fast">
-                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider opacity-90">Legacy</span>
-                <span className="text-2xl sm:text-3xl font-black leading-none my-0.5">{data?.legacy_years || "85+"}</span>
-                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider opacity-90">Years</span>
+                {/* Floating Legacy Badge */}
+                {(badgeNumber || badgeText1 || badgeText2) && (
+                  <div className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 lg:top-8 lg:-right-8 bg-coral text-white rounded-full h-24 w-24 sm:h-28 sm:w-28 flex flex-col items-center justify-center shadow-xl rotate-[12deg] border-4 border-white z-20 animate-float-fast">
+                    {badgeText1 && (
+                      <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider opacity-90">
+                        {badgeText1}
+                      </span>
+                    )}
+                    {badgeNumber && (
+                      <span className="text-2xl sm:text-3xl font-black leading-none my-0.5">
+                        {badgeNumber}
+                      </span>
+                    )}
+                    {badgeText2 && (
+                      <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider opacity-90">
+                        {badgeText2}
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
-            </div>
+            )}
 
           </div>
         </div>
@@ -173,10 +183,8 @@ export default function Hero() {
       {isDonateModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-[#112A46]/80 backdrop-blur-sm transition-opacity">
           
-          {/* Modal Container */}
           <div className="bg-white rounded-[32px] shadow-2xl w-full max-w-4xl relative max-h-[95vh] flex flex-col overflow-hidden animate-fade-in-up">
             
-            {/* Modal Header */}
             <div className="flex items-center justify-between p-6 md:px-8 border-b border-gray-100 bg-white z-10">
               <h3 className="text-2xl font-black text-[#112A46] flex items-center gap-3">
                 <svg className="w-6 h-6 text-[#E05A2B]" fill="currentColor" viewBox="0 0 24 24">
@@ -195,7 +203,6 @@ export default function Hero() {
               </button>
             </div>
             
-            {/* Modal Iframe Content */}
             <div className="flex-grow overflow-y-auto w-full bg-gray-50 p-4 md:p-8 flex justify-center">
               <iframe 
                 src="https://www.canadahelps.org/en/dn/146457" 
