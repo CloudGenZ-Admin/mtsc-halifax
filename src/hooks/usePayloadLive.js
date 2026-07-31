@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query'
 import { useLivePreview } from '@payloadcms/live-preview-react'
 import {
   getMtscHomePageData,
+  getMtscWhoWeArePageData,
+  getMtscSeafarerSupportPageData,
   populateMediaCache,
 } from '../services/payloadApi'
 
@@ -28,6 +30,10 @@ function isValidCmsData(d) {
       d.hero_strong_text ||
       d.eyebrow_badge ||
       d.intro_title ||
+      d.hero_title ||
+      d.story_title ||
+      d.impact_title ||
+      d.team_title ||
       d.id
   )
 }
@@ -141,6 +147,156 @@ export function useMtscHomePageLive() {
         event?.data?.type === 'payload-live-preview' ||
         event?.data?.slug === 'mtsc-home-page' ||
         event?.data?.globalType === 'mtsc-home-page'
+      ) {
+        const payloadData = event.data.data || event.data.doc || event.data
+        if (payloadData && isValidCmsData(payloadData)) {
+          setPostMessageData({ ...payloadData })
+        }
+      }
+    }
+
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
+  }, [])
+
+  const activeData = useMemo(() => {
+    return getBestData(postMessageData, liveData, initialData, lastValidRef, cacheKey)
+  }, [postMessageData, liveData, initialData])
+
+  return {
+    data: activeData,
+    isLoading: isLoading && !activeData,
+    error,
+  }
+}
+
+/**
+ * Custom hook combining TanStack React Query + Payload Live Preview for MTSC Who We Are Page
+ */
+export function useMtscWhoWeAreLive() {
+  const cacheKey = 'mtsc-whoweare-page'
+  const lastValidRef = useRef(getStorageCache(cacheKey))
+  const [, setMediaCacheTick] = useState(0)
+
+  useEffect(() => {
+    const handleMediaCached = () => {
+      setMediaCacheTick(t => t + 1)
+    }
+    window.addEventListener('payload-media-cached', handleMediaCached)
+    return () => window.removeEventListener('payload-media-cached', handleMediaCached)
+  }, [])
+
+  const { data: initialData, isLoading, error } = useQuery({
+    queryKey: ['mtsc-whoweare-page-data'],
+    queryFn: getMtscWhoWeArePageData,
+    staleTime: 0,
+    gcTime: 1000 * 60 * 60 * 24,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+  })
+
+  useEffect(() => {
+    if (isValidCmsData(initialData)) {
+      populateMediaCache(initialData)
+    }
+  }, [initialData])
+
+  const { data: liveData } = useLivePreview({
+    initialData: initialData || lastValidRef.current,
+    serverURL: CMS_URL,
+    depth: 2,
+  })
+
+  useEffect(() => {
+    if (isValidCmsData(liveData)) {
+      populateMediaCache(liveData)
+    }
+  }, [liveData])
+
+  const [postMessageData, setPostMessageData] = useState(null)
+
+  useEffect(() => {
+    if (!isInIframe) return
+    const handleMessage = (event) => {
+      if (
+        event?.data?.type === 'payload-live-preview' ||
+        event?.data?.slug === 'mtsc-whoweare-page' ||
+        event?.data?.globalType === 'mtsc-whoweare-page'
+      ) {
+        const payloadData = event.data.data || event.data.doc || event.data
+        if (payloadData && isValidCmsData(payloadData)) {
+          setPostMessageData({ ...payloadData })
+        }
+      }
+    }
+
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
+  }, [])
+
+  const activeData = useMemo(() => {
+    return getBestData(postMessageData, liveData, initialData, lastValidRef, cacheKey)
+  }, [postMessageData, liveData, initialData])
+
+  return {
+    data: activeData,
+    isLoading: isLoading && !activeData,
+    error,
+  }
+}
+
+/**
+ * Custom hook combining TanStack React Query + Payload Live Preview for MTSC Seafarer Support Page
+ */
+export function useMtscSeafarerSupportLive() {
+  const cacheKey = 'mtsc-support-page'
+  const lastValidRef = useRef(getStorageCache(cacheKey))
+  const [, setMediaCacheTick] = useState(0)
+
+  useEffect(() => {
+    const handleMediaCached = () => {
+      setMediaCacheTick(t => t + 1)
+    }
+    window.addEventListener('payload-media-cached', handleMediaCached)
+    return () => window.removeEventListener('payload-media-cached', handleMediaCached)
+  }, [])
+
+  const { data: initialData, isLoading, error } = useQuery({
+    queryKey: ['mtsc-support-page-data'],
+    queryFn: getMtscSeafarerSupportPageData,
+    staleTime: 0,
+    gcTime: 1000 * 60 * 60 * 24,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+  })
+
+  useEffect(() => {
+    if (isValidCmsData(initialData)) {
+      populateMediaCache(initialData)
+    }
+  }, [initialData])
+
+  const { data: liveData } = useLivePreview({
+    initialData: initialData || lastValidRef.current,
+    serverURL: CMS_URL,
+    depth: 2,
+  })
+
+  useEffect(() => {
+    if (isValidCmsData(liveData)) {
+      populateMediaCache(liveData)
+    }
+  }, [liveData])
+
+  const [postMessageData, setPostMessageData] = useState(null)
+
+  useEffect(() => {
+    if (!isInIframe) return
+    const handleMessage = (event) => {
+      if (
+        event?.data?.type === 'payload-live-preview' ||
+        event?.data?.slug === 'mtsc-support-page' ||
+        event?.data?.globalType === 'mtsc-support-page'
       ) {
         const payloadData = event.data.data || event.data.doc || event.data
         if (payloadData && isValidCmsData(payloadData)) {

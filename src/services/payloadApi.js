@@ -38,6 +38,42 @@ export async function getMtscHomePageData() {
 }
 
 /**
+ * Fetch MTSC Who We Are Page Global data from Payload CMS
+ */
+export async function getMtscWhoWeArePageData() {
+  try {
+    const res = await fetch(`${CMS_URL}/api/globals/mtsc-whoweare-page?depth=2&_t=${Date.now()}`)
+    if (!res.ok) {
+      throw new Error(`Failed to fetch MTSC Who We Are page data: ${res.statusText}`)
+    }
+    const data = await res.json()
+    populateMediaCache(data)
+    return data
+  } catch (error) {
+    console.error('Error fetching MtscWhoWeArePage data from Payload CMS:', error)
+    return null
+  }
+}
+
+/**
+ * Fetch MTSC Seafarer Support Page Global data from Payload CMS
+ */
+export async function getMtscSeafarerSupportPageData() {
+  try {
+    const res = await fetch(`${CMS_URL}/api/globals/mtsc-support-page?depth=2&_t=${Date.now()}`)
+    if (!res.ok) {
+      throw new Error(`Failed to fetch MTSC Seafarer Support page data: ${res.statusText}`)
+    }
+    const data = await res.json()
+    populateMediaCache(data)
+    return data
+  } catch (error) {
+    console.error('Error fetching MtscSeafarerSupportPage data from Payload CMS:', error)
+    return null
+  }
+}
+
+/**
  * Formats any media object, ID, or URL safely to a full absolute URL
  */
 export function getMediaUrl(mediaObj, fallbackUrl = null) {
