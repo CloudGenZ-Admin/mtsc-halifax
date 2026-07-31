@@ -74,6 +74,24 @@ export async function getMtscSeafarerSupportPageData() {
 }
 
 /**
+ * Fetch MTSC Ways to Give Page Global data from Payload CMS
+ */
+export async function getMtscWaysToGivePageData() {
+  try {
+    const res = await fetch(`${CMS_URL}/api/globals/mtsc-waystogive-page?depth=2&_t=${Date.now()}`)
+    if (!res.ok) {
+      throw new Error(`Failed to fetch MTSC Ways to Give page data: ${res.statusText}`)
+    }
+    const data = await res.json()
+    populateMediaCache(data)
+    return data
+  } catch (error) {
+    console.error('Error fetching MtscWaysToGivePage data from Payload CMS:', error)
+    return null
+  }
+}
+
+/**
  * Formats any media object, ID, or URL safely to a full absolute URL
  */
 export function getMediaUrl(mediaObj, fallbackUrl = null) {
