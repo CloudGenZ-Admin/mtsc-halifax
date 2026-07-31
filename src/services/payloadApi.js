@@ -110,6 +110,24 @@ export async function getMtscPublicationsPageData() {
 }
 
 /**
+ * Fetch MTSC Contact Page Global data from Payload CMS
+ */
+export async function getMtscContactPageData() {
+  try {
+    const res = await fetch(`${CMS_URL}/api/globals/mtsc-contact-page?depth=2&_t=${Date.now()}`)
+    if (!res.ok) {
+      throw new Error(`Failed to fetch MTSC Contact page data: ${res.statusText}`)
+    }
+    const data = await res.json()
+    populateMediaCache(data)
+    return data
+  } catch (error) {
+    console.error('Error fetching MtscContactPage data from Payload CMS:', error)
+    return null
+  }
+}
+
+/**
  * Formats any media object, ID, or URL safely to a full absolute URL
  */
 export function getMediaUrl(mediaObj, fallbackUrl = null) {
