@@ -21,6 +21,12 @@ jobs:
       #     echo "VITE_STRIPE_PUBLISHABLE_KEY=${{ secrets.VITE_STRIPE_PUBLISHABLE_KEY }}" >> .env
       #     echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env
 
+      - name: Create .env file
+        run: |
+          echo "VITE_CMS_URL=https://mtsc-halifax-cms.cloudgenz.com" >> .env
+          echo "VITE_RECAPTCHA_SITE_KEY=6Ldcf24tAAAAAGGAjW7Q_2g2oY0p-etJCNa12hi2" >> .env
+          echo "VITE_API_URL=https://mediumpurple-giraffe-353804.hostingersite.com/api" >> .env
+
       - name: Install & Build
         run: |
           npm ci

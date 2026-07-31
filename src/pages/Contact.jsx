@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import { Mail, Phone, MapPin, Clock, Send, MessageCircle, Mailbox, CheckCircle2, AlertCircle, User } from "lucide-react";
@@ -20,7 +21,10 @@ const Contact = () => {
   const [data, setData] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [recaptchaToken, setRecaptchaToken] = useState('');
   const formRef = useRef(null);
+  const recaptchaRef = useRef(null);
 
   // Scroll to top when the component mounts
   useEffect(() => {
@@ -47,16 +51,67 @@ const Contact = () => {
 
   const heroBg = data?.hero_bg_image?.url || centerImage;
 
-  // This handles the iframe finishing its load (meaning Google received the data)
-  const handleIframeLoad = () => {
-    if (isSubmitting) {
-      setIsSuccess(true);
-      setIsSubmitting(false);
-      if (formRef.current) {
-        formRef.current.reset();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage('');
+    setIsSuccess(false);
+
+    if (!recaptchaToken) {
+      setErrorMessage('Please complete the reCAPTCHA verification before submitting.');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const formData = new FormData(formRef.current);
+      const payload = {
+        name: formData.get('name') || formData.get('entry.2050372848'),
+        email: formData.get('email') || formData.get('entry.608487628'),
+        phone: formData.get('phone') || formData.get('entry.278774456'),
+        interest: formData.get('interest') || formData.get('entry.1990273286'),
+        message: formData.get('message') || formData.get('entry.1454859148'),
+        recaptchaToken: recaptchaToken
+      };
+
+      const rawApiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+      const response = await fetch(`${rawApiUrl}/contact/submit`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setIsSuccess(true);
+        if (formRef.current) {
+          formRef.current.reset();
+        }
+        setRecaptchaToken('');
+        if (recaptchaRef.current) {
+          recaptchaRef.current.reset();
+        }
+        setTimeout(() => setIsSuccess(false), 5000);
+      } else {
+        setErrorMessage(result.message || 'Form submission failed. Please try again.');
+        if (recaptchaRef.current) {
+          recaptchaRef.current.reset();
+        }
+        setRecaptchaToken('');
       }
-      // Auto-hide success message after 5 seconds
-      setTimeout(() => setIsSuccess(false), 5000);
+    } catch (err) {
+      console.error('Error submitting contact form:', err);
+      setErrorMessage('An error occurred while connecting to the server. Please try again.');
+      if (recaptchaRef.current) {
+        recaptchaRef.current.reset();
+      }
+      setRecaptchaToken('');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -270,6 +325,14 @@ const Contact = () => {
                 {data?.form_subtitle || "Whether you are a seafarer, volunteer, supporter, donor, or community partner, we welcome your questions and inquiries."}
               </p>
 
+              {/* Error Message Banner */}
+              {errorMessage && (
+                <div className="flex items-center gap-3 bg-red-50 text-red-700 p-4 rounded-lg border border-red-200 mb-4 animate-in fade-in slide-in-from-top-2">
+                  <AlertCircle className="h-5 w-5 text-red-600 shrink-0" />
+                  <p className="text-sm font-medium">{errorMessage}</p>
+                </div>
+              )}
+
               {/* Success Message Banner */}
               {isSuccess && (
                 <div className="flex items-center gap-3 bg-green-50 text-green-700 p-4 rounded-lg border border-green-200 mb-4 animate-in fade-in slide-in-from-top-2">
@@ -280,28 +343,17 @@ const Contact = () => {
                 </div>
               )}
 
-              {/* Hidden iframe triggers handleIframeLoad when Google Form finishes processing */}
-              <iframe
-                name="hidden_iframe"
-                id="hidden_iframe"
-                style={{ display: 'none' }}
-                onLoad={handleIframeLoad}
-              ></iframe>
-
               <form
                 ref={formRef}
                 className="space-y-5"
-                action={data?.form_action_url || "https://docs.google.com/forms/d/e/1FAIpQLSdDRLf8Fjde4Y-q1oUmoa_5JAbmAFp5TeG0RV3qjyVL3Aabhg/formResponse"}
-                method="POST"
-                target="hidden_iframe"
-                onSubmit={() => setIsSubmitting(true)}
+                onSubmit={handleSubmit}
               >
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="cname" className={labelClasses}>Name *</label>
                     <input
                       id="cname"
-                      name="entry.2050372848"
+                      name="name"
                       required
                       className={inputClasses}
                     />
@@ -311,7 +363,7 @@ const Contact = () => {
                     <input
                       id="cemail"
                       type="email"
-                      name="entry.608487628"
+                      name="email"
                       required
                       className={inputClasses}
                     />
@@ -321,7 +373,7 @@ const Contact = () => {
                     <input
                       id="cphone"
                       type="tel"
-                      name="entry.278774456"
+                      name="phone"
                       className={inputClasses}
                     />
                   </div>
@@ -329,7 +381,7 @@ const Contact = () => {
                     <label htmlFor="cinterest" className={labelClasses}>I am interested in: *</label>
                     <select
                       id="cinterest"
-                      name="entry.1990273286"
+                      name="interest"
                       required
                       defaultValue=""
                       className={inputClasses}
@@ -344,12 +396,25 @@ const Contact = () => {
                     <label htmlFor="cmessage" className={labelClasses}>Message *</label>
                     <textarea
                       id="cmessage"
-                      name="entry.1454859148"
+                      name="message"
                       required
                       rows={5}
                       className="mt-1.5 flex min-h-[120px] w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-[#112A46] font-medium placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E05A2B]/50 focus:ring-offset-0 focus:border-[#E05A2B] resize-none disabled:cursor-not-allowed disabled:opacity-50 transition-colors"
                     />
                   </div>
+                </div>
+
+                {/* reCAPTCHA Widget */}
+                <div className="flex justify-center pt-2">
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY || "6Ldcf24tAAAAAGGAjW7Q_2g2oY0p-etJCNa12hi2"}
+                    onChange={(token) => {
+                      setRecaptchaToken(token || '');
+                      if (token) setErrorMessage('');
+                    }}
+                    onExpired={() => setRecaptchaToken('')}
+                  />
                 </div>
 
                 <button

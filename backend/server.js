@@ -8,6 +8,7 @@ import authRoutes from './routes/auth.js';
 import eventRoutes from './routes/events.js';
 import uploadRoutes from './routes/upload.js';
 import prayerRoutes from './routes/prayers.js'; 
+import contactRoutes from './routes/contact.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
 dotenv.config();
@@ -51,6 +52,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/prayers', prayerRoutes); 
+app.use('/api/contact', contactRoutes); 
 // Error handling middleware
 app.use(errorHandler);
 
