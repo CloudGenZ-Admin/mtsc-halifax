@@ -6,6 +6,7 @@ import {
   getMtscWhoWeArePageData,
   getMtscSeafarerSupportPageData,
   getMtscWaysToGivePageData,
+  getMtscPublicationsPageData,
   populateMediaCache,
 } from '../services/payloadApi'
 
@@ -373,6 +374,81 @@ export function useMtscWaysToGiveLive() {
         event?.data?.type === 'payload-live-preview' ||
         event?.data?.slug === 'mtsc-waystogive-page' ||
         event?.data?.globalType === 'mtsc-waystogive-page'
+      ) {
+        const payloadData = event.data.data || event.data.doc || event.data
+        if (payloadData && isValidCmsData(payloadData)) {
+          setPostMessageData({ ...payloadData })
+        }
+      }
+    }
+
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
+  }, [])
+
+  const activeData = useMemo(() => {
+    return getBestData(postMessageData, liveData, initialData, lastValidRef, cacheKey)
+  }, [postMessageData, liveData, initialData])
+
+  return {
+    data: activeData,
+    isLoading: isLoading && !activeData,
+    error,
+  }
+}
+
+/**
+ * Custom hook combining TanStack React Query + Payload Live Preview for MTSC Publications Page
+ */
+export function useMtscPublicationsLive() {
+  const cacheKey = 'mtsc-publications-page'
+  const lastValidRef = useRef(getStorageCache(cacheKey))
+  const [, setMediaCacheTick] = useState(0)
+
+  useEffect(() => {
+    const handleMediaCached = () => {
+      setMediaCacheTick(t => t + 1)
+    }
+    window.addEventListener('payload-media-cached', handleMediaCached)
+    return () => window.removeEventListener('payload-media-cached', handleMediaCached)
+  }, [])
+
+  const { data: initialData, isLoading, error } = useQuery({
+    queryKey: ['mtsc-publications-page-data'],
+    queryFn: getMtscPublicationsPageData,
+    staleTime: 0,
+    gcTime: 1000 * 60 * 60 * 24,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+  })
+
+  useEffect(() => {
+    if (isValidCmsData(initialData)) {
+      populateMediaCache(initialData)
+    }
+  }, [initialData])
+
+  const { data: liveData } = useLivePreview({
+    initialData: initialData || lastValidRef.current,
+    serverURL: CMS_URL,
+    depth: 2,
+  })
+
+  useEffect(() => {
+    if (isValidCmsData(liveData)) {
+      populateMediaCache(liveData)
+    }
+  }, [liveData])
+
+  const [postMessageData, setPostMessageData] = useState(null)
+
+  useEffect(() => {
+    if (!isInIframe) return
+    const handleMessage = (event) => {
+      if (
+        event?.data?.type === 'payload-live-preview' ||
+        event?.data?.slug === 'mtsc-publications-page' ||
+        event?.data?.globalType === 'mtsc-publications-page'
       ) {
         const payloadData = event.data.data || event.data.doc || event.data
         if (payloadData && isValidCmsData(payloadData)) {

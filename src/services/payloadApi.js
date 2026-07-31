@@ -92,6 +92,24 @@ export async function getMtscWaysToGivePageData() {
 }
 
 /**
+ * Fetch MTSC Publications Page Global data from Payload CMS
+ */
+export async function getMtscPublicationsPageData() {
+  try {
+    const res = await fetch(`${CMS_URL}/api/globals/mtsc-publications-page?depth=2&_t=${Date.now()}`)
+    if (!res.ok) {
+      throw new Error(`Failed to fetch MTSC Publications page data: ${res.statusText}`)
+    }
+    const data = await res.json()
+    populateMediaCache(data)
+    return data
+  } catch (error) {
+    console.error('Error fetching MtscPublicationsPage data from Payload CMS:', error)
+    return null
+  }
+}
+
+/**
  * Formats any media object, ID, or URL safely to a full absolute URL
  */
 export function getMediaUrl(mediaObj, fallbackUrl = null) {
