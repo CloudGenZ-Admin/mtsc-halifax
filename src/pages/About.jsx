@@ -30,8 +30,10 @@ const RenderCmsContent = ({ content }) => {
   return null;
 };
 
+import LoadingSpinner from '../components/common/LoadingSpinner';
+
 function About() {
-  const { data } = useMtscWhoWeAreLive();
+  const { data, isLoading } = useMtscWhoWeAreLive();
   const [activeModal, setActiveModal] = useState(null);
 
   // Scroll to top on mount
@@ -110,6 +112,10 @@ function About() {
   const scrollVolunteerNext = () => {
     if (volunteerCarouselRef.current) volunteerCarouselRef.current.scrollBy({ left: volunteerCarouselRef.current.offsetWidth, behavior: 'smooth' });
   };
+
+  if (isLoading && !data) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col relative">

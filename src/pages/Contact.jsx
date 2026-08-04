@@ -29,8 +29,10 @@ const safeString = (val) => {
   return "";
 };
 
+import LoadingSpinner from '../components/common/LoadingSpinner';
+
 const Contact = () => {
-  const { data } = useMtscContactLive();
+  const { data, isLoading } = useMtscContactLive();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const formRef = useRef(null);
@@ -47,6 +49,10 @@ const Contact = () => {
 
   // Resolved Hero Background Image URL from CMS (Zero hardcoded image fallbacks)
   const heroBg = getMediaUrl(data?.hero_bg_image, null);
+
+  if (isLoading && !data) {
+    return <LoadingSpinner />;
+  }
 
   // Handles iframe finish load when Google Form processes submission
   const handleIframeLoad = () => {

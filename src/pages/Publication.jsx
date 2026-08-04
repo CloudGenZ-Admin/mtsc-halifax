@@ -12,9 +12,11 @@ import {
 import { useMtscPublicationsLive } from '../hooks/usePayloadLive';
 import { getMediaUrl } from '../services/payloadApi';
 
+import LoadingSpinner from '../components/common/LoadingSpinner';
+
 export default function Publication() {
   const location = useLocation();
-  const { data } = useMtscPublicationsLive();
+  const { data, isLoading } = useMtscPublicationsLive();
   
   // States for toggling archives
   const [showArchivesHalifax, setShowArchivesHalifax] = useState(false);
@@ -35,6 +37,10 @@ export default function Publication() {
       window.scrollTo(0, 0);
     }
   }, [location]);
+
+  if (isLoading && !data) {
+    return <LoadingSpinner />;
+  }
 
   // Helper to extract PDF URL cleanly from Payload CMS Media upload or direct URL
   const getPdfUrl = (field, fallback = null) => {

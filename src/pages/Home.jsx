@@ -112,8 +112,10 @@ const extractText = (content, overview) => {
   return text.substring(0, 120) + (text.length > 120 ? '...' : '');
 };
 
+import LoadingSpinner from '../components/common/LoadingSpinner';
+
 export default function Home() {
-  const { data } = useMtscHomePageLive();
+  const { data, isLoading } = useMtscHomePageLive();
   const sliderRef = useRef(null);
 
   // Use featuredEvents from local Events API Context
@@ -168,6 +170,10 @@ export default function Home() {
 
   // Network Image from CMS
   const networkImageUrl = getMediaUrl(data?.network_image, null);
+
+  if (isLoading && !data) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col">

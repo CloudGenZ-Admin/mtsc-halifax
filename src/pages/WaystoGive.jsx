@@ -52,8 +52,10 @@ const CanadaHelpsWidget = ({ pageId, formType }) => {
   return <div ref={containerRef} className="w-full min-h-[600px]"></div>;
 };
 
+import LoadingSpinner from '../components/common/LoadingSpinner';
+
 export default function WaystoGive() {
-  const { data } = useMtscWaysToGiveLive();
+  const { data, isLoading } = useMtscWaysToGiveLive();
   const [activeForm, setActiveForm] = useState(null);
   const [activeModal, setActiveModal] = useState(null);
   const [selectedEventUrl, setSelectedEventUrl] = useState('');
@@ -99,6 +101,10 @@ export default function WaystoGive() {
   const activeStarNames = (Array.isArray(data?.star_club_members) && data.star_club_members.length > 0)
     ? data.star_club_members.map(m => m.member_name || m).filter(Boolean)
     : [];
+
+  if (isLoading && !data) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col">

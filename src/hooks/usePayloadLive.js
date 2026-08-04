@@ -117,6 +117,7 @@ export function useMtscHomePageLive() {
   const { data: initialData, isLoading, error } = useQuery({
     queryKey: ['mtsc-home-page-data'],
     queryFn: getMtscHomePageData,
+    initialData: () => getStorageCache(cacheKey),
     staleTime: 0,
     gcTime: 1000 * 60 * 60 * 24,
     refetchOnWindowFocus: true,
@@ -168,7 +169,7 @@ export function useMtscHomePageLive() {
 
   return {
     data: activeData,
-    isLoading: isLoading && !activeData,
+    isLoading: !isValidCmsData(activeData),
     error,
   }
 }
@@ -192,6 +193,7 @@ export function useMtscWhoWeAreLive() {
   const { data: initialData, isLoading, error } = useQuery({
     queryKey: ['mtsc-whoweare-page-data'],
     queryFn: getMtscWhoWeArePageData,
+    initialData: () => getStorageCache(cacheKey),
     staleTime: 0,
     gcTime: 1000 * 60 * 60 * 24,
     refetchOnWindowFocus: true,
@@ -243,7 +245,7 @@ export function useMtscWhoWeAreLive() {
 
   return {
     data: activeData,
-    isLoading: isLoading && !activeData,
+    isLoading: !isValidCmsData(activeData),
     error,
   }
 }
@@ -267,6 +269,7 @@ export function useMtscSeafarerSupportLive() {
   const { data: initialData, isLoading, error } = useQuery({
     queryKey: ['mtsc-support-page-data'],
     queryFn: getMtscSeafarerSupportPageData,
+    initialData: () => getStorageCache(cacheKey),
     staleTime: 0,
     gcTime: 1000 * 60 * 60 * 24,
     refetchOnWindowFocus: true,
@@ -318,7 +321,7 @@ export function useMtscSeafarerSupportLive() {
 
   return {
     data: activeData,
-    isLoading: isLoading && !activeData,
+    isLoading: !isValidCmsData(activeData),
     error,
   }
 }
@@ -342,6 +345,7 @@ export function useMtscWaysToGiveLive() {
   const { data: initialData, isLoading, error } = useQuery({
     queryKey: ['mtsc-waystogive-page-data'],
     queryFn: getMtscWaysToGivePageData,
+    initialData: () => getStorageCache(cacheKey),
     staleTime: 0,
     gcTime: 1000 * 60 * 60 * 24,
     refetchOnWindowFocus: true,
@@ -393,7 +397,7 @@ export function useMtscWaysToGiveLive() {
 
   return {
     data: activeData,
-    isLoading: isLoading && !activeData,
+    isLoading: !isValidCmsData(activeData),
     error,
   }
 }
@@ -417,6 +421,7 @@ export function useMtscPublicationsLive() {
   const { data: initialData, isLoading, error } = useQuery({
     queryKey: ['mtsc-publications-page-data'],
     queryFn: getMtscPublicationsPageData,
+    initialData: () => getStorageCache(cacheKey),
     staleTime: 0,
     gcTime: 1000 * 60 * 60 * 24,
     refetchOnWindowFocus: true,
@@ -468,7 +473,7 @@ export function useMtscPublicationsLive() {
 
   return {
     data: activeData,
-    isLoading: isLoading && !activeData,
+    isLoading: !isValidCmsData(activeData),
     error,
   }
 }
@@ -492,6 +497,7 @@ export function useMtscContactLive() {
   const { data: initialData, isLoading, error } = useQuery({
     queryKey: ['mtsc-contact-page-data'],
     queryFn: getMtscContactPageData,
+    initialData: () => getStorageCache(cacheKey),
     staleTime: 0,
     gcTime: 1000 * 60 * 60 * 24,
     refetchOnWindowFocus: true,
@@ -543,7 +549,7 @@ export function useMtscContactLive() {
 
   return {
     data: activeData,
-    isLoading: isLoading && !activeData,
+    isLoading: !isValidCmsData(activeData),
     error,
   }
 }

@@ -89,8 +89,10 @@ const SupportModal = ({ isOpen, onClose, title, onSubmit }) => {
   );
 };
 
+import LoadingSpinner from '../components/common/LoadingSpinner';
+
 export default function SeafarerSupport() {
-  const { data } = useMtscSeafarerSupportLive();
+  const { data, isLoading } = useMtscSeafarerSupportLive();
   const [activeModal, setActiveModal] = useState(null); 
   const [toastMessage, setToastMessage] = useState(null); // Toast state
 
@@ -122,6 +124,10 @@ export default function SeafarerSupport() {
 
   // Default icons for 6 service dashboard cards
   const serviceIcons = [FaShip, FaBoxOpen, FaUserTie, FaHandsHelping, FaTshirt, FaBus];
+
+  if (isLoading && !data) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FBFD] relative">
