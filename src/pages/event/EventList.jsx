@@ -286,6 +286,33 @@ const EventList = () => {
           </section>
 
           {/* =========================================
+              UPCOMING LUNCHEON SECTION
+              ========================================= */}
+          <section className="mb-16">
+            <Reveal>
+              <div className="mb-6">
+                <h2 className="text-3xl font-bold text-navy flex items-center gap-3">
+                  <span className="w-2 h-8 bg-coral rounded-full"></span>
+                  Upcoming Luncheon
+                </h2>
+                <p className="text-text-mid font-semibold mt-2 ml-5 flex items-center gap-2">
+                  <FiCalendar className="text-coral" /> 10 September 2026, Thursday
+                </p>
+              </div>
+
+              <div className="rounded-2xl border-2 border-[#005b96] bg-gradient-to-br from-[#f0f7fc] to-[#ffffff] p-6 md:p-8 shadow-[0_6px_20px_rgba(0,91,150,0.12)] text-center">
+                <div className="flex justify-center items-center text-center mx-auto w-full">
+                  <img
+                    src="https://mediumpurple-giraffe-353804.hostingersite.com/uploads/6b743528-c4c2-4efd-9dac-d65373181fbe.webp"
+                    alt="Take-out Luncheon September 10th Poster"
+                    className="block mx-auto max-w-full max-h-[850px] w-auto h-auto rounded-xl shadow-[0_6px_18px_rgba(0,0,0,0.12)] border border-[#d0e2ec] hover:scale-[1.01] hover:shadow-[0_8px_24px_rgba(0,0,0,0.18)] transition-all duration-300"
+                  />
+                </div>
+              </div>
+            </Reveal>
+          </section>
+
+          {/* =========================================
               FEATURED EVENTS SECTION
               ========================================= */}
           {featuredEvents && featuredEvents.length > 0 && (
