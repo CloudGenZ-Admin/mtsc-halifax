@@ -19,6 +19,7 @@ import EventDetail from './pages/event/EventDetail';
 import Publication from './pages/Publication'
 import Donate from './pages/Donate';
 import SeafarerSupport from './pages/SeafarerSupport';
+import CmsPrefetcher from './components/common/CmsPrefetcher';
 
 
 function ScrollToTop() {
@@ -47,7 +48,7 @@ function App() {
   return (
     <EventsProvider>
     <Router>
-     
+      <CmsPrefetcher />
       <ScrollToTop /> 
       
       <Routes>

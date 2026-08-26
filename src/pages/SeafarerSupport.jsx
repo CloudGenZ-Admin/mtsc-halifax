@@ -8,14 +8,8 @@ import {
   FaPhoneAlt, FaEnvelope, FaGlobe, FaAnchor
 } from 'react-icons/fa';
 
-import { client } from '../prismicio';
-import { PrismicRichText } from '@prismicio/react';
-
-// Import images
-import portHalifaxImg from '../assets/port_halifax.jpg';
-import volunteersImg from '../assets/MtS Halifax Center.jpg';
-import helenImg from '../assets/HelenCircle.jpg';
-import josephImg from '../assets/Josefloot.jpg';
+import { useMtscSeafarerSupportLive } from '../hooks/usePayloadLive';
+import { getMediaUrl } from '../services/payloadApi';
 
 const SupportModal = ({ isOpen, onClose, title, onSubmit }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -95,20 +89,15 @@ const SupportModal = ({ isOpen, onClose, title, onSubmit }) => {
   );
 };
 
+import LoadingSpinner from '../components/common/LoadingSpinner';
+
 export default function SeafarerSupport() {
-  const [data, setData] = useState(null);
+  const { data, isLoading } = useMtscSeafarerSupportLive();
   const [activeModal, setActiveModal] = useState(null); 
   const [toastMessage, setToastMessage] = useState(null); // Toast state
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    client.getSingle("support")
-      .then((doc) => {
-        setData(doc.data);
-      })
-      .catch((err) => {
-        console.error("Error fetching Prismic support document:", err);
-      });
   }, []);
 
   const handleFormSubmit = () => {
@@ -123,8 +112,22 @@ export default function SeafarerSupport() {
   };
 
   const scrollToDashboard = () => {
-    document.getElementById('support-dashboard').scrollIntoView({ behavior: 'smooth' });
+    const el = document.getElementById('support-dashboard');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // Resolved Media URLs (Strict CMS only, no hardcoded image fallbacks)
+  const heroImageUrl = getMediaUrl(data?.hero_image, null);
+  const reassuranceImageUrl = getMediaUrl(data?.reassurance_image, null);
+  const leader1ImageUrl = getMediaUrl(data?.leader_1_image, null);
+  const leader2ImageUrl = getMediaUrl(data?.leader_2_image, null);
+
+  // Default icons for 6 service dashboard cards
+  const serviceIcons = [FaShip, FaBoxOpen, FaUserTie, FaHandsHelping, FaTshirt, FaBus];
+
+  if (isLoading && !data) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FBFD] relative">
@@ -156,321 +159,367 @@ export default function SeafarerSupport() {
       <main className="flex-grow">
         
         {/* ================= HERO SECTION ================= */}
-        <section className="relative pt-12 pb-16 md:pt-16 md:pb-16 min-h-[40vh] flex flex-col justify-center overflow-hidden ">
-          <div className="absolute inset-0 z-0">
-            <img src={data?.hero_image?.url || portHalifaxImg} alt="Halifax Harbour" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-br from-[#112A46]/45 from-[#2D5A7B]/45 via-[#2D5A7B]/55"></div>
-          </div>
+        <section className="relative pt-12 pb-16 md:pt-16 md:pb-16 min-h-[40vh] flex flex-col justify-center overflow-hidden">
+          {heroImageUrl && (
+            <div className="absolute inset-0 z-0">
+              <img src={heroImageUrl} alt={data?.hero_title || "Halifax Harbour"} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-br from-[#112A46]/45 from-[#2D5A7B]/45 via-[#2D5A7B]/55"></div>
+            </div>
+          )}
 
           <div className="w-full max-w-[1200px] mx-auto px-6 relative z-10 text-center">
             <Reveal>
-              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-5 py-2 rounded-full text-sm font-bold tracking-wide uppercase mb-2 cursor-default">
-                <FaAnchor className="text-[#FFD700]" /> {data?.hero_badge || "For Visiting Crews"}
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 max-w-4xl mx-auto">
-                {data?.hero_title || (
-                  <>Support While You’re in <br className="hidden md:block"/> Halifax Harbour</>
-                )}
-              </h1>
-              <p className="text-lg md:text-xl text-white/90 leading-relaxed font-medium max-w-3xl mx-auto mb-10">
-                {data?.hero_subtitle || "Wherever you are from, you are welcome here. Mission to Seafarers Halifax is here to support you with practical help, connection, hospitality, and care while your ship is visiting the Port of Halifax."}
-              </p>
+              {data?.hero_badge && (
+                <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-5 py-2 rounded-full text-sm font-bold tracking-wide uppercase mb-2 cursor-default">
+                  <FaAnchor className="text-[#FFD700]" /> {data.hero_badge}
+                </div>
+              )}
+              {data?.hero_title && (
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 max-w-4xl mx-auto">
+                  {data.hero_title}
+                </h1>
+              )}
+              {data?.hero_subtitle && (
+                <p className="text-lg md:text-xl text-white/90 leading-relaxed font-medium max-w-3xl mx-auto mb-10">
+                  {data.hero_subtitle}
+                </p>
+              )}
 
               <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4">
-                <button onClick={() => setActiveModal('shipVisit')} className="w-full sm:w-auto px-8 py-4 bg-[#E05A2B] hover:bg-[#c94d23] text-white font-extrabold rounded-xl shadow-lg transition-transform hover:-translate-y-1 cursor-pointer">
-                  {data?.btn_ship_visit_text || "Request a Ship Visit"}
-                </button>
-                <button onClick={scrollToDashboard} className="w-full sm:w-auto px-8 py-4 bg-white text-[#112A46] hover:bg-gray-100 font-extrabold rounded-xl shadow-lg transition-transform hover:-translate-y-1 cursor-pointer">
-                  {data?.btn_services_text || "Explore Services"}
-                </button>
-                <a href={data?.btn_whatsapp_link || "https://wa.me/+19029893388"} target="_blank" rel="noreferrer" className="w-full sm:w-auto px-8 py-4 bg-[#25D366] hover:bg-[#1ebd57] text-white font-extrabold rounded-xl shadow-lg flex items-center justify-center gap-2 transition-transform hover:-translate-y-1 cursor-pointer">
-                  <FaWhatsapp className="text-xl" /> {data?.btn_whatsapp_text || "Message on WhatsApp"}
-                </a>
+                {data?.btn_ship_visit_text && (
+                  <button onClick={() => setActiveModal('shipVisit')} className="w-full sm:w-auto px-8 py-4 bg-[#E05A2B] hover:bg-[#c94d23] text-white font-extrabold rounded-xl shadow-lg transition-transform hover:-translate-y-1 cursor-pointer">
+                    {data.btn_ship_visit_text}
+                  </button>
+                )}
+                {data?.btn_services_text && (
+                  <button onClick={scrollToDashboard} className="w-full sm:w-auto px-8 py-4 bg-white text-[#112A46] hover:bg-gray-100 font-extrabold rounded-xl shadow-lg transition-transform hover:-translate-y-1 cursor-pointer">
+                    {data.btn_services_text}
+                  </button>
+                )}
+                {data?.btn_whatsapp_text && (
+                  <a href={data?.btn_whatsapp_link || "#"} target="_blank" rel="noreferrer" className="w-full sm:w-auto px-8 py-4 bg-[#25D366] hover:bg-[#1ebd57] text-white font-extrabold rounded-xl shadow-lg flex items-center justify-center gap-2 transition-transform hover:-translate-y-1 cursor-pointer">
+                    <FaWhatsapp className="text-xl" /> {data.btn_whatsapp_text}
+                  </a>
+                )}
               </div>
             </Reveal>
           </div>
         </section>
 
         {/* ================= 6 CARDS DASHBOARD ================= */}
-        <section id="support-dashboard" className="py-20 bg-[#F8FBFD] scroll-mt-20">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <Reveal className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#112A46]">{data?.services_title || "How Can We Help You Today?"}</h2>
-              <p className="text-gray-600 mt-4 text-lg">{data?.services_subtitle || "Select a service below to request assistance quickly."}</p>
-            </Reveal>
+        {(data?.services_title || (Array.isArray(data?.support_services) && data.support_services.length > 0)) && (
+          <section id="support-dashboard" className="py-20 bg-[#F8FBFD] scroll-mt-20">
+            <div className="max-w-[1200px] mx-auto px-6">
+              <Reveal className="text-center mb-16">
+                {data?.services_title && <h2 className="text-3xl md:text-4xl font-extrabold text-[#112A46]">{data.services_title}</h2>}
+                {data?.services_subtitle && <p className="text-gray-600 mt-4 text-lg">{data.services_subtitle}</p>}
+              </Reveal>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              
-              <Reveal>
-                <div onClick={() => setActiveModal('shipVisit')} className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#E05A2B]/30 transition-all cursor-pointer group h-full flex flex-col">
-                  <div className="w-16 h-16 bg-[#FDF0EC] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <FaShip className="text-3xl text-[#E05A2B]" />
-                  </div>
-                  <h3 className="text-xl font-bold text-[#112A46] mb-3">{data?.support_services?.[0]?.title || "Request a Ship Visit"}</h3>
-                  <p className="text-gray-600 font-medium mb-6 flex-grow">{data?.support_services?.[0]?.description || "Our volunteers and chaplaincy team can visit your ship while you are in port."}</p>
-                  <div className="text-[#E05A2B] font-bold text-sm inline-flex items-center gap-2">{data?.support_services?.[0]?.button_text || "Fill Request Form →"}</div>
+              {Array.isArray(data?.support_services) && data.support_services.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {data.support_services.map((service, index) => {
+                    const IconComponent = serviceIcons[index % serviceIcons.length] || FaHandsHelping;
+                    
+                    // Card 1 (Parcel): external link
+                    if (index === 1 && service.button_link) {
+                      return (
+                        <Reveal key={index} delay={index * 100}>
+                          <a href={service.button_link} target="_blank" rel="noopener noreferrer" className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#E05A2B]/30 transition-all cursor-pointer group h-full flex flex-col block">
+                            <div className="w-16 h-16 bg-[#FDF0EC] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                              <IconComponent className="text-3xl text-[#E05A2B]" />
+                            </div>
+                            {service.title && <h3 className="text-xl font-bold text-[#112A46] mb-3">{service.title}</h3>}
+                            {service.description && <p className="text-gray-600 font-medium mb-6 flex-grow">{service.description}</p>}
+                            {service.button_text && <div className="text-[#E05A2B] font-bold text-sm inline-flex items-center gap-2">{service.button_text}</div>}
+                          </a>
+                        </Reveal>
+                      );
+                    }
+
+                    // Card 2 (Message Chaplain): WhatsApp link
+                    if (index === 2) {
+                      return (
+                        <Reveal key={index} delay={index * 100}>
+                          <a href={service.button_link || "#"} target="_blank" rel="noreferrer" className="bg-[#112A46] rounded-3xl p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group h-full flex flex-col block">
+                            <div className="w-16 h-16 bg-[#25D366]/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                              <IconComponent className="text-3xl text-[#25D366]" />
+                            </div>
+                            {service.title && <h3 className="text-xl font-bold text-white mb-3">{service.title}</h3>}
+                            {service.description && <p className="text-white/70 font-medium mb-6 flex-grow">{service.description}</p>}
+                            {service.button_text && (
+                              <div className="text-[#25D366] font-bold text-sm inline-flex items-center gap-2">
+                                <FaWhatsapp className="text-lg"/> {service.button_text}
+                              </div>
+                            )}
+                          </a>
+                        </Reveal>
+                      );
+                    }
+
+                    // Modal cards (0: shipVisit, 3: support, 4: clothing, 5: transport)
+                    const modalType = index === 0 ? 'shipVisit' : index === 3 ? 'support' : index === 4 ? 'clothing' : 'transport';
+
+                    return (
+                      <Reveal key={index} delay={index * 100}>
+                        <div onClick={() => setActiveModal(modalType)} className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#E05A2B]/30 transition-all cursor-pointer group h-full flex flex-col">
+                          <div className="w-16 h-16 bg-[#FDF0EC] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <IconComponent className="text-3xl text-[#E05A2B]" />
+                          </div>
+                          {service.title && <h3 className="text-xl font-bold text-[#112A46] mb-3">{service.title}</h3>}
+                          {service.description && <p className="text-gray-600 font-medium mb-6 flex-grow">{service.description}</p>}
+                          {service.button_text && <div className="text-[#E05A2B] font-bold text-sm inline-flex items-center gap-2">{service.button_text}</div>}
+                        </div>
+                      </Reveal>
+                    );
+                  })}
                 </div>
-              </Reveal>
-
-              <Reveal delay={100}>
-                <a href={data?.support_services?.[1]?.button_link || "https://parcelservice.mtsc.ca/login"} target="_blank" rel="noopener noreferrer" className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#E05A2B]/30 transition-all cursor-pointer group h-full flex flex-col block">
-                  <div className="w-16 h-16 bg-[#FDF0EC] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <FaBoxOpen className="text-3xl text-[#E05A2B]" />
-                  </div>
-                  <h3 className="text-xl font-bold text-[#112A46] mb-3">{data?.support_services?.[1]?.title || "Send or Receive Parcel"}</h3>
-                  <p className="text-gray-600 font-medium mb-6 flex-grow">{data?.support_services?.[1]?.description || (
-                    <>Order personal items online and have them delivered safely to our Halifax Mission for pickup. Please ensure that all courier and parcel deliveries to the Mission are scheduled within official office hours.</>
-                  )}</p>
-                  <div className="text-[#E05A2B] font-bold text-sm inline-flex items-center gap-2">{data?.support_services?.[1]?.button_text || "Parcel Info & Request →"}</div>
-                </a>
-              </Reveal>
-
-              <Reveal delay={200}>
-                <a href={data?.support_services?.[2]?.button_link || "https://wa.me/19029893388"} target="_blank" rel="noreferrer" className="bg-[#112A46] rounded-3xl p-8 shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group h-full flex flex-col block">
-                  <div className="w-16 h-16 bg-[#25D366]/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <FaUserTie className="text-3xl text-[#25D366]" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-3">{data?.support_services?.[2]?.title || "Message the Chaplain"}</h3>
-                  <p className="text-white/70 font-medium mb-6 flex-grow">{data?.support_services?.[2]?.description || "Need someone to talk to? We are here to listen and support you confidentially."}</p>
-                  <div className="text-[#25D366] font-bold text-sm inline-flex items-center gap-2"><FaWhatsapp className="text-lg"/> {data?.support_services?.[2]?.button_text || "WhatsApp Us Now"}</div>
-                </a>
-              </Reveal>
-
-              <Reveal>
-                <div onClick={() => setActiveModal('support')} className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#E05A2B]/30 transition-all cursor-pointer group h-full flex flex-col">
-                  <div className="w-16 h-16 bg-[#FDF0EC] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <FaHandsHelping className="text-3xl text-[#E05A2B]" />
-                  </div>
-                  <h3 className="text-xl font-bold text-[#112A46] mb-3">{data?.support_services?.[3]?.title || "Request Support"}</h3>
-                  <p className="text-gray-600 font-medium mb-6 flex-grow">{data?.support_services?.[3]?.description || "We can assist with practical, emotional, transportation, or local support needs while your vessel is visiting the Port of Halifax."}</p>
-                  <div className="text-[#E05A2B] font-bold text-sm inline-flex items-center gap-2">{data?.support_services?.[3]?.button_text || "General Support Form →"}</div>
-                </div>
-              </Reveal>
-
-              <Reveal delay={100}>
-                <div onClick={() => setActiveModal('clothing')} className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#E05A2B]/30 transition-all cursor-pointer group h-full flex flex-col">
-                  <div className="w-16 h-16 bg-[#FDF0EC] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <FaTshirt className="text-3xl text-[#E05A2B]" />
-                  </div>
-                  <h3 className="text-xl font-bold text-[#112A46] mb-3">{data?.support_services?.[4]?.title || "Clothing & Essentials"}</h3>
-                  <p className="text-gray-600 font-medium mb-6 flex-grow">{data?.support_services?.[4]?.description || "Access seasonal clothing, gloves, jackets, hygiene items, and practical essentials during your time in port."}</p>
-                  <div className="text-[#E05A2B] font-bold text-sm inline-flex items-center gap-2">{data?.support_services?.[4]?.button_text || "Request Assistance →"}</div>
-                </div>
-              </Reveal>
-
-              <Reveal delay={200}>
-                <div onClick={() => setActiveModal('transport')} className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm hover:shadow-xl hover:border-[#E05A2B]/30 transition-all cursor-pointer group h-full flex flex-col">
-                  <div className="w-16 h-16 bg-[#FDF0EC] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <FaBus className="text-3xl text-[#E05A2B]" />
-                  </div>
-                  <h3 className="text-xl font-bold text-[#112A46] mb-3">{data?.support_services?.[5]?.title || "Transport & Guidance"}</h3>
-                  <p className="text-gray-600 font-medium mb-6 flex-grow">{data?.support_services?.[5]?.description || "Need help getting around Halifax or finding local services? Our team may be able to assist."}</p>
-                  <div className="text-[#E05A2B] font-bold text-sm inline-flex items-center gap-2">{data?.support_services?.[5]?.button_text || "Transportation Request →"}</div>
-                </div>
-              </Reveal>
-
+              )}
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* ================= REASSURANCE SECTION ================= */}
-        <section className="py-20 bg-white">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <Reveal>
-                <div className="rounded-3xl overflow-hidden shadow-2xl relative">
-                  <img src={data?.reassurance_image?.url || volunteersImg} alt="Welcome Seafarers" className="w-full h-full object-cover aspect-square md:aspect-auto" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#112A46]/80 to-transparent flex items-end p-8">
-                    <h3 className="text-3xl font-extrabold text-white">{data?.reassurance_overlay_title || "You Are Not Alone."}</h3>
-                  </div>
-                </div>
-              </Reveal>
-
-              <Reveal delay={100}>
-                <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm mb-2 block">{data?.commitment_eyebrow || "Our Commitment"}</span>
-                <h2 className="text-3xl md:text-4xl font-extrabold text-[#112A46] leading-tight mb-6">
-                  {data?.commitment_title || "Every day, seafarers from around the world arrive in Halifax."}
-                </h2>
-                <p className="text-gray-600 text-lg font-medium leading-relaxed mb-8">
-                  {data?.commitment_description || "Every day, seafarers from around the world arrive in Halifax after long journeys at sea. Whether you are here for a few hours or several days, our team is here to welcome and support you."}
-                </p>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {(data?.commitment_checklist?.length > 0 ? data.commitment_checklist.map(c => c.item_text) : [
-                    "Friendly conversation & hospitality",
-                    "Free Wi-Fi & communication support",
-                    "Transportation assistance",
-                    "Emotional & spiritual care",
-                    "Practical support while in port",
-                    "Access to local resources"
-                  ]).map((item, idx) => (
-                    <div key={idx} className="flex items-start gap-3 bg-[#F8FBFD] p-4 rounded-xl border border-gray-100 cursor-default">
-                      <FaCheckCircle className="text-[#E05A2B] text-lg mt-0.5 shrink-0" />
-                      <span className="text-gray-700 font-bold text-sm">{item}</span>
+        {(data?.commitment_title || data?.commitment_description || reassuranceImageUrl || (Array.isArray(data?.commitment_checklist) && data.commitment_checklist.length > 0)) && (
+          <section className="py-20 bg-white">
+            <div className="max-w-[1200px] mx-auto px-6">
+              <div className="grid lg:grid-cols-2 gap-16 items-center">
+                {reassuranceImageUrl && (
+                  <Reveal>
+                    <div className="rounded-3xl overflow-hidden shadow-2xl relative">
+                      <img src={reassuranceImageUrl} alt={data?.reassurance_overlay_title || "Welcome Seafarers"} className="w-full h-full object-cover aspect-square md:aspect-auto" />
+                      {data?.reassurance_overlay_title && (
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#112A46]/80 to-transparent flex items-end p-8">
+                          <h3 className="text-3xl font-extrabold text-white">{data.reassurance_overlay_title}</h3>
+                        </div>
+                      )}
                     </div>
-                  ))}
-                </div>
-              </Reveal>
+                  </Reveal>
+                )}
+
+                <Reveal delay={100}>
+                  {data?.commitment_eyebrow && <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm mb-2 block">{data.commitment_eyebrow}</span>}
+                  {data?.commitment_title && (
+                    <h2 className="text-3xl md:text-4xl font-extrabold text-[#112A46] leading-tight mb-6">
+                      {data.commitment_title}
+                    </h2>
+                  )}
+                  {data?.commitment_description && (
+                    <p className="text-gray-600 text-lg font-medium leading-relaxed mb-8">
+                      {data.commitment_description}
+                    </p>
+                  )}
+                  {Array.isArray(data?.commitment_checklist) && data.commitment_checklist.length > 0 && (
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      {data.commitment_checklist.map((itemObj, idx) => {
+                        const itemText = itemObj.item_text || itemObj;
+                        return (
+                          <div key={idx} className="flex items-start gap-3 bg-[#F8FBFD] p-4 rounded-xl border border-gray-100 cursor-default">
+                            <FaCheckCircle className="text-[#E05A2B] text-lg mt-0.5 shrink-0" />
+                            <span className="text-gray-700 font-bold text-sm">{itemText}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </Reveal>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* ================= HOW IT WORKS ================= */}
-        <section className="py-24 bg-[#112A46] text-white cursor-default">
-          <div className="max-w-[1200px] mx-auto px-6 text-center">
-            <Reveal>
-              <h2 className="text-3xl md:text-4xl font-extrabold mb-16">{data?.how_it_works_title || "Getting Support is Simple"}</h2>
-            </Reveal>
-            
-            <div className="grid md:grid-cols-3 gap-12 relative max-w-4xl mx-auto">
-              <div className="hidden md:block absolute top-10 left-20 right-20 h-1 bg-white/10 z-0"></div>
-              
-              {(data?.how_it_works_steps?.length > 0 ? data.how_it_works_steps.map(s => ({ step: s.step_number, title: s.step_title, desc: s.step_desc })) : [
-                { step: "1", title: "Choose", desc: "Select the service or support you need from our dashboard above." },
-                { step: "2", title: "Request", desc: "Fill out a short request form or message our team." },
-                { step: "3", title: "Connect", desc: "Our volunteers or station team will contact you shortly." }
-              ]).map((s, idx) => (
-                <Reveal delay={idx * 100} key={idx} className="relative z-10 flex flex-col items-center">
-                  <div className="w-20 h-20 bg-[#E05A2B] rounded-full flex items-center justify-center text-3xl font-black mb-6 shadow-xl border-4 border-[#112A46]">
-                    {s.step}
-                  </div>
-                  <h3 className="text-xl font-bold mb-3">{s.title}</h3>
-                  <p className="text-white/70 font-medium">{s.desc}</p>
+        {(data?.how_it_works_title || (Array.isArray(data?.how_it_works_steps) && data.how_it_works_steps.length > 0)) && (
+          <section className="py-24 bg-[#112A46] text-white cursor-default">
+            <div className="max-w-[1200px] mx-auto px-6 text-center">
+              {data?.how_it_works_title && (
+                <Reveal>
+                  <h2 className="text-3xl md:text-4xl font-extrabold mb-16">{data.how_it_works_title}</h2>
                 </Reveal>
-              ))}
+              )}
+              
+              {Array.isArray(data?.how_it_works_steps) && data.how_it_works_steps.length > 0 && (
+                <div className="grid md:grid-cols-3 gap-12 relative max-w-4xl mx-auto">
+                  <div className="hidden md:block absolute top-10 left-20 right-20 h-1 bg-white/10 z-0"></div>
+                  
+                  {data.how_it_works_steps.map((s, idx) => (
+                    <Reveal delay={idx * 100} key={idx} className="relative z-10 flex flex-col items-center">
+                      {s.step_number && (
+                        <div className="w-20 h-20 bg-[#E05A2B] rounded-full flex items-center justify-center text-3xl font-black mb-6 shadow-xl border-4 border-[#112A46]">
+                          {s.step_number}
+                        </div>
+                      )}
+                      {s.step_title && <h3 className="text-xl font-bold mb-3">{s.step_title}</h3>}
+                      {s.step_desc && <p className="text-white/70 font-medium">{s.step_desc}</p>}
+                    </Reveal>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* ================= MEET YOUR TEAM ================= */}
-        <section className="py-20 bg-white border-b border-gray-100">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <Reveal className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-[#112A46] mb-4 cursor-default">{data?.team_title || "A Friendly Face While Far From Home"}</h2>
-              <p className="text-gray-600 text-lg max-w-2xl mx-auto font-medium cursor-default">
-                {data?.team_subtitle || "Our volunteers, chaplaincy team, and station staff are here to welcome you, listen, and support you during your time in Halifax."}
-              </p>
-            </Reveal>
+        {(data?.team_title || data?.leader_1_name || data?.leader_2_name || data?.welcoming_box_title) && (
+          <section className="py-20 bg-white border-b border-gray-100">
+            <div className="max-w-[1200px] mx-auto px-6">
+              {(data?.team_title || data?.team_subtitle) && (
+                <Reveal className="text-center mb-16">
+                  {data?.team_title && <h2 className="text-3xl md:text-4xl font-extrabold text-[#112A46] mb-4 cursor-default">{data.team_title}</h2>}
+                  {data?.team_subtitle && (
+                    <p className="text-gray-600 text-lg max-w-2xl mx-auto font-medium cursor-default">
+                      {data.team_subtitle}
+                    </p>
+                  )}
+                </Reveal>
+              )}
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
-              <Reveal delay={100}>
-                <div className="flex items-center gap-6 bg-[#F8FBFD] p-6 rounded-3xl border border-gray-100 cursor-default">
-                  <div className="w-24 h-24 rounded-full overflow-hidden shrink-0 border-4 border-white shadow-md">
-                    <img src={data?.leader_1_image?.url || helenImg} alt={data?.leader_1_name || "Helen Glenn"} className="w-full h-full object-contain" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-extrabold text-[#112A46]">{data?.leader_1_name || "Helen Glenn"}</h3>
-                    <p className="text-[#E05A2B] font-bold text-sm uppercase mb-2">{data?.leader_1_role || "Mission Manager"}</p>
-                    <div className="flex gap-3">
-                      <a href={data?.leader_1_whatsapp || "https://wa.me/19024561658"} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"><FaWhatsapp /></a>
-                      <a href={data?.leader_1_email || "mailto:hglenn@missiontoseafarershalifax.ca"} className="w-10 h-10 rounded-full bg-[#112A46] text-white flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"><FaEnvelope /></a>
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-
-              <Reveal delay={200}>
-                <div className="flex items-center gap-6 bg-[#F8FBFD] p-6 rounded-3xl border border-gray-100 cursor-default">
-                  <div className="w-24 h-24 rounded-full overflow-hidden shrink-0 border-4 border-white shadow-md bg-[#EAE6DF] flex items-center justify-center">
-                    <img src={data?.leader_2_image?.url || josephImg} alt={data?.leader_2_name || "Joseph Loot"} className="w-full h-full object-contain scale-[1.2]" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-extrabold text-[#112A46]">{data?.leader_2_name || "Joseph Loot"}</h3>
-                    <p className="text-[#E05A2B] font-bold text-sm uppercase mb-2">{data?.leader_2_role || "Assistant Manager"}</p>
-                    <div className="flex gap-3">
-                      <a href={data?.leader_2_whatsapp || "https://wa.me/19029893388"} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"><FaWhatsapp /></a>
-                      <a href={data?.leader_2_email || "mailto:jloot@missiontoseafarershalifax.ca"} className="w-10 h-10 rounded-full bg-[#112A46] text-white flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"><FaEnvelope /></a>
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-            </div>
-
-            <Reveal>
-              <div className="bg-[#E05A2B]/10 border border-[#E05A2B]/20 rounded-3xl p-8 max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left cursor-default">
-                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm">
-                  <FaGlobe className="text-[#E05A2B] text-3xl" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-extrabold text-[#112A46] mb-2">{data?.welcoming_box_title || "We Welcome Seafarers from Around the World"}</h3>
-                  <p className="text-gray-700 font-medium">{data?.welcoming_box_text || "Mission to Seafarers Halifax supports seafarers of all nationalities, cultures, and faiths. If English is not your first language, we will do our best to support you and help you feel comfortable during your visit."}</p>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ================= EMERGENCY & LOCATION ================= */}
-        <section className="py-16 bg-[#E05A2B] cursor-default">
-          <div className="max-w-[800px] mx-auto px-6 text-center text-white">
-            <Reveal>
-              <h2 className="text-3xl md:text-4xl font-black mb-4">{data?.urgent_title || "Need Urgent Assistance?"}</h2>
-              <p className="text-white/90 text-lg mb-8 font-medium">{data?.urgent_subtitle || "Contact us directly by phone or WhatsApp for immediate support."}</p>
-              
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href={data?.btn_call_link || "tel:+19024227790"} className="bg-white text-[#E05A2B] px-8 py-4 rounded-xl font-black text-lg flex items-center justify-center gap-3 shadow-lg hover:bg-gray-100 transition-colors cursor-pointer">
-                  <FaPhoneAlt /> {data?.btn_call_text || "Call Station"}
-                </a>
-                <a href={data?.btn_urgent_whatsapp_link || "https://wa.me/19024561658"} target="_blank" rel="noreferrer" className="bg-[#25D366] text-white px-8 py-4 rounded-xl font-black text-lg flex items-center justify-center gap-3 shadow-lg hover:bg-[#1ebd57] transition-colors cursor-pointer">
-                  <FaWhatsapp className="text-2xl" /> {data?.btn_urgent_whatsapp_text || "WhatsApp Team"}
-                </a>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        <section className="py-20 bg-[#F8FBFD] cursor-default">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              
-              <Reveal>
-                <h2 className="text-3xl font-extrabold text-[#112A46] mb-8">{data?.visit_section_title || "Visit the Halifax Mission"}</h2>
-                
-                <div className="space-y-8">
-                  <div className="flex gap-4">
-                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100">
-                      <FaMapMarkerAlt className="text-[#E05A2B] text-xl" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-[#112A46] text-lg mb-1">{data?.civic_address_title || "Civic Address"}</h4>
-                      <p className="text-gray-600 font-medium whitespace-pre-line">{data?.civic_address_text || "844 Marginal Road, Halifax NS B3H 2P7, Nova Scotia\nSituated across from Pier 24 in the Halifax Seaport area."}</p>
-                      <h4 className="font-bold text-[#112A46] text-lg mt-4 mb-1">{data?.mailing_address_title || "Mailing Address"}</h4>
-                      <p className="text-gray-600 font-medium">{data?.mailing_address_text || "P.O. Box 27114, Halifax, NS B3H 4M8"}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4">
-                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100">
-                      <FaClock className="text-[#E05A2B] text-xl" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-[#112A46] text-lg mb-1">{data?.hours_title || "General Station Hours"}</h4>
-                      <p className="text-gray-600 font-medium"><strong className="text-[#112A46]">{data?.mon_sat_hours ? data.mon_sat_hours.split(':')[0] + ':' : "Mon - Sat:"}</strong> {data?.mon_sat_hours ? data.mon_sat_hours.substring(data.mon_sat_hours.indexOf(':') + 1).trim() : "10:00 AM – 4:00 PM"}</p>
-                      <p className="text-gray-600 font-medium"><strong className="text-[#112A46]">{data?.sunday_hours ? data.sunday_hours.split(':')[0] + ':' : "Sunday:"}</strong> {data?.sunday_hours ? data.sunday_hours.substring(data.sunday_hours.indexOf(':') + 1).trim() : "Generally Closed"}</p>
-                      <div className="mt-4 bg-[#112A46]/5 p-4 rounded-xl border border-[#112A46]/10">
-                        <p className="text-sm text-[#112A46] font-semibold italic">{data?.hours_note || "Note: Ship visits and seafarer support may still occur outside regular station hours depending on vessel schedules."}</p>
+              <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
+                {(data?.leader_1_name || data?.leader_1_role || leader1ImageUrl) && (
+                  <Reveal delay={100}>
+                    <div className="flex items-center gap-6 bg-[#F8FBFD] p-6 rounded-3xl border border-gray-100 cursor-default">
+                      {leader1ImageUrl && (
+                        <div className="w-24 h-24 rounded-full overflow-hidden shrink-0 border-4 border-white shadow-md">
+                          <img src={leader1ImageUrl} alt={data?.leader_1_name || "Helen Glenn"} className="w-full h-full object-contain" />
+                        </div>
+                      )}
+                      <div>
+                        {data?.leader_1_name && <h3 className="text-xl font-extrabold text-[#112A46]">{data.leader_1_name}</h3>}
+                        {data?.leader_1_role && <p className="text-[#E05A2B] font-bold text-sm uppercase mb-2">{data.leader_1_role}</p>}
+                        <div className="flex gap-3">
+                          {data?.leader_1_whatsapp && <a href={data.leader_1_whatsapp} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"><FaWhatsapp /></a>}
+                          {data?.leader_1_email && <a href={data.leader_1_email} className="w-10 h-10 rounded-full bg-[#112A46] text-white flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"><FaEnvelope /></a>}
+                        </div>
                       </div>
                     </div>
+                  </Reveal>
+                )}
+
+                {(data?.leader_2_name || data?.leader_2_role || leader2ImageUrl) && (
+                  <Reveal delay={200}>
+                    <div className="flex items-center gap-6 bg-[#F8FBFD] p-6 rounded-3xl border border-gray-100 cursor-default">
+                      {leader2ImageUrl && (
+                        <div className="w-24 h-24 rounded-full overflow-hidden shrink-0 border-4 border-white shadow-md bg-[#EAE6DF] flex items-center justify-center">
+                          <img src={leader2ImageUrl} alt={data?.leader_2_name || "Joseph Loot"} className="w-full h-full object-contain scale-[1.2]" />
+                        </div>
+                      )}
+                      <div>
+                        {data?.leader_2_name && <h3 className="text-xl font-extrabold text-[#112A46]">{data.leader_2_name}</h3>}
+                        {data?.leader_2_role && <p className="text-[#E05A2B] font-bold text-sm uppercase mb-2">{data.leader_2_role}</p>}
+                        <div className="flex gap-3">
+                          {data?.leader_2_whatsapp && <a href={data.leader_2_whatsapp} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"><FaWhatsapp /></a>}
+                          {data?.leader_2_email && <a href={data.leader_2_email} className="w-10 h-10 rounded-full bg-[#112A46] text-white flex items-center justify-center hover:scale-110 transition-transform cursor-pointer"><FaEnvelope /></a>}
+                        </div>
+                      </div>
+                    </div>
+                  </Reveal>
+                )}
+              </div>
+
+              {(data?.welcoming_box_title || data?.welcoming_box_text) && (
+                <Reveal>
+                  <div className="bg-[#E05A2B]/10 border border-[#E05A2B]/20 rounded-3xl p-8 max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left cursor-default">
+                    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm">
+                      <FaGlobe className="text-[#E05A2B] text-3xl" />
+                    </div>
+                    <div>
+                      {data?.welcoming_box_title && <h3 className="text-xl font-extrabold text-[#112A46] mb-2">{data.welcoming_box_title}</h3>}
+                      {data?.welcoming_box_text && <p className="text-gray-700 font-medium">{data.welcoming_box_text}</p>}
+                    </div>
                   </div>
-                </div>
-              </Reveal>
-
-              <Reveal delay={100}>
-                <div className="h-[400px] w-full rounded-3xl overflow-hidden shadow-lg border-4 border-white cursor-pointer">
-                  <iframe 
-                    title="Mission to Seafarers Halifax Map"
-                    src={data?.map_embed_url || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2839.2629471138245!2d-63.56839968446387!3d44.63248697909985!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4b5a2233f28325db%3A0xc3c5dd3b603eb61!2s844%20Marginal%20Rd%2C%20Halifax%2C%20NS%20B3H%204M8!5e0!3m2!1sen!2sca!4v1615560123456!5m2!1sen!2sca"} 
-                    width="100%" 
-                    height="100%" 
-                    style={{ border: 0 }} 
-                    allowFullScreen="" 
-                    loading="lazy">
-                  </iframe>
-                </div>
-              </Reveal>
-
+                </Reveal>
+              )}
             </div>
-          </div>
-        </section>
+          </section>
+        )}
+
+        {/* ================= EMERGENCY & LOCATION ================= */}
+        {(data?.urgent_title || data?.urgent_subtitle) && (
+          <section className="py-16 bg-[#E05A2B] cursor-default">
+            <div className="max-w-[800px] mx-auto px-6 text-center text-white">
+              <Reveal>
+                {data?.urgent_title && <h2 className="text-3xl md:text-4xl font-black mb-4">{data.urgent_title}</h2>}
+                {data?.urgent_subtitle && <p className="text-white/90 text-lg mb-8 font-medium">{data.urgent_subtitle}</p>}
+                
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  {data?.btn_call_text && (
+                    <a href={data?.btn_call_link || "#"} className="bg-white text-[#E05A2B] px-8 py-4 rounded-xl font-black text-lg flex items-center justify-center gap-3 shadow-lg hover:bg-gray-100 transition-colors cursor-pointer">
+                      <FaPhoneAlt /> {data.btn_call_text}
+                    </a>
+                  )}
+                  {data?.btn_urgent_whatsapp_text && (
+                    <a href={data?.btn_urgent_whatsapp_link || "#"} target="_blank" rel="noreferrer" className="bg-[#25D366] text-white px-8 py-4 rounded-xl font-black text-lg flex items-center justify-center gap-3 shadow-lg hover:bg-[#1ebd57] transition-colors cursor-pointer">
+                      <FaWhatsapp className="text-2xl" /> {data.btn_urgent_whatsapp_text}
+                    </a>
+                  )}
+                </div>
+              </Reveal>
+            </div>
+          </section>
+        )}
+
+        {(data?.visit_section_title || data?.civic_address_text || data?.map_embed_url) && (
+          <section className="py-20 bg-[#F8FBFD] cursor-default">
+            <div className="max-w-[1200px] mx-auto px-6">
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                
+                <Reveal>
+                  {data?.visit_section_title && <h2 className="text-3xl font-extrabold text-[#112A46] mb-8">{data.visit_section_title}</h2>}
+                  
+                  <div className="space-y-8">
+                    {(data?.civic_address_text || data?.mailing_address_text) && (
+                      <div className="flex gap-4">
+                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100">
+                          <FaMapMarkerAlt className="text-[#E05A2B] text-xl" />
+                        </div>
+                        <div>
+                          {data?.civic_address_title && <h4 className="font-bold text-[#112A46] text-lg mb-1">{data.civic_address_title}</h4>}
+                          {data?.civic_address_text && <p className="text-gray-600 font-medium whitespace-pre-line">{data.civic_address_text}</p>}
+                          {data?.mailing_address_title && <h4 className="font-bold text-[#112A46] text-lg mt-4 mb-1">{data.mailing_address_title}</h4>}
+                          {data?.mailing_address_text && <p className="text-gray-600 font-medium">{data.mailing_address_text}</p>}
+                        </div>
+                      </div>
+                    )}
+
+                    {(data?.mon_sat_hours || data?.sunday_hours || data?.hours_note) && (
+                      <div className="flex gap-4">
+                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shrink-0 shadow-sm border border-gray-100">
+                          <FaClock className="text-[#E05A2B] text-xl" />
+                        </div>
+                        <div>
+                          {data?.hours_title && <h4 className="font-bold text-[#112A46] text-lg mb-1">{data.hours_title}</h4>}
+                          {data?.mon_sat_hours && <p className="text-gray-600 font-medium">{data.mon_sat_hours}</p>}
+                          {data?.sunday_hours && <p className="text-gray-600 font-medium">{data.sunday_hours}</p>}
+                          {data?.hours_note && (
+                            <div className="mt-4 bg-[#112A46]/5 p-4 rounded-xl border border-[#112A46]/10">
+                              <p className="text-sm text-[#112A46] font-semibold italic">{data.hours_note}</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </Reveal>
+
+                {data?.map_embed_url && (
+                  <Reveal delay={100}>
+                    <div className="h-[400px] w-full rounded-3xl overflow-hidden shadow-lg border-4 border-white cursor-pointer">
+                      <iframe 
+                        title="Mission to Seafarers Halifax Map"
+                        src={data.map_embed_url} 
+                        width="100%" 
+                        height="100%" 
+                        style={{ border: 0 }} 
+                        allowFullScreen="" 
+                        loading="lazy">
+                      </iframe>
+                    </div>
+                  </Reveal>
+                )}
+
+              </div>
+            </div>
+          </section>
+        )}
 
       </main>
       <Footer />

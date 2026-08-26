@@ -1,125 +1,40 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import Reveal from '../components/common/Reveal';
-import {
-  FaCheckCircle, FaChevronLeft, FaChevronRight, FaHeart
-} from 'react-icons/fa';
+import { FaCheckCircle, FaChevronLeft, FaChevronRight, FaHeart } from 'react-icons/fa';
 
-import { client } from '../prismicio';
-import { PrismicRichText } from '@prismicio/react';
+import { useMtscWhoWeAreLive } from '../hooks/usePayloadLive';
+import { getMediaUrl } from '../services/payloadApi';
 
 // Import newly added forms
 import { Modal, VolunteerForm } from '../components/forms/WaysToGiveForms';
 
-// Import existing images
-import volunteersImg from '../assets/MtS Halifax Center.jpg';
-import helenImg from '../assets/Helen-Glenn-Mission-Manager-174x300.jpg';
-import portHalifaxImg from '../assets/port_halifax.jpg';
-import seafarersOnDeckImg from '../assets/Awards/3. The History.jpg';
-import josephImg from '../assets/Josefloot.jpg';
-import helecncircle from '../assets/HelenCircle.jpg'
-// ==========================================
-// IMPORT VOLUNTEER GALLERY IMAGES
-// ==========================================
-import volunteer1 from '../assets/Vol/3m. Volunteers.jpg';
-import volunteer2 from '../assets/Vol/3n. Volunteers.jpg';
-import volunteer3 from '../assets/Vol/3o. Volunteers.jpg';
-import volunteer4 from '../assets/Vol/3p. Volunteers.jpg';
-import volunteer5 from '../assets/Vol/3q. Volunteers.jpg';
-import volunteer6 from '../assets/Vol/3r. Volunteers.jpg';
-import volunteer7 from '../assets/Vol/3s. Volunteers.jpg';
-import volunteer8 from '../assets/Vol/3t. Volunteers.jpg';
-import volunteer9 from '../assets/Vol/3v. Volunteers.jpg';
-import volunteer10 from '../assets/Vol/3w. Volunteers.jpg';
-import volunteer11 from '../assets/Vol/3x. Volunteers.jpg';
-// ==========================================
-// IMPORT GALLERY IMAGES (AMENITIES)
-// ==========================================
-import bicyclesImg from '../assets/Amenities - Bicycles for Loan.jpg';
-import canteenImg from '../assets/Amenities - Canteen-Souvenir Shop.jpg';
-import chapelImg from '../assets/Amenities - Chapel-Prayer Room.jpg';
-import transportImg from '../assets/Amenities - Complimentary Transport Service.jpg';
-import conferenceImg from '../assets/Amenities - Conference Space.jpg';
-import freeRoomImg from '../assets/Amenities - Free Room.jpg';
-import basketballImg from '../assets/Amenities - Half Court Basketball 2.jpg';
-import loungeImg from '../assets/Amenities - Lounge.jpg';
-import sunDeckImg from '../assets/Amenities - Sun Deck.jpg';
-import freeWifiImg from '../assets/5. Free Wifi.png';
-import SeafarersLounge from '../assets/4b. Seafarer.jpg';
-import Outdore from '../assets/Outdoor.jpeg';
-import Men from '../assets/Mens.jpeg'
-import Women from '../assets/Women.jpeg'
-
-// Combine Halifax content into London's timeline structure
-const historyBlocks = [
-  {
-    era: "The Gateway",
-    title: "Why Halifax Matters",
-    content: (
-      <>
-        <p>As one of North America’s deepest and most connected Atlantic ports, Halifax plays a vital role in international shipping and global trade. Thousands of seafarers pass through Halifax Harbour each year, helping move cargo and goods between continents and communities.</p>
-        <p className="mt-4">For many crews, Halifax may be one of only a few opportunities to step ashore during long voyages.</p>
-        <p className="mt-4">That makes this port more than a shipping gateway. It becomes a place of rest, human connection, and care. Mission to Seafarers Halifax helps ensure that seafarers arriving on Canada’s Atlantic coast have access to hospitality, support, and a welcoming community while far from home.</p>
-      </>
-    ),
-    img: portHalifaxImg,
-  },
-  {
-    era: "Our Roots",
-    title: "Rooted in Halifax’s Maritime Story",
-    content: (
-      <>
-        <p>Halifax has always been shaped by the sea. Its waterfront tells stories of immigration, naval service, shipbuilding, resilience, and global connection. For generations, the harbour has welcomed ships and people from around the world, making Halifax one of Canada’s most historic maritime communities.</p>
-        <p className="mt-4">Mission to Seafarers Halifax continues that tradition of welcome. Today, our station serves seafarers of all nationalities, cultures, and faiths through practical, emotional, and pastoral care rooted in compassion and dignity.</p>
-        <p className="mt-4">Our work is made possible through volunteers, churches, maritime partners, donors, and community supporters who believe every seafarer deserves kindness, connection, and support during their time in port. While our care begins locally in Halifax, we are proud to be part of Mission to Seafarers Canada and the wider global Mission to Seafarers network supporting seafarers in ports around the world.</p>
-      </>
-    ),
-    img: volunteersImg,
-  },
-  {
-    era: "The History",
-    title: "From One Chaplain’s Compassion to a Global Mission",
-    content: (
-      <>
-        <p>The story of Mission to Seafarers began in 1835 with a simple but powerful act of compassion. While visiting the Bristol Channel in England, a young Anglican clergyman named Rev. John Ashley noticed that seafarers arriving by ship had no one to care for their spiritual or emotional well-being. Moved by their isolation and hardship, he chose to dedicate his life to supporting merchant crews working at sea.</p>
-        <p className="mt-4">What started with one chaplain soon inspired a movement. By 1856, similar ministries joined together under the name The Mission to Seamen Afloat, expanding support across multiple ports. Through world wars, economic hardship, and the evolution of global shipping, the Mission continued to grow and adapt.</p>
-        <p className="mt-4 font-semibold text-[#112A46] bg-[#F8FBFD] p-4 rounded-lg border-l-4 border-[#E05A2B]">
-          Today, Mission to Seafarers supports seafarers in hundreds of ports across more than 50 countries, serving over a million crew members every year. Though the maritime world has changed dramatically over the last century, one thing has remained constant: our commitment to being a source of hope, care, dignity, and human connection for seafarers and their families.
-        </p>
-      </>
-    ),
-    img: seafarersOnDeckImg,
-  },
-  {
-    era: "Community",
-    title: "A Community That Continues to Show Up",
-    content: (
-      <>
-        <p>The strength of Mission to Seafarers Halifax has always come from the community surrounding it. During the COVID-19 pandemic, when public restrictions forced many fundraising activities and events to pause, support for seafarers never stopped. Volunteers and supporters adapted quickly, organizing take-out dinners, outreach initiatives, and alternative fundraising efforts to ensure seafarers continued receiving care during one of the most isolating periods in modern shipping history.</p>
-        <p className="mt-4">One of the most meaningful traditions remains our annual Christmas Shoebox program. Even during the height of the pandemic, volunteers and community supporters came together to distribute more than 1,000 Christmas gifts to seafarers visiting Halifax ports. For many crew members spending the holidays far from home, those gifts became reminders that they had not been forgotten.</p>
-        <p className="mt-4">These moments reflect the heart of Mission to Seafarers Halifax: a community choosing to care for the people who keep the world moving.</p>
-      </>
-    ),
-    img: volunteer4, // Using a volunteer image for community section
+// Helper component to safely render CMS text without any fallback overrides
+const RenderCmsContent = ({ content }) => {
+  if (content !== undefined && content !== null) {
+    if (typeof content === 'string') {
+      return content ? <p className="whitespace-pre-line">{content}</p> : null;
+    }
+    if (Array.isArray(content)) {
+      return (
+        <>
+          {content.map((item, idx) => {
+            const val = typeof item === 'string' ? item : (item?.text || '');
+            return val ? <p key={idx}>{val}</p> : null;
+          })}
+        </>
+      );
+    }
   }
-];
+  return null;
+};
+
+import LoadingSpinner from '../components/common/LoadingSpinner';
 
 function About() {
-  const [data, setData] = useState(null);
+  const { data, isLoading } = useMtscWhoWeAreLive();
   const [activeModal, setActiveModal] = useState(null);
-
-  // Fetch Prismic data for whoweare
-  useEffect(() => {
-    client.getSingle("whoweare")
-      .then((document) => {
-        setData(document.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching Prismic whoweare in About:", error);
-      });
-  }, []);
 
   // Scroll to top on mount
   useEffect(() => {
@@ -132,63 +47,54 @@ function About() {
     setActiveModal(null);
   };
 
-  const volunteersGallery = useMemo(() => {
-    if (data?.volunteers_gallery && data.volunteers_gallery.length > 0) {
-      const prismicImgs = data.volunteers_gallery
-        .map((item, idx) => {
-          if (!item.gallery_image?.url) return null;
-          return {
-            id: `prismic-${idx}`,
-            img: item.gallery_image.url,
-            title: item.image_caption || "Volunteer"
-          };
-        })
-        .filter(Boolean);
-      if (prismicImgs.length > 0) return prismicImgs;
+  // Dynamic Media URLs from CMS
+  const heroImageUrl = getMediaUrl(data?.hero_image, null);
+  const leader1ImageUrl = getMediaUrl(data?.leader_1_image, null);
+  const leader2ImageUrl = getMediaUrl(data?.leader_2_image, null);
+
+  // Resolved Timeline History Blocks (Strict CMS only)
+  const historyBlocks = useMemo(() => {
+    if (Array.isArray(data?.history_blocks) && data.history_blocks.length > 0) {
+      return data.history_blocks.map((block) => ({
+        era: block.era || "",
+        title: block.title || "",
+        content: block.content || "",
+        img: getMediaUrl(block.image, null)
+      }));
     }
-    return [
-      { id: 1, img: volunteer1 },
-      { id: 2, img: volunteer2 },
-      { id: 3, img: volunteer3 },
-      { id: 4, img: volunteer4 },
-      { id: 5, img: volunteer5 },
-      { id: 6, img: volunteer6 },
-      { id: 7, img: volunteer7 },
-      { id: 8, img: volunteer8 },
-      { id: 9, img: volunteer9 },
-      { id: 10, img: volunteer10 },
-      { id: 11, img: volunteer11 },
-    ];
+    return [];
+  }, [data?.history_blocks]);
+
+  // Resolved Volunteers Gallery (Strict CMS only)
+  const volunteersGallery = useMemo(() => {
+    if (Array.isArray(data?.volunteers_gallery) && data.volunteers_gallery.length > 0) {
+      return data.volunteers_gallery.map((item, idx) => {
+        const imgUrl = getMediaUrl(item?.image || item, null);
+        if (!imgUrl) return null;
+        return {
+          id: `cms-vol-${idx}`,
+          img: imgUrl,
+          title: item.image_caption || ""
+        };
+      }).filter(Boolean);
+    }
+    return [];
   }, [data?.volunteers_gallery]);
 
+  // Resolved Amenities Gallery (Strict CMS only)
   const amenitiesGallery = useMemo(() => {
-    if (data?.amenities_gallery && data.amenities_gallery.length > 0) {
-      const prismicImgs = data.amenities_gallery
-        .map((item, idx) => {
-          if (!item.amenity_image?.url) return null;
-          return {
-            id: `prismic-amenity-${idx}`,
-            img: item.amenity_image.url,
-            title: item.amenity_title || "Station Amenity"
-          };
-        })
-        .filter(Boolean);
-      if (prismicImgs.length > 0) return prismicImgs;
+    if (Array.isArray(data?.amenities_gallery) && data.amenities_gallery.length > 0) {
+      return data.amenities_gallery.map((item, idx) => {
+        const imgUrl = getMediaUrl(item?.image || item, null);
+        if (!imgUrl) return null;
+        return {
+          id: `cms-amenity-${idx}`,
+          img: imgUrl,
+          title: item.title || ""
+        };
+      }).filter(Boolean);
     }
-    return [
-      { id: 1, img: loungeImg, title: 'Edmonds Lounge' },
-      { id: 2, img: SeafarersLounge, title: 'Seafarers Lounge' },
-      { id: 3, img: canteenImg, title: 'Canteen & Souvenir Shop' },
-      { id: 4, img: chapelImg, title: 'Chapel & Prayer Room' },
-      { id: 5, img: transportImg, title: 'Complimentary Transport' },
-      { id: 6, img: bicyclesImg, title: 'Bicycles for Loan' },
-      { id: 7, img: basketballImg, title: 'Half Court Basketball' },
-      { id: 8, img: Outdore, title: 'Outdoor Sun Deck And Yard' },
-      { id: 9, img: conferenceImg, title: 'Conference Space' },
-      { id: 10, img: Men, title: 'Men’s Free Room' },
-      { id: 11, img: Women, title: 'Women’s Free Room' },
-      { id: 12, img: freeWifiImg, title: 'Free WiFi' },
-    ];
+    return [];
   }, [data?.amenities_gallery]);
 
   const carouselRef = useRef(null);
@@ -207,6 +113,10 @@ function About() {
     if (volunteerCarouselRef.current) volunteerCarouselRef.current.scrollBy({ left: volunteerCarouselRef.current.offsetWidth, behavior: 'smooth' });
   };
 
+  if (isLoading && !data) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <div className="min-h-screen flex flex-col relative">
       <Navbar />
@@ -222,566 +132,556 @@ function About() {
 
       <main className="flex-grow">
 
-        {/* Hero Section - Matching London Design */}
+        {/* Hero Section */}
         <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 overflow-hidden bg-[#112A46] min-h-[30vh] flex items-center justify-center border-b border-[#0a1a2c]">
-          <div className="absolute inset-0 z-0">
-            <img
-              src={volunteersImg}
-              alt="About Mission to Seafarers Halifax"
-              className="w-full h-full object-cover object-center opacity-40 mix-blend-overlay"
-            />
-            {/* <div className="absolute inset-0 bg-gradient-to-t from-[#0a1a2c] via-[#112A46]/60 to-transparent" /> */}
-          </div>
+          {heroImageUrl && (
+            <div className="absolute inset-0 z-0">
+              <img
+                src={heroImageUrl}
+                alt={data?.hero_title || "About Mission to Seafarers Halifax"}
+                className="w-full h-full object-cover object-center opacity-40 mix-blend-overlay"
+              />
+            </div>
+          )}
 
           <div className="w-full max-w-[1200px] mx-auto px-6 relative z-10 text-center">
-            <span className="inline-block text-[#E05A2B] font-bold tracking-widest uppercase text-sm mb-4">
-              {data?.hero_eyebrow || "About Mission to Seafarers Halifax"}
-            </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight max-w-4xl mx-auto mb-6">
-              {data?.hero_title || "A Harbour of Care on Canada’s Atlantic Coast"}
-            </h1>
-            <p className="text-lg md:text-xl text-white/80 leading-relaxed font-medium max-w-3xl mx-auto">
-              {data?.hero_subtitle || "For generations, the Port of Halifax has stood as one of Canada’s most important gateways to the world. Ships arrive daily carrying the goods that sustain communities, industries, hospitals, businesses, and families across the country."}
-            </p>
+            {data?.hero_eyebrow && (
+              <span className="inline-block text-[#E05A2B] font-bold tracking-widest uppercase text-sm mb-4">
+                {data.hero_eyebrow}
+              </span>
+            )}
+            {data?.hero_title && (
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight max-w-4xl mx-auto mb-6">
+                {data.hero_title}
+              </h1>
+            )}
+            {data?.hero_subtitle && (
+              <div className="text-lg md:text-xl text-white/80 leading-relaxed font-medium max-w-3xl mx-auto [&>p]:m-0">
+                <RenderCmsContent content={data.hero_subtitle} />
+              </div>
+            )}
           </div>
         </section>
 
-        {/* Visually Engaging History Timeline Section (Adapted from London) */}
+        {/* History Timeline Section */}
         <section className="py-24 bg-[#F8FBFD] overflow-hidden">
           <div className="w-full max-w-[1200px] px-6 mx-auto">
-            <div className="max-w-3xl mx-auto text-center mb-20">
-              <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm">
-                {data?.story_eyebrow || "Our Story"}
-              </span>
-              <h2 className="mt-4 text-3xl md:text-5xl font-extrabold text-[#112A46] leading-tight">
-                {data?.story_title || "Behind every vessel is a crew."}
-              </h2>
-              <div className="mt-6 text-gray-600 text-sm leading-relaxed font-medium space-y-4">
-                {data?.story_description?.length > 0 ? (
-                  <PrismicRichText field={data.story_description} />
-                ) : (
-                  <>
-                    <p>seafarers who spend months away from home, crossing oceans to keep global trade moving. Mission to Seafarers Halifax exists to ensure that when those seafarers arrive in Halifax, they are not alone.</p>
-                    <p>Whether visiting for only a few hours or several days, many crew members arrive exhausted, isolated, and disconnected from loved ones. Limited shore leave, demanding schedules, and long periods at sea can take a significant emotional and physical toll.</p>
-                    <p>At our station and through ship visits across Halifax Harbour, we provide a welcoming place where seafarers can rest, reconnect with family, receive practical support, and experience kindness far from home.</p>
-                    <p>Sometimes support means helping a crew member make their first video call home in weeks. Sometimes it means offering warm winter clothing after arriving from sea in harsh Atlantic weather. Sometimes it simply means listening.</p>
-                  </>
+            {(data?.story_eyebrow || data?.story_title || data?.story_description) && (
+              <div className="max-w-3xl mx-auto text-center mb-20">
+                {data?.story_eyebrow && (
+                  <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm">
+                    {data.story_eyebrow}
+                  </span>
+                )}
+                {data?.story_title && (
+                  <h2 className="mt-4 text-3xl md:text-5xl font-extrabold text-[#112A46] leading-tight">
+                    {data.story_title}
+                  </h2>
+                )}
+                {data?.story_description && (
+                  <div className="mt-6 text-gray-600 text-sm leading-relaxed font-medium space-y-4 [&>p]:m-0 [&>p+p]:mt-4">
+                    <RenderCmsContent content={data.story_description} />
+                  </div>
                 )}
               </div>
-            </div>
+            )}
 
-            <div className="space-y-20 md:space-y-32 relative max-w-6xl mx-auto">
-              {/* Vertical connecting line for desktop */}
-              <div className="hidden md:block absolute left-1/2 top-4 bottom-4 w-[2px] bg-[#E05A2B]/20 -translate-x-1/2"></div>
+            {historyBlocks.length > 0 && (
+              <div className="space-y-20 md:space-y-32 relative max-w-6xl mx-auto">
+                <div className="hidden md:block absolute left-1/2 top-4 bottom-4 w-[2px] bg-[#E05A2B]/20 -translate-x-1/2"></div>
 
-              {(data?.history_blocks?.length > 0 ? data.history_blocks : historyBlocks).map((block, idx) => (
-                <Reveal key={idx}>
-                  <div className={`relative flex flex-col md:flex-row items-center gap-10 md:gap-16 lg:gap-24 ${idx % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
+                {historyBlocks.map((block, idx) => (
+                  <Reveal key={idx}>
+                    <div className={`relative flex flex-col md:flex-row items-center gap-10 md:gap-16 lg:gap-24 ${idx % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
 
-                    {/* Timeline Center Dot */}
-                    <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white border-4 border-[#E05A2B] items-center justify-center z-10 shadow-md">
-                      <div className="w-3 h-3 bg-[#E05A2B] rounded-full"></div>
+                      <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white border-4 border-[#E05A2B] items-center justify-center z-10 shadow-md">
+                        <div className="w-3 h-3 bg-[#E05A2B] rounded-full"></div>
+                      </div>
+
+                      {block.img && (
+                        <div className="w-full md:w-1/2 relative group">
+                          <div className="aspect-[3/3] rounded-3xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500 border-4 border-white">
+                            <img
+                              src={block.img}
+                              alt={block.title || "Story Image"}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            />
+                          </div>
+                          {block.era && (
+                            <div className={`absolute top-8 ${idx % 2 !== 0 ? '-left-8' : '-right-8'} bg-[#112A46] text-white px-8 py-3 rounded-xl shadow-xl z-20 hidden md:block transform transition-transform group-hover:-translate-y-2`}>
+                              <span className="text-lg font-bold tracking-wider uppercase">{block.era}</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      <div className="w-full md:w-1/2 space-y-6 bg-white md:bg-transparent p-8 md:p-0 rounded-3xl shadow-sm md:shadow-none border border-gray-100 md:border-none relative z-10">
+                        {block.era && (
+                          <div className="md:hidden inline-block bg-[#E05A2B] text-white px-4 py-2 rounded-lg text-sm font-bold mb-2 uppercase">
+                            {block.era}
+                          </div>
+                        )}
+
+                        {block.title && (
+                          <h3 className="text-2xl md:text-3xl font-extrabold text-[#112A46]">{block.title}</h3>
+                        )}
+
+                        {block.content && (
+                          <div className="text-gray-600 text-[16px] leading-relaxed space-y-4 font-medium [&>p]:m-0 [&>p+p]:mt-4">
+                            <RenderCmsContent content={block.content} />
+                          </div>
+                        )}
+                      </div>
                     </div>
-
-                    {/* Image Side */}
-                    <div className="w-full md:w-1/2 relative group">
-                      <div className="aspect-[3/3] rounded-3xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500 border-4 border-white">
-                        <img
-                          src={block.image?.url || block.img || historyBlocks[idx]?.img || volunteersImg}
-                          alt={block.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        />
-                      </div>
-                      {/* Year/Era Badge overlay on desktop */}
-                      <div className={`absolute top-8 ${idx % 2 !== 0 ? '-left-8' : '-right-8'} bg-[#112A46] text-white px-8 py-3 rounded-xl shadow-xl z-20 hidden md:block transform transition-transform group-hover:-translate-y-2`}>
-                        <span className="text-lg font-bold tracking-wider uppercase">{block.era}</span>
-                      </div>
-                    </div>
-
-                    {/* Content Side */}
-                    <div className="w-full md:w-1/2 space-y-6 bg-white md:bg-transparent p-8 md:p-0 rounded-3xl shadow-sm md:shadow-none border border-gray-100 md:border-none relative z-10">
-                      {/* Badge for mobile */}
-                      <div className="md:hidden inline-block bg-[#E05A2B] text-white px-4 py-2 rounded-lg text-sm font-bold mb-2 uppercase">
-                        {block.era}
-                      </div>
-
-                      <h3 className="text-2xl md:text-3xl font-extrabold text-[#112A46]">{block.title}</h3>
-
-                      <div className="text-gray-600 text-[16px] leading-relaxed space-y-4 font-medium">
-                        {Array.isArray(block.content) ? <PrismicRichText field={block.content} /> : block.content}
-                      </div>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+                  </Reveal>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
-        {/* Supporting Seafarers Today (Services List) */}
+        {/* Supporting Seafarers Today */}
         <section className="py-20 bg-white border-y border-gray-100">
           <div className="w-full max-w-[1200px] px-6 mx-auto">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <Reveal>
-                <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm">
-                  {data?.impact_eyebrow || "Our Impact"}
-                </span>
-                <h2 className="mt-4 text-3xl md:text-4xl font-extrabold text-[#112A46] leading-tight mb-6">
-                  {data?.impact_title || "Supporting Seafarers in Halifax Today"}
-                </h2>
-                <div className="text-gray-600 text-[16px] leading-relaxed font-medium mb-6 space-y-4">
-                  {data?.impact_description?.length > 0 ? (
-                    <PrismicRichText field={data.impact_description} />
-                  ) : (
-                    <p>
-                      Every interaction matters. Volunteers regularly meet crews who have spent months at sea without stepping onto land. Others arrive carrying the stress of uncertain contracts, fatigue, isolation, or the emotional weight of being away from family for extended periods. For many seafarers, even a small moment of kindness can make a lasting difference.
-                    </p>
-                  )}
-                </div>
-                <p className="text-[#112A46] font-bold text-lg mb-6">Our services include:</p>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {(data?.services_list?.length > 0
-                    ? data.services_list.map(item => item.service_text)
-                    : [
-                        "Friendly ship visits across Halifax Harbour",
-                        "Transportation and local guidance",
-                        "Wi-Fi and communication support",
-                        "Seasonal clothing and essential items",
-                        "Refreshments and hospitality",
-                        "Emotional and spiritual care",
-                        "Seafarers Parcel Pickup Service",
-                        "Community connection and advocacy",
-                        "Recreational amenities including bikes, billiards, darts, and basketball"
-                      ]
-                  ).map((service, index) => (
-                    <div key={index} className="flex items-start gap-3">
-                      <FaCheckCircle className="text-[#E05A2B] text-[16px] mt-0.5 shrink-0" />
-                      <span className="text-gray-700 text-[15px] font-semibold">{service}</span>
-                    </div>
-                  ))}
-                </div>
-              </Reveal>
-              <Reveal delay={100}>
-                <div className="bg-[#112A46] p-10 rounded-3xl text-white shadow-xl">
-                  <h3 className="text-2xl font-extrabold mb-4">{data?.looking_ahead_title || "Looking Ahead"}</h3>
-                  <div className="text-white/80 leading-relaxed mb-6 space-y-4">
-                    {data?.looking_ahead_paragraphs?.length > 0 ? (
-                      <PrismicRichText field={data.looking_ahead_paragraphs} />
-                    ) : (
-                      <>
-                        <p>
-                          As Mission to Seafarers Halifax continues to grow, so does our vision for the future. We are building more than a station. We are building a welcoming maritime hub where seafarers can find rest, support, connection, and community while visiting Halifax.
-                        </p>
-                        <p>
-                          Through volunteers, partnerships, churches, donors, and national collaboration, we hope to continue expanding services and outreach that respond to the evolving needs of seafarers visiting Canada’s Atlantic coast.
-                        </p>
-                      </>
-                    )}
-                  </div>
-                  <div className="text-[#f48c6f] font-bold italic space-y-2">
-                    {data?.looking_ahead_quote?.length > 0 ? (
-                      <PrismicRichText field={data.looking_ahead_quote} />
-                    ) : (
-                      <p>
-                        Every donation, volunteer hour, partnership, and act of kindness helps strengthen this mission.
-                        Because behind every ship entering Halifax Harbour is a crew of people who deserve to feel seen, valued, and cared for.
-                        Our team
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </Reveal>
-            </div>
-          </div>
-        </section>
-
-        {/* Team Section (London Style) */}
-        <section className="py-20 md:py-28 bg-white">
-          <div className="w-full max-w-[1200px] px-6 mx-auto">
-            <div className="text-center mb-16">
-              <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm">
-                {data?.team_eyebrow || "Station Leadership"}
-              </span>
-              <h2 className="mt-4 text-3xl md:text-4xl font-extrabold text-[#112A46] leading-tight">
-                {data?.team_title || "The People Behind the Welcome"}
-              </h2>
-              <div className="text-gray-600 max-w-3xl mx-auto mt-4 text-sm leading-relaxed space-y-4">
-                {data?.team_description?.length > 0 ? (
-                  <PrismicRichText field={data.team_description} />
-                ) : (
-                  <p>
-                    Guided by our Board of Directors and supported by dedicated staff and volunteers, Mission to Seafarers Halifax works to create a welcoming and supportive environment for seafarers visiting Canada’s Atlantic gateway.
-                    Whether through ship visits, station hospitality, transportation support, outreach, or simply offering a listening ear, every interaction is rooted in compassion, dignity, and care.
-                    Together, our board, staff, and volunteers help ensure that seafarers arriving in Halifax feel seen, supported, and connected while far from home.
-                  </p>
+                {data?.impact_eyebrow && (
+                  <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm">
+                    {data.impact_eyebrow}
+                  </span>
                 )}
-              </div>
-            </div>
-
-            {/* Featured Leader - Helen */}
-            <Reveal>
-              <div className="grid lg:grid-cols-12 gap-12 items-center mb-12 bg-[#F8FBFD] border border-gray-100 p-8 md:p-12 rounded-3xl shadow-sm hover:shadow-lg transition-shadow">
-                <div className="lg:col-span-5 flex justify-center">
-                  <img
-                    src={data?.leader_1_image?.url || helecncircle}
-                    alt="Helen Glenn"
-                    className="w-full max-w-sm rounded-full shadow-md object-cover aspect-square object-top border-4 border-white"
-                  />
-                </div>
-                <div className="lg:col-span-7">
-                  <h2 className="text-2xl md:text-3xl font-extrabold text-[#112A46] leading-tight">
-                    {data?.leader_1_role || "Mission Manager"}
+                {data?.impact_title && (
+                  <h2 className="mt-4 text-3xl md:text-4xl font-extrabold text-[#112A46] leading-tight mb-6">
+                    {data.impact_title}
                   </h2>
-                  <h3 className="mt-4 text-lg font-bold text-[#E05A2B] uppercase tracking-wider">
-                    {data?.leader_1_name || "HELEN GLENN"}
-                  </h3>
-                  <div className="mt-6 space-y-4 text-base md:text-lg text-gray-600 leading-relaxed">
-                    {data?.leader_1_bio?.length > 0 ? (
-                      <PrismicRichText field={data.leader_1_bio} />
-                    ) : (
-                      <>
-                        <p>
-                          Helen leads Mission to Seafarers Halifax with compassion, warmth, and a deep commitment to the welfare of seafarers visiting the Port of Halifax.
-                        </p>
-                        <p>
-                          Through leadership, outreach, volunteer coordination, and community engagement, she helps ensure that every seafarer who connects with the station experiences hospitality, practical support, and a welcoming place of care while ashore.
-                        </p>
-                        <p>
-                          Helen continues to play an important role in strengthening Halifax’s maritime community and advancing the Mission’s work across the region.
-                        </p>
-                      </>
-                    )}
+                )}
+                {data?.impact_description && (
+                  <div className="text-gray-600 text-[16px] leading-relaxed font-medium mb-6 space-y-4 [&>p]:m-0">
+                    <RenderCmsContent content={data.impact_description} />
                   </div>
-                </div>
-              </div>
-            </Reveal>
+                )}
 
-            {/* Additional Team Member - Joseph & Volunteer Card */}
-            <Reveal delay={100}>
-              <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                <div className="flex flex-col items-center text-center bg-white border border-gray-100 rounded-3xl p-10 shadow-sm hover:shadow-md transition-shadow">
-
-                  <div className="w-40 h-40 mx-auto rounded-full shadow-md mb-6 overflow-hidden border-4 border-white flex justify-center items-center bg-[#DCD2B9]">
-                    <img
-                      src={data?.leader_2_image?.url || josephImg}
-                      alt="Joseph"
-                      className="w-[98%] max-w-none h-auto"
-                    />
-                  </div>
-                  <h3 className="text-2xl font-bold text-[#112A46]">{data?.leader_2_name || "Joseph Loot"}</h3>
-                  <p className="text-[#E05A2B] font-bold uppercase text-sm mt-2 mb-4 tracking-wider">{data?.leader_2_role || "Assistant Manager"}</p>
-                  <div className="text-gray-600 leading-relaxed font-medium space-y-2">
-                    {data?.leader_2_bio?.length > 0 ? (
-                      <PrismicRichText field={data.leader_2_bio} />
-                    ) : (
-                      <p>
-                        Joseph supports the daily operations of the Halifax Mission and helps create a welcoming environment for seafarers visiting the port.Supporting outreach, station activities, and practical services to ensure seafarers in Halifax receive care, connection, and assistance during their stay. His dedication and calm presence help make the station a trusted place for many visiting crews.
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="flex flex-col items-center text-center bg-gradient-to-br from-[#112A46] to-[#1a3a5f] text-white rounded-3xl p-10 shadow-lg">
-                  <div className="w-20 h-20 bg-[#E05A2B] rounded-full flex items-center justify-center mb-6 shadow-lg">
-                    <FaHeart className="text-white text-3xl" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-white mb-4">{data?.volunteers_card_title || "Our Volunteers"}</h3>
-                  <p className="text-white/80 leading-relaxed font-medium mb-6">
-                    {data?.volunteers_card_description || "Behind every ship visit, warm meal, ride into the city, care package, or friendly conversation is a volunteer helping make it possible."}
-                  </p>
-                  <div className="flex justify-center gap-8 w-full mt-auto border-t border-white/20 pt-6">
-                    <div>
-                      <div className="text-3xl font-black text-coral">{data?.volunteers_active_count || "50+"}</div>
-                      <div className="text-[11px] font-bold uppercase tracking-wider text-white/70">Active<br />Volunteers</div>
-                    </div>
-                    <div>
-                      <div className="text-3xl font-black text-coral">{data?.volunteers_hours_count || "1000+"}</div>
-                      <div className="text-[11px] font-bold uppercase tracking-wider text-white/70">Hours<br />Served</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-
-
-        {/* CAROUSEL SECTION: VOLUNTEERS */}
-        <section className="py-20 bg-[#F8FBFD] border-y border-gray-100 overflow-hidden">
-          <div className="w-full max-w-[1200px] px-6 mx-auto">
-            <Reveal className="text-center mb-12">
-              <h2 className="mt-4 text-[32px] md:text-4xl font-extrabold text-[#112A46] mb-6">
-                {data?.gallery_section_title || "The Heart of the Mission | Our Volunteers"}
-              </h2>
-              <div className="text-gray-600 text-[16px] max-w-3xl mx-auto leading-relaxed font-medium space-y-4">
-                {data?.gallery_section_description?.length > 0 ? (
-                  <PrismicRichText field={data.gallery_section_description} />
-                ) : (
+                {Array.isArray(data?.services_list) && data.services_list.length > 0 && (
                   <>
-                    <p>
-                      Behind every ship visit, warm meal, ride into the city, care package, or friendly conversation is a volunteer helping make it possible.
-                    </p>
-                    <p>
-                      Mission to Seafarers Halifax is powered by a compassionate network of volunteers who generously give their time, skills, and energy to support seafarers arriving at the Port of Halifax.
-                    </p>
-                    <p>
-                      Some volunteers greet seafarers at the station. Others help coordinate transportation, organize seasonal programs, prepare hospitality spaces, assist with outreach, or participate in ship visits across Halifax Harbour.
-                    </p>
+                    <p className="text-[#112A46] font-bold text-lg mb-6">Our services include:</p>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      {data.services_list.map((service, index) => {
+                        const serviceText = service.service_text || service;
+                        return (
+                          <div key={index} className="flex items-start gap-3">
+                            <FaCheckCircle className="text-[#E05A2B] text-[16px] mt-0.5 shrink-0" />
+                            <span className="text-gray-700 text-[15px] font-semibold">{serviceText}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </>
                 )}
-              </div>
-            </Reveal>
+              </Reveal>
 
-            <Reveal delay={100}>
-              <div className="relative group">
-                <button
-                  onClick={scrollVolunteerPrev}
-                  className="absolute left-2 md:-left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-[#E05A2B] text-white shadow-xl flex items-center justify-center hover:bg-[#112A46] transition-all hover:scale-110 active:scale-95"
-                >
-                  <FaChevronLeft className="text-lg pr-1" />
-                </button>
-                <button
-                  onClick={scrollVolunteerNext}
-                  className="absolute right-2 md:-right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-[#E05A2B] text-white shadow-xl flex items-center justify-center hover:bg-[#112A46] transition-all hover:scale-110 active:scale-95"
-                >
-                  <FaChevronRight className="text-lg pl-1" />
-                </button>
-
-                <div
-                  ref={volunteerCarouselRef}
-                  className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4 pt-4 px-2"
-                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                >
-                  <style dangerouslySetInnerHTML={{ __html: `div::-webkit-scrollbar { display: none; }` }} />
-                  {volunteersGallery.map((item) => (
-                    <div
-                      key={item.id}
-                      className="relative overflow-hidden rounded-3xl shadow-md shrink-0 snap-center sm:snap-start w-[85%] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] group/card border border-white"
-                    >
-                      <div className="aspect-[4/3] w-full overflow-hidden bg-[#112A46]/5">
-                        <img src={item.img} alt={item.title} className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" draggable="false" />
+              {(data?.looking_ahead_title || data?.looking_ahead_paragraphs || data?.looking_ahead_quote) && (
+                <Reveal delay={100}>
+                  <div className="bg-[#112A46] p-10 rounded-3xl text-white shadow-xl">
+                    {data?.looking_ahead_title && (
+                      <h3 className="text-2xl font-extrabold mb-4">{data.looking_ahead_title}</h3>
+                    )}
+                    {data?.looking_ahead_paragraphs && (
+                      <div className="text-white/80 leading-relaxed mb-6 space-y-4 [&>p]:m-0 [&>p+p]:mt-4">
+                        <RenderCmsContent content={data.looking_ahead_paragraphs} />
                       </div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#112A46]/90 via-transparent to-transparent flex items-end p-6">
-                        {/* <div className="bg-white/95 backdrop-blur-sm rounded-xl px-4 py-2 shadow-sm">
-                          <h3 className="text-[#112A46] font-bold text-[14px]">{item.title}</h3>
-                        </div> */}
+                    )}
+                    {data?.looking_ahead_quote && (
+                      <div className="text-[#f48c6f] font-bold italic space-y-2 [&>p]:m-0">
+                        <RenderCmsContent content={data.looking_ahead_quote} />
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-
-            <Reveal delay={200} className="mt-16">
-              <div className="text-center max-w-4xl mx-auto space-y-12">
-                <div className="text-gray-600 text-[16px] leading-relaxed font-medium space-y-4">
-                  {data?.community_care_description?.length > 0 ? (
-                    <PrismicRichText field={data.community_care_description} />
-                  ) : (
-                    <>
-                      <p>
-                        Many simply offer something equally meaningful: human connection.
-                      </p>
-                      <p>
-                        For crew members who may spend months away from family and home, those moments of kindness and conversation can leave a lasting impact.
-                      </p>
-                    </>
-                  )}
-                </div>
-
-                <div>
-                  <h3 className="text-2xl md:text-3xl font-extrabold text-[#112A46] mb-4">{data?.community_care_title || "A Community of Care"}</h3>
-                  <div className="text-gray-600 text-[16px] leading-relaxed font-medium max-w-3xl mx-auto space-y-4">
-                    {data?.community_care_subtext?.length > 0 ? (
-                      <PrismicRichText field={data.community_care_subtext} />
-                    ) : (
-                      <p>
-                        Our volunteers come from diverse backgrounds but share one common purpose: to ensure seafarers visiting Halifax feel welcomed, respected, and supported. Their commitment reflects the spirit of Halifax’s maritime community and the long-standing tradition of caring for those who work at sea.
-                      </p>
                     )}
                   </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-                  <div className="bg-white border border-gray-100 p-8 rounded-3xl shadow-sm">
-                    <div className="text-4xl font-extrabold text-[#E05A2B] mb-2">{data?.stat_box_1_number || "30+"}</div>
-                    <div className="text-lg font-bold text-[#112A46] uppercase tracking-wider mb-2">{data?.stat_box_1_label || "Active Volunteers"}</div>
-                    <p className="text-gray-600 text-sm font-medium">
-                      {data?.stat_box_1_desc || "Supporting ship visits, hospitality, outreach, transportation, and station programs"}
-                    </p>
-                  </div>
-                  <div className="bg-white border border-gray-100 p-8 rounded-3xl shadow-sm">
-                    <div className="text-4xl font-extrabold text-[#E05A2B] mb-2">{data?.stat_box_2_number || "1,000+"}</div>
-                    <div className="text-lg font-bold text-[#112A46] uppercase tracking-wider mb-2">{data?.stat_box_2_label || "Volunteer Hours Served"}</div>
-                    <p className="text-gray-600 text-sm font-medium">
-                      {data?.stat_box_2_desc || "Dedicated annually to supporting seafarers visiting Halifax"}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="bg-[#112A46] p-10 md:p-14 rounded-3xl shadow-xl text-left text-white max-w-3xl mx-auto">
-                  <h3 className="text-2xl font-extrabold mb-4 text-[#E05A2B]">{data?.thank_you_title || "Thank You"}</h3>
-                  <div className="text-white/80 leading-relaxed font-medium mb-8 space-y-4">
-                    {data?.thank_you_text?.length > 0 ? (
-                      <PrismicRichText field={data.thank_you_text} />
-                    ) : (
-                      <p>
-                        To every volunteer, supporter, maritime partner, church community, and donor who helps sustain this mission: thank you. Your compassion and generosity continue to make Mission to Seafarers Halifax a place of welcome, care, and connection for seafarers from around the world.
-                      </p>
-                    )}
-                  </div>
-
-                  <h3 className="text-2xl font-extrabold mb-4 text-[#E05A2B]">{data?.volunteer_cta_title || "Interested in Volunteering?"}</h3>
-                  <div className="text-white/80 leading-relaxed font-medium mb-6 space-y-4">
-                    {data?.volunteer_cta_text?.length > 0 ? (
-                      <PrismicRichText field={data.volunteer_cta_text} />
-                    ) : (
-                      <p>
-                        Whether you can help occasionally or become part of ongoing outreach efforts, there are many ways to get involved and support seafarers visiting Halifax.
-                      </p>
-                    )}
-                  </div>
-
-                  <button
-                    onClick={() => setActiveModal('volunteer')}
-                    className="inline-flex cursor-pointer items-center justify-center bg-[#E05A2B] hover:bg-[#c94d22] text-white font-bold shadow-lg h-12 px-8 rounded-full text-[15px] transition-colors"
-                  >
-                    {data?.volunteer_button_text || "Volunteer Application"}
-                  </button>
-                </div>
-              </div>
-            </Reveal>
-
+                </Reveal>
+              )}
+            </div>
           </div>
         </section>
 
-
-        {/* CAROUSEL SECTION: AMENITIES */}
-        {/* CAROUSEL SECTION: AMENITIES */}
-        <section className="py-20 bg-white overflow-hidden">
+        {/* Team Section */}
+        <section className="py-20 md:py-28 bg-white">
           <div className="w-full max-w-[1200px] px-6 mx-auto">
-            <Reveal className="text-center mb-12">
-              <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm">
-                {data?.facilities_eyebrow || "Our Facilities"}
-              </span>
-              <h2 className="mt-4 text-[32px] md:text-4xl font-extrabold text-[#112A46] mb-4">
-                {data?.facilities_title || "Comfort & Care for Seafarers"}
-              </h2>
-              <div className="text-gray-600 text-[16px] max-w-2xl mx-auto leading-relaxed font-medium space-y-4">
-                {data?.facilities_description?.length > 0 ? (
-                  <PrismicRichText field={data.facilities_description} />
-                ) : (
-                  <p>
-                    We offer a variety of amenities designed to provide a relaxing and welcoming environment for seafarers arriving in the Port of Halifax.
-                  </p>
+            {(data?.team_eyebrow || data?.team_title || data?.team_description) && (
+              <div className="text-center mb-16">
+                {data?.team_eyebrow && (
+                  <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm">
+                    {data.team_eyebrow}
+                  </span>
+                )}
+                {data?.team_title && (
+                  <h2 className="mt-4 text-3xl md:text-4xl font-extrabold text-[#112A46] leading-tight">
+                    {data.team_title}
+                  </h2>
+                )}
+                {data?.team_description && (
+                  <div className="text-gray-600 max-w-3xl mx-auto mt-4 text-sm leading-relaxed space-y-4 [&>p]:m-0">
+                    <RenderCmsContent content={data.team_description} />
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Featured Leader - Leader 1 */}
+            {(data?.leader_1_name || data?.leader_1_role || data?.leader_1_bio || leader1ImageUrl) && (
+              <Reveal>
+                <div className="grid lg:grid-cols-12 gap-12 items-center mb-12 bg-[#F8FBFD] border border-gray-100 p-8 md:p-12 rounded-3xl shadow-sm hover:shadow-lg transition-shadow">
+                  {leader1ImageUrl && (
+                    <div className="lg:col-span-5 flex justify-center">
+                      <img
+                        src={leader1ImageUrl}
+                        alt={data?.leader_1_name || "Leader Photo"}
+                        className="w-full max-w-sm rounded-full shadow-md object-cover aspect-square object-top border-4 border-white"
+                      />
+                    </div>
+                  )}
+                  <div className={leader1ImageUrl ? "lg:col-span-7" : "lg:col-span-12 text-center"}>
+                    {data?.leader_1_role && (
+                      <h2 className="text-2xl md:text-3xl font-extrabold text-[#112A46] leading-tight">
+                        {data.leader_1_role}
+                      </h2>
+                    )}
+                    {data?.leader_1_name && (
+                      <h3 className="mt-4 text-lg font-bold text-[#E05A2B] uppercase tracking-wider">
+                        {data.leader_1_name}
+                      </h3>
+                    )}
+                    {data?.leader_1_bio && (
+                      <div className="mt-6 space-y-4 text-base md:text-lg text-gray-600 leading-relaxed [&>p]:m-0 [&>p+p]:mt-4">
+                        <RenderCmsContent content={data.leader_1_bio} />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </Reveal>
+            )}
+
+            {/* Additional Team Member - Leader 2 & Volunteer Card */}
+            <Reveal delay={100}>
+              <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                {(data?.leader_2_name || data?.leader_2_role || data?.leader_2_bio || leader2ImageUrl) && (
+                  <div className="flex flex-col items-center text-center bg-white border border-gray-100 rounded-3xl p-10 shadow-sm hover:shadow-md transition-shadow">
+                    {leader2ImageUrl && (
+                      <div className="w-40 h-40 mx-auto rounded-full shadow-md mb-6 overflow-hidden border-4 border-white flex justify-center items-center bg-[#DCD2B9]">
+                        <img
+                          src={leader2ImageUrl}
+                          alt={data?.leader_2_name || "Assistant Manager"}
+                          className="w-[98%] max-w-none h-auto"
+                        />
+                      </div>
+                    )}
+                    {data?.leader_2_name && <h3 className="text-2xl font-bold text-[#112A46]">{data.leader_2_name}</h3>}
+                    {data?.leader_2_role && <p className="text-[#E05A2B] font-bold uppercase text-sm mt-2 mb-4 tracking-wider">{data.leader_2_role}</p>}
+                    {data?.leader_2_bio && (
+                      <div className="text-gray-600 leading-relaxed font-medium space-y-2 [&>p]:m-0">
+                        <RenderCmsContent content={data.leader_2_bio} />
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {(data?.volunteers_card_title || data?.volunteers_card_description || data?.volunteers_active_count || data?.volunteers_hours_count) && (
+                  <div className="flex flex-col items-center text-center bg-gradient-to-br from-[#112A46] to-[#1a3a5f] text-white rounded-3xl p-10 shadow-lg">
+                    <div className="w-20 h-20 bg-[#E05A2B] rounded-full flex items-center justify-center mb-6 shadow-lg">
+                      <FaHeart className="text-white text-3xl" />
+                    </div>
+                    {data?.volunteers_card_title && <h3 className="text-2xl font-bold text-white mb-4">{data.volunteers_card_title}</h3>}
+                    {data?.volunteers_card_description && (
+                      <div className="text-white/80 leading-relaxed font-medium mb-6 [&>p]:m-0">
+                        <RenderCmsContent content={data.volunteers_card_description} />
+                      </div>
+                    )}
+                    {(data?.volunteers_active_count || data?.volunteers_hours_count) && (
+                      <div className="flex justify-center gap-8 w-full mt-auto border-t border-white/20 pt-6">
+                        {data?.volunteers_active_count && (
+                          <div>
+                            <div className="text-3xl font-black text-coral">{data.volunteers_active_count}</div>
+                            <div className="text-[11px] font-bold uppercase tracking-wider text-white/70">Active<br />Volunteers</div>
+                          </div>
+                        )}
+                        {data?.volunteers_hours_count && (
+                          <div>
+                            <div className="text-3xl font-black text-coral">{data.volunteers_hours_count}</div>
+                            <div className="text-[11px] font-bold uppercase tracking-wider text-white/70">Hours<br />Served</div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             </Reveal>
+          </div>
+        </section>
 
-            <Reveal delay={100}>
-              <div className="relative group">
-                <button
-                  onClick={scrollPrev}
-                  className="absolute left-2 md:-left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-[#E05A2B] text-white shadow-xl flex items-center justify-center hover:bg-[#112A46] transition-all hover:scale-110 active:scale-95"
-                >
-                  <FaChevronLeft className="text-lg pr-1" />
-                </button>
-                <button
-                  onClick={scrollNext}
-                  className="absolute right-2 md:-right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-[#E05A2B] text-white shadow-xl flex items-center justify-center hover:bg-[#112A46] transition-all hover:scale-110 active:scale-95"
-                >
-                  <FaChevronRight className="text-lg pl-1" />
-                </button>
+        {/* CAROUSEL SECTION: VOLUNTEERS */}
+        {(data?.gallery_section_title || data?.gallery_section_description || volunteersGallery.length > 0) && (
+          <section className="py-20 bg-[#F8FBFD] border-y border-gray-100 overflow-hidden">
+            <div className="w-full max-w-[1200px] px-6 mx-auto">
+              <Reveal className="text-center mb-12">
+                {data?.gallery_section_title && (
+                  <h2 className="mt-4 text-[32px] md:text-4xl font-extrabold text-[#112A46] mb-6">
+                    {data.gallery_section_title}
+                  </h2>
+                )}
+                {data?.gallery_section_description && (
+                  <div className="text-gray-600 text-[16px] max-w-3xl mx-auto leading-relaxed font-medium space-y-4 [&>p]:m-0 [&>p+p]:mt-4">
+                    <RenderCmsContent content={data.gallery_section_description} />
+                  </div>
+                )}
+              </Reveal>
 
-                <div
-                  ref={carouselRef}
-                  className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4 pt-4 px-2"
-                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                >
-                  <style dangerouslySetInnerHTML={{ __html: `div::-webkit-scrollbar { display: none; }` }} />
-{amenitiesGallery.map((item) => (
-  <div
-    key={item.id}
-    /* Cards ki width thodi adjust ki hai taki lambe dabbe screen par premium lagein */
-    className="relative flex flex-col overflow-hidden rounded-3xl bg-[#112A46] border border-gray-100 shadow-md shrink-0 snap-center sm:snap-start w-[75%] sm:w-[calc(45%-12px)] lg:w-[calc(30%-16px)]"
-  >
-    {/* MAGIC TRICK: aspect-[3/4] (Portrait Box). 
-        Kyunki aapki zyada images 1240x1600 aur 3072x4080 ki hain (jo lambi hain), 
-        Toh ye dabbe ka size unko 100% PERFECTLY fit karega bina zoom kiye! */}
-    <div className="relative w-full aspect-[5/4] overflow-hidden bg-[#112A46]">
-      
-      <img 
-        src={item.img} 
-        alt={item.title} 
-        /* Ab image zoom-in nahi hogi, balki pure lambe dabbe me fit baith jayegi */
-        className={`absolute inset-0 w-full h-full object-cover ${item.focus || 'object-center'}`} 
-        draggable="false" 
-      />
-      
-    </div>
-    <div className="p-5 text-center flex-grow flex items-center justify-center min-h-[80px]">
-      <h3 className="text-white font-bold text-[15px] leading-tight">{item.title}</h3>
-    </div>
-  </div>
-))}
+              {volunteersGallery.length > 0 && (
+                <Reveal delay={100}>
+                  <div className="relative group">
+                    <button
+                      onClick={scrollVolunteerPrev}
+                      className="absolute left-2 md:-left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-[#E05A2B] text-white shadow-xl flex items-center justify-center hover:bg-[#112A46] transition-all hover:scale-110 active:scale-95 cursor-pointer"
+                    >
+                      <FaChevronLeft className="text-lg pr-1" />
+                    </button>
+                    <button
+                      onClick={scrollVolunteerNext}
+                      className="absolute right-2 md:-right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-[#E05A2B] text-white shadow-xl flex items-center justify-center hover:bg-[#112A46] transition-all hover:scale-110 active:scale-95 cursor-pointer"
+                    >
+                      <FaChevronRight className="text-lg pl-1" />
+                    </button>
+
+                    <div
+                      ref={volunteerCarouselRef}
+                      className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4 pt-4 px-2"
+                      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    >
+                      <style dangerouslySetInnerHTML={{ __html: `div::-webkit-scrollbar { display: none; }` }} />
+                      {volunteersGallery.map((item) => (
+                        <div
+                          key={item.id}
+                          className="relative overflow-hidden rounded-3xl shadow-md shrink-0 snap-center sm:snap-start w-[85%] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] group/card border border-white"
+                        >
+                          <div className="aspect-[4/3] w-full overflow-hidden bg-[#112A46]/5">
+                            <img src={item.img} alt={item.title || "Volunteer"} className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-500" draggable="false" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </Reveal>
+              )}
+
+              <Reveal delay={200} className="mt-16">
+                <div className="text-center max-w-4xl mx-auto space-y-12">
+                  {data?.community_care_description && (
+                    <div className="text-gray-600 text-[16px] leading-relaxed font-medium space-y-4 [&>p]:m-0 [&>p+p]:mt-4">
+                      <RenderCmsContent content={data.community_care_description} />
+                    </div>
+                  )}
+
+                  {(data?.community_care_title || data?.community_care_subtext) && (
+                    <div>
+                      {data?.community_care_title && <h3 className="text-2xl md:text-3xl font-extrabold text-[#112A46] mb-4">{data.community_care_title}</h3>}
+                      {data?.community_care_subtext && (
+                        <div className="text-gray-600 text-[16px] leading-relaxed font-medium max-w-3xl mx-auto space-y-4 [&>p]:m-0">
+                          <RenderCmsContent content={data.community_care_subtext} />
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {(data?.stat_box_1_number || data?.stat_box_2_number) && (
+                    <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                      {data?.stat_box_1_number && (
+                        <div className="bg-white border border-gray-100 p-8 rounded-3xl shadow-sm">
+                          <div className="text-4xl font-extrabold text-[#E05A2B] mb-2">{data.stat_box_1_number}</div>
+                          {data?.stat_box_1_label && <div className="text-lg font-bold text-[#112A46] uppercase tracking-wider mb-2">{data.stat_box_1_label}</div>}
+                          {data?.stat_box_1_desc && (
+                            <div className="text-gray-600 text-sm font-medium [&>p]:m-0">
+                              <RenderCmsContent content={data.stat_box_1_desc} />
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      {data?.stat_box_2_number && (
+                        <div className="bg-white border border-gray-100 p-8 rounded-3xl shadow-sm">
+                          <div className="text-4xl font-extrabold text-[#E05A2B] mb-2">{data.stat_box_2_number}</div>
+                          {data?.stat_box_2_label && <div className="text-lg font-bold text-[#112A46] uppercase tracking-wider mb-2">{data.stat_box_2_label}</div>}
+                          {data?.stat_box_2_desc && (
+                            <div className="text-gray-600 text-sm font-medium [&>p]:m-0">
+                              <RenderCmsContent content={data.stat_box_2_desc} />
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {(data?.thank_you_title || data?.volunteer_cta_title) && (
+                    <div className="bg-[#112A46] p-10 md:p-14 rounded-3xl shadow-xl text-left text-white max-w-3xl mx-auto">
+                      {data?.thank_you_title && <h3 className="text-2xl font-extrabold mb-4 text-[#E05A2B]">{data.thank_you_title}</h3>}
+                      {data?.thank_you_text && (
+                        <div className="text-white/80 leading-relaxed font-medium mb-8 space-y-4 [&>p]:m-0">
+                          <RenderCmsContent content={data.thank_you_text} />
+                        </div>
+                      )}
+
+                      {data?.volunteer_cta_title && <h3 className="text-2xl font-extrabold mb-4 text-[#E05A2B]">{data.volunteer_cta_title}</h3>}
+                      {data?.volunteer_cta_text && (
+                        <div className="text-white/80 leading-relaxed font-medium mb-6 space-y-4 [&>p]:m-0">
+                          <RenderCmsContent content={data.volunteer_cta_text} />
+                        </div>
+                      )}
+
+                      {(data?.volunteer_button_text || true) && (
+                        <button
+                          onClick={() => setActiveModal('volunteer')}
+                          className="inline-flex cursor-pointer items-center justify-center bg-[#E05A2B] hover:bg-[#c94d22] text-white font-bold shadow-lg h-12 px-8 rounded-full text-[15px] transition-colors"
+                        >
+                          {data?.volunteer_button_text || "Volunteer Application"}
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
+              </Reveal>
 
-
-
-
-        {/* How the structure works (London Style) */}
-        <section className="py-20 md:py-28 bg-[#F8FBFD] border-t border-gray-200">
-          <div className="w-full max-w-[1200px] px-6 mx-auto">
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 className="mt-4 text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#112A46] leading-tight">
-                {data?.structure_title || "How the Structure Works"}
-              </h2>
-              <p className="mt-2 text-gray-600 text-[14px] max-w-2xl mx-auto leading-relaxed font-medium">
-                {data?.structure_subtitle || "One Mission. Many Hands. Shared Care.” with “How the Structure Works”"}
-              </p>
             </div>
+          </section>
+        )}
 
-            <div className="mt-14 grid md:grid-cols-2 gap-8 max-w-4xl mx-auto relative">
-              <div className="rounded-3xl bg-white border border-gray-100 p-10 shadow-sm hover:shadow-lg transition-all text-center">
-                <p className="text-gray-600 leading-relaxed font-medium text-lg">
-                  <strong className="text-[#112A46] block text-2xl mb-4 font-extrabold">
-                    {data?.canada_card_title || "Mission to Seafarers Canada"}
-                  </strong>
-                  {data?.canada_card_text || "provides the national foundation, leadership, and support."}
-                </p>
+        {/* CAROUSEL SECTION: AMENITIES */}
+        {(data?.facilities_eyebrow || data?.facilities_title || amenitiesGallery.length > 0) && (
+          <section className="py-20 bg-white overflow-hidden">
+            <div className="w-full max-w-[1200px] px-6 mx-auto">
+              <Reveal className="text-center mb-12">
+                {data?.facilities_eyebrow && (
+                  <span className="text-[#E05A2B] font-bold tracking-widest uppercase text-sm">
+                    {data.facilities_eyebrow}
+                  </span>
+                )}
+                {data?.facilities_title && (
+                  <h2 className="mt-4 text-[32px] md:text-4xl font-extrabold text-[#112A46] mb-4">
+                    {data.facilities_title}
+                  </h2>
+                )}
+                {data?.facilities_description && (
+                  <div className="text-gray-600 text-[16px] max-w-2xl mx-auto leading-relaxed font-medium space-y-4 [&>p]:m-0">
+                    <RenderCmsContent content={data.facilities_description} />
+                  </div>
+                )}
+              </Reveal>
+
+              {amenitiesGallery.length > 0 && (
+                <Reveal delay={100}>
+                  <div className="relative group">
+                    <button
+                      onClick={scrollPrev}
+                      className="absolute left-2 md:-left-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-[#E05A2B] text-white shadow-xl flex items-center justify-center hover:bg-[#112A46] transition-all hover:scale-110 active:scale-95 cursor-pointer"
+                    >
+                      <FaChevronLeft className="text-lg pr-1" />
+                    </button>
+                    <button
+                      onClick={scrollNext}
+                      className="absolute right-2 md:-right-6 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-[#E05A2B] text-white shadow-xl flex items-center justify-center hover:bg-[#112A46] transition-all hover:scale-110 active:scale-95 cursor-pointer"
+                    >
+                      <FaChevronRight className="text-lg pl-1" />
+                    </button>
+
+                    <div
+                      ref={carouselRef}
+                      className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4 pt-4 px-2"
+                      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    >
+                      <style dangerouslySetInnerHTML={{ __html: `div::-webkit-scrollbar { display: none; }` }} />
+                      {amenitiesGallery.map((item) => (
+                        <div
+                          key={item.id}
+                          className="relative flex flex-col overflow-hidden rounded-3xl bg-[#112A46] border border-gray-100 shadow-md shrink-0 snap-center sm:snap-start w-[75%] sm:w-[calc(45%-12px)] lg:w-[calc(30%-16px)]"
+                        >
+                          <div className="relative w-full aspect-[5/4] overflow-hidden bg-[#112A46]">
+                            <img 
+                              src={item.img} 
+                              alt={item.title || "Amenity"} 
+                              className="absolute inset-0 w-full h-full object-cover object-center" 
+                              draggable="false" 
+                            />
+                          </div>
+                          {item.title && (
+                            <div className="p-5 text-center flex-grow flex items-center justify-center min-h-[80px]">
+                              <h3 className="text-white font-bold text-[15px] leading-tight">{item.title}</h3>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </Reveal>
+              )}
+            </div>
+          </section>
+        )}
+
+        {/* How the structure works */}
+        {(data?.structure_title || data?.canada_card_title || data?.halifax_card_title) && (
+          <section className="py-20 md:py-28 bg-[#F8FBFD] border-t border-gray-200">
+            <div className="w-full max-w-[1200px] px-6 mx-auto">
+              <div className="text-center max-w-3xl mx-auto">
+                {data?.structure_title && (
+                  <h2 className="mt-4 text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#112A46] leading-tight">
+                    {data.structure_title}
+                  </h2>
+                )}
+                {data?.structure_subtitle && (
+                  <p className="mt-2 text-gray-600 text-[14px] max-w-2xl mx-auto leading-relaxed font-medium">
+                    {data.structure_subtitle}
+                  </p>
+                )}
               </div>
-              <div className="rounded-3xl bg-white border border-gray-100 p-10 shadow-sm hover:shadow-lg transition-all text-center">
-                <p className="text-gray-600 leading-relaxed font-medium text-lg">
-                  <strong className="text-[#112A46] block text-2xl mb-4 font-extrabold">
-                    {data?.halifax_card_title || "Mission to Seafarers Halifax"}
-                  </strong>
-                  {data?.halifax_card_text || "brings that mission to life locally at the Port of Halifax."}
-                </p>
+
+              <div className="mt-14 grid md:grid-cols-2 gap-8 max-w-4xl mx-auto relative">
+                {(data?.canada_card_title || data?.canada_card_text) && (
+                  <div className="rounded-3xl bg-white border border-gray-100 p-10 shadow-sm hover:shadow-lg transition-all text-center">
+                    <div className="text-gray-600 leading-relaxed font-medium text-lg [&>p]:m-0">
+                      {data?.canada_card_title && (
+                        <strong className="text-[#112A46] block text-2xl mb-4 font-extrabold">
+                          {data.canada_card_title}
+                        </strong>
+                      )}
+                      <RenderCmsContent content={data?.canada_card_text} />
+                    </div>
+                  </div>
+                )}
+                {(data?.halifax_card_title || data?.halifax_card_text) && (
+                  <div className="rounded-3xl bg-white border border-gray-100 p-10 shadow-sm hover:shadow-lg transition-all text-center">
+                    <div className="text-gray-600 leading-relaxed font-medium text-lg [&>p]:m-0">
+                      {data?.halifax_card_title && (
+                        <strong className="text-[#112A46] block text-2xl mb-4 font-extrabold">
+                          {data.halifax_card_title}
+                        </strong>
+                      )}
+                      <RenderCmsContent content={data?.halifax_card_text} />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-12 max-w-3xl mx-auto text-center">
+                {data?.structure_footer_quote && (
+                  <div className="text-xl font-bold text-[#E05A2B] leading-relaxed italic mb-8 [&>p]:m-0">
+                    <RenderCmsContent content={data.structure_footer_quote} />
+                  </div>
+                )}
+                <button
+                  onClick={() => setActiveModal('volunteer')}
+                  className="inline-flex cursor-pointer items-center justify-center bg-[#E05A2B] hover:bg-[#c94d22] text-white font-bold shadow-lg h-14 px-8 rounded-md text-lg transition-colors"
+                >
+                  {data?.structure_button_text || "Become a Volunteer"}
+                </button>
               </div>
             </div>
-
-            <div className="mt-12 max-w-3xl mx-auto text-center">
-              <p className="text-xl font-bold text-[#E05A2B] leading-relaxed italic mb-8">
-                {data?.structure_footer_quote || "Together, ensure that every seafarer who comes through Halifax is not only seen, but cared for."}
-              </p>
-              <button
-                onClick={() => setActiveModal('volunteer')}
-                className="inline-flex cursor-pointer items-center justify-center bg-[#E05A2B] hover:bg-[#c94d22] text-white font-bold shadow-lg h-14 px-8 rounded-md text-lg transition-colors"
-              >
-                {data?.structure_button_text || "Become a Volunteer"}
-              </button>
-            </div>
-          </div>
-        </section>
-
-
-
-
+          </section>
+        )}
 
       </main>
       <Footer />
